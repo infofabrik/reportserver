@@ -1,6 +1,9 @@
 package net.datenwerke.async;
 
+import static java.util.stream.Collectors.toList;
+
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,7 +24,7 @@ public class DwAsyncServiceImpl implements DwAsyncService {
 
    private final long waitBeforeForcedShutdown;
 
-   private final Map<String, DwAsyncPool> poolMap = new HashMap<String, DwAsyncPool>();
+   private final Map<String, DwAsyncPool> poolMap = new HashMap<>();
 
    @Inject
    public DwAsyncServiceImpl(@WaitBeforeForcedShutdown Long waitBeforeForcedShutdown) {
@@ -32,18 +35,16 @@ public class DwAsyncServiceImpl implements DwAsyncService {
 
    @Override
    public void shutdownAll() {
-      for (String token : poolMap.keySet())
-         shutdownPool(token);
+      poolMap.keySet().forEach(this::shutdownPool);
    }
 
    @Override
    public List<Runnable> shutdownAllNow() {
-      List<Runnable> list = new ArrayList<Runnable>();
-
-      for (String token : poolMap.keySet())
-         list.addAll(shutdownPoolNow(token));
-
-      return list;
+      return poolMap.keySet()
+         .stream()
+         .map(this::shutdownPoolNow)
+         .flatMap(Collection::stream)
+         .collect(toList());
    }
 
    @Override
@@ -120,7 +121,7 @@ public class DwAsyncServiceImpl implements DwAsyncService {
          DwAsyncPool pool = getPool(poolToken);
          return pool.shutdownNow();
       }
-      return new ArrayList<Runnable>();
+      return new ArrayList<>();
    }
 
    @Override
@@ -147,18 +148,18 @@ public class DwAsyncServiceImpl implements DwAsyncService {
 
    @Override
    public long getTaskCountAll() {
-      long cnt = 0;
-      for (DwAsyncPool pool : poolMap.values())
-         cnt += pool.getTaskCount();
-      return cnt;
+      return poolMap.values()
+         .stream()
+         .map(DwAsyncPool::getTaskCount)
+         .reduce(0L, Long::sum);
    }
 
    @Override
    public long getCompletedTaskCountAll() {
-      long cnt = 0;
-      for (DwAsyncPool pool : poolMap.values())
-         cnt += pool.getCompletedTaskCount();
-      return cnt;
+      return poolMap.values()
+         .stream()
+         .map(DwAsyncPool::getCompletedTaskCount)
+         .reduce(0L, Long::sum);
    }
 
    @Override
