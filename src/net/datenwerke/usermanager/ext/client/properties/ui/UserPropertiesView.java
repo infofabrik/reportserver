@@ -1,8 +1,11 @@
 package net.datenwerke.usermanager.ext.client.properties.ui;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.TreeSet;
+import java.util.stream.Collectors;
 
 import com.google.gwt.cell.client.AbstractCell;
 import com.google.gwt.editor.client.Editor;
@@ -61,6 +64,7 @@ import net.datenwerke.security.client.usermanager.dto.UserDto;
 import net.datenwerke.security.client.usermanager.dto.UserPropertyDto;
 import net.datenwerke.security.client.usermanager.dto.pa.UserPropertyDtoPA;
 import net.datenwerke.treedb.client.treedb.dto.AbstractNodeDto;
+import net.datenwerke.usermanager.ext.client.properties.DefaultUserProperties;
 import net.datenwerke.usermanager.ext.client.properties.UserPropertiesDao;
 import net.datenwerke.usermanager.ext.client.properties.locale.UserPropertiesMessages;
 
@@ -144,25 +148,20 @@ public class UserPropertiesView extends MainPanelView {
       propertiesDao.getPropertyKeys(new RsAsyncCallback<List<String>>() {
          @Override
          public void onSuccess(List<String> result) {
-            for (final String entry : result) {
-               MenuItem item = new DwMenuItem(entry);
-               addBtnMenu.add(item);
-               item.addSelectionHandler(new SelectionHandler<Item>() {
-                  @Override
-                  public void onSelection(SelectionEvent<Item> event) {
-                     addProperty(entry);
-                  }
+            
+            final TreeSet<String> allUserProperties = getDefaultUserProperties();
+            allUserProperties.addAll(result);
+            
+            allUserProperties
+               .forEach(entry -> {
+                  MenuItem item = new DwMenuItem(entry);
+                  addBtnMenu.add(item);
+                  item.addSelectionHandler(event -> addProperty(entry));
                });
-            }
          }
       });
 
-      addBtn.addSelectHandler(new SelectHandler() {
-         @Override
-         public void onSelect(SelectEvent event) {
-            addProperty(null);
-         }
-      });
+      addBtn.addSelectHandler(event -> addProperty(null));
       toolbar.add(addBtn);
 
       toolbar.add(new SeparatorToolItem());
@@ -296,6 +295,13 @@ public class UserPropertiesView extends MainPanelView {
       while (hasPropertyWith(name))
          name = c + (++i);
       return name;
+   }
+   
+   protected TreeSet<String> getDefaultUserProperties() {
+      return Arrays.asList(DefaultUserProperties.values())
+         .stream()
+         .map(DefaultUserProperties::getProperty)
+         .collect(Collectors.toCollection(() -> new TreeSet<>()));
    }
 
    protected boolean hasPropertyWith(String name) {
