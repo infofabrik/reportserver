@@ -81,12 +81,13 @@ class CopyTableHelper {
       assert allColNames.containsAll(primaryKeys)
    }
 
-   def printDebugInfo(results) {
+   def printDebugInfo(results, duration) {
       results << ['All columns': allColNames]
       results << ['Datatypes': allColDataTypes]
       results << ['Indexes of primary keys': primaryKeyIndexes]
       results << ['SELECT statement': selectStmt]
       results << ['INSERT statement': insertStmt]
+      results << ['Duration': duration as String]
    }
    
    def prepareSelectStmt() {

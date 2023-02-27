@@ -7,6 +7,8 @@ import static net.datenwerke.rs.base.client.datasources.DatasourceInfoType.JDBC_
 
 import java.sql.DatabaseMetaData
 import java.sql.SQLException
+import java.time.Duration
+import java.time.Instant
 
 import javax.inject.Inject
 import javax.inject.Provider
@@ -48,15 +50,13 @@ class DatasourceHelperServiceImpl implements DatasourceHelperService {
          throw new IllegalArgumentException("'$sourceTable' does not exist")
       if (! tableExists(destinationDatasource, destinationTable))
          throw new IllegalArgumentException("'$destinationTable' does not exist")
+         
+      Instant start = Instant.now()
         
       def copyTableHelper = new CopyTableHelper(sourceDatasource: sourceDatasource, sourceTable: sourceTable, 
          destinationDatasource: destinationDatasource, destinationTable: destinationTable,
          primaryKeys: primaryKeys, copyPrimaryKeys: copyPrimaryKeys, batchSize: batchSize
          )
-
-      Date start = new Date()
-      
-      def results = [:]
 
       dbPoolService.getConnection(sourceDatasource.connectionConfig).get().withCloseable { sourceConn ->
          dbPoolService.getConnection(destinationDatasource.connectionConfig).get().withCloseable { destinationConn ->
@@ -71,8 +71,6 @@ class DatasourceHelperServiceImpl implements DatasourceHelperService {
 
             def selectStmt = copyTableHelper.prepareSelectStmt()
 
-            copyTableHelper.printDebugInfo results
-
             destinationSql.withTransaction {
                destinationSql.withBatch(batchSize, insertStmt) { stmt ->
                   sourceSql.eachRow(selectStmt) { row -> copyTableHelper.insertRow(row, stmt) }
@@ -80,6 +78,11 @@ class DatasourceHelperServiceImpl implements DatasourceHelperService {
             }
          }
       }
+      
+      def results = [:]
+      Instant end = Instant.now()
+      def duration = Duration.between(start, end)
+      copyTableHelper.printDebugInfo results, duration
       results
    }
    
