@@ -94,15 +94,17 @@ class RemoteReportImporterHooker implements RemoteEntityImporterHook {
          def keyProp = it.getPropertyByName('key')
          if(keyProp){
             def key = StringEscapeUtils.unescapeXml(keyProp.element.value)
-            if(reportService.getReportByKey(key)){
-               throw new IllegalStateException("A report with the key '$key' already exists in the system.")
+            def existingReport = reportService.getReportByKey(key)
+            if(existingReport){
+               throw new IllegalStateException("A report with the key '$key' already exists in the system: '$existingReport'")
             }
          }
          def uuidProp = it.getPropertyByName('uuid')
          if(uuidProp){
             def uuid = StringEscapeUtils.unescapeXml(uuidProp.element.value)
-            if(reportService.getReportByUUID(uuid))
-               throw new IllegalStateException("A report with the UUID '$uuid' already exists in the system.")
+            def existingReport = reportService.getReportByUUID(uuid)
+            if(existingReport)
+               throw new IllegalStateException("A report with the UUID '$uuid' already exists in the system: '$existingReport'")
          }
       }
       
@@ -113,12 +115,13 @@ class RemoteReportImporterHooker implements RemoteEntityImporterHook {
         if(nameProp?.type == String.class){
           def name = StringEscapeUtils.unescapeXml(nameProp.element.value)
           if (name) {
-             /* try find matching datasource */
+             /* try to find matching datasource */
              def ds = datasourceService.getDatasourceByName(name)
-             if(ds){
-               def dsConfig = new TreeNodeImportItemConfig(it.id, ImportMode.REFERENCE, ds)
-               config.addItemConfig dsConfig
-             }
+             if (!ds)
+                throw new IllegalArgumentException("Datasource '$name' could not be mapped.")
+                
+             def dsConfig = new TreeNodeImportItemConfig(it.id, ImportMode.REFERENCE, ds)
+             config.addItemConfig dsConfig
           }
         }
       }
