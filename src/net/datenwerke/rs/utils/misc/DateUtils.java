@@ -1,8 +1,13 @@
 package net.datenwerke.rs.utils.misc;
 
 import java.text.SimpleDateFormat;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
+
+import net.datenwerke.rs.utils.localization.LocalizationServiceImpl;
 
 public class DateUtils {
 
@@ -118,7 +123,21 @@ public class DateUtils {
    }
    
    public static String formatCurrentDate() {
-      return formatDate(Calendar.getInstance().getTime(), "yyyy-MM-dd hh:mm:ss");
+      return format(ZonedDateTime.now(ZoneId.systemDefault()));
+   }
+   
+   public static String format(ZonedDateTime zonedDateTime) {
+      final DateTimeFormatter format = DateTimeFormatter.ISO_ZONED_DATE_TIME
+            .withLocale(LocalizationServiceImpl.getLocale());
+      return zonedDateTime.format(format);
+   }
+   
+   public static ZonedDateTime toZonedDateTime(Date date) {
+      return ZonedDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault());
+   }
+   
+   public static String format(Date date) {
+      return format(toZonedDateTime(date));
    }
    
 }

@@ -1,5 +1,8 @@
 package net.datenwerke.rs.base.ext.service.terminal.commands;
 
+import java.time.Duration;
+import java.time.Instant;
+import java.util.Arrays;
 import java.util.List;
 
 import org.apache.commons.lang3.exception.ExceptionUtils;
@@ -10,6 +13,9 @@ import com.google.inject.Provider;
 import net.datenwerke.eximport.im.ImportResult;
 import net.datenwerke.rs.base.ext.service.RemoteEntityImporterService;
 import net.datenwerke.rs.base.ext.service.locale.RsBaseExtMessages;
+import net.datenwerke.rs.base.service.reportengines.table.output.object.RSStringTableRow;
+import net.datenwerke.rs.base.service.reportengines.table.output.object.RSTableModel;
+import net.datenwerke.rs.base.service.reportengines.table.output.object.TableDefinition;
 import net.datenwerke.rs.terminal.service.terminal.TerminalSession;
 import net.datenwerke.rs.terminal.service.terminal.exceptions.TerminalException;
 import net.datenwerke.rs.terminal.service.terminal.helpers.AutocompleteHelper;
@@ -18,6 +24,7 @@ import net.datenwerke.rs.terminal.service.terminal.helpmessenger.annotations.Arg
 import net.datenwerke.rs.terminal.service.terminal.helpmessenger.annotations.CliHelpMessage;
 import net.datenwerke.rs.terminal.service.terminal.helpmessenger.annotations.NonOptArgument;
 import net.datenwerke.rs.terminal.service.terminal.obj.CommandResult;
+import net.datenwerke.rs.utils.misc.DateUtils;
 
 public class RpullCopySubcommand implements RpullSubCommandHook {
    
@@ -93,9 +100,33 @@ public class RpullCopySubcommand implements RpullSubCommandHook {
       final boolean includeVariants = parser.hasOption("v", argStr);
       
       try {
+         Instant start = Instant.now();
          ImportResult result = remoteEntityImporterServiceProvider.get().importRemoteEntities(arguments.get(0), arguments.get(1),
                arguments.get(2), arguments.get(3), arguments.get(4), includeVariants);
-         return new CommandResult("Successful import. Results: '" + result + "'");
+         Instant end = Instant.now();
+         CommandResult commandResult = new CommandResult();
+         
+         final RSTableModel resultsTable = new RSTableModel();
+         final TableDefinition resultsTableDefinition = new TableDefinition(Arrays.asList("Results", ""),
+               Arrays.asList(String.class, String.class));
+         resultsTable.setTableDefinition(resultsTableDefinition);
+         resultsTable.addDataRow(new RSStringTableRow("Status", "OK"));
+         resultsTable.addDataRow(new RSStringTableRow("Duration", Duration.between(start, end).toString()));
+         resultsTable.addDataRow(new RSStringTableRow("Imported objects", result.getImportedObjects().size() + ""));
+         resultsTable.addDataRow(new RSStringTableRow("Import date", DateUtils.format(result.getDate())));
+         resultsTable.addDataRow(new RSStringTableRow("Name", result.getName()));
+         commandResult.addResultTable(resultsTable);
+         
+         final RSTableModel detailsTable = new RSTableModel();
+         final TableDefinition detailsTableDefinition = new TableDefinition(
+               Arrays.asList("Imported objects (" + result.getImportedObjects().size() + ")"),
+               Arrays.asList(String.class));
+         detailsTable.setTableDefinition(detailsTableDefinition);
+         result.getImportedObjects().entrySet()
+               .forEach(entry -> detailsTable.addDataRow(new RSStringTableRow(entry.getValue().toString())));
+         commandResult.addResultTable(detailsTable);
+         
+         return commandResult;
       } catch (Exception e) {
          throw new TerminalException(ExceptionUtils.getRootCauseMessage(e));
       }

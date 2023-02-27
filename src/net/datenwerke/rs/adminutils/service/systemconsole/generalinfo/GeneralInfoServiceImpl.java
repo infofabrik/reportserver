@@ -22,8 +22,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.SQLException;
 import java.time.ZoneId;
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -61,6 +59,7 @@ import net.datenwerke.rs.remoteaccess.service.sftp.annotations.KeyLocation;
 import net.datenwerke.rs.remoteaccess.service.sftp.annotations.SftpEnabled;
 import net.datenwerke.rs.remoteaccess.service.sftp.annotations.SftpPort;
 import net.datenwerke.rs.utils.localization.LocalizationServiceImpl;
+import net.datenwerke.rs.utils.misc.DateUtils;
 import net.datenwerke.rs.utils.misc.Nullable;
 import net.datenwerke.rs.utils.properties.PropertiesUtilService;
 import net.datenwerke.security.service.authenticator.ReportServerPAM;
@@ -576,9 +575,6 @@ public class GeneralInfoServiceImpl implements GeneralInfoService {
 
    @Override
    public String getNow() {
-      final ZonedDateTime now = ZonedDateTime.now(ZoneId.systemDefault());
-      final DateTimeFormatter format = DateTimeFormatter.ISO_ZONED_DATE_TIME
-            .withLocale(LocalizationServiceImpl.getLocale());
-      return now.format(format);
+      return DateUtils.formatCurrentDate();
    }
 }
