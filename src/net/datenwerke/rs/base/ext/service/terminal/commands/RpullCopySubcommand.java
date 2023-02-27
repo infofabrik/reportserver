@@ -14,6 +14,7 @@ import net.datenwerke.rs.terminal.service.terminal.TerminalSession;
 import net.datenwerke.rs.terminal.service.terminal.exceptions.TerminalException;
 import net.datenwerke.rs.terminal.service.terminal.helpers.AutocompleteHelper;
 import net.datenwerke.rs.terminal.service.terminal.helpers.CommandParser;
+import net.datenwerke.rs.terminal.service.terminal.helpmessenger.annotations.Argument;
 import net.datenwerke.rs.terminal.service.terminal.helpmessenger.annotations.CliHelpMessage;
 import net.datenwerke.rs.terminal.service.terminal.helpmessenger.annotations.NonOptArgument;
 import net.datenwerke.rs.terminal.service.terminal.obj.CommandResult;
@@ -45,6 +46,15 @@ public class RpullCopySubcommand implements RpullSubCommandHook {
          messageClass = RsBaseExtMessages.class, 
          name = BASE_COMMAND, 
          description = "commandRpullCopy_desc",
+         args = {
+               @Argument(
+                     flag = "v", 
+                     hasValue = false, 
+                     valueName = "sort", 
+                     description = "commandRpullCopy_flagV", 
+                     mandatory = false
+               )
+         },
          nonOptArgs = {
                @NonOptArgument(
                      name = "restUrl", 
@@ -79,9 +89,12 @@ public class RpullCopySubcommand implements RpullSubCommandHook {
       if (5 != arguments.size())
          throw new IllegalArgumentException("Exactly five arguments expected");
       
+      final String argStr = "v";
+      final boolean includeVariants = parser.hasOption("v", argStr);
+      
       try {
          ImportResult result = remoteEntityImporterServiceProvider.get().importRemoteEntities(arguments.get(0), arguments.get(1),
-               arguments.get(2), arguments.get(3), arguments.get(4));
+               arguments.get(2), arguments.get(3), arguments.get(4), includeVariants);
          return new CommandResult("Successful import. Results: '" + result + "'");
       } catch (Exception e) {
          throw new TerminalException(ExceptionUtils.getRootCauseMessage(e));

@@ -29,10 +29,11 @@ class RemoteEntityImporterServiceImpl implements RemoteEntityImporterService {
       }
    
    @Override
-   public ImportResult importRemoteEntities(String restUrl, String user, String apikey, String remoteEntityPath, String localTarget) {
-     def importType = checkPreconditions(localTarget, remoteEntityPath)
+   public ImportResult importRemoteEntities(String restUrl, String user, String apikey, String remoteEntityPath, String localTarget, 
+      boolean includeVariants) {
+      def importType = checkPreconditions(localTarget, remoteEntityPath)
      
-     def remoteUrl = "$restUrl/node-exporter$remoteEntityPath?user=$user&apikey=$apikey"
+     def remoteUrl = "$restUrl/node-exporter$remoteEntityPath${(includeVariants?';includeVariants=true':'')}?user=$user&apikey=$apikey"
      def httpConnection = new URL(remoteUrl).openConnection()
      if (httpConnection.responseCode != httpConnection.HTTP_OK)
         throw new IllegalStateException("Connection response code: ${httpConnection.responseCode}")

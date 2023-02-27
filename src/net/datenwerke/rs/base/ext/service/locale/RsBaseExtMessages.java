@@ -17,4 +17,6 @@ public interface RsBaseExtMessages extends Messages {
    String commandRpullCopy_remoteEntityPath();
    
    String commandRpullCopy_localTarget();
+   
+   String commandRpullCopy_flagV();
 }
