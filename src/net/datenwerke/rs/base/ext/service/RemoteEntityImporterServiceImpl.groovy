@@ -42,16 +42,16 @@ class RemoteEntityImporterServiceImpl implements RemoteEntityImporterService {
      if (!exportXml)
         throw new IllegalStateException('Nothing to import')
         
-     /* prepare import */
+      /* prepare import */
       def config = new ImportConfig(new ExportDataProviderImpl(exportXml.bytes))
       def importers = hookHandlerServiceProvider.get().getHookers(RemoteEntityImporterHook)
-         .findAll { it.consumes(importType) }
+            .findAll { it.consumes(importType) }
       if (!importers)
          throw new IllegalArgumentException("Not yet supported: '$importType'")
-      
+
       if (importers.size() != 1)
          throw new IllegalStateException('More than one importers found')
-         
+
       return importers[0].importRemoteEntity(config, terminalServiceProvider.get().getObjectByQuery(localTarget))
    }
    
@@ -62,16 +62,10 @@ class RemoteEntityImporterServiceImpl implements RemoteEntityImporterService {
       if (!localTarget.startsWith("/$exportType.manager"))
          throw new IllegalArgumentException("Incorrect target: '$localTarget'")
          
-      if (exportType != RemoteEntityImports.USERS)
-         throw new IllegalArgumentException("$exportType not yet supported")
-         
       def targetNode = terminalServiceProvider.get().getObjectByQuery(localTarget)
       if (!targetNode)
          throw new IllegalArgumentException("Node does not exist: '$localTarget'")
          
-      if (targetNode && !(targetNode instanceof OrganisationalUnit))
-         throw new IllegalArgumentException("Node is not an organizational unit: '$localTarget'")
-      
       if (targetNode.children)
          throw new IllegalArgumentException("Node is not empty: '$localTarget'")
          

@@ -22,12 +22,14 @@ import net.datenwerke.rs.base.ext.service.datasourcemanager.eximport.hookers.Dat
 import net.datenwerke.rs.base.ext.service.datasourcemanager.eximport.hookers.ExportAllDatasourcesHooker;
 import net.datenwerke.rs.base.ext.service.datasourcemanager.eximport.hookers.ImportAllDatasourcesHooker;
 import net.datenwerke.rs.base.ext.service.hooks.ExportConfigHook;
+import net.datenwerke.rs.base.ext.service.hooks.RemoteEntityImporterHook;
 import net.datenwerke.rs.base.ext.service.reportmanager.eximport.HttpReportManagerImportConfigurationHooker;
 import net.datenwerke.rs.base.ext.service.reportmanager.eximport.ParameterInstanceExporter;
 import net.datenwerke.rs.base.ext.service.reportmanager.eximport.ReportManagerExporter;
 import net.datenwerke.rs.base.ext.service.reportmanager.eximport.ReportManagerImporter;
 import net.datenwerke.rs.base.ext.service.reportmanager.eximport.hookers.ExportAllReportsHooker;
 import net.datenwerke.rs.base.ext.service.reportmanager.eximport.hookers.ImportAllReportsHooker;
+import net.datenwerke.rs.base.ext.service.reportmanager.eximport.hookers.RemoteReportImporterHooker;
 import net.datenwerke.rs.base.ext.service.reportmanager.eximport.hookers.ReportExportConfigHooker;
 import net.datenwerke.rs.base.ext.service.reportmanager.hooks.ReportModSubCommandHook;
 import net.datenwerke.rs.base.ext.service.reportmanager.terminal.commands.ListPropertyCommand;
@@ -94,6 +96,8 @@ public class RsBaseExtStartup {
          Provider<DatasinkExportConfigHooker> datasinkExportConfigHooker,
          Provider<DashboardManagerExportConfigHooker> dashboardManagerExportConfigHooker,
          
+         Provider<RemoteReportImporterHooker> remoteReportImporterHooker,
+         
          Provider<RpullCommand> rpullCommand,
          Provider<RpullCopySubcommand> rpullCopySubcommand
 
@@ -141,6 +145,8 @@ public class RsBaseExtStartup {
       hookHandler.attachHooker(ExportConfigHook.class, datasourceExportConfigHooker);
       hookHandler.attachHooker(ExportConfigHook.class, datasinkExportConfigHooker);
       hookHandler.attachHooker(ExportConfigHook.class, dashboardManagerExportConfigHooker);
+      
+      hookHandler.attachHooker(RemoteEntityImporterHook.class, remoteReportImporterHooker);
       
       hookHandler.attachHooker(TerminalCommandHook.class, rpullCommand);
       hookHandler.attachHooker(RpullSubCommandHook.class, rpullCopySubcommand);

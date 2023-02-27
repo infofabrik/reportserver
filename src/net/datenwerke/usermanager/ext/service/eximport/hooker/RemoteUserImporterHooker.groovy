@@ -15,7 +15,6 @@ import net.datenwerke.eximport.im.ImportResult
 import net.datenwerke.eximport.obj.ReferenceItemProperty
 import net.datenwerke.rs.base.ext.service.RemoteEntityImports
 import net.datenwerke.rs.base.ext.service.hooks.RemoteEntityImporterHook
-import net.datenwerke.rs.terminal.service.terminal.TerminalService
 import net.datenwerke.security.service.usermanager.UserManagerService
 import net.datenwerke.security.service.usermanager.entities.OrganisationalUnit
 import net.datenwerke.treedb.ext.service.eximport.TreeNodeImportItemConfig
@@ -26,7 +25,6 @@ import net.datenwerke.usermanager.ext.service.eximport.UserManagerExporter
 class RemoteUserImporterHooker implements RemoteEntityImporterHook {
 
    private final Provider<ExportDataAnalyzerService> analyzerServiceProvider
-   private final Provider<TerminalService> terminalServiceProvider
    private final Provider<UserManagerService> userManagerServiceProvider
    private final Provider<ImportService> importServiceProvider
    
@@ -35,12 +33,10 @@ class RemoteUserImporterHooker implements RemoteEntityImporterHook {
    @Inject
    public RemoteUserImporterHooker(
       Provider<ExportDataAnalyzerService> analyzerServiceProvider,
-      Provider<TerminalService> terminalServiceProvider,
       Provider<UserManagerService> userManagerServiceProvider,
       Provider<ImportService> importServiceProvider
       ) {
       this.analyzerServiceProvider = analyzerServiceProvider
-      this.terminalServiceProvider = terminalServiceProvider
       this.userManagerServiceProvider = userManagerServiceProvider
       this.importServiceProvider = importServiceProvider
    }
@@ -52,6 +48,9 @@ class RemoteUserImporterHooker implements RemoteEntityImporterHook {
 
    @Override
    public ImportResult importRemoteEntity(ImportConfig config, AbstractNode targetNode) {
+      if (!(targetNode instanceof OrganisationalUnit))
+         throw new IllegalArgumentException("Node is not an organizational unit: '$targetNode'")
+         
       def analyzerService = analyzerServiceProvider.get()
       def treeConfig = new TreeNodeImporterConfig()
       config.addSpecificImporterConfigs treeConfig
