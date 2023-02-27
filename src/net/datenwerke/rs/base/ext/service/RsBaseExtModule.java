@@ -16,6 +16,8 @@ public class RsBaseExtModule extends AbstractModule {
       install(new DatasinkManagerVFSModule());
 
       install(new FileSelectionParameterModule());
+      
+      bind(RemoteEntityImporterService.class).to(RemoteEntityImporterServiceImpl.class);
 
       bind(RsBaseExtStartup.class).asEagerSingleton();
    }

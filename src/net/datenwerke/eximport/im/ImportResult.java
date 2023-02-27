@@ -4,6 +4,8 @@ import java.util.Date;
 import java.util.Map;
 import java.util.Set;
 
+import com.google.common.base.MoreObjects;
+
 /**
  * 
  *
@@ -45,6 +47,15 @@ public class ImportResult {
 
    public Set<String> getIgnoredReferencesWithNoConfig() {
       return ignoredReferencesWithNoConfig;
+   }
+   
+   @Override
+   public String toString() {
+      return MoreObjects.toStringHelper(getClass())
+         .add("name", name)
+         .add("date", date)
+         .add("imported objects", importedObjects.size())
+         .toString();
    }
 
 }

@@ -8,6 +8,7 @@ import net.datenwerke.eximport.hooks.ImporterProviderHook;
 import net.datenwerke.gf.service.history.hooks.HistoryUrlBuilderHook;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.base.ext.service.hooks.ExportConfigHook;
+import net.datenwerke.rs.base.ext.service.hooks.RemoteEntityImporterHook;
 import net.datenwerke.rs.eximport.service.eximport.hooks.ExportAllHook;
 import net.datenwerke.rs.eximport.service.eximport.hooks.ImportAllHook;
 import net.datenwerke.rs.eximport.service.eximport.im.http.hooks.HttpImportConfigurationProviderHook;
@@ -19,6 +20,7 @@ import net.datenwerke.usermanager.ext.service.eximport.UserManagerExporter;
 import net.datenwerke.usermanager.ext.service.eximport.UserManagerImporter;
 import net.datenwerke.usermanager.ext.service.eximport.hooker.ExportAllUsersHooker;
 import net.datenwerke.usermanager.ext.service.eximport.hooker.ImportAllUsersHooker;
+import net.datenwerke.usermanager.ext.service.eximport.hooker.RemoteUserImporterHooker;
 import net.datenwerke.usermanager.ext.service.eximport.hooker.UserExportConfigHooker;
 import net.datenwerke.usermanager.ext.service.history.UserManagerHistoryUrlBuilderHooker;
 import net.datenwerke.usermanager.ext.service.hookers.UpdateUserLocalHooker;
@@ -50,7 +52,9 @@ public class UserManagerExtStartup {
          Provider<AddMembersSubCommand> addMembersToGroupProvider, 
          Provider<IdCommand> idCommandProvider,
          
-         Provider<UserExportConfigHooker> userExportConfigHooker
+         Provider<UserExportConfigHooker> userExportConfigHooker,
+         
+         Provider<RemoteUserImporterHooker> remoteUserImporterHooker
          ) {
 
       hookHandler.attachHooker(ExporterProviderHook.class, new ExporterProviderHook(exporterProvider));
@@ -70,5 +74,7 @@ public class UserManagerExtStartup {
       hookHandler.attachHooker(HistoryUrlBuilderHook.class, userManagerUrlBuilder);
       
       hookHandler.attachHooker(ExportConfigHook.class, userExportConfigHooker);
+      
+      hookHandler.attachHooker(RemoteEntityImporterHook.class, remoteUserImporterHooker);
    }
 }

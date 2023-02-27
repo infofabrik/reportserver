@@ -39,6 +39,9 @@ import net.datenwerke.rs.base.ext.service.security.eximport.GenericRightsExporte
 import net.datenwerke.rs.base.ext.service.security.eximport.GenericRightsImporter;
 import net.datenwerke.rs.base.ext.service.security.eximport.hookers.ExportAllGenericRightsHooker;
 import net.datenwerke.rs.base.ext.service.security.eximport.hookers.ImportAllGenericRightsHooker;
+import net.datenwerke.rs.base.ext.service.terminal.commands.RpullCommand;
+import net.datenwerke.rs.base.ext.service.terminal.commands.RpullCopySubcommand;
+import net.datenwerke.rs.base.ext.service.terminal.commands.RpullSubCommandHook;
 import net.datenwerke.rs.eximport.service.eximport.hooks.ExportAllHook;
 import net.datenwerke.rs.eximport.service.eximport.hooks.ImportAllHook;
 import net.datenwerke.rs.eximport.service.eximport.im.http.hooks.HttpImportConfigurationProviderHook;
@@ -89,7 +92,10 @@ public class RsBaseExtStartup {
          Provider<ReportExportConfigHooker> reportExportConfigHooker,
          Provider<DatasourceExportConfigHooker> datasourceExportConfigHooker,
          Provider<DatasinkExportConfigHooker> datasinkExportConfigHooker,
-         Provider<DashboardManagerExportConfigHooker> dashboardManagerExportConfigHooker
+         Provider<DashboardManagerExportConfigHooker> dashboardManagerExportConfigHooker,
+         
+         Provider<RpullCommand> rpullCommand,
+         Provider<RpullCopySubcommand> rpullCopySubcommand
 
    ) {
 
@@ -135,5 +141,8 @@ public class RsBaseExtStartup {
       hookHandler.attachHooker(ExportConfigHook.class, datasourceExportConfigHooker);
       hookHandler.attachHooker(ExportConfigHook.class, datasinkExportConfigHooker);
       hookHandler.attachHooker(ExportConfigHook.class, dashboardManagerExportConfigHooker);
+      
+      hookHandler.attachHooker(TerminalCommandHook.class, rpullCommand);
+      hookHandler.attachHooker(RpullSubCommandHook.class, rpullCopySubcommand);
    }
 }
