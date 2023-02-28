@@ -84,9 +84,10 @@ class RemoteEntityImporterServiceImpl implements RemoteEntityImporterService {
              return results
        }
  
-       if (check) 
+       if (check) {
+          results[RemoteEntityImporterServiceImpl.STATUS] = RemoteEntityImporterServiceImpl.STATUS_OK
           return importers[0].checkImportRemoteEntity(config, terminalServiceProvider.get().getObjectByQuery(localTarget), results)
-       else
+       } else
           return importers[0].importRemoteEntity(config, terminalServiceProvider.get().getObjectByQuery(localTarget))
    }
    

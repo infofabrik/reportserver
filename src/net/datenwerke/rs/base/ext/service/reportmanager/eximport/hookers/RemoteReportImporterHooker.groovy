@@ -16,11 +16,12 @@ import net.datenwerke.eximport.im.ImportConfig
 import net.datenwerke.eximport.im.ImportMode
 import net.datenwerke.eximport.im.ImportResult
 import net.datenwerke.eximport.obj.ReferenceItemProperty
-import net.datenwerke.rs.base.ext.service.RemoteEntityImporterServiceImpl
+import net.datenwerke.rs.base.ext.service.RemoteEntityImporterService
 import net.datenwerke.rs.base.ext.service.RemoteEntityImports
 import net.datenwerke.rs.base.ext.service.datasourcemanager.eximport.DatasourceManagerExporter
 import net.datenwerke.rs.base.ext.service.hooks.RemoteEntityImporterHook
 import net.datenwerke.rs.base.ext.service.reportmanager.eximport.ReportManagerExporter
+import net.datenwerke.rs.configservice.service.configservice.ConfigService
 import net.datenwerke.rs.core.service.datasourcemanager.DatasourceService
 import net.datenwerke.rs.core.service.reportmanager.ReportService
 import net.datenwerke.rs.core.service.reportmanager.entities.AbstractReportManagerNode
@@ -34,20 +35,23 @@ class RemoteReportImporterHooker implements RemoteEntityImporterHook {
    private final Provider<ReportService> reportServiceProvider
    private final Provider<ImportService> importServiceProvider
    private final Provider<DatasourceService> datasourceServiceProvider
+   private final Provider<ConfigService> configServiceProvider
 
    private final Logger logger = LoggerFactory.getLogger(getClass().name)
 
    @Inject
    public RemoteReportImporterHooker(
-   Provider<ExportDataAnalyzerService> analyzerServiceProvider,
-   Provider<ReportService> reportServiceProvider,
-   Provider<ImportService> importServiceProvider,
-   Provider<DatasourceService> datasourceServiceProvider
+      Provider<ExportDataAnalyzerService> analyzerServiceProvider,
+      Provider<ReportService> reportServiceProvider,
+      Provider<ImportService> importServiceProvider,
+      Provider<DatasourceService> datasourceServiceProvider,
+      Provider<ConfigService> configServiceProvider
    ) {
       this.analyzerServiceProvider = analyzerServiceProvider
       this.reportServiceProvider = reportServiceProvider
       this.importServiceProvider = importServiceProvider
       this.datasourceServiceProvider =  datasourceServiceProvider
+      this.configServiceProvider = configServiceProvider
    }
 
    @Override
@@ -64,6 +68,13 @@ class RemoteReportImporterHooker implements RemoteEntityImporterHook {
    public Map<String, String> checkImportRemoteEntity(ImportConfig config, AbstractNode targetNode,
          Map<String, String> previousCheckResults) {
       return doImportRemoteEntity(config, targetNode, true, previousCheckResults)
+   }
+   
+   private Map<String, String> getDatasourceNameMappings() {
+      def config = configServiceProvider.get().getConfigFailsafe(RemoteEntityImporterService.CONFIG_FILE)
+      def nameMappings = config.configurationsAt('mappings.datasources.name-mappings.name-mapping')
+      return nameMappings
+         .collectEntries{[it.getString('remote'), it.getString('local')]}
    }
 
    private doImportRemoteEntity(ImportConfig config, AbstractNode targetNode, boolean check, Map<String, String> results) {
@@ -91,8 +102,6 @@ class RemoteReportImporterHooker implements RemoteEntityImporterHook {
          if (check)
             return results
       }
-
-      //   tout.println "Root folder: $exportRootName($exportRootId)"
 
       /* one more loop to configure report import */
       analyzerService.getExportedItemsFor(config.exportDataProvider, ReportManagerExporter).each {
@@ -130,17 +139,22 @@ class RemoteReportImporterHooker implements RemoteEntityImporterHook {
          }
       }
 
+      def datasourceNameMappings = getDatasourceNameMappings()
+      
       /* match datasources */
       def datasourceService = datasourceServiceProvider.get()
       analyzerService.getExportedItemsFor(config.exportDataProvider, DatasourceManagerExporter).each {
          def nameProp = it.getPropertyByName('name')
          if(nameProp?.type == String){
-            def name = StringEscapeUtils.unescapeXml(nameProp.element.value)
-            if (name) {
+            def remoteName = StringEscapeUtils.unescapeXml(nameProp.element.value)
+            def localName = remoteName
+            if (datasourceNameMappings.containsKey(remoteName))
+               localName = datasourceNameMappings[remoteName]
+            if (localName) {
                /* try to find matching datasource */
-               def ds = datasourceService.getDatasourceByName(name)
+               def ds = datasourceService.getDatasourceByName(localName)
                if (!ds) 
-                  handleError(check, "Datasource '$name' could not be mapped.", results, IllegalArgumentException)
+                  handleError(check, "Datasource '$remoteName' could not be mapped.", results, IllegalArgumentException)
                else {
                   def dsConfig = new TreeNodeImportItemConfig(it.id, ImportMode.REFERENCE, ds)
                   config.addItemConfig dsConfig

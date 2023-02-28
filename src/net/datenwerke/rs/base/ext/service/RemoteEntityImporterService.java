@@ -6,6 +6,8 @@ import net.datenwerke.eximport.im.ImportResult;
 
 public interface RemoteEntityImporterService {
 
+   public static final String CONFIG_FILE = "main/rssync.cf";
+   
    /**
     * Note that restUrl, user and apikey will be removed in the near future. These
     * will be replaced by remoteServer entities.
