@@ -1,9 +1,13 @@
 package net.datenwerke.rs.base.ext.service.terminal.commands;
 
+import static java.util.stream.Collectors.toList;
+
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Arrays;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang3.exception.ExceptionUtils;
 
@@ -12,10 +16,10 @@ import com.google.inject.Provider;
 
 import net.datenwerke.eximport.im.ImportResult;
 import net.datenwerke.rs.base.ext.service.RemoteEntityImporterService;
+import net.datenwerke.rs.base.ext.service.RemoteEntityImporterServiceImpl;
 import net.datenwerke.rs.base.ext.service.locale.RsBaseExtMessages;
-import net.datenwerke.rs.base.service.reportengines.table.output.object.RSStringTableRow;
 import net.datenwerke.rs.base.service.reportengines.table.output.object.RSTableModel;
-import net.datenwerke.rs.base.service.reportengines.table.output.object.TableDefinition;
+import net.datenwerke.rs.terminal.service.terminal.TerminalService;
 import net.datenwerke.rs.terminal.service.terminal.TerminalSession;
 import net.datenwerke.rs.terminal.service.terminal.exceptions.TerminalException;
 import net.datenwerke.rs.terminal.service.terminal.helpers.AutocompleteHelper;
@@ -31,12 +35,15 @@ public class RpullCopySubcommand implements RpullSubCommandHook {
    public static final String BASE_COMMAND = "copy";
    
    private final Provider<RemoteEntityImporterService> remoteEntityImporterServiceProvider;
+   private final Provider<TerminalService> terminalServiceProvider;
    
    @Inject
    public RpullCopySubcommand(
-         Provider<RemoteEntityImporterService> remoteEntityImporterServiceProvider
+         Provider<RemoteEntityImporterService> remoteEntityImporterServiceProvider,
+         Provider<TerminalService> terminalServiceProvider
          ) {
       this.remoteEntityImporterServiceProvider = remoteEntityImporterServiceProvider;
+      this.terminalServiceProvider = terminalServiceProvider;
    }
 
    @Override
@@ -55,9 +62,16 @@ public class RpullCopySubcommand implements RpullSubCommandHook {
          description = "commandRpullCopy_desc",
          args = {
                @Argument(
+                     flag = "c", 
+                     hasValue = false, 
+                     valueName = "check", 
+                     description = "commandRpullCopy_flagC", 
+                     mandatory = false
+               ),
+               @Argument(
                      flag = "v", 
                      hasValue = false, 
-                     valueName = "sort", 
+                     valueName = "variants", 
                      description = "commandRpullCopy_flagV", 
                      mandatory = false
                )
@@ -96,40 +110,66 @@ public class RpullCopySubcommand implements RpullSubCommandHook {
       if (5 != arguments.size())
          throw new IllegalArgumentException("Exactly five arguments expected");
       
-      final String argStr = "v";
+      final String argStr = "cv";
+      final boolean check = parser.hasOption("c", argStr);
       final boolean includeVariants = parser.hasOption("v", argStr);
       
-      try {
-         Instant start = Instant.now();
-         ImportResult result = remoteEntityImporterServiceProvider.get().importRemoteEntities(arguments.get(0), arguments.get(1),
-               arguments.get(2), arguments.get(3), arguments.get(4), includeVariants);
-         Instant end = Instant.now();
-         CommandResult commandResult = new CommandResult();
-         
-         final RSTableModel resultsTable = new RSTableModel();
-         final TableDefinition resultsTableDefinition = new TableDefinition(Arrays.asList("Results", ""),
-               Arrays.asList(String.class, String.class));
-         resultsTable.setTableDefinition(resultsTableDefinition);
-         resultsTable.addDataRow(new RSStringTableRow("Status", "OK"));
-         resultsTable.addDataRow(new RSStringTableRow("Duration", Duration.between(start, end).toString()));
-         resultsTable.addDataRow(new RSStringTableRow("Imported objects", result.getImportedObjects().size() + ""));
-         resultsTable.addDataRow(new RSStringTableRow("Import date", DateUtils.format(result.getDate())));
-         resultsTable.addDataRow(new RSStringTableRow("Name", result.getName()));
-         commandResult.addResultTable(resultsTable);
-         
-         final RSTableModel detailsTable = new RSTableModel();
-         final TableDefinition detailsTableDefinition = new TableDefinition(
-               Arrays.asList("Imported objects (" + result.getImportedObjects().size() + ")"),
-               Arrays.asList(String.class));
-         detailsTable.setTableDefinition(detailsTableDefinition);
-         result.getImportedObjects().entrySet()
-               .forEach(entry -> detailsTable.addDataRow(new RSStringTableRow(entry.getValue().toString())));
-         commandResult.addResultTable(detailsTable);
-         
-         return commandResult;
-      } catch (Exception e) {
-         throw new TerminalException(ExceptionUtils.getRootCauseMessage(e));
+      final Map<String, Object> errors = new LinkedHashMap<>();
+      if (check) {
+         try {
+            return checkEntities(arguments.get(0), arguments.get(1), arguments.get(2), arguments.get(3),
+                  arguments.get(4), includeVariants, errors);
+         } catch (Exception e) {
+            RemoteEntityImporterServiceImpl.handleError(true, ExceptionUtils.getRootCauseMessage(e), errors,
+                  ExceptionUtils.getRootCause(e).getClass());
+            return terminalServiceProvider.get().convertSimpleMapToCommandResult(Arrays.asList("Test results"),
+                  "No errors found", errors);
+         }
+      } else {
+         try {
+            return importEntities(arguments.get(0), arguments.get(1), arguments.get(2), arguments.get(3),
+                  arguments.get(4), includeVariants);
+         } catch (Exception e) {
+            throw new TerminalException(ExceptionUtils.getRootCauseMessage(e));
+         }
       }
+   }
+   
+   private CommandResult checkEntities(String restUrl, String user, String apikey, String remoteEntityPath,
+         String localTarget, boolean includeVariants, Map<String, Object> errors) {
+      Map<String, Object> results = remoteEntityImporterServiceProvider.get().checkImportRemoteEntities(restUrl, user,
+            apikey, remoteEntityPath, localTarget, includeVariants, errors);
+      return terminalServiceProvider.get().convertSimpleMapToCommandResult(Arrays.asList("Test results"), "No errors found", results);
+   }
+   
+   private CommandResult importEntities(String restUrl, String user, String apikey, String remoteEntityPath,
+         String localTarget, boolean includeVariants) {
+      final TerminalService terminalService = terminalServiceProvider.get();
+      Instant start = Instant.now();
+      ImportResult result = remoteEntityImporterServiceProvider.get().importRemoteEntities(restUrl, user, apikey,
+            remoteEntityPath, localTarget, includeVariants);
+      Instant end = Instant.now();
+      CommandResult commandResult = new CommandResult();
+      
+      Map<String,Object> resultsMap = new LinkedHashMap<>();
+      resultsMap.put(RemoteEntityImporterServiceImpl.STATUS, RemoteEntityImporterServiceImpl.STATUS_OK);
+      resultsMap.put("Duration", Duration.between(start, end).toString());
+      resultsMap.put("Imported objects", result.getImportedObjects().size());
+      resultsMap.put("Import date", DateUtils.format(result.getDate()));
+      resultsMap.put("Name", result.getName());
+      
+      final RSTableModel resultsTable = terminalService.convertSimpleMapToTableModel(resultsMap);
+      commandResult.addResultTable(resultsTable);
+      
+      final RSTableModel detailsTable = terminalService.convertSimpleListToTableModel(
+            "Imported objects (" + result.getImportedObjects().size() + ")",
+            result.getImportedObjects().values()
+               .stream()
+               .map(Object::toString)
+               .collect(toList()));
+      commandResult.addResultTable(detailsTable);
+      
+      return commandResult;
    }
 
    @Override

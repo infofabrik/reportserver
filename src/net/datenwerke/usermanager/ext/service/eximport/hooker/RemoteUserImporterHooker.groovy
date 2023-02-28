@@ -1,5 +1,7 @@
 package net.datenwerke.usermanager.ext.service.eximport.hooker;
 
+import static net.datenwerke.rs.base.ext.service.RemoteEntityImporterServiceImpl.handleError
+
 import javax.inject.Inject
 
 import org.slf4j.Logger
@@ -45,11 +47,24 @@ class RemoteUserImporterHooker implements RemoteEntityImporterHook {
    public boolean consumes(RemoteEntityImports importType) {
       return importType == RemoteEntityImports.USERS
    }
-
+   
    @Override
    public ImportResult importRemoteEntity(ImportConfig config, AbstractNode targetNode) {
-      if (!(targetNode instanceof OrganisationalUnit))
-         throw new IllegalArgumentException("Node is not an organizational unit: '$targetNode'")
+      return doImportRemoteEntity(config, targetNode, false, [:])
+   }
+
+   @Override
+   public Map<String, String> checkImportRemoteEntity(ImportConfig config, AbstractNode targetNode,
+         Map<String, String> previousCheckResults) {
+      return doImportRemoteEntity(config, targetNode, true, previousCheckResults)
+   }
+
+   private doImportRemoteEntity(ImportConfig config, AbstractNode targetNode, boolean check, Map<String, String> results) {
+      if (!(targetNode instanceof OrganisationalUnit)) {
+         handleError(check, "Node is not an organizational unit: '$targetNode'", results, IllegalArgumentException)
+         if (check)
+            return results
+      }
          
       def analyzerService = analyzerServiceProvider.get()
       def treeConfig = new TreeNodeImporterConfig()
@@ -65,10 +80,11 @@ class RemoteUserImporterHooker implements RemoteEntityImporterHook {
             exportRootName = nameprop?.element?.value
          }
       }
-      if(!exportRootId)
-         throw new IllegalStateException('Could not find root')
-
-      //   tout.println "Root folder: $exportRootName($exportRootId)"
+      if(!exportRootId) {
+         handleError(check, 'Could not find root', results, IllegalStateException)
+         if (check)
+            return results
+      }
 
       /* one more loop to configure user import */
       analyzerService.getExportedItemsFor(config.exportDataProvider, UserManagerExporter).each {
@@ -76,7 +92,7 @@ class RemoteUserImporterHooker implements RemoteEntityImporterHook {
          def usernameProp = it.getPropertyByName('username')
 
          if(usernameProp && userManagerServiceProvider.get().getUserByName(usernameProp.element.value)) {
-            logger.info("Skipping: '${usernameProp.element.value}' because username already exists")
+            handleError(check, "Username '${usernameProp.element.value}' already exists", results, IllegalArgumentException)
          } else {
             if(parentProp){
                def itemConfig = new TreeNodeImportItemConfig(it.id)
@@ -94,6 +110,10 @@ class RemoteUserImporterHooker implements RemoteEntityImporterHook {
       }
 
       /* complete import */
-      return importServiceProvider.get().importData(config)
+      if (check)
+         return results
+      else
+         return importServiceProvider.get().importData(config)
    }
+   
 }
