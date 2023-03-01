@@ -1,14 +1,18 @@
 package net.datenwerke.rs.base.ext.service
 
 import javax.inject.Inject
+import javax.persistence.EntityManager
+import javax.persistence.FlushModeType
 
 import com.google.inject.Provider
+import com.google.inject.persist.Transactional
 
 import groovy.json.JsonSlurper
 import net.datenwerke.eximport.ExportDataProviderImpl
 import net.datenwerke.eximport.im.ImportConfig
 import net.datenwerke.eximport.im.ImportResult
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService
+import net.datenwerke.rs.annotations.CommitFlushMode
 import net.datenwerke.rs.base.ext.service.hooks.RemoteEntityImporterHook
 import net.datenwerke.rs.terminal.service.terminal.TerminalService
 
@@ -16,6 +20,7 @@ class RemoteEntityImporterServiceImpl implements RemoteEntityImporterService {
 
    private final Provider<TerminalService> terminalServiceProvider
    private final Provider<HookHandlerService> hookHandlerServiceProvider
+   private final Provider<EntityManager> entityManagerProvider
    
    public final static String EXPORT_TYPE_PROPERTY = 'ExportType'
    public final static String STATUS = 'Status'
@@ -25,11 +30,12 @@ class RemoteEntityImporterServiceImpl implements RemoteEntityImporterService {
    @Inject
    public RemoteEntityImporterServiceImpl(
       Provider<TerminalService> terminalServiceProvider,
-      Provider<HookHandlerService> hookHandlerServiceProvider
+      Provider<HookHandlerService> hookHandlerServiceProvider,
+      Provider<EntityManager> entityManagerProvider
       ) {
          this.terminalServiceProvider = terminalServiceProvider
          this.hookHandlerServiceProvider = hookHandlerServiceProvider
-         
+         this.entityManagerProvider = entityManagerProvider
       }
    
    @Override

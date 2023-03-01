@@ -13,8 +13,10 @@ import org.apache.commons.lang3.exception.ExceptionUtils;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
+import com.google.inject.persist.Transactional;
 
 import net.datenwerke.eximport.im.ImportResult;
+import net.datenwerke.rs.annotations.CommitFlushMode;
 import net.datenwerke.rs.base.ext.service.RemoteEntityImporterService;
 import net.datenwerke.rs.base.ext.service.RemoteEntityImporterServiceImpl;
 import net.datenwerke.rs.base.ext.service.locale.RsBaseExtMessages;
@@ -142,7 +144,9 @@ public class RpullCopySubcommand implements RpullSubCommandHook {
       return terminalServiceProvider.get().convertSimpleMapToCommandResult(Arrays.asList("Test results"), "No errors found", results);
    }
    
-   private CommandResult importEntities(String restUrl, String user, String apikey, String remoteEntityPath,
+   @CommitFlushMode
+   @Transactional(rollbackOn = { Exception.class })
+   protected CommandResult importEntities(String restUrl, String user, String apikey, String remoteEntityPath,
          String localTarget, boolean includeVariants) {
       final TerminalService terminalService = terminalServiceProvider.get();
       Instant start = Instant.now();
