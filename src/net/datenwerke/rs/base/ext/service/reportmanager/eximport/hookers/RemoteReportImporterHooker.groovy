@@ -4,6 +4,7 @@ import static net.datenwerke.rs.base.ext.service.RemoteEntityImporterServiceImpl
 
 import javax.inject.Inject
 
+import org.apache.commons.configuration2.Configuration
 import org.apache.commons.text.StringEscapeUtils
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -16,6 +17,7 @@ import net.datenwerke.eximport.im.ImportConfig
 import net.datenwerke.eximport.im.ImportMode
 import net.datenwerke.eximport.im.ImportResult
 import net.datenwerke.eximport.obj.ReferenceItemProperty
+import net.datenwerke.rs.base.ext.service.RemoteEntityImportPrio
 import net.datenwerke.rs.base.ext.service.RemoteEntityImporterService
 import net.datenwerke.rs.base.ext.service.RemoteEntityImports
 import net.datenwerke.rs.base.ext.service.datasourcemanager.eximport.DatasourceManagerExporter
@@ -36,6 +38,8 @@ class RemoteReportImporterHooker implements RemoteEntityImporterHook {
    private final Provider<ImportService> importServiceProvider
    private final Provider<DatasourceService> datasourceServiceProvider
    private final Provider<ConfigService> configServiceProvider
+   
+   private final Configuration config
 
    private final Logger logger = LoggerFactory.getLogger(getClass().name)
 
@@ -52,6 +56,8 @@ class RemoteReportImporterHooker implements RemoteEntityImporterHook {
       this.importServiceProvider = importServiceProvider
       this.datasourceServiceProvider =  datasourceServiceProvider
       this.configServiceProvider = configServiceProvider
+      
+      config = configServiceProvider.get().getConfigFailsafe(RemoteEntityImporterService.CONFIG_FILE)
    }
 
    @Override
@@ -71,12 +77,20 @@ class RemoteReportImporterHooker implements RemoteEntityImporterHook {
    }
    
    private Map<String, String> getDatasourceNameMappings() {
-      def config = configServiceProvider.get().getConfigFailsafe(RemoteEntityImporterService.CONFIG_FILE)
       def nameMappings = config.configurationsAt('mappings.datasources.name-mappings.name-mapping')
       return nameMappings
          .collectEntries{[it.getString('remote'), it.getString('local')]}
    }
-
+   
+   private List<RemoteEntityImportPrio> getDatasourcePrios() {
+      return configServiceProvider.get().parseConfigList(config, 'mappings.datasources.priorities.priority')
+            .collect { RemoteEntityImportPrio.values().find { val -> val.prio == it } } 
+            ?: [
+               RemoteEntityImportPrio.MAPPING,
+               RemoteEntityImportPrio.SAME_NAME
+            ]
+   }
+   
    private doImportRemoteEntity(ImportConfig config, AbstractNode targetNode, boolean check, Map<String, String> results) {
       if (!(targetNode instanceof AbstractReportManagerNode)) {
          handleError(check, "Node is not a report folder: '$targetNode'", results, IllegalArgumentException)
@@ -139,26 +153,17 @@ class RemoteReportImporterHooker implements RemoteEntityImporterHook {
          }
       }
 
-      def datasourceNameMappings = getDatasourceNameMappings()
-      
       /* match datasources */
-      def datasourceService = datasourceServiceProvider.get()
       analyzerService.getExportedItemsFor(config.exportDataProvider, DatasourceManagerExporter).each {
          def nameProp = it.getPropertyByName('name')
          if(nameProp?.type == String){
             def remoteName = StringEscapeUtils.unescapeXml(nameProp.element.value)
-            def localName = remoteName
-            if (datasourceNameMappings.containsKey(remoteName))
-               localName = datasourceNameMappings[remoteName]
-            if (localName) {
-               /* try to find matching datasource */
-               def ds = datasourceService.getDatasourceByName(localName)
-               if (!ds) 
-                  handleError(check, "Datasource '$remoteName' could not be mapped.", results, IllegalArgumentException)
-               else {
-                  def dsConfig = new TreeNodeImportItemConfig(it.id, ImportMode.REFERENCE, ds)
-                  config.addItemConfig dsConfig
-               }
+            def ds = matchToLocalDatasource(remoteName)
+            if (!ds)
+               handleError(check, "Datasource '$remoteName' could not be mapped.", results, IllegalArgumentException)
+            else {
+               def dsConfig = new TreeNodeImportItemConfig(it.id, ImportMode.REFERENCE, ds)
+               config.addItemConfig dsConfig
             }
          }
       }
@@ -169,4 +174,30 @@ class RemoteReportImporterHooker implements RemoteEntityImporterHook {
       else
          return importServiceProvider.get().importData(config)
    }
+   
+   def matchToLocalDatasource(remoteDatasourceName) {
+      def datasourceService = datasourceServiceProvider.get()
+      def datasourceNameMappings = getDatasourceNameMappings()
+      def datasourcePrios = getDatasourcePrios()
+
+      def localDatasource = null
+      datasourcePrios.find {
+         switch (it) {
+            case RemoteEntityImportPrio.MAPPING:
+               if (datasourceNameMappings.containsKey(remoteDatasourceName))
+                  localDatasource = datasourceService.getDatasourceByName(datasourceNameMappings[remoteDatasourceName])
+               break
+            case RemoteEntityImportPrio.SAME_NAME:
+               localDatasource = datasourceService.getDatasourceByName(remoteDatasourceName)
+               break
+         }
+         if (localDatasource)
+            return true // break find loop
+      }
+      
+      return localDatasource
+   }
+   
 }
+
+

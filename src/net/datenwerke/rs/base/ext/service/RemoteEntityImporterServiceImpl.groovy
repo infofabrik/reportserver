@@ -44,15 +44,15 @@ class RemoteEntityImporterServiceImpl implements RemoteEntityImporterService {
       return doImportRemoteEntities(restUrl, user, apikey, remoteEntityPath, localTarget, includeVariants, true, errors)
    }
    
-   private doImportRemoteEntities(String restUrl, String user, String apikey, String remoteEntityPath, String localTarget, 
-      boolean includeVariants, check, Map<String,Object> results) {
+   private doImportRemoteEntities(String restUrl, String user, String apikey, String remoteEntityPath, String localTarget,
+         boolean includeVariants, check, Map<String,Object> results) {
       checkPreconditions localTarget, remoteEntityPath, results, check
-      
+
       def status = results[STATUS]
       if (status == STATUS_FAIL)
          return results
       def importType = results[EXPORT_TYPE_PROPERTY]
-      
+
       def remoteUrl = "$restUrl/node-exporter$remoteEntityPath${(includeVariants?';includeVariants=true':'')}?user=$user&apikey=$apikey"
       def httpConnection = new URL(remoteUrl).openConnection()
       if (httpConnection.responseCode != httpConnection.HTTP_OK) {
@@ -67,28 +67,28 @@ class RemoteEntityImporterServiceImpl implements RemoteEntityImporterService {
          if (check)
             return results
       }
-         
-       /* prepare import */
-       def config = new ImportConfig(new ExportDataProviderImpl(exportXml.bytes))
-       def importers = hookHandlerServiceProvider.get().getHookers(RemoteEntityImporterHook)
-             .findAll { it.consumes(importType) }
-       if (!importers) {
-          handleError(check, "Not yet supported: '$importType'", results, IllegalArgumentException)
-          if (check)
-             return results
-       }
- 
-       if (importers.size() != 1) {
-          handleError(check, 'More than one importer found', results, IllegalStateException)
-          if (check)
-             return results
-       }
- 
-       if (check) {
-          results[RemoteEntityImporterServiceImpl.STATUS] = RemoteEntityImporterServiceImpl.STATUS_OK
-          return importers[0].checkImportRemoteEntity(config, terminalServiceProvider.get().getObjectByQuery(localTarget), results)
-       } else
-          return importers[0].importRemoteEntity(config, terminalServiceProvider.get().getObjectByQuery(localTarget))
+
+      /* prepare import */
+      def config = new ImportConfig(new ExportDataProviderImpl(exportXml.bytes))
+      def importers = hookHandlerServiceProvider.get().getHookers(RemoteEntityImporterHook)
+            .findAll { it.consumes(importType) }
+      if (!importers) {
+         handleError(check, "Not yet supported: '$importType'", results, IllegalArgumentException)
+         if (check)
+            return results
+      }
+
+      if (importers.size() != 1) {
+         handleError(check, 'More than one importer found', results, IllegalStateException)
+         if (check)
+            return results
+      }
+
+      if (check) {
+         results[RemoteEntityImporterServiceImpl.STATUS] = RemoteEntityImporterServiceImpl.STATUS_OK
+         return importers[0].checkImportRemoteEntity(config, terminalServiceProvider.get().getObjectByQuery(localTarget), results)
+      } else
+         return importers[0].importRemoteEntity(config, terminalServiceProvider.get().getObjectByQuery(localTarget))
    }
    
    private checkPreconditions(String localTarget, String remoteEntityPath, results, check) {
@@ -105,23 +105,23 @@ class RemoteEntityImporterServiceImpl implements RemoteEntityImporterService {
          if (check)
             return results
       }
-         
+
       def targetNode = terminalServiceProvider.get().getObjectByQuery(localTarget)
       if (!targetNode) {
          handleError(check, "Node does not exist: '$localTarget'", results, IllegalArgumentException)
          if (check)
             return results
       }
-         
+
       if (targetNode.children) {
          handleError(check, "Node is not empty: '$localTarget'", results, IllegalArgumentException)
          if (check)
             return results
       }
-         
+
       return exportType
    }
-   
+
    public static void handleError(check, msg, results, exceptionClazz) {
       if (!check) {
          throw exceptionClazz.getDeclaredConstructor(String).newInstance(msg as String)
