@@ -180,6 +180,11 @@ public class TerminalServiceImpl implements TerminalService {
    }
    
    @Override
+   public CommandResult convertSimpleMapToCommandResult(List<String> headlines, Map<String, Object> map) {
+      return convertSimpleMapToCommandResult(headlines, 'No values', map)
+   }
+   
+   @Override
    public RSTableModel convertSimpleMapToTableModel(Map<String, Object> map) {
       RSTableModel model = new RSTableModel()
       TableDefinition tableDef = new TableDefinition(['Key', 'Value'], [String, String])

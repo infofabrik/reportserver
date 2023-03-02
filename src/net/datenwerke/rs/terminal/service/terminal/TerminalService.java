@@ -109,9 +109,24 @@ public interface TerminalService {
     */
    CommandResult convertSimpleMapToCommandResult(List<String> headlines, String emptyTableMessage,
          Map<String, Object> map);
-   
+
+   /**
+    * Creates a {@link CommandResult} that contains a table created from the given
+    * map. The table contains the map keys as the first table column and their
+    * corresponding values as the second table column.
+    * 
+    * @param headlines headlines of the {@link CommandResult}. Each headline is
+    *                  printed in a new row. Note that these are NOT the table
+    *                  headers.
+    * @param map       the map. Its keys map to the first table column of the
+    *                  result, their corresponding values to its second table
+    *                  column.
+    * @return a {@link CommandResult} containing the given map as a table.
+    */
+   CommandResult convertSimpleMapToCommandResult(List<String> headlines, Map<String, Object> map);
+
    RSTableModel convertSimpleMapToTableModel(Map<String, Object> map);
-   
+
    RSTableModel convertSimpleListToTableModel(String headline, List<String> list);
 
    /**
