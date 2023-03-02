@@ -40,5 +40,9 @@ public interface ScriptingMessages extends Messages {
    String commandScheduleScript_sub_setProperty_arg2();
    
    String commandClearInternalScriptCache_description();
+   
+   String commandRegistry_description();
+   
+   String commandRegistry_sub_list_description();
 
 }
