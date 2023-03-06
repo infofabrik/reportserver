@@ -6,8 +6,15 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.math.BigDecimal;
+import java.util.List;
+
+import javax.inject.Inject;
+import javax.inject.Provider;
+
+import org.apache.commons.lang3.tuple.ImmutablePair;
 
 import net.datenwerke.rs.base.service.reportengines.table.entities.Column.CellFormatter;
+import net.datenwerke.rs.base.service.reportengines.table.entities.Column;
 import net.datenwerke.rs.base.service.reportengines.table.entities.TableReport;
 import net.datenwerke.rs.base.service.reportengines.table.output.object.CompiledJSONTableReport;
 import net.datenwerke.rs.base.service.reportengines.table.output.object.TableDefinition;
@@ -23,37 +30,56 @@ import net.datenwerke.security.service.usermanager.entities.User;
  */
 public class CompactJSONOutputGenerator extends TableOutputGeneratorImpl {
 
-   protected StringBuffer stringBuffer;
+   protected StringBuilder builder;
 
    protected PrintWriter writer;
 
    protected boolean first = true;
    int cell = 0;
+   
+   private String[] nullReplacements;
+   private Boolean[] exportNullAsString;
+   
+   private final Provider<ExporterHelper> exporterHelperProvider;
+   
+   @Inject
+   public CompactJSONOutputGenerator(
+         Provider<ExporterHelper> exporterHelperProvider
+         ) {
+      this.exporterHelperProvider = exporterHelperProvider;
+   }
 
    @Override
    public void addField(Object field, CellFormatter formatter) throws IOException {
       if (cell > 0)
-         stringBuffer.append(",");
+         builder.append(",");
       else
-         stringBuffer.append("[");
+         builder.append("[");
 
       if (field instanceof Number || field instanceof BigDecimal)
-         stringBuffer.append(field);
-      else if (field == null)
-         stringBuffer.append("null");
-      else if (field instanceof Boolean)
-         stringBuffer.append(Boolean.TRUE.equals(field) ? "true" : "false");
+         builder.append(field);
+      else if (field == null) {
+         if (!exportNullAsString[cell])
+            builder.append("null");
+         else {
+            String nullReplacement = nullReplacements[cell];
+            builder.append("\"");
+            builder.append(nullReplacement);
+            builder.append("\"");
+         }
+      } else if (field instanceof Boolean)
+         builder.append(Boolean.TRUE.equals(field) ? "true" : "false");
       else {
          Object value = getValueOf(field, formatter);
-         stringBuffer.append("\"")
+         builder.append("\"")
                .append(
                      String.valueOf(value).replace("\\", "\\\\").replace("\"", "\\\"").replaceAll("[\\r\\n\\s]+", " "))
                .append("\"");
       }
 
       if (null != writer) {
-         writer.write(stringBuffer.toString());
-         stringBuffer.delete(0, stringBuffer.length());
+         writer.write(builder.toString());
+         builder.delete(0, builder.length());
       }
 
       cell++;
@@ -61,11 +87,11 @@ public class CompactJSONOutputGenerator extends TableOutputGeneratorImpl {
 
    @Override
    public void close() throws IOException {
-      stringBuffer.append("]]}");
+      builder.append("]]}");
 
       if (null != writer) {
-         writer.write(stringBuffer.toString());
-         stringBuffer.delete(0, stringBuffer.length());
+         writer.write(builder.toString());
+         builder.delete(0, builder.length());
 
          writer.close();
       }
@@ -78,7 +104,7 @@ public class CompactJSONOutputGenerator extends TableOutputGeneratorImpl {
 
    @Override
    public CompiledReport getTableObject() {
-      return new CompiledJSONTableReport(stringBuffer.toString());
+      return new CompiledJSONTableReport(builder.toString());
    }
 
    @Override
@@ -87,43 +113,50 @@ public class CompactJSONOutputGenerator extends TableOutputGeneratorImpl {
          ReportExecutionConfig... configs) throws IOException {
       super.initialize(os, td, withSubtotals, report, orgReport, cellFormatters, parameters, user, configs);
 
+      final ExporterHelper exporterHelper = exporterHelperProvider.get();
+      /* load columns */
+      final List<Column> columns = exporterHelper.getExportedColumns(report, td);
+      final ImmutablePair<String[], Boolean[]> nullFormats = exporterHelper.getNullFormats(columns, cellFormatters, td);
+      nullReplacements = nullFormats.getLeft();
+      exportNullAsString = nullFormats.getRight();
+      
       /* initialize buffer */
-      stringBuffer = new StringBuffer();
+      builder = new StringBuilder();
       if (null != os)
          writer = new PrintWriter(new BufferedWriter(new OutputStreamWriter(os, charset)));
 
-      stringBuffer.append("{");
+      builder.append("{");
 
-      stringBuffer.append("\"labels\":[");
+      builder.append("\"labels\":[");
       boolean first = true;
       for (String name : td.getColumnNames()) {
          if (first)
             first = false;
          else
-            stringBuffer.append(",");
-         stringBuffer.append("\"").append(name.replace("\"", "\\\"")).append("\"");
+            builder.append(",");
+         builder.append("\"").append(name.replace("\"", "\\\"")).append("\"");
       }
 
-      stringBuffer.append("],\"types\":[");
+      builder.append("],\"types\":[");
       first = true;
-      for (Class type : td.getColumnTypes()) {
+      for (Class<?> type : td.getColumnTypes()) {
          if (first)
             first = false;
          else
-            stringBuffer.append(",");
-         stringBuffer.append("\"").append(type.getSimpleName()).append("\"");
+            builder.append(",");
+         builder.append("\"").append(type.getSimpleName()).append("\"");
       }
 
-      stringBuffer.append("],\"data\":[");
+      builder.append("],\"data\":[");
    }
 
    @Override
    public void nextRow() throws IOException {
-      stringBuffer.append("],");
+      builder.append("],");
 
       if (null != writer) {
-         writer.write(stringBuffer.toString());
-         stringBuffer.delete(0, stringBuffer.length());
+         writer.write(builder.toString());
+         builder.delete(0, builder.length());
       }
 
       cell = 0;
