@@ -260,6 +260,42 @@ abstract public class ColumnDto extends RsDto implements IdedDto {
 		}
 	};
 
+	private boolean exportNullAsString;
+	private  boolean exportNullAsString_m;
+	public static final String PROPERTY_EXPORT_NULL_AS_STRING = "dpi-column-exportnullasstring";
+
+	private transient static PropertyAccessor<ColumnDto, Boolean> exportNullAsString_pa = new PropertyAccessor<ColumnDto, Boolean>() {
+		@Override
+		public void setValue(ColumnDto container, Boolean object) {
+			container.setExportNullAsString(object);
+		}
+
+		@Override
+		public Boolean getValue(ColumnDto container) {
+			return container.isExportNullAsString();
+		}
+
+		@Override
+		public Class<?> getType() {
+			return Boolean.class;
+		}
+
+		@Override
+		public String getPath() {
+			return "exportNullAsString";
+		}
+
+		@Override
+		public void setModified(ColumnDto container, boolean modified) {
+			container.exportNullAsString_m = modified;
+		}
+
+		@Override
+		public boolean isModified(ColumnDto container) {
+			return container.isExportNullAsStringModified();
+		}
+	};
+
 	private FilterDto filter;
 	private  boolean filter_m;
 	public static final String PROPERTY_FILTER = "dpi-column-filter";
@@ -1027,6 +1063,55 @@ abstract public class ColumnDto extends RsDto implements IdedDto {
 	}
 
 
+	public boolean isExportNullAsString()  {
+		if(! isDtoProxy()){
+			return this.exportNullAsString;
+		}
+
+		if(isExportNullAsStringModified())
+			return this.exportNullAsString;
+
+		if(! GWT.isClient())
+			return false;
+
+		boolean _value = dtoManager.getProperty(this, instantiatePropertyAccess().exportNullAsString());
+
+		return _value;
+	}
+
+
+	public void setExportNullAsString(boolean exportNullAsString)  {
+		/* old value */
+		boolean oldValue = false;
+		if(GWT.isClient())
+			oldValue = isExportNullAsString();
+
+		/* set new value */
+		this.exportNullAsString = exportNullAsString;
+
+		if(! GWT.isClient())
+			return;
+
+		if(isTrackChanges())
+			addChange(new ChangeTracker(exportNullAsString_pa, oldValue, exportNullAsString, this.exportNullAsString_m));
+
+		/* set indicator */
+		this.exportNullAsString_m = true;
+
+		this.fireObjectChangedEvent(ColumnDtoPA.INSTANCE.exportNullAsString(), oldValue);
+	}
+
+
+	public boolean isExportNullAsStringModified()  {
+		return exportNullAsString_m;
+	}
+
+
+	public static PropertyAccessor<ColumnDto, Boolean> getExportNullAsStringPropertyAccessor()  {
+		return exportNullAsString_pa;
+	}
+
+
 	public FilterDto getFilter()  {
 		if(! isDtoProxy()){
 			return this.filter;
@@ -1708,6 +1793,8 @@ abstract public class ColumnDto extends RsDto implements IdedDto {
 		this.description_m = false;
 		this.dimension = null;
 		this.dimension_m = false;
+		this.exportNullAsString = false;
+		this.exportNullAsString_m = false;
 		this.filter = null;
 		this.filter_m = false;
 		this.format = null;
@@ -1752,6 +1839,8 @@ abstract public class ColumnDto extends RsDto implements IdedDto {
 			return true;
 		if(dimension_m)
 			return true;
+		if(exportNullAsString_m)
+			return true;
 		if(filter_m)
 			return true;
 		if(format_m)
@@ -1790,6 +1879,7 @@ abstract public class ColumnDto extends RsDto implements IdedDto {
 		list.add(defaultPreviewWidth_pa);
 		list.add(description_pa);
 		list.add(dimension_pa);
+		list.add(exportNullAsString_pa);
 		list.add(filter_pa);
 		list.add(format_pa);
 		list.add(hidden_pa);
@@ -1821,6 +1911,8 @@ abstract public class ColumnDto extends RsDto implements IdedDto {
 			list.add(description_pa);
 		if(dimension_m)
 			list.add(dimension_pa);
+		if(exportNullAsString_m)
+			list.add(exportNullAsString_pa);
 		if(filter_m)
 			list.add(filter_pa);
 		if(format_m)
@@ -1865,6 +1957,7 @@ abstract public class ColumnDto extends RsDto implements IdedDto {
 			list.add(defaultAlias_pa);
 			list.add(defaultPreviewWidth_pa);
 			list.add(dimension_pa);
+			list.add(exportNullAsString_pa);
 			list.add(filter_pa);
 			list.add(format_pa);
 			list.add(hidden_pa);

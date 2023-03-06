@@ -164,6 +164,9 @@ public class Column implements Serializable {
 
    @ExposeToClient
    private String nullReplacementFormat = "NULL";
+   
+   @ExposeToClient
+   private boolean exportNullAsString = false; // per default, export NULLs as real NULLs
 
    @ExposeToClient
    private String dimension;
@@ -467,6 +470,14 @@ public class Column implements Serializable {
 
    public Boolean isSubtotalGroup() {
       return null == subtotalGroup ? false : subtotalGroup;
+   }
+   
+   public void setExportNullAsString(boolean exportNullAsString) {
+      this.exportNullAsString = exportNullAsString;
+   }
+
+   public boolean isExportNullAsString() {
+      return exportNullAsString;
    }
 
    public void setOrderPrecedence(OrderPrecedence orderPrecedence) {

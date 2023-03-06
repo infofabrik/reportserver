@@ -7,6 +7,8 @@ public class PropertiesModule extends AbstractModule {
    @Override
    protected void configure() {
       bind(PropertiesService.class).to(PropertiesServiceImpl.class).asEagerSingleton();
+      
+      bind(PropertiesStartup.class).asEagerSingleton();
    }
 
 }

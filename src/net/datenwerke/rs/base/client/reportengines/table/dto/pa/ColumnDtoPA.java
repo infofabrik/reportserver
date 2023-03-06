@@ -39,6 +39,7 @@ public interface ColumnDtoPA extends PropertyAccess<ColumnDto> {
 	public ValueProvider<ColumnDto,String> defaultPreviewWidth();
 	public ValueProvider<ColumnDto,String> description();
 	public ValueProvider<ColumnDto,String> dimension();
+	public ValueProvider<ColumnDto,Boolean> exportNullAsString();
 	public ValueProvider<ColumnDto,FilterDto> filter();
 	public ValueProvider<ColumnDto,ColumnFormatDto> format();
 	public ValueProvider<ColumnDto,Boolean> hidden();

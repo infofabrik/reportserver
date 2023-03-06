@@ -5,13 +5,10 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.gwt.core.client.Scheduler;
-import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.user.client.ui.Widget;
 import com.sencha.gxt.widget.core.client.container.MarginData;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer.VerticalLayoutData;
-import com.sencha.gxt.widget.core.client.event.SelectEvent;
-import com.sencha.gxt.widget.core.client.event.SelectEvent.SelectHandler;
 
 import net.datenwerke.gxtdto.client.baseex.widget.DwContentPanel;
 import net.datenwerke.gxtdto.client.baseex.widget.DwWindow;
@@ -72,6 +69,8 @@ public class ColumnFormatWindow extends DwWindow {
    private String dateReplaceErrorWith;
 
    private String nullReplacementFormat;
+   
+   private String exportNullAsString;
 
    public ColumnFormatWindow(TableReportDto report, ColumnDto column) {
       this.column = column;
@@ -80,7 +79,7 @@ public class ColumnFormatWindow extends DwWindow {
    }
 
    private void initUi() {
-      setSize(800, 220);
+      setSize(800, 260);
       setModal(true);
       setHeaderIcon(BaseIcon.FORMAT);
       setHeading(FilterMessages.INSTANCE.formatDialogHeading(column.getName(),
@@ -102,23 +101,15 @@ public class ColumnFormatWindow extends DwWindow {
 
       /* cancel */
       DwTextButton cancelBtn = new DwTextButton(BaseMessages.INSTANCE.cancel());
-      cancelBtn.addSelectHandler(new SelectHandler() {
-         @Override
-         public void onSelect(SelectEvent event) {
-            hide();
-         }
-      });
+      cancelBtn.addSelectHandler(event -> hide());
       addButton(cancelBtn);
 
       /* submit */
       DwTextButton submitBtn = new DwTextButton(BaseMessages.INSTANCE.apply());
-      submitBtn.addSelectHandler(new SelectHandler() {
-         @Override
-         public void onSelect(SelectEvent event) {
-            inheritColumnFormat();
-            hide();
-            onColumnFormatChange();
-         }
+      submitBtn.addSelectHandler(event -> {
+         inheritColumnFormat();
+         hide();
+         onColumnFormatChange();
       });
       addButton(submitBtn);
    }
@@ -130,6 +121,12 @@ public class ColumnFormatWindow extends DwWindow {
       form = SimpleForm.getInlineInstance();
 
       /* add radio buttons for type */
+      form.beginRow();
+      form.setFieldWidth(500);
+      nullReplacementFormat = form.addField(String.class, FilterMessages.INSTANCE.nullReplacementLabel());
+      exportNullAsString = form.addField(Boolean.class, FilterMessages.INSTANCE.exportEmptyValuesAsString());
+      form.endRow();
+      
       form.beginRow();
       form.setFieldWidth(250);
       typeKey = form.addField(List.class, FilterMessages.INSTANCE.formatTypeLabel(),
@@ -159,10 +156,7 @@ public class ColumnFormatWindow extends DwWindow {
 
             });
 
-      form.setFieldWidth(500);
-      nullReplacementFormat = form.addField(String.class, FilterMessages.INSTANCE.nullReplacementLabel());
       form.endRow();
-
       form.setFieldWidth(300);
 
       decimalPlacesKey = form.addField(Integer.class, FilterMessages.INSTANCE.decimalPlacesLabel());
@@ -196,13 +190,7 @@ public class ColumnFormatWindow extends DwWindow {
          @Override
          public void onSuccess(SimpleForm form) {
             super.onSuccess(form);
-            Scheduler.get().scheduleDeferred(new ScheduledCommand() {
-
-               @Override
-               public void execute() {
-                  setHeight(220);
-               }
-            });
+            Scheduler.get().scheduleDeferred(() -> setHeight(260));
          }
       });
       form.addCondition(typeKey, new FieldEquals(FormatType.CURRENCY), new ShowFieldsAction(allFields, currencyFields) {
@@ -283,6 +271,7 @@ public class ColumnFormatWindow extends DwWindow {
       form.setValue(targetFormat, "dd.MM.yyyy");
       form.setValue(nullReplacementFormat,
             null == column.getNullReplacementFormat() ? "" : column.getNullReplacementFormat());
+      form.setValue(exportNullAsString, column.isExportNullAsString());
 
       if (null != column.getFormat()) {
          ColumnFormatDto format = column.getFormat();
@@ -374,6 +363,7 @@ public class ColumnFormatWindow extends DwWindow {
       }
 
       column.setNullReplacementFormat((String) form.getValue(nullReplacementFormat));
+      column.setExportNullAsString((boolean) form.getValue(exportNullAsString));
       column.setFormat(format);
    }
 }

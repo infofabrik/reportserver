@@ -137,6 +137,12 @@ public class Dto2AdditionalColumnSpecGenerator implements Dto2PosoGenerator<Addi
 		/*  set dimension */
 		poso.setDimension(dto.getDimension() );
 
+		/*  set exportNullAsString */
+		try{
+			poso.setExportNullAsString(dto.isExportNullAsString() );
+		} catch(NullPointerException e){
+		}
+
 		/*  set filter */
 		FilterDto tmpDto_filter = dto.getFilter();
 		if(null != tmpDto_filter && null != tmpDto_filter.getId()){
@@ -234,6 +240,14 @@ public class Dto2AdditionalColumnSpecGenerator implements Dto2PosoGenerator<Addi
 		/*  set dimension */
 		if(dto.isDimensionModified()){
 			poso.setDimension(dto.getDimension() );
+		}
+
+		/*  set exportNullAsString */
+		if(dto.isExportNullAsStringModified()){
+			try{
+				poso.setExportNullAsString(dto.isExportNullAsString() );
+			} catch(NullPointerException e){
+			}
 		}
 
 		/*  set filter */
@@ -354,6 +368,12 @@ public class Dto2AdditionalColumnSpecGenerator implements Dto2PosoGenerator<Addi
 		/*  set dimension */
 		poso.setDimension(dto.getDimension() );
 
+		/*  set exportNullAsString */
+		try{
+			poso.setExportNullAsString(dto.isExportNullAsString() );
+		} catch(NullPointerException e){
+		}
+
 		/*  set filter */
 		FilterDto tmpDto_filter = dto.getFilter();
 		poso.setFilter((Filter)dtoServiceProvider.get().createUnmanagedPoso(tmpDto_filter));
@@ -429,6 +449,14 @@ public class Dto2AdditionalColumnSpecGenerator implements Dto2PosoGenerator<Addi
 		/*  set dimension */
 		if(dto.isDimensionModified()){
 			poso.setDimension(dto.getDimension() );
+		}
+
+		/*  set exportNullAsString */
+		if(dto.isExportNullAsStringModified()){
+			try{
+				poso.setExportNullAsString(dto.isExportNullAsString() );
+			} catch(NullPointerException e){
+			}
 		}
 
 		/*  set filter */

@@ -181,7 +181,7 @@ public class TerminalServiceImpl implements TerminalService {
    
    @Override
    public CommandResult convertSimpleMapToCommandResult(List<String> headlines, Map<String, Object> map) {
-      return convertSimpleMapToCommandResult(headlines, 'No values', map)
+      return convertSimpleMapToCommandResult(headlines, 'No entries', map)
    }
    
    @Override

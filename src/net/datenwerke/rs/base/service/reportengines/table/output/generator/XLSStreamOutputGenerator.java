@@ -7,7 +7,6 @@ import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.Time;
 import java.sql.Timestamp;
-import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -22,7 +21,6 @@ import javax.inject.Provider;
 import org.apache.commons.configuration2.Configuration;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
-import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.CreationHelper;
 import org.apache.poi.ss.usermodel.FillPatternType;
 import org.apache.poi.ss.usermodel.Font;
@@ -87,7 +85,8 @@ public class XLSStreamOutputGenerator extends TableOutputGeneratorImpl {
 
    private int[] columnWidths;
 
-   private Object[] nullReplacemenets;
+   private String[] nullReplacements;
+   private Boolean[] exportNullAsString;
 
    private Row dataRow;
 
@@ -143,9 +142,9 @@ public class XLSStreamOutputGenerator extends TableOutputGeneratorImpl {
    }
 
    @Override
-   public void initialize(OutputStream os, TableDefinition table, boolean withSubtotals, TableReport report,
-         TableReport originalReport, CellFormatter[] cellFormatters, ParameterSet parameters, User user,
-         ReportExecutionConfig... configs) throws IOException {
+   public void initialize(final OutputStream os, final TableDefinition table, final boolean withSubtotals, final TableReport report,
+         final TableReport originalReport, final CellFormatter[] cellFormatters, final ParameterSet parameters, final User user,
+         final ReportExecutionConfig... configs) throws IOException {
       super.initialize(os, table, withSubtotals, report, originalReport, cellFormatters, parameters, user, configs);
       if (withSubtotals) {
          basicXlsGenerator.initialize(os, table, withSubtotals, report, originalReport, cellFormatters, parameters,
@@ -179,9 +178,9 @@ public class XLSStreamOutputGenerator extends TableOutputGeneratorImpl {
       } else {
          columns = report.getVisibleColumns();
       }
-      nullReplacemenets = new Object[columnCount];
-      for (int i = 0; i < columnCount; i++)
-         prepareNullFormat(cellFormatters[i], columns.get(i), i);
+      nullReplacements = new String[columnCount];
+      exportNullAsString = new Boolean[columnCount];
+      IntStream.range(0, columnCount).forEach(i -> prepareNullFormat(cellFormatters[i], columns.get(i), i));
 
       /* prepare array for widths for columns */
       columnWidths = new int[columnCount];
@@ -536,7 +535,8 @@ public class XLSStreamOutputGenerator extends TableOutputGeneratorImpl {
       Cell cell = dataRow.createCell(column);
 
       /* content */
-      Object content = getValueOf(field);
+      Object originalContent = getValueOf(field);
+      Object content = originalContent;
 
       if (cellFormatter instanceof ColumnFormatCellFormatter) {
          ColumnFormat columnFormat = ((ColumnFormatCellFormatter) cellFormatter).getColumnFormat();
@@ -554,14 +554,14 @@ public class XLSStreamOutputGenerator extends TableOutputGeneratorImpl {
 
       /* if content is null then write NULL */
       if (null == content)
-         content = nullReplacemenets[column];
+         content = nullReplacements[column];
 
       /* column type */
       Class<?> cType = content.getClass();
 
       /* add content to cell */
       try {
-         addContentToCell(cType, content, workbook, dataSheet, column, cell, styles, cellFormatter);
+         addContentToCell(cType, content, originalContent, workbook, dataSheet, column, cell, styles, cellFormatter);
       } catch (ExcelExportException e) {
          throw new RuntimeException(e);
       }
@@ -571,27 +571,24 @@ public class XLSStreamOutputGenerator extends TableOutputGeneratorImpl {
 
    private void prepareNullFormat(CellFormatter cellFormatter, Column column, int col) {
       if (null == cellFormatter) {
-         nullReplacemenets[col] = null != column.getNullReplacementFormat() ? column.getNullReplacementFormat()
+         nullReplacements[col] = null != column.getNullReplacementFormat() ? column.getNullReplacementFormat()
                : "NULL";
+         exportNullAsString[col] = column.isExportNullAsString();
          return;
       }
 
-      try {
-         if (Integer.class.equals(td.getColumnType(col)) || Long.class.equals(td.getColumnType(col))
-               || Byte.class.equals(td.getColumnType(col)) || Short.class.equals(td.getColumnType(col))) {
+      if (Integer.class.equals(td.getColumnType(col)) || Long.class.equals(td.getColumnType(col))
+            || Byte.class.equals(td.getColumnType(col)) || Short.class.equals(td.getColumnType(col))) {
 
-            nullReplacemenets[col] = NumberFormat.getIntegerInstance().parse((String) cellFormatter.format(null));
-         } else if (Double.class.equals(td.getColumnType(col)) || Float.class.equals(td.getColumnType(col))
-               || BigDecimal.class.equals(td.getColumnType(col))) {
+         nullReplacements[col] = cellFormatter.format(null);
+      } else if (Double.class.equals(td.getColumnType(col)) || Float.class.equals(td.getColumnType(col))
+            || BigDecimal.class.equals(td.getColumnType(col))) {
 
-            nullReplacemenets[col] = NumberFormat.getInstance().parse((String) cellFormatter.format(null));
-         }
-      } catch (ParseException e) {
-         nullReplacemenets[col] = cellFormatter.format(null);
+         nullReplacements[col] = cellFormatter.format(null);
       }
-
-      if (null == nullReplacemenets[col])
-         nullReplacemenets[col] = null != column.getNullReplacementFormat() ? column.getNullReplacementFormat()
+      exportNullAsString[col] = column.isExportNullAsString();
+      if (null == nullReplacements[col])
+         nullReplacements[col] = null != column.getNullReplacementFormat() ? column.getNullReplacementFormat()
                : "NULL";
    }
 
@@ -712,112 +709,142 @@ public class XLSStreamOutputGenerator extends TableOutputGeneratorImpl {
       return super.getValueOf(field);
    }
 
-   private void addContentToCell(Class<?> cType, Object content, Workbook workbook, Sheet sheet, int column, Cell cell,
-         CellStyle[] styles, CellFormatter cellFormatter) throws ExcelExportException {
+   private void addContentToCell(Class<?> cType, Object content, Object originalContent, Workbook workbook, Sheet sheet,
+         int column, Cell cell, CellStyle[] styles, CellFormatter cellFormatter) throws ExcelExportException {
       /* string content */
       String sContent = String.valueOf(content);
+      String originalsContent = null != originalContent? String.valueOf(originalContent): null;
       if (null != sContent)
          columnWidths[column] = Math.max(sContent.length(), columnWidths[column]);
 
       try {
          /* date */
          if (cType.equals(java.util.Date.class) || cType.equals(java.sql.Date.class)) {
-            addDate((java.util.Date) content, workbook, sheet, column, cell, styles);
+            addDate((java.util.Date) content, (java.util.Date) originalContent, workbook, sheet, column, cell, styles);
          } else if (cType.equals(Time.class)) {
-            addTime((Time) content, workbook, sheet, column, cell, styles);
+            addTime((Time) content, (Time) originalContent, workbook, sheet, column, cell, styles);
          } else if (cType.equals(Timestamp.class)) {
             /* special oracle handling */
             if (sos.isOracleTimestamp(content)) {
                java.util.Date d = sos.getDateFromOracleDatum(content);
-               addDate(d, workbook, sheet, column, cell, styles);
+               java.util.Date originald = sos.getDateFromOracleDatum(originalContent);
+               addDate(d, originald, workbook, sheet, column, cell, styles);
             } else {
                Timestamp ts = (Timestamp) content;
+               Timestamp originalts = (Timestamp) originalContent;
                long time = ts.getTime() + (ts.getNanos() / 1000000);
+               long originaltime = originalts.getTime() + (originalts.getNanos() / 1000000);
 
                java.util.Date d = new java.util.Date(time);
-               addDate(d, workbook, sheet, column, cell, styles);
+               java.util.Date originald = new java.util.Date(originaltime);
+               addDate(d, originald, workbook, sheet, column, cell, styles);
             }
          } // continues
 
          /* binary data */
          else if (cType.equals(Byte[].class)) {
-            cell.setCellValue(messages.rsTableToXLSBinaryData());
+            if (null != originalContent)
+               cell.setCellValue(messages.rsTableToXLSBinaryData());
+            else
+               setBlank(cell, column);
          } // continues
 
          /* integer */
          else if (cType.equals(Integer.class)) {
-            addInteger((Integer) content, sheet, column, cell, styles);
+            addInteger((Integer) content, (Integer) originalContent, sheet, column, cell, styles);
          } else if (cType.equals(Long.class)) {
             /* excel does not support long */
-            addDouble(Double.valueOf((Long) content), sheet, column, cell, styles);
+            addDouble(Double.valueOf((Long) content),
+                  null != originalContent ? Double.valueOf((Long) originalContent) : null, sheet, column, cell, styles);
          } else if (cType.equals(Byte.class)) {
-            addInteger(((Byte) content).intValue(), sheet, column, cell, styles);
+            addInteger(((Byte) content).intValue(),
+                  null != originalContent ? ((Byte) originalContent).intValue() : null, sheet, column, cell, styles);
          } else if (cType.equals(Short.class)) {
-            addInteger(((Short) content).intValue(), sheet, column, cell, styles);
+            addInteger(((Short) content).intValue(),
+                  null != originalContent ? ((Short) originalContent).intValue() : null, sheet, column, cell, styles);
          } // continues
 
          /* double */
          else if (cType.equals(Double.class)) {
-            addDouble((Double) content, sheet, column, cell, styles);
+            addDouble((Double) content, (Double) originalContent, sheet, column, cell, styles);
          } else if (cType.equals(Float.class)) {
-            addDouble(((Float) content).doubleValue(), sheet, column, cell, styles);
+            addDouble(((Float) content).doubleValue(),
+                  null != originalContent ? ((Float) originalContent).doubleValue() : null, sheet, column, cell,
+                  styles);
          } else if (cType.equals(BigDecimal.class)) {
-            addDouble(((BigDecimal) content).doubleValue(), sheet, column, cell, styles);
+            addDouble(((BigDecimal) content).doubleValue(),
+                  null != originalContent ? ((BigDecimal) originalContent).doubleValue() : null, sheet, column, cell,
+                  styles);
          } // continues
 
          /* strings */
          else {
-            addString(sContent, sheet, column, cell, styles);
+            addString(sContent, originalsContent, sheet, column, cell, styles);
          }
       } catch (NullPointerException e) {
          cell.setCellValue(cellFormatter.format(null));
       }
    }
-
-   private void addTime(Time content, Workbook workbook, Sheet sheet, int column, Cell cell, CellStyle[] styles) {
+   
+   private void setBlank(Cell cell, int column) {
+      if (!exportNullAsString[column])
+         cell.setBlank();
+      else {
+         String nullReplacement = nullReplacements[column];
+         cell.setCellValue(nullReplacement);
+      }
+   }
+   
+   private void addTime(Time content, Time originalContent, Workbook workbook, Sheet sheet, int column, Cell cell, CellStyle[] styles) {
       CellStyle dateFormat = styles[column] == null ? getTimeFormat(workbook) : styles[column];
       cell.setCellStyle(dateFormat);
-      cell.setCellValue(content);
+      if (null != originalContent)
+         cell.setCellValue(content);
+      else
+         setBlank(cell, column);
    }
 
-   private void addDate(java.util.Date content, Workbook workbook, Sheet sheet, int column, Cell cell,
+   private void addDate(java.util.Date content, java.util.Date originalContent, Workbook workbook, Sheet sheet, int column, Cell cell,
          CellStyle[] styles) {
       CellStyle dateFormat = styles[column] == null ? getFullDateFormat(workbook) : styles[column];
       cell.setCellStyle(dateFormat);
-      cell.setCellValue(content);
+      if (null != originalContent)
+         cell.setCellValue(content);
+      else
+         setBlank(cell, column);
    }
 
-   private void addString(String content, Sheet sheet, int column, Cell cell, CellStyle[] styles) {
-      if (null == styles[column])
-         cell.setCellValue(content);
-      else {
+   private void addString(String content, String originalContent, Sheet sheet, int column, Cell cell, CellStyle[] styles) {
+      if (null != styles[column]) {
          CellStyle format = styles[column];
          cell.setCellStyle(format);
-         cell.setCellValue(content);
       }
-      cell.setCellType(CellType.STRING);
+      if (null != originalContent)
+         cell.setCellValue(content);
+      else
+         setBlank(cell, column);
    }
 
-   private void addDouble(Double content, Sheet sheet, int column, Cell cell, CellStyle[] styles) {
-      if (null == styles[column])
-         cell.setCellValue(content);
-      else {
+   private void addDouble(Double content, Double originalContent, Sheet sheet, int column, Cell cell, CellStyle[] styles) {
+      if (null != styles[column]) {
          CellStyle format = styles[column];
          cell.setCellStyle(format);
-         cell.setCellValue(content);
       }
-      cell.setCellType(CellType.NUMERIC);
+      if (null != originalContent)
+         cell.setCellValue(content);
+      else
+         setBlank(cell, column);
    }
 
-   private void addInteger(int content, Sheet sheet, int column, Cell cell, CellStyle[] styles) {
-      if (null == styles[column])
-         cell.setCellValue(content);
-      else {
+   private void addInteger(int content, Integer originalContent, Sheet sheet, int column, Cell cell, CellStyle[] styles) {
+      if (null != styles[column]) {
          CellStyle format = styles[column];
          cell.setCellStyle(format);
-         cell.setCellValue(content);
       }
-      cell.setCellType(CellType.NUMERIC);
+      if (null != originalContent)
+         cell.setCellValue(content);
+      else
+         setBlank(cell, column);
    }
 
    private CellStyle getTimeFormat(Workbook workbook) {

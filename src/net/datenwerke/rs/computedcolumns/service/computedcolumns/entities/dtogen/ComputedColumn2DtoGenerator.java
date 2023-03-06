@@ -88,6 +88,9 @@ public class ComputedColumn2DtoGenerator implements Poso2DtoGenerator<ComputedCo
 			/*  set dimension */
 			dto.setDimension(StringEscapeUtils.escapeXml(StringUtils.left(poso.getDimension(),8192)));
 
+			/*  set exportNullAsString */
+			dto.setExportNullAsString(poso.isExportNullAsString() );
+
 			/*  set expression */
 			dto.setExpression(poso.getExpression() );
 

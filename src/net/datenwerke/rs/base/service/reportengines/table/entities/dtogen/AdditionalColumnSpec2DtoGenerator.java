@@ -89,6 +89,9 @@ public class AdditionalColumnSpec2DtoGenerator implements Poso2DtoGenerator<Addi
 			/*  set dimension */
 			dto.setDimension(StringEscapeUtils.escapeXml(StringUtils.left(poso.getDimension(),8192)));
 
+			/*  set exportNullAsString */
+			dto.setExportNullAsString(poso.isExportNullAsString() );
+
 			/*  set filter */
 			Object tmpDtoFilterDtogetFilter = dtoServiceProvider.get().createDto(poso.getFilter(), here, referenced);
 			dto.setFilter((FilterDto)tmpDtoFilterDtogetFilter);

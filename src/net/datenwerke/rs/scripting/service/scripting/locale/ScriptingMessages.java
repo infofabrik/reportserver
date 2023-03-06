@@ -44,5 +44,21 @@ public interface ScriptingMessages extends Messages {
    String commandRegistry_description();
    
    String commandRegistry_sub_list_description();
+   
+   String commandRegistry_sub_clear_description();
+   
+   String commandRegistry_sub_remove_description();
+   
+   String commandRegistryRemove_key();
+   
+   String commandRegistry_sub_put_description();
+   
+   String commandRegistryPut_key();
+   
+   String commandRegistryPut_value();
+   
+   String commandRegistry_sub_contains_description();
+   
+   String commandRegistryContains_key();
 
 }

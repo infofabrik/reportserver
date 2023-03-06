@@ -78,4 +78,19 @@ public class Property {
       this.value = value;
    }
 
+   public boolean isInternal() {
+      return null != key && key.startsWith("rs:");
+   }
+   
+   public boolean isExternal() {
+      return !isInternal();
+   }
+   
+   public static boolean isInternalKey(String key) {
+      return null != key && key.startsWith("rs:");
+   }
+   
+   public static boolean isExternalKey(String key) {
+      return !isInternalKey(key);
+   }
 }

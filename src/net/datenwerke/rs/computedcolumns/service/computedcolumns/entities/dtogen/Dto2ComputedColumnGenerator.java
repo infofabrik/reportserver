@@ -137,6 +137,12 @@ public class Dto2ComputedColumnGenerator implements Dto2PosoGenerator<ComputedCo
 		/*  set dimension */
 		poso.setDimension(dto.getDimension() );
 
+		/*  set exportNullAsString */
+		try{
+			poso.setExportNullAsString(dto.isExportNullAsString() );
+		} catch(NullPointerException e){
+		}
+
 		/*  set expression */
 		poso.setExpression(dto.getExpression() );
 
@@ -237,6 +243,14 @@ public class Dto2ComputedColumnGenerator implements Dto2PosoGenerator<ComputedCo
 		/*  set dimension */
 		if(dto.isDimensionModified()){
 			poso.setDimension(dto.getDimension() );
+		}
+
+		/*  set exportNullAsString */
+		if(dto.isExportNullAsStringModified()){
+			try{
+				poso.setExportNullAsString(dto.isExportNullAsString() );
+			} catch(NullPointerException e){
+			}
 		}
 
 		/*  set expression */
@@ -362,6 +376,12 @@ public class Dto2ComputedColumnGenerator implements Dto2PosoGenerator<ComputedCo
 		/*  set dimension */
 		poso.setDimension(dto.getDimension() );
 
+		/*  set exportNullAsString */
+		try{
+			poso.setExportNullAsString(dto.isExportNullAsString() );
+		} catch(NullPointerException e){
+		}
+
 		/*  set expression */
 		poso.setExpression(dto.getExpression() );
 
@@ -440,6 +460,14 @@ public class Dto2ComputedColumnGenerator implements Dto2PosoGenerator<ComputedCo
 		/*  set dimension */
 		if(dto.isDimensionModified()){
 			poso.setDimension(dto.getDimension() );
+		}
+
+		/*  set exportNullAsString */
+		if(dto.isExportNullAsStringModified()){
+			try{
+				poso.setExportNullAsString(dto.isExportNullAsString() );
+			} catch(NullPointerException e){
+			}
 		}
 
 		/*  set expression */
