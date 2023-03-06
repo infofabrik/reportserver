@@ -7,25 +7,47 @@ import java.io.OutputStream;
 import org.xhtmlrenderer.pdf.ITextRenderer;
 
 import com.google.inject.Inject;
+import com.google.inject.Provider;
 import com.lowagie.text.DocumentException;
 
+import net.datenwerke.gf.service.theme.ThemeService;
 import net.datenwerke.rs.base.service.reportengines.locale.ReportEnginesMessages;
+import net.datenwerke.rs.base.service.reportengines.table.columnfilter.FilterService;
 import net.datenwerke.rs.base.service.reportengines.table.entities.Column.ColumnFormatCellFormatter;
 import net.datenwerke.rs.base.service.reportengines.table.entities.format.ColumnFormatNumber;
 import net.datenwerke.rs.base.service.reportengines.table.output.object.CompiledPDFTableReport;
+import net.datenwerke.rs.configservice.service.configservice.ConfigService;
 import net.datenwerke.rs.core.service.reportmanager.ReportExecutorService;
 import net.datenwerke.rs.core.service.reportmanager.engine.CompiledReport;
 import net.datenwerke.rs.core.service.reportmanager.exceptions.ReportExecutorRuntimeException;
+import net.datenwerke.rs.license.service.LicenseService;
+import net.datenwerke.rs.utils.juel.SimpleJuel;
+import net.datenwerke.rs.utils.localization.LocalizationServiceImpl;
 import net.datenwerke.rs.utils.misc.PdfUtils;
 
 public class PdfTableOutputGenerator extends HTMLOutputGenerator {
 
    protected static final String CONFIG_FILE = "dynamiclists/pdfexport.cf";
 
-   @Inject
-   protected PdfUtils pdfUtils;
+   protected final Provider<PdfUtils> pdfUtilsProvider;
 
    private ITextRenderer renderer;
+   
+   @Inject
+   public PdfTableOutputGenerator(
+         Provider<ThemeService> themeServiceProvider,
+         Provider<ConfigService> configServiceProvider, 
+         Provider<LocalizationServiceImpl> localizationServiceProvider,
+         Provider<FilterService> filterServiceProvider, 
+         Provider<LicenseService> licenseServiceProvider,
+         Provider<SimpleJuel> juelProvider, 
+         Provider<ExporterHelper> exporterHelperProvider,
+         Provider<PdfUtils> pdfUtilsProvider
+         ) {
+      super(themeServiceProvider, configServiceProvider, localizationServiceProvider, filterServiceProvider,
+            licenseServiceProvider, juelProvider, exporterHelperProvider);
+      this.pdfUtilsProvider = pdfUtilsProvider;
+   }
 
    @Override
    protected String getConfigFileLocation() {
@@ -81,7 +103,7 @@ public class PdfTableOutputGenerator extends HTMLOutputGenerator {
       /* init rendered */
       renderer = new ITextRenderer();
       try {
-         pdfUtils.configureFontResolver(renderer.getFontResolver());
+         pdfUtilsProvider.get().configureFontResolver(renderer.getFontResolver());
          String html = writer.toString();
          renderer.setDocumentFromString(html);
 

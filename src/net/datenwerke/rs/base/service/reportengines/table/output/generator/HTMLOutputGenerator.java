@@ -17,6 +17,7 @@ import java.util.TreeMap;
 
 import org.apache.commons.configuration2.BaseConfiguration;
 import org.apache.commons.configuration2.Configuration;
+import org.apache.commons.lang3.tuple.ImmutablePair;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
@@ -54,23 +55,13 @@ public class HTMLOutputGenerator extends TableOutputGeneratorImpl {
 
    private final ReportEnginesMessages messages = LocalizationServiceImpl.getMessages(ReportEnginesMessages.class);
 
-   @Inject
-   protected Provider<ThemeService> themeServiceProvider;
-
-   @Inject
-   protected Provider<ConfigService> configServiceProvider;
-
-   @Inject
-   protected Provider<LocalizationServiceImpl> localizationServiceProvider;
-
-   @Inject
-   protected Provider<FilterService> filterServiceProvider;
-
-   @Inject
-   protected Provider<LicenseService> licenseServiceProvider;
-
-   @Inject
-   protected Provider<SimpleJuel> juelProvider;
+   protected final Provider<ThemeService> themeServiceProvider;
+   protected final Provider<ConfigService> configServiceProvider;
+   protected final Provider<LocalizationServiceImpl> localizationServiceProvider;
+   protected final Provider<FilterService> filterServiceProvider;
+   protected final Provider<LicenseService> licenseServiceProvider;
+   protected final Provider<SimpleJuel> juelProvider;
+   protected final Provider<ExporterHelper> exporterHelperProvider;
 
    protected final static String DATA_SUBTOTAL_ROW_TAG_OPEN = "<tr class=\"subtotal-row\">"; //$NON-NLS-1$
    protected final static String DATA_ROW_TAG_OPEN_ODD = "<tr class='odd'>"; //$NON-NLS-1$
@@ -113,8 +104,32 @@ public class HTMLOutputGenerator extends TableOutputGeneratorImpl {
    protected Appendable writer;
 
    protected boolean odd = false;
+   
+   protected int cell = 0;
 
    protected Configuration configFile;
+   
+   protected String[] nullReplacements;
+   protected Boolean[] exportNullAsString;
+   
+   @Inject
+   public HTMLOutputGenerator(
+         Provider<ThemeService> themeServiceProvider,
+         Provider<ConfigService> configServiceProvider, 
+         Provider<LocalizationServiceImpl> localizationServiceProvider,
+         Provider<FilterService> filterServiceProvider, 
+         Provider<LicenseService> licenseServiceProvider,
+         Provider<SimpleJuel> juelProvider,
+         Provider<ExporterHelper> exporterHelperProvider
+         ) {
+      this.themeServiceProvider = themeServiceProvider;
+      this.configServiceProvider = configServiceProvider;
+      this.localizationServiceProvider = localizationServiceProvider;
+      this.filterServiceProvider = filterServiceProvider;
+      this.licenseServiceProvider = licenseServiceProvider;
+      this.juelProvider = juelProvider;
+      this.exporterHelperProvider = exporterHelperProvider;
+   }
 
    @Override
    public void initialize(OutputStream os, TableDefinition td, boolean withSubtotals, TableReport report,
@@ -122,6 +137,13 @@ public class HTMLOutputGenerator extends TableOutputGeneratorImpl {
          ReportExecutionConfig... configs) throws IOException {
       super.initialize(os, td, withSubtotals, report, orgReport, cellFormatters, parameters, user, configs);
 
+      final ExporterHelper exporterHelper = exporterHelperProvider.get();
+      /* load columns */
+      final List<Column> columns = exporterHelper.getExportedColumns(report, td);
+      final ImmutablePair<String[], Boolean[]> nullFormats = exporterHelper.getNullFormats(columns, cellFormatters, td);
+      nullReplacements = nullFormats.getLeft();
+      exportNullAsString = nullFormats.getRight();
+      
       initConfigFile();
       initWriter(os);
 
@@ -591,14 +613,22 @@ public class HTMLOutputGenerator extends TableOutputGeneratorImpl {
    @Override
    public void addField(Object field, CellFormatter formatter) throws IOException {
       writer.append(DATA_FIELD_OPEN);
-      writer.append(StringEscapeUtils.escapeXml(formatter.format(getValueOf(field))));
+      Object value = getValueOf(field);
+      if (null == value) 
+         handleNull(); 
+      else {   
+         writer.append(StringEscapeUtils.escapeXml(formatter.format(getValueOf(field))));
+      }
       writer.append(DATA_FIELD_CLOSE);
+      
+      cell++;
    }
 
-   protected void addField(Object field) throws IOException {
-      writer.append(DATA_FIELD_OPEN);
-      writer.append(StringEscapeUtils.escapeXml(String.valueOf(getValueOf(field))));
-      writer.append(DATA_FIELD_CLOSE);
+   private void handleNull() throws IOException {
+      if (!exportNullAsString[cell])
+         writer.append("&nbsp;");
+      else 
+         writer.append(nullReplacements[cell]);
    }
 
    @Override
@@ -622,6 +652,8 @@ public class HTMLOutputGenerator extends TableOutputGeneratorImpl {
          writer.append(DATA_ROW_TAG_OPEN_EVEN);
 
       odd = !odd;
+      
+      cell = 0;
    }
 
    @Override
