@@ -6,8 +6,15 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.math.BigDecimal;
+import java.util.List;
+
+import javax.inject.Inject;
+import javax.inject.Provider;
+
+import org.apache.commons.lang3.tuple.ImmutablePair;
 
 import net.datenwerke.rs.base.service.reportengines.table.entities.Column.CellFormatter;
+import net.datenwerke.rs.base.service.reportengines.table.entities.Column;
 import net.datenwerke.rs.base.service.reportengines.table.entities.TableReport;
 import net.datenwerke.rs.base.service.reportengines.table.output.object.CompiledJSONTableReport;
 import net.datenwerke.rs.base.service.reportengines.table.output.object.TableDefinition;
@@ -29,6 +36,18 @@ public class JSONOutputGenerator extends TableOutputGeneratorImpl {
 
    protected boolean first = true;
    int cell = 0;
+   
+   private String[] nullReplacements;
+   private Boolean[] exportNullAsString;
+   
+   private final Provider<ExporterHelper> exporterHelperProvider;
+   
+   @Inject
+   public JSONOutputGenerator(
+         Provider<ExporterHelper> exporterHelperProvider
+         ) {
+      this.exporterHelperProvider = exporterHelperProvider;
+   }
 
    @Override
    public void addField(Object field, CellFormatter formatter) throws IOException {
@@ -41,9 +60,16 @@ public class JSONOutputGenerator extends TableOutputGeneratorImpl {
       builder.append("\"").append(name).append("\"").append(":");
       if (field instanceof Number || field instanceof BigDecimal)
          builder.append(field);
-      else if (field == null)
-         builder.append("null");
-      else if (field instanceof Boolean)
+      else if (field == null) {
+         if (!exportNullAsString[cell])
+            builder.append("null");
+         else {
+            String nullReplacement = nullReplacements[cell];
+            builder.append("\"");
+            builder.append(nullReplacement);
+            builder.append("\"");
+         }
+      } else if (field instanceof Boolean)
          builder.append(Boolean.TRUE.equals(field) ? "true" : "false");
       else {
          Object value = getValueOf(field, formatter);
@@ -89,6 +115,13 @@ public class JSONOutputGenerator extends TableOutputGeneratorImpl {
          ReportExecutionConfig... configs) throws IOException {
       super.initialize(os, td, withSubtotals, report, orgReport, cellFormatters, parameters, user, configs);
 
+      final ExporterHelper exporterHelper = exporterHelperProvider.get();
+      /* load columns */
+      final List<Column> columns = exporterHelper.getExportedColumns(report, td);
+      final ImmutablePair<String[], Boolean[]> nullFormats = exporterHelper.getNullFormats(columns, cellFormatters, td);
+      nullReplacements = nullFormats.getLeft();
+      exportNullAsString = nullFormats.getRight();
+      
       /* initialize buffer */
       builder = new StringBuilder();
       if (null != os)

@@ -8,7 +8,6 @@ import java.sql.Date;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -19,6 +18,7 @@ import java.util.stream.IntStream;
 import javax.inject.Provider;
 
 import org.apache.commons.configuration2.Configuration;
+import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.CreationHelper;
@@ -121,15 +121,23 @@ public class XLSStreamOutputGenerator extends TableOutputGeneratorImpl {
    private final String configurationSheetName;
 
    private final Provider<FilterService> filterServiceProvider;
+   private final Provider<ExporterHelper> exporterHelperProvider;
 
    @Inject
-   public XLSStreamOutputGenerator(XLSOutputGenerator basicXlsGenerator, StupidOracleService sos,
-         LicenseService licenseService, ConfigService configService, Provider<FilterService> filterServiceProvider) {
+   public XLSStreamOutputGenerator(
+         XLSOutputGenerator basicXlsGenerator, 
+         StupidOracleService sos,
+         LicenseService licenseService, 
+         ConfigService configService, 
+         Provider<FilterService> filterServiceProvider,
+         Provider<ExporterHelper> exporterHelperProvider
+         ) {
       super();
       this.basicXlsGenerator = basicXlsGenerator;
       this.sos = sos;
       this.licenseService = licenseService;
       this.filterServiceProvider = filterServiceProvider;
+      this.exporterHelperProvider = exporterHelperProvider;
 
       Configuration config = configService.getConfigFailsafe(XLSOutputGenerator.CONFIG_FILE);
       dataSheetName = config.getString("xls.datasheet", messages.outputNameDynamicList());
@@ -165,23 +173,14 @@ public class XLSStreamOutputGenerator extends TableOutputGeneratorImpl {
       workbook.setCompressTempFiles(true);
       dataSheet = workbook.createSheet(dataSheetName);
 
+      final ExporterHelper exporterHelper = exporterHelperProvider.get();
       /* load columns */
-      List<Column> columns;
-      if (report.isSelectAllColumns()) {
-         columns = new ArrayList<Column>();
-         for (Object[] c : td.getColumns()) {
-            Column col = new Column();
-            col.setName((String) c[0]);
-            col.setType(((Integer) c[3]));
-            columns.add(col);
-         }
-      } else {
-         columns = report.getVisibleColumns();
-      }
-      nullReplacements = new String[columnCount];
-      exportNullAsString = new Boolean[columnCount];
-      IntStream.range(0, columnCount).forEach(i -> prepareNullFormat(cellFormatters[i], columns.get(i), i));
-
+      final List<Column> columns = exporterHelper.getExportedColumns(report, td);
+      
+      final ImmutablePair<String[], Boolean[]> nullFormats = exporterHelper.getNullFormats(columns, cellFormatters, td);
+      nullReplacements = nullFormats.getLeft();
+      exportNullAsString = nullFormats.getRight();
+      
       /* prepare array for widths for columns */
       columnWidths = new int[columnCount];
 
@@ -567,29 +566,6 @@ public class XLSStreamOutputGenerator extends TableOutputGeneratorImpl {
       }
 
       column++;
-   }
-
-   private void prepareNullFormat(CellFormatter cellFormatter, Column column, int col) {
-      if (null == cellFormatter) {
-         nullReplacements[col] = null != column.getNullReplacementFormat() ? column.getNullReplacementFormat()
-               : "NULL";
-         exportNullAsString[col] = column.isExportNullAsString();
-         return;
-      }
-
-      if (Integer.class.equals(td.getColumnType(col)) || Long.class.equals(td.getColumnType(col))
-            || Byte.class.equals(td.getColumnType(col)) || Short.class.equals(td.getColumnType(col))) {
-
-         nullReplacements[col] = cellFormatter.format(null);
-      } else if (Double.class.equals(td.getColumnType(col)) || Float.class.equals(td.getColumnType(col))
-            || BigDecimal.class.equals(td.getColumnType(col))) {
-
-         nullReplacements[col] = cellFormatter.format(null);
-      }
-      exportNullAsString[col] = column.isExportNullAsString();
-      if (null == nullReplacements[col])
-         nullReplacements[col] = null != column.getNullReplacementFormat() ? column.getNullReplacementFormat()
-               : "NULL";
    }
 
    @Override
