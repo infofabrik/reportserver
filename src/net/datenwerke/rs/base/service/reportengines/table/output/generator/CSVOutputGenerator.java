@@ -5,10 +5,16 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.util.List;
+
+import javax.inject.Provider;
+
+import org.apache.commons.lang3.tuple.ImmutablePair;
 
 import com.google.inject.Inject;
 
 import net.datenwerke.rs.base.service.reportengines.table.entities.Column.CellFormatter;
+import net.datenwerke.rs.base.service.reportengines.table.entities.Column;
 import net.datenwerke.rs.base.service.reportengines.table.entities.TableReport;
 import net.datenwerke.rs.base.service.reportengines.table.output.object.CompiledCSVTableReport;
 import net.datenwerke.rs.base.service.reportengines.table.output.object.TableDefinition;
@@ -34,6 +40,11 @@ public class CSVOutputGenerator extends TableOutputGeneratorImpl {
    protected StringBuilder builder;
 
    protected PrintWriter writer;
+   
+   int cell = 0;
+   
+   private String[] nullReplacements;
+   private Boolean[] exportNullAsString;
 
    public static final String CONFIG_FILE = "exportfilemd/csvexport.cf";
    public static final String CSV_LINE_SEPARATOR_PROPERTY = "csv.lineSeparator";
@@ -42,13 +53,20 @@ public class CSVOutputGenerator extends TableOutputGeneratorImpl {
 
    private final ConfigService configService;
    private final ReportServerService reportServerService;
+   
+   private final Provider<ExporterHelper> exporterHelperProvider;
 
    @Inject
-   public CSVOutputGenerator(ConfigService configService, ReportServerService reportServerService) {
+   public CSVOutputGenerator(
+         ConfigService configService, 
+         ReportServerService reportServerService,
+         Provider<ExporterHelper> exporterHelperProvider
+         ) {
       super();
       this.reportServerService = reportServerService;
-
       this.configService = configService;
+      this.exporterHelperProvider = exporterHelperProvider;
+      
       this.newline = getLineSeparator();
       this.delimiter = getDelimiter();
       this.quotationMark = getQuotationMark();
@@ -60,11 +78,21 @@ public class CSVOutputGenerator extends TableOutputGeneratorImpl {
       if (haveSeenFieldInRow)
          builder.append(delimiter);
       builder.append(quotationMark);
+      String val = null;
+      if (field == null) {
+         if (!exportNullAsString[cell])
+            val = "";
+         else {
+            val = nullReplacements[cell];
+         }
+      } else {
+         val = formatter.format(getValueOf(field));
+      }
       if (!"".equals(quotationMark))
          builder.append(
-               String.valueOf(formatter.format(getValueOf(field))).replaceAll(quotationMark, "\\\\" + quotationMark));
+               String.valueOf(val).replaceAll(quotationMark, "\\\\" + quotationMark));
       else
-         builder.append(String.valueOf(formatter.format(getValueOf(field))));
+         builder.append(String.valueOf(val));
       builder.append(quotationMark);
 
       if (null != writer) {
@@ -72,6 +100,8 @@ public class CSVOutputGenerator extends TableOutputGeneratorImpl {
          builder.delete(0, builder.length());
       }
       haveSeenFieldInRow = true;
+      
+      cell++;
    }
 
    @Override
@@ -118,6 +148,13 @@ public class CSVOutputGenerator extends TableOutputGeneratorImpl {
          ReportExecutionConfig... configs) throws IOException {
       super.initialize(os, td, withSubtotals, report, orgReport, cellFormatters, parameters, user, configs);
 
+      final ExporterHelper exporterHelper = exporterHelperProvider.get();
+      /* load columns */
+      final List<Column> columns = exporterHelper.getExportedColumns(report, td);
+      final ImmutablePair<String[], Boolean[]> nullFormats = exporterHelper.getNullFormats(columns, cellFormatters, td);
+      nullReplacements = nullFormats.getLeft();
+      exportNullAsString = nullFormats.getRight();
+      
       RECCsv config = getConfig(RECCsv.class);
       if (null != config) {
          delimiter = null == config.getSeparator() ? "" : config.getSeparator();
@@ -164,6 +201,8 @@ public class CSVOutputGenerator extends TableOutputGeneratorImpl {
       }
 
       haveSeenFieldInRow = false;
+      
+      cell = 0;
    }
 
    @Override
