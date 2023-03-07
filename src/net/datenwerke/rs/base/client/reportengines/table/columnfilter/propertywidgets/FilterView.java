@@ -232,6 +232,7 @@ public class FilterView extends ReportExecutorMainPanelView implements Selection
 
                column.setFormat(clonedFormat);
                column.setNullReplacementFormat(columns.get(0).getNullReplacementFormat());
+               column.setExportNullAsString(columns.get(0).isExportNullAsString());
 
                store.update(column);
             }

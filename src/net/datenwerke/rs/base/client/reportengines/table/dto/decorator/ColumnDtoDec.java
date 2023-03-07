@@ -18,6 +18,7 @@ public class ColumnDtoDec extends ColumnDto implements IdedDto {
    public ColumnDtoDec() {
       super();
       setNullReplacementFormat(DEFAULT_NULL_REPLACEMENT);
+      setExportNullAsString(false);
    }
 
    public void removeAllFilters() {
@@ -28,6 +29,7 @@ public class ColumnDtoDec extends ColumnDto implements IdedDto {
    public void removeAllFormats() {
       setFormat(null);
       setNullReplacementFormat(DEFAULT_NULL_REPLACEMENT);
+      setExportNullAsString(false);
    }
 
    @Override
@@ -87,6 +89,7 @@ public class ColumnDtoDec extends ColumnDto implements IdedDto {
       clone.setType(this.getType());
       clone.setFormat(ColumnFormatDtoDec.clone(this.getFormat()));
       clone.setNullReplacementFormat(this.getNullReplacementFormat());
+      clone.setExportNullAsString(this.isExportNullAsString());
       clone.setSubtotalGroup(this.isSubtotalGroup());
       clone.setDimension(this.getDimension());
       clone.setDefaultPreviewWidth(this.getDefaultPreviewWidth());
@@ -94,7 +97,7 @@ public class ColumnDtoDec extends ColumnDto implements IdedDto {
    }
 
    public boolean hasSomeFormat() {
-      return null != getFormat() || !DEFAULT_NULL_REPLACEMENT.equals(getNullReplacementFormat());
+      return null != getFormat() || !DEFAULT_NULL_REPLACEMENT.equals(getNullReplacementFormat()) || isExportNullAsString();
    }
 
    @Override
