@@ -197,7 +197,7 @@ public class ColumnFormatWindow extends DwWindow {
          @Override
          public void onSuccess(SimpleForm form) {
             super.onSuccess(form);
-            setHeight(330);
+            Scheduler.get().scheduleDeferred(() -> setHeight(420));
          }
       });
       form.addCondition(typeKey, new FieldEquals(FormatType.DATE), new ShowFieldsAction(allFields, dateFields) {
@@ -205,44 +205,44 @@ public class ColumnFormatWindow extends DwWindow {
          public void onSuccess(SimpleForm form) {
             super.onSuccess(form);
             if (null != column.getType() && SqlTypes.isDateLikeType(column.getType()))
-               setHeight(260);
+               Scheduler.get().scheduleDeferred(() -> setHeight(260));
             else
-               setHeight(400);
+               Scheduler.get().scheduleDeferred(() -> setHeight(455));
          }
       });
       form.addCondition(typeKey, new FieldEquals(FormatType.NUMBER), new ShowFieldsAction(allFields, numberFields) {
          @Override
          public void onSuccess(SimpleForm form) {
             super.onSuccess(form);
-            setHeight(280);
+            Scheduler.get().scheduleDeferred(() -> setHeight(360));
          }
       });
       form.addCondition(typeKey, new FieldEquals(FormatType.PERCENT), new ShowFieldsAction(allFields, percentFields) {
          @Override
          public void onSuccess(SimpleForm form) {
             super.onSuccess(form);
-            setHeight(230);
+            Scheduler.get().scheduleDeferred(() -> setHeight(320));
          }
       });
       form.addCondition(typeKey, new FieldEquals(FormatType.SCIENTIFIC), new ShowFieldsAction(allFields, sciFields) {
          @Override
          public void onSuccess(SimpleForm form) {
             super.onSuccess(form);
-            setHeight(230);
+            Scheduler.get().scheduleDeferred(() -> setHeight(320));
          }
       });
       form.addCondition(typeKey, new FieldEquals(FormatType.TEXT), new ShowFieldsAction(allFields, new String[] {}) {
          @Override
          public void onSuccess(SimpleForm form) {
             super.onSuccess(form);
-            setHeight(180);
+            Scheduler.get().scheduleDeferred(() -> setHeight(270));
          }
       });
       form.addCondition(typeKey, new FieldEquals(FormatType.TEMPLATE), new ShowFieldsAction(allFields, templateFields) {
          @Override
          public void onSuccess(SimpleForm form) {
             super.onSuccess(form);
-            setHeight(230);
+            Scheduler.get().scheduleDeferred(() -> setHeight(320));
          }
       });
 
