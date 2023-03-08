@@ -13,6 +13,9 @@ public interface ExporterHelper {
 
    List<Column> getExportedColumns(TableReport report, TableDefinition td);
 
+   ImmutablePair<String[], Boolean[]> getNullFormats(TableReport report, TableDefinition td,
+         CellFormatter[] cellFormatters);
+
    ImmutablePair<String[], Boolean[]> getNullFormats(List<Column> columns, CellFormatter[] cellFormatters,
          TableDefinition td);
 }

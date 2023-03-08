@@ -137,10 +137,8 @@ public class HTMLOutputGenerator extends TableOutputGeneratorImpl {
          ReportExecutionConfig... configs) throws IOException {
       super.initialize(os, td, withSubtotals, report, orgReport, cellFormatters, parameters, user, configs);
 
-      final ExporterHelper exporterHelper = exporterHelperProvider.get();
-      /* load columns */
-      final List<Column> columns = exporterHelper.getExportedColumns(report, td);
-      final ImmutablePair<String[], Boolean[]> nullFormats = exporterHelper.getNullFormats(columns, cellFormatters, td);
+      final ImmutablePair<String[], Boolean[]> nullFormats = exporterHelperProvider.get().getNullFormats(report, td,
+            cellFormatters);
       nullReplacements = nullFormats.getLeft();
       exportNullAsString = nullFormats.getRight();
       

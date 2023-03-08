@@ -62,4 +62,11 @@ public class ExporterHelperImpl implements ExporterHelper {
       if (null == nullReplacements[col])
          nullReplacements[col] = null != column.getNullReplacementFormat() ? column.getNullReplacementFormat() : "NULL";
    }
+
+   @Override
+   public ImmutablePair<String[], Boolean[]> getNullFormats(TableReport report, TableDefinition td,
+         CellFormatter[] cellFormatters) {
+      List<Column> columns = getExportedColumns(report, td);
+      return getNullFormats(columns, cellFormatters, td);
+   }
 }

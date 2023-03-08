@@ -174,7 +174,6 @@ public class XLSStreamOutputGenerator extends TableOutputGeneratorImpl {
       dataSheet = workbook.createSheet(dataSheetName);
 
       final ExporterHelper exporterHelper = exporterHelperProvider.get();
-      /* load columns */
       final List<Column> columns = exporterHelper.getExportedColumns(report, td);
       
       final ImmutablePair<String[], Boolean[]> nullFormats = exporterHelper.getNullFormats(columns, cellFormatters, td);

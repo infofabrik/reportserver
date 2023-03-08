@@ -6,7 +6,6 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.math.BigDecimal;
-import java.util.List;
 
 import javax.inject.Inject;
 import javax.inject.Provider;
@@ -14,7 +13,6 @@ import javax.inject.Provider;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 
 import net.datenwerke.rs.base.service.reportengines.table.entities.Column.CellFormatter;
-import net.datenwerke.rs.base.service.reportengines.table.entities.Column;
 import net.datenwerke.rs.base.service.reportengines.table.entities.TableReport;
 import net.datenwerke.rs.base.service.reportengines.table.output.object.CompiledJSONTableReport;
 import net.datenwerke.rs.base.service.reportengines.table.output.object.TableDefinition;
@@ -113,10 +111,8 @@ public class CompactJSONOutputGenerator extends TableOutputGeneratorImpl {
          ReportExecutionConfig... configs) throws IOException {
       super.initialize(os, td, withSubtotals, report, orgReport, cellFormatters, parameters, user, configs);
 
-      final ExporterHelper exporterHelper = exporterHelperProvider.get();
-      /* load columns */
-      final List<Column> columns = exporterHelper.getExportedColumns(report, td);
-      final ImmutablePair<String[], Boolean[]> nullFormats = exporterHelper.getNullFormats(columns, cellFormatters, td);
+      final ImmutablePair<String[], Boolean[]> nullFormats = exporterHelperProvider.get().getNullFormats(report, td,
+            cellFormatters);
       nullReplacements = nullFormats.getLeft();
       exportNullAsString = nullFormats.getRight();
       
