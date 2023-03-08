@@ -624,7 +624,7 @@ public class HTMLOutputGenerator extends TableOutputGeneratorImpl {
 
    private void handleNull() throws IOException {
       if (!exportNullAsString[cell])
-         writer.append("&nbsp;");
+         writer.append("");
       else 
          writer.append(nullReplacements[cell]);
    }
