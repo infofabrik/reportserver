@@ -1,6 +1,5 @@
 package net.datenwerke.rs.base.client.datasources.rpc;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.google.gwt.user.client.rpc.RemoteService;
@@ -16,7 +15,7 @@ import net.datenwerke.rs.core.client.datasourcemanager.dto.DatasourceContainerDt
 @RemoteServiceRelativePath("base_datasource")
 public interface BaseDatasourceRpcService extends RemoteService {
 
-   public ArrayList<DatabaseHelperDto> getDBHelperList() throws ServerCallFailedException;
+   public List<DatabaseHelperDto> getDBHelperList() throws ServerCallFailedException;
 
    public DatabaseHelperDto dummy(DatabaseHelperDto dto);
 

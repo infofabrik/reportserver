@@ -31,6 +31,7 @@ import net.datenwerke.rs.base.service.dbhelper.db.GoogleBigQuery;
 import net.datenwerke.rs.base.service.dbhelper.db.MariaDB;
 import net.datenwerke.rs.base.service.dbhelper.db.MySQL;
 import net.datenwerke.rs.base.service.dbhelper.db.PostgreSQL;
+import net.datenwerke.rs.base.service.dbhelper.db.YugabyteDB;
 import net.datenwerke.rs.base.service.dbhelper.db.mssql.MsSQL;
 import net.datenwerke.rs.base.service.dbhelper.db.oracle.Oracle;
 import net.datenwerke.rs.base.service.dbhelper.db.teradata.Teradata;
@@ -216,7 +217,8 @@ abstract public class DatabaseHelper {
          if (builder.getDbHelper() instanceof MariaDB || builder.getDbHelper() instanceof Teradata
                || builder.getDbHelper() instanceof MsSQL || builder.getDbHelper() instanceof MySQL
                || builder.getDbHelper() instanceof PostgreSQL || builder.getDbHelper() instanceof Oracle
-               || builder.getDbHelper() instanceof GoogleBigQuery || builder.getDbHelper() instanceof AmazonRedshift) {
+               || builder.getDbHelper() instanceof GoogleBigQuery || builder.getDbHelper() instanceof AmazonRedshift
+               || builder.getDbHelper() instanceof YugabyteDB) {
             /* Order by */
             if (!builder.getOrderDefinitions().isEmpty() && !builder.isLimit() && !builder.isOffset())
                currentInnerQuery = getNewOrderQuery(currentInnerQuery, builder, uniqueNameService);

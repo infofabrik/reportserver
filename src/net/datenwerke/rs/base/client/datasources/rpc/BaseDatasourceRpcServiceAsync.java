@@ -1,6 +1,5 @@
 package net.datenwerke.rs.base.client.datasources.rpc;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -13,7 +12,7 @@ import net.datenwerke.rs.core.client.datasourcemanager.dto.DatasourceContainerDt
 
 public interface BaseDatasourceRpcServiceAsync {
 
-   void getDBHelperList(AsyncCallback<ArrayList<DatabaseHelperDto>> callback);
+   void getDBHelperList(AsyncCallback<List<DatabaseHelperDto>> callback);
 
    void dummy(DatabaseHelperDto dto, AsyncCallback<DatabaseHelperDto> callback);
 

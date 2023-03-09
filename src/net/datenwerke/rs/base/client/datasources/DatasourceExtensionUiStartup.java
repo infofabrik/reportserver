@@ -1,6 +1,6 @@
 package net.datenwerke.rs.base.client.datasources;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
@@ -47,9 +47,9 @@ public class DatasourceExtensionUiStartup {
             HookHandlerService.PRIORITY_LOW);
 
       /* call server to get dbhelper */
-      baseDatasourceDao.getDBHelperList(new RsAsyncCallback<ArrayList<DatabaseHelperDto>>() {
+      baseDatasourceDao.getDBHelperList(new RsAsyncCallback<List<DatabaseHelperDto>>() {
          @Override
-         public void onSuccess(ArrayList<DatabaseHelperDto> result) {
+         public void onSuccess(List<DatabaseHelperDto> result) {
             datasourceService.setDatabaseHelpers(result);
          }
 

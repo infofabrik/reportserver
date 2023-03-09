@@ -2,6 +2,7 @@ package net.datenwerke.rs.base.service.dbhelper.hookers;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import com.google.inject.Inject;
 
@@ -18,6 +19,7 @@ import net.datenwerke.rs.base.service.dbhelper.db.PostgreSQL;
 import net.datenwerke.rs.base.service.dbhelper.db.SQLite;
 import net.datenwerke.rs.base.service.dbhelper.db.Sybase;
 import net.datenwerke.rs.base.service.dbhelper.db.Vertica;
+import net.datenwerke.rs.base.service.dbhelper.db.YugabyteDB;
 import net.datenwerke.rs.base.service.dbhelper.db.db2.DB2;
 import net.datenwerke.rs.base.service.dbhelper.db.informix.Informix;
 import net.datenwerke.rs.base.service.dbhelper.db.mssql.MsSQL;
@@ -27,11 +29,12 @@ import net.datenwerke.rs.base.service.dbhelper.hooks.DatabaseHelperProviderHook;
 
 public class ProvideBaseDatabaseHelpersHookers implements DatabaseHelperProviderHook {
 
-   private final Collection<DatabaseHelper> helpers;
+   private final List<DatabaseHelper> helpers = new ArrayList<DatabaseHelper>();
 
    @Inject
    public ProvideBaseDatabaseHelpersHookers(
-         DB2 db2, H2 h2, 
+         DB2 db2, 
+         H2 h2, 
          Firebird firebird, 
          MariaDB mariaDb, 
          MsSQL mssql,
@@ -46,10 +49,10 @@ public class ProvideBaseDatabaseHelpersHookers implements DatabaseHelperProvider
          GoogleBigQuery googleBigQuery, 
          AmazonRedshift amazonRedshift,
          Teradata teradata,
-         SQLite sqlite
+         SQLite sqlite,
+         YugabyteDB yugabyteDb
          ) {
 
-      helpers = new ArrayList<DatabaseHelper>();
       helpers.add(db2);
       helpers.add(h2);
       helpers.add(mssql);
@@ -67,6 +70,7 @@ public class ProvideBaseDatabaseHelpersHookers implements DatabaseHelperProvider
       helpers.add(amazonRedshift);
       helpers.add(teradata);
       helpers.add(sqlite);
+      helpers.add(yugabyteDb);
    }
 
    @Override

@@ -1,7 +1,11 @@
 package net.datenwerke.rs.base.server.datasources;
 
+import static java.util.Comparator.comparing;
+import static java.util.stream.Collectors.toList;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.inject.Singleton;
 
@@ -70,13 +74,13 @@ public class BaseDatasourceRpcServiceImpl extends SecuredRemoteServiceServlet im
    @SecurityChecked(loginRequired = false)
    @Transactional(rollbackOn = { Exception.class })
    @Override
-   public ArrayList<DatabaseHelperDto> getDBHelperList() throws ServerCallFailedException {
-      ArrayList<DatabaseHelperDto> helpers = new ArrayList<DatabaseHelperDto>();
-
-      for (DatabaseHelper dh : dbHelperService.getDatabaseHelpers())
-         helpers.add((DatabaseHelperDto) dtoService.createDto(dh));
-
-      return helpers;
+   public List<DatabaseHelperDto> getDBHelperList() throws ServerCallFailedException {
+      return dbHelperService.getDatabaseHelpers()
+         .stream()
+         .sorted(comparing(DatabaseHelper::getName))
+         .map(dtoService::createDto)
+         .map(databaseHelper -> (DatabaseHelperDto) databaseHelper)
+         .collect(toList());
    }
 
    @Override

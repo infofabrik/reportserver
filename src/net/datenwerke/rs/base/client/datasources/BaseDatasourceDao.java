@@ -1,6 +1,5 @@
 package net.datenwerke.rs.base.client.datasources;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -25,7 +24,7 @@ public class BaseDatasourceDao extends Dao {
       this.rpcService = rpcService;
    }
 
-   public void getDBHelperList(AsyncCallback<ArrayList<DatabaseHelperDto>> callback) {
+   public void getDBHelperList(AsyncCallback<List<DatabaseHelperDto>> callback) {
       rpcService.getDBHelperList(transformListCallback(callback));
    }
 
