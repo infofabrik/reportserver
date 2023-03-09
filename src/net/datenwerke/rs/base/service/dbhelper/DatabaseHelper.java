@@ -27,6 +27,7 @@ import net.datenwerke.dtoservices.dtogenerator.annotations.GenerateDto;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.base.service.dbhelper.annotations.QueryConditionInMaxSize;
 import net.datenwerke.rs.base.service.dbhelper.db.AmazonRedshift;
+import net.datenwerke.rs.base.service.dbhelper.db.CockroachDB;
 import net.datenwerke.rs.base.service.dbhelper.db.GoogleBigQuery;
 import net.datenwerke.rs.base.service.dbhelper.db.MariaDB;
 import net.datenwerke.rs.base.service.dbhelper.db.MySQL;
@@ -218,7 +219,8 @@ abstract public class DatabaseHelper {
                || builder.getDbHelper() instanceof MsSQL || builder.getDbHelper() instanceof MySQL
                || builder.getDbHelper() instanceof PostgreSQL || builder.getDbHelper() instanceof Oracle
                || builder.getDbHelper() instanceof GoogleBigQuery || builder.getDbHelper() instanceof AmazonRedshift
-               || builder.getDbHelper() instanceof YugabyteDB) {
+               || builder.getDbHelper() instanceof YugabyteDB
+               || builder.getDbHelper() instanceof CockroachDB) {
             /* Order by */
             if (!builder.getOrderDefinitions().isEmpty() && !builder.isLimit() && !builder.isOffset())
                currentInnerQuery = getNewOrderQuery(currentInnerQuery, builder, uniqueNameService);

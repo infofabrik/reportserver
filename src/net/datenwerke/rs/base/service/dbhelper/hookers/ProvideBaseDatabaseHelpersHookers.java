@@ -8,6 +8,7 @@ import com.google.inject.Inject;
 
 import net.datenwerke.rs.base.service.dbhelper.DatabaseHelper;
 import net.datenwerke.rs.base.service.dbhelper.db.AmazonRedshift;
+import net.datenwerke.rs.base.service.dbhelper.db.CockroachDB;
 import net.datenwerke.rs.base.service.dbhelper.db.Firebird;
 import net.datenwerke.rs.base.service.dbhelper.db.GoogleBigQuery;
 import net.datenwerke.rs.base.service.dbhelper.db.H2;
@@ -50,7 +51,8 @@ public class ProvideBaseDatabaseHelpersHookers implements DatabaseHelperProvider
          AmazonRedshift amazonRedshift,
          Teradata teradata,
          SQLite sqlite,
-         YugabyteDB yugabyteDb
+         YugabyteDB yugabyteDb,
+         CockroachDB cockroachDb
          ) {
 
       helpers.add(db2);
@@ -71,6 +73,7 @@ public class ProvideBaseDatabaseHelpersHookers implements DatabaseHelperProvider
       helpers.add(teradata);
       helpers.add(sqlite);
       helpers.add(yugabyteDb);
+      helpers.add(cockroachDb);
    }
 
    @Override
