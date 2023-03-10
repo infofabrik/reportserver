@@ -4,11 +4,11 @@ package net.datenwerke.rs.base.service.dbhelper.db;
  * 
  *
  */
-public class YugabyteDB extends PostgreSQL {
+public class Incorta extends PostgreSQL {
 
-   public static final String DB_NAME = "YugabyteDB";
-   public static final String DB_DRIVER = "com.yugabyte.Driver";
-   public static final String DB_DESCRIPTOR = "DBHelper_YugabyteDB";
+   public static final String DB_NAME = "Incorta";
+   public static final String DB_DRIVER = "org.postgresql.Driver";
+   public static final String DB_DESCRIPTOR = "DBHelper_Incorta";
 
    @Override
    public String getDescriptor() {

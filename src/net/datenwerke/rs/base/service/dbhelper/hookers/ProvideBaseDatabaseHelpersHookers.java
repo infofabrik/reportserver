@@ -9,15 +9,18 @@ import com.google.inject.Inject;
 import net.datenwerke.rs.base.service.dbhelper.DatabaseHelper;
 import net.datenwerke.rs.base.service.dbhelper.db.AmazonRedshift;
 import net.datenwerke.rs.base.service.dbhelper.db.CockroachDB;
+import net.datenwerke.rs.base.service.dbhelper.db.Exasol;
 import net.datenwerke.rs.base.service.dbhelper.db.Firebird;
 import net.datenwerke.rs.base.service.dbhelper.db.GoogleBigQuery;
 import net.datenwerke.rs.base.service.dbhelper.db.H2;
 import net.datenwerke.rs.base.service.dbhelper.db.HSQL;
+import net.datenwerke.rs.base.service.dbhelper.db.Incorta;
 import net.datenwerke.rs.base.service.dbhelper.db.MariaDB;
 import net.datenwerke.rs.base.service.dbhelper.db.MonetDB;
 import net.datenwerke.rs.base.service.dbhelper.db.MySQL;
 import net.datenwerke.rs.base.service.dbhelper.db.PostgreSQL;
 import net.datenwerke.rs.base.service.dbhelper.db.SQLite;
+import net.datenwerke.rs.base.service.dbhelper.db.SapHana;
 import net.datenwerke.rs.base.service.dbhelper.db.Sybase;
 import net.datenwerke.rs.base.service.dbhelper.db.Vertica;
 import net.datenwerke.rs.base.service.dbhelper.db.YugabyteDB;
@@ -52,7 +55,10 @@ public class ProvideBaseDatabaseHelpersHookers implements DatabaseHelperProvider
          Teradata teradata,
          SQLite sqlite,
          YugabyteDB yugabyteDb,
-         CockroachDB cockroachDb
+         CockroachDB cockroachDb,
+         SapHana saphana,
+         Exasol exasol,
+         Incorta incorta
          ) {
 
       helpers.add(db2);
@@ -74,6 +80,9 @@ public class ProvideBaseDatabaseHelpersHookers implements DatabaseHelperProvider
       helpers.add(sqlite);
       helpers.add(yugabyteDb);
       helpers.add(cockroachDb);
+      helpers.add(saphana);
+      helpers.add(exasol);
+      helpers.add(incorta);
    }
 
    @Override

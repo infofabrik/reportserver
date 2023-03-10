@@ -1,14 +1,16 @@
 package net.datenwerke.rs.base.service.dbhelper.db;
 
+import net.datenwerke.rs.base.service.dbhelper.DatabaseHelper;
+
 /**
  * 
  *
  */
-public class YugabyteDB extends PostgreSQL {
+public class SapHana extends DatabaseHelper {
 
-   public static final String DB_NAME = "YugabyteDB";
-   public static final String DB_DRIVER = "com.yugabyte.Driver";
-   public static final String DB_DESCRIPTOR = "DBHelper_YugabyteDB";
+   public static final String DB_NAME = "SAP HANA";
+   public static final String DB_DRIVER = "com.sap.db.jdbc.Driver";
+   public static final String DB_DESCRIPTOR = "DBHelper_SAPHANADB";
 
    @Override
    public String getDescriptor() {
