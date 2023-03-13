@@ -19,7 +19,10 @@ public class CommitFlushModeInterceptor implements MethodInterceptor {
       final FlushModeType currentFlushMode = entityManager.getFlushMode();
       try {
          entityManager.setFlushMode(FlushModeType.COMMIT);
-         return invocation.proceed();
+         Object result = invocation.proceed();
+         if (FlushModeType.AUTO.equals(currentFlushMode))
+            entityManager.flush();
+         return result;
       } finally {
          entityManager.setFlushMode(currentFlushMode);
       }

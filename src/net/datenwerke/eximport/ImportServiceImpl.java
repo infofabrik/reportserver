@@ -7,11 +7,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import javax.persistence.EntityManager;
-import javax.persistence.FlushModeType;
-
 import com.google.inject.Inject;
-import com.google.inject.Provider;
 
 import net.datenwerke.eximport.exceptions.ImportException;
 import net.datenwerke.eximport.hooks.ImporterProviderHook;
@@ -24,6 +20,7 @@ import net.datenwerke.eximport.im.Importer;
 import net.datenwerke.eximport.obj.EnclosedItemProperty;
 import net.datenwerke.eximport.obj.ExportedItem;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
+import net.datenwerke.rs.annotations.CommitFlushMode;
 
 /**
  * 
@@ -34,17 +31,18 @@ public class ImportServiceImpl implements ImportService {
    final ExportDataAnalyzerService dataAnalizer;
    private final HookHandlerService hookHandler;
    private final ImportSupervisorFactory importSupervisorFactory;
-   private final Provider<EntityManager> entityManagerProvider;
 
    @Inject
-   public ImportServiceImpl(ExportDataAnalyzerService dataAnalizer, HookHandlerService hookHandler,
-         ImportSupervisorFactory importSupervisorFactory, Provider<EntityManager> entityManagerProvider) {
+   public ImportServiceImpl(
+         ExportDataAnalyzerService dataAnalizer, 
+         HookHandlerService hookHandler,
+         ImportSupervisorFactory importSupervisorFactory
+         ) {
 
       /* store objects */
       this.dataAnalizer = dataAnalizer;
       this.hookHandler = hookHandler;
       this.importSupervisorFactory = importSupervisorFactory;
-      this.entityManagerProvider = entityManagerProvider;
    }
 
    /*
@@ -55,29 +53,22 @@ public class ImportServiceImpl implements ImportService {
     * ImportConfig)
     */
    @Override
+   @CommitFlushMode
    public ImportResult importData(ImportConfig config) {
-      FlushModeType oldFlush = entityManagerProvider.get().getFlushMode();
-      entityManagerProvider.get().setFlushMode(FlushModeType.COMMIT);
-
       List<Importer> importers = getImporters();
-
       ImportSupervisor supervisor = importSupervisorFactory.create(config, importers);
-
       try {
          ImportResult importedData = supervisor.importData();
-         if (FlushModeType.AUTO.equals(oldFlush))
-            entityManagerProvider.get().flush();
          return importedData;
       } catch (Exception e) {
          throw new ImportException(e);
-      } finally {
-         entityManagerProvider.get().setFlushMode(oldFlush);
       }
-
    }
 
    protected List<Importer> getImporters() {
-      return hookHandler.getHookers(ImporterProviderHook.class).stream().map(ImporterProviderHook::getObject)
+      return hookHandler.getHookers(ImporterProviderHook.class)
+            .stream()
+            .map(ImporterProviderHook::getObject)
             .collect(toList());
    }
 
@@ -89,8 +80,8 @@ public class ImportServiceImpl implements ImportService {
     */
    @Override
    public List<ExportedItem> getToBeConfigured(ImportConfig config) {
-      Set<String> referencedIds = new HashSet<String>();
-      Set<String> configuredIds = new HashSet<String>();
+      Set<String> referencedIds = new HashSet<>();
+      Set<String> configuredIds = new HashSet<>();
 
       for (ImportItemConfig itemConfig : config.getItemConfigs()) {
          String id = itemConfig.getId();
@@ -103,7 +94,7 @@ public class ImportServiceImpl implements ImportService {
       while (referencesAdded) {
          referencesAdded = false;
 
-         Set<String> newReferences = new HashSet<String>();
+         Set<String> newReferences = new HashSet<>();
          for (String id : referencedIds) {
             ExportedItem exportedItem = getExportedItemById(config.getExportDataProvider(), id);
             newReferences.addAll(exportedItem.getReferencedIDs());
@@ -112,7 +103,7 @@ public class ImportServiceImpl implements ImportService {
          referencesAdded |= referencedIds.addAll(newReferences);
       }
 
-      List<ExportedItem> exportedItems = new ArrayList<ExportedItem>();
+      List<ExportedItem> exportedItems = new ArrayList<>();
       for (String id : referencedIds) {
          if (!configuredIds.contains(id)) {
             ExportedItem exportedItem = getExportedItemById(config.getExportDataProvider(), id);
