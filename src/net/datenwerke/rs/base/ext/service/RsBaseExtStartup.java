@@ -21,6 +21,7 @@ import net.datenwerke.rs.base.ext.service.datasourcemanager.eximport.HttpDatasou
 import net.datenwerke.rs.base.ext.service.datasourcemanager.eximport.hookers.DatasourceExportConfigHooker;
 import net.datenwerke.rs.base.ext.service.datasourcemanager.eximport.hookers.ExportAllDatasourcesHooker;
 import net.datenwerke.rs.base.ext.service.datasourcemanager.eximport.hookers.ImportAllDatasourcesHooker;
+import net.datenwerke.rs.base.ext.service.datasourcemanager.eximport.hookers.RemoteDatasourceImporterHooker;
 import net.datenwerke.rs.base.ext.service.hooks.ExportConfigHook;
 import net.datenwerke.rs.base.ext.service.hooks.RemoteEntityImporterHook;
 import net.datenwerke.rs.base.ext.service.reportmanager.eximport.HttpReportManagerImportConfigurationHooker;
@@ -97,9 +98,11 @@ public class RsBaseExtStartup {
          Provider<DashboardManagerExportConfigHooker> dashboardManagerExportConfigHooker,
          
          Provider<RemoteReportImporterHooker> remoteReportImporterHooker,
+         Provider<RemoteDatasourceImporterHooker> remoteDatasourceImporterHooker,
          
          Provider<RpullCommand> rpullCommand,
          Provider<RpullCopySubcommand> rpullCopySubcommand
+         
 
    ) {
 
@@ -147,6 +150,7 @@ public class RsBaseExtStartup {
       hookHandler.attachHooker(ExportConfigHook.class, dashboardManagerExportConfigHooker);
       
       hookHandler.attachHooker(RemoteEntityImporterHook.class, remoteReportImporterHooker);
+      hookHandler.attachHooker(RemoteEntityImporterHook.class, remoteDatasourceImporterHooker);
       
       hookHandler.attachHooker(TerminalCommandHook.class, rpullCommand);
       hookHandler.attachHooker(RpullSubCommandHook.class, rpullCopySubcommand);
