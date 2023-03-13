@@ -9,18 +9,24 @@ import java.util.Set;
 
 import com.google.inject.Inject;
 
+import net.datenwerke.eximport.ex.Exporter;
 import net.datenwerke.eximport.exceptions.ImportException;
 import net.datenwerke.eximport.hooks.ImporterProviderHook;
 import net.datenwerke.eximport.im.ImportConfig;
 import net.datenwerke.eximport.im.ImportItemConfig;
+import net.datenwerke.eximport.im.ImportMode;
 import net.datenwerke.eximport.im.ImportResult;
 import net.datenwerke.eximport.im.ImportSupervisor;
 import net.datenwerke.eximport.im.ImportSupervisorFactory;
 import net.datenwerke.eximport.im.Importer;
 import net.datenwerke.eximport.obj.EnclosedItemProperty;
 import net.datenwerke.eximport.obj.ExportedItem;
+import net.datenwerke.eximport.obj.ItemProperty;
+import net.datenwerke.eximport.obj.ReferenceItemProperty;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.annotations.CommitFlushMode;
+import net.datenwerke.treedb.ext.service.eximport.TreeNodeImportItemConfig;
+import net.datenwerke.treedb.service.treedb.AbstractNode;
 
 /**
  * 
@@ -156,5 +162,27 @@ public class ImportServiceImpl implements ImportService {
          throw new ImportException("Could not find exported item with id " + id);
 
       return exportedItem;
+   }
+
+   @Override
+   public void configureParents(ImportConfig config, String topMostParentId, AbstractNode<?> topMostParentTarget,
+         Class<? extends Exporter> exporter) throws ClassNotFoundException {
+      /* configure file import's parents */
+      dataAnalizer.getExportedItemsFor(config.getExportDataProvider(), exporter).forEach(item -> {
+         ItemProperty parentProp = item.getPropertyByName("parent");
+         if (null != parentProp) {
+            TreeNodeImportItemConfig itemConfig = new TreeNodeImportItemConfig(item.getId());
+            /* set parent */
+            ReferenceItemProperty referenceParentProp = (ReferenceItemProperty) parentProp;
+            if (parentProp instanceof ReferenceItemProperty
+                  && topMostParentId.equals(referenceParentProp.getReferenceId()))
+               itemConfig.setParent(topMostParentTarget);
+
+            config.addItemConfig(itemConfig);
+         } else {
+            /* add reference entry */
+            config.addItemConfig(new TreeNodeImportItemConfig(item.getId(), ImportMode.REFERENCE, topMostParentTarget));
+         }
+      });
    }
 }

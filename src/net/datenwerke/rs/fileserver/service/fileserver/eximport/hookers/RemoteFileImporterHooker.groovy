@@ -66,40 +66,24 @@ class RemoteFileImporterHooker implements RemoteEntityImporterHook {
       }
          
       def analyzerService = analyzerServiceProvider.get()
+      def importService = importServiceProvider.get()
       def treeConfig = new TreeNodeImporterConfig()
       config.addSpecificImporterConfigs treeConfig
 
-      /* loop over items to find root */
-      def exportRootId = null
-      analyzerService.getExportedItemsFor(config.exportDataProvider, FileServerExporter).each {
-         if(!it.getPropertyByName('parent')){
-            exportRootId = it.id
-         }
-      }
+      def exportRootId = analyzerService.getRootId(config.exportDataProvider, FileServerExporter)
       if(!exportRootId) {
          handleError(check, 'Could not find root', results, IllegalStateException)
          if (check)
             return results
       }
 
-      /* one more loop to configure file import */
-      analyzerService.getExportedItemsFor(config.exportDataProvider, FileServerExporter).each {
-         def parentProp = it.getPropertyByName('parent')
-         if(parentProp){
-            def itemConfig = new TreeNodeImportItemConfig(it.id)
-            /* set parent */
-            if(parentProp instanceof ReferenceItemProperty && exportRootId == parentProp.referenceId)
-               itemConfig.parent = targetNode
-
-            config.addItemConfig itemConfig
-         }
-      }
+      importService.configureParents config, exportRootId, targetNode, FileServerExporter
 
       /* complete import */
       if (check)
          return results
       else
-         return importServiceProvider.get().importData(config)
+         return importService.importData(config)
    }
    
 }

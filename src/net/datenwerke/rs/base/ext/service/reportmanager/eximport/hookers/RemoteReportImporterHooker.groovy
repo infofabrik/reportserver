@@ -99,34 +99,18 @@ class RemoteReportImporterHooker implements RemoteEntityImporterHook {
       }
 
       def analyzerService = analyzerServiceProvider.get()
+      def importService = importServiceProvider.get()
       def treeConfig = new TreeNodeImporterConfig()
       config.addSpecificImporterConfigs treeConfig
 
-      /* loop over items to find root*/
-      def exportRootId = null
-      analyzerService.getExportedItemsFor(config.exportDataProvider, ReportManagerExporter).each {
-         if(!it.getPropertyByName('parent')){
-            exportRootId = it.id
-         }
-      }
+      def exportRootId = analyzerService.getRootId(config.exportDataProvider, ReportManagerExporter)
       if(!exportRootId) {
          handleError(check, 'Could not find root', results, IllegalStateException)
          if (check)
             return results
       }
 
-      /* one more loop to configure report import */
-      analyzerService.getExportedItemsFor(config.exportDataProvider, ReportManagerExporter).each {
-         def parentProp = it.getPropertyByName('parent')
-         if(parentProp){
-            def itemConfig = new TreeNodeImportItemConfig(it.id)
-            /* set parent */
-            if(parentProp instanceof ReferenceItemProperty && exportRootId == parentProp.referenceId)
-               itemConfig.parent = targetNode
-
-            config.addItemConfig itemConfig
-         }
-      }
+      importService.configureParents config, exportRootId, targetNode, ReportManagerExporter
 
       /* one more loop to check that keys and uuids do not exist in local RS */
       def reportService = reportServiceProvider.get()

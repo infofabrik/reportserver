@@ -2,10 +2,12 @@ package net.datenwerke.eximport;
 
 import java.util.List;
 
+import net.datenwerke.eximport.ex.Exporter;
 import net.datenwerke.eximport.im.ImportConfig;
 import net.datenwerke.eximport.im.ImportResult;
 import net.datenwerke.eximport.obj.EnclosedItemProperty;
 import net.datenwerke.eximport.obj.ExportedItem;
+import net.datenwerke.treedb.service.treedb.AbstractNode;
 
 /**
  * A service that allows to import previously exported objects.
@@ -48,5 +50,8 @@ public interface ImportService {
     * @return The {@link EnclosedItemProperty}
     */
    public EnclosedItemProperty getEnclosedItemPropertyForId(ExportDataProvider dataProvider, String id);
+
+   void configureParents(ImportConfig config, String topMostParentId, AbstractNode<?> topMostParentTarget,
+         Class<? extends Exporter> exporter) throws ClassNotFoundException;
 
 }

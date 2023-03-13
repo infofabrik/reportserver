@@ -70,14 +70,7 @@ class RemoteUserImporterHooker implements RemoteEntityImporterHook {
       def treeConfig = new TreeNodeImporterConfig()
       config.addSpecificImporterConfigs treeConfig
 
-      /* loop over items to find root */
-      def exportRootId = null
-      analyzerService.getExportedItemsFor(config.exportDataProvider, UserManagerExporter).each {
-         def nameprop = it.getPropertyByName('name')
-         if(!it.getPropertyByName('parent') && OrganisationalUnit == it.type ){
-            exportRootId = it.id
-         }
-      }
+      def exportRootId = analyzerService.getRootId(config.exportDataProvider, UserManagerExporter)
       if(!exportRootId) {
          handleError(check, 'Could not find root', results, IllegalStateException)
          if (check)

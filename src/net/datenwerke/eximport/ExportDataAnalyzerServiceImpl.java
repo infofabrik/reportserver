@@ -13,8 +13,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.w3c.dom.NodeList;
-
 import com.google.inject.Inject;
 
 import net.datenwerke.eximport.ex.Exporter;
@@ -373,6 +371,17 @@ public class ExportDataAnalyzerServiceImpl implements ExportDataAnalyzerService 
          return getEnclosedPropertyFor((Element) node);
       }
       return null;
+   }
+
+   @Override
+   public String getRootId(ExportDataProvider dataProvider, Class<? extends Exporter> exporter) throws ClassNotFoundException {
+      /* loop over items to find root */
+      return getExportedItemsFor(dataProvider, exporter)
+         .stream()
+         .filter(item -> null == item.getPropertyByName("parent"))
+         .map(ExportedItem::getId)
+         .findAny()
+         .orElse(null);
    }
 
 }

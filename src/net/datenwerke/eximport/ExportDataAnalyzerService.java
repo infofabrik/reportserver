@@ -141,7 +141,7 @@ public interface ExportDataAnalyzerService {
     * {@link Exporter} as a {@link NodeList}
     * 
     */
-   Elements getExportedItemElementsFor(ExportDataProvider dataProvider, final Class<? extends Exporter> exporter);
+   Elements getExportedItemElementsFor(ExportDataProvider dataProvider, Class<? extends Exporter> exporter);
 
    /**
     * Checks wether a given {@link Element} is an exported item element or not
@@ -249,5 +249,7 @@ public interface ExportDataAnalyzerService {
     */
    EnclosedItemProperty getEnclosedPropertyFor(ExportDataProvider dataProvider, String id)
          throws ClassNotFoundException;
+
+   String getRootId(ExportDataProvider dataProvider, Class<? extends Exporter> exporter) throws ClassNotFoundException;
 
 }
