@@ -100,7 +100,7 @@ public static final String BASE_COMMAND = "datasource";
                   true);
          return generateCommandResult(Optional.ofNullable(metadata), datasource, generalInformation);
       } catch (Exception e) {
-         throw new TerminalException(ExceptionUtils.getRootCauseMessage(e));
+         throw new TerminalException(ExceptionUtils.getRootCauseMessage(e), e);
       }
    }
 

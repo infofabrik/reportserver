@@ -109,7 +109,7 @@ public class CopyParameterDefinitionsSubcommand implements CopySubCommandHook {
          
          return commandResult;
       } catch (Exception e) {
-         throw new TerminalException(ExceptionUtils.getRootCauseMessage(e));
+         throw new TerminalException(ExceptionUtils.getRootCauseMessage(e), e);
       }
    }
 

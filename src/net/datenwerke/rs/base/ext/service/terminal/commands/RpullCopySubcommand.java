@@ -132,7 +132,7 @@ public class RpullCopySubcommand implements RpullSubCommandHook {
             return importEntities(arguments.get(0), arguments.get(1), arguments.get(2), arguments.get(3),
                   arguments.get(4), includeVariants);
          } catch (Exception e) {
-            throw new TerminalException(ExceptionUtils.getRootCauseMessage(e));
+            throw new TerminalException(ExceptionUtils.getRootCauseMessage(e), e);
          }
       }
    }
