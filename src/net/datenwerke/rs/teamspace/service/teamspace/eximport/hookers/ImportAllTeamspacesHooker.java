@@ -14,7 +14,9 @@ public class ImportAllTeamspacesHooker implements ImportAllHook {
    private final ExportDataAnalyzerService analizerService;
 
    @Inject
-   public ImportAllTeamspacesHooker(ExportDataAnalyzerService analizerService) {
+   public ImportAllTeamspacesHooker(
+         ExportDataAnalyzerService analizerService
+         ) {
       this.analizerService = analizerService;
    }
 

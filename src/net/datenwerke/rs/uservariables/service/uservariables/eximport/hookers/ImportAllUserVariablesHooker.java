@@ -14,7 +14,9 @@ public class ImportAllUserVariablesHooker implements ImportAllHook {
    private final ExportDataAnalyzerService analizerService;
 
    @Inject
-   public ImportAllUserVariablesHooker(ExportDataAnalyzerService analizerService) {
+   public ImportAllUserVariablesHooker(
+         ExportDataAnalyzerService analizerService
+         ) {
       this.analizerService = analizerService;
    }
 

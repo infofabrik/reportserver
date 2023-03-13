@@ -26,8 +26,12 @@ public class HttpTreeImportServiceImpl implements HttpTreeImportService {
    private final ExportService exportService;
 
    @Inject
-   public HttpTreeImportServiceImpl(DtoService dtoService, ExportDataAnalyzerService analizerService,
-         Provider<HttpImportService> httpImportService, ExportService exportService) {
+   public HttpTreeImportServiceImpl(
+         DtoService dtoService, 
+         ExportDataAnalyzerService analizerService,
+         Provider<HttpImportService> httpImportService, 
+         ExportService exportService
+         ) {
 
       /* store objects */
       this.dtoService = dtoService;

@@ -27,6 +27,8 @@ public class ExImportModule extends AbstractModule {
       /* services */
       bind(ImportService.class).to(ImportServiceImpl.class).in(Singleton.class);
       bind(ExportService.class).to(ExportServiceImpl.class).in(Singleton.class);
+      
+      bind(ExportDataAnalyzerServiceImpl.class).to(ExportDataAnalyzerServiceImpl.class);
 
       /* assisted injection factories */
       bind(ExportSupervisorFactory.class)

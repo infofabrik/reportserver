@@ -6,18 +6,17 @@ import net.datenwerke.eximport.ExportDataAnalyzerService;
 import net.datenwerke.eximport.im.ImportConfig;
 import net.datenwerke.eximport.obj.ExportedItem;
 import net.datenwerke.rs.eximport.service.eximport.hooks.ImportAllHook;
-import net.datenwerke.rs.tsreportarea.service.tsreportarea.TsDiskService;
 import net.datenwerke.rs.tsreportarea.service.tsreportarea.eximport.TsDiskExporter;
 import net.datenwerke.treedb.ext.service.eximport.TreeNodeImportItemConfig;
 
 public class ImportAllTsDiskHooker implements ImportAllHook {
 
-   private final TsDiskService tsDiskService;
    private final ExportDataAnalyzerService analizerService;
 
    @Inject
-   public ImportAllTsDiskHooker(TsDiskService tsDiskService, ExportDataAnalyzerService analizerService) {
-      this.tsDiskService = tsDiskService;
+   public ImportAllTsDiskHooker(
+         ExportDataAnalyzerService analizerService
+         ) {
       this.analizerService = analizerService;
    }
 

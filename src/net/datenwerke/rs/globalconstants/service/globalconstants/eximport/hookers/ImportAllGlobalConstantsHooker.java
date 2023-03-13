@@ -14,7 +14,9 @@ public class ImportAllGlobalConstantsHooker implements ImportAllHook {
    private final ExportDataAnalyzerService analizerService;
 
    @Inject
-   public ImportAllGlobalConstantsHooker(ExportDataAnalyzerService analizerService) {
+   public ImportAllGlobalConstantsHooker(
+         ExportDataAnalyzerService analizerService
+         ) {
       this.analizerService = analizerService;
    }
 

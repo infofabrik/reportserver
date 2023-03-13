@@ -46,9 +46,14 @@ public class HttpImportServiceImpl implements HttpImportService {
    protected HttpImportConfiguration currentConfiguration;
 
    @Inject
-   public HttpImportServiceImpl(DtoService dtoService, ExportDataAnalyzerService analizerService,
-         ExportService exportService, HookHandlerService hookHandler,
-         Provider<HttpImportConfiguration> configurationProvider, TempFileService tempFileService) {
+   public HttpImportServiceImpl(
+         DtoService dtoService, 
+         ExportDataAnalyzerService analizerService,
+         ExportService exportService, 
+         HookHandlerService hookHandler,
+         Provider<HttpImportConfiguration> configurationProvider, 
+         TempFileService tempFileService
+         ) {
 
       /* store objects */
       this.dtoService = dtoService;

@@ -20,7 +20,10 @@ public class ImportAllGenericRightsHooker implements ImportAllHook {
    private final SecurityService securityService;
 
    @Inject
-   public ImportAllGenericRightsHooker(ExportDataAnalyzerService analizerService, SecurityService securityService) {
+   public ImportAllGenericRightsHooker(
+         ExportDataAnalyzerService analizerService, 
+         SecurityService securityService
+         ) {
       this.analizerService = analizerService;
       this.securityService = securityService;
    }

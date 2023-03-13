@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory
 
 import com.google.inject.Provider
 
-import net.datenwerke.eximport.ExportDataAnalyzerService
+import net.datenwerke.eximport.ExportDataAnalyzerServiceImpl
 import net.datenwerke.eximport.ImportService
 import net.datenwerke.eximport.im.ImportConfig
 import net.datenwerke.eximport.im.ImportResult
@@ -25,7 +25,7 @@ import net.datenwerke.treedb.service.treedb.AbstractNode
 
 class RemoteFileImporterHooker implements RemoteEntityImporterHook {
 
-   private final Provider<ExportDataAnalyzerService> analyzerServiceProvider
+   private final Provider<ExportDataAnalyzerServiceImpl> analyzerServiceProvider
    private final Provider<UserManagerService> userManagerServiceProvider
    private final Provider<ImportService> importServiceProvider
    
@@ -33,7 +33,7 @@ class RemoteFileImporterHooker implements RemoteEntityImporterHook {
    
    @Inject
    public RemoteFileImporterHooker(
-      Provider<ExportDataAnalyzerService> analyzerServiceProvider,
+      Provider<ExportDataAnalyzerServiceImpl> analyzerServiceProvider,
       Provider<UserManagerService> userManagerServiceProvider,
       Provider<ImportService> importServiceProvider
       ) {
