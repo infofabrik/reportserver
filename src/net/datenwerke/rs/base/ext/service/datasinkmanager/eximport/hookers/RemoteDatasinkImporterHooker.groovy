@@ -1,4 +1,4 @@
-package net.datenwerke.rs.base.ext.service.datasourcemanager.eximport.hookers
+package net.datenwerke.rs.base.ext.service.datasinkmanager.eximport.hookers
 
 import static net.datenwerke.rs.base.ext.service.RemoteEntityImporterServiceImpl.handleError
 
@@ -14,13 +14,14 @@ import net.datenwerke.eximport.ImportService
 import net.datenwerke.eximport.im.ImportConfig
 import net.datenwerke.eximport.im.ImportResult
 import net.datenwerke.rs.base.ext.service.RemoteEntityImports
+import net.datenwerke.rs.base.ext.service.datasinkmanager.eximport.DatasinkManagerExporter
 import net.datenwerke.rs.base.ext.service.datasourcemanager.eximport.DatasourceManagerExporter
 import net.datenwerke.rs.base.ext.service.hooks.RemoteEntityImporterHook
-import net.datenwerke.rs.core.service.datasourcemanager.entities.AbstractDatasourceManagerNode
+import net.datenwerke.rs.core.service.datasinkmanager.entities.AbstractDatasinkManagerNode
 import net.datenwerke.treedb.ext.service.eximport.TreeNodeImporterConfig
 import net.datenwerke.treedb.service.treedb.AbstractNode
 
-class RemoteDatasourceImporterHooker implements RemoteEntityImporterHook {
+class RemoteDatasinkImporterHooker implements RemoteEntityImporterHook {
 
    private final Provider<ExportDataAnalyzerServiceImpl> analyzerServiceProvider
    private final Provider<ImportService> importServiceProvider
@@ -28,7 +29,7 @@ class RemoteDatasourceImporterHooker implements RemoteEntityImporterHook {
    private final Logger logger = LoggerFactory.getLogger(getClass().name)
    
    @Inject
-   public RemoteDatasourceImporterHooker(
+   public RemoteDatasinkImporterHooker(
       Provider<ExportDataAnalyzerServiceImpl> analyzerServiceProvider,
       Provider<ImportService> importServiceProvider
       ) {
@@ -38,7 +39,7 @@ class RemoteDatasourceImporterHooker implements RemoteEntityImporterHook {
    
    @Override
    public boolean consumes(RemoteEntityImports importType) {
-      return importType == RemoteEntityImports.DATASOURCES
+      return importType == RemoteEntityImports.DATASINKS
    }
    
    @Override
@@ -53,8 +54,8 @@ class RemoteDatasourceImporterHooker implements RemoteEntityImporterHook {
    }
 
    private doImportRemoteEntity(ImportConfig config, AbstractNode targetNode, boolean check, Map<String, String> results) {
-      if (!(targetNode instanceof AbstractDatasourceManagerNode)) {
-         handleError(check, "Node is not a datasource folder: '$targetNode'", results, IllegalArgumentException)
+      if (!(targetNode instanceof AbstractDatasinkManagerNode)) {
+         handleError(check, "Node is not a datasink folder: '$targetNode'", results, IllegalArgumentException)
          if (check)
             return results
       }
@@ -64,14 +65,14 @@ class RemoteDatasourceImporterHooker implements RemoteEntityImporterHook {
       def treeConfig = new TreeNodeImporterConfig()
       config.addSpecificImporterConfigs treeConfig
 
-      def exportRootId = analyzerService.getRootId(config.exportDataProvider, DatasourceManagerExporter)
+      def exportRootId = analyzerService.getRootId(config.exportDataProvider, DatasinkManagerExporter)
       if(!exportRootId) {
          handleError(check, 'Could not find root', results, IllegalStateException)
          if (check)
             return results
       }
 
-      importService.configureParents config, exportRootId, targetNode, DatasourceManagerExporter
+      importService.configureParents config, exportRootId, targetNode, DatasinkManagerExporter
 
       /* complete import */
       if (check)
