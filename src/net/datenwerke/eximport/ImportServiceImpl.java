@@ -10,8 +10,6 @@ import java.util.Set;
 import javax.persistence.EntityManager;
 import javax.persistence.FlushModeType;
 
-import org.hibernate.FlushMode;
-
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
@@ -67,7 +65,7 @@ public class ImportServiceImpl implements ImportService {
 
       try {
          ImportResult importedData = supervisor.importData();
-         if (FlushMode.AUTO.equals(oldFlush))
+         if (FlushModeType.AUTO.equals(oldFlush))
             entityManagerProvider.get().flush();
          return importedData;
       } catch (Exception e) {
