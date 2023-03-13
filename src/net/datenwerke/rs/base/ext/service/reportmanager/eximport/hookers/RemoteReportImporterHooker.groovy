@@ -104,11 +104,9 @@ class RemoteReportImporterHooker implements RemoteEntityImporterHook {
 
       /* loop over items to find root*/
       def exportRootId = null
-      def exportRootName = null
       analyzerService.getExportedItemsFor(config.exportDataProvider, ReportManagerExporter).each {
          if(!it.getPropertyByName('parent')){
             exportRootId = it.id
-            exportRootName = it.getPropertyByName('name').element.value
          }
       }
       if(!exportRootId) {

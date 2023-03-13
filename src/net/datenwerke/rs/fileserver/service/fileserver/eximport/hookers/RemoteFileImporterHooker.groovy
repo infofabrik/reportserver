@@ -71,11 +71,9 @@ class RemoteFileImporterHooker implements RemoteEntityImporterHook {
 
       /* loop over items to find root */
       def exportRootId = null
-      def exportRootName = null
       analyzerService.getExportedItemsFor(config.exportDataProvider, FileServerExporter).each {
          if(!it.getPropertyByName('parent')){
             exportRootId = it.id
-            exportRootName = it.getPropertyByName('name').element.value
          }
       }
       if(!exportRootId) {

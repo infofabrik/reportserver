@@ -72,12 +72,10 @@ class RemoteUserImporterHooker implements RemoteEntityImporterHook {
 
       /* loop over items to find root */
       def exportRootId = null
-      def exportRootName = null
       analyzerService.getExportedItemsFor(config.exportDataProvider, UserManagerExporter).each {
          def nameprop = it.getPropertyByName('name')
          if(!it.getPropertyByName('parent') && OrganisationalUnit == it.type ){
             exportRootId = it.id
-            exportRootName = nameprop?.element?.value
          }
       }
       if(!exportRootId) {

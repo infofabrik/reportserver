@@ -1,5 +1,9 @@
 package net.datenwerke.eximport;
 
+import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toSet;
+import static net.datenwerke.rs.utils.exception.shared.LambdaExceptionUtil.rethrowFunction;
+
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -15,7 +19,6 @@ import com.google.inject.Inject;
 
 import net.datenwerke.eximport.ex.Exporter;
 import net.datenwerke.eximport.nuxlets.StreamingPathFilter;
-import net.datenwerke.eximport.nuxlets.StreamingTransform;
 import net.datenwerke.eximport.obj.ComplexItemProperty;
 import net.datenwerke.eximport.obj.EnclosedItemProperty;
 import net.datenwerke.eximport.obj.ExportedItem;
@@ -61,12 +64,7 @@ public class ExportDataAnalyzerService {
             + ExImportHelperService.DOCUMENT_HEAD_NAME_ELEMENT;
 
       Builder builder = new Builder(
-            new StreamingPathFilter(expr, eiHelper.getNamespaceMap()).createNodeFactory(null, new StreamingTransform() {
-               @Override
-               public Nodes transform(nu.xom.Element element) {
-                  return new Nodes(element);
-               }
-            }));
+            new StreamingPathFilter(expr, eiHelper.getNamespaceMap()).createNodeFactory(null, element -> new Nodes(element)));
       try {
          Document doc = builder.build(dataProvider.getXmlStream());
          return doc.getRootElement().getChildElements().get(0).getChildElements().get(0).getValue();
@@ -85,12 +83,7 @@ public class ExportDataAnalyzerService {
             + ExImportHelperService.DOCUMENT_HEAD_ELEMENT + "/rsexim:"
             + ExImportHelperService.DOCUMENT_HEAD_DESCRIPTION_ELEMENT;
       Builder builder = new Builder(
-            new StreamingPathFilter(expr, eiHelper.getNamespaceMap()).createNodeFactory(null, new StreamingTransform() {
-               @Override
-               public Nodes transform(nu.xom.Element element) {
-                  return new Nodes(element);
-               }
-            }));
+            new StreamingPathFilter(expr, eiHelper.getNamespaceMap()).createNodeFactory(null, element -> new Nodes(element)));
       try {
          Document doc = builder.build(dataProvider.getXmlStream());
          return doc.getRootElement().getChildElements().get(0).getChildElements().get(0).getValue();
@@ -109,12 +102,7 @@ public class ExportDataAnalyzerService {
             + ExImportHelperService.DOCUMENT_HEAD_ELEMENT + "/rsexim:"
             + ExImportHelperService.DOCUMENT_HEAD_DATE_ELEMENT;
       Builder builder = new Builder(
-            new StreamingPathFilter(expr, eiHelper.getNamespaceMap()).createNodeFactory(null, new StreamingTransform() {
-               @Override
-               public Nodes transform(nu.xom.Element element) {
-                  return new Nodes(element);
-               }
-            }));
+            new StreamingPathFilter(expr, eiHelper.getNamespaceMap()).createNodeFactory(null, element -> new Nodes(element)));
       try {
          Document doc = builder.build(dataProvider.getXmlStream());
          String dateString = doc.getRootElement().getChildElements().get(0).getChildElements().get(0).getValue();
@@ -134,12 +122,7 @@ public class ExportDataAnalyzerService {
             + ExImportHelperService.DOCUMENT_DATA_ELEMENT + "/rsexim:" + ExImportHelperService.EXPORTER_BASE_ELEMENT;
 
       Builder builder = new Builder(
-            new StreamingPathFilter(expr, eiHelper.getNamespaceMap()).createNodeFactory(null, new StreamingTransform() {
-               @Override
-               public Nodes transform(nu.xom.Element element) {
-                  return new Nodes(element);
-               }
-            }));
+            new StreamingPathFilter(expr, eiHelper.getNamespaceMap()).createNodeFactory(null, element -> new Nodes(element)));
       try {
          Document doc = builder.build(dataProvider.getXmlStream());
          return doc.getRootElement().getChildElements().get(0).getChildElements();
@@ -236,16 +219,11 @@ public class ExportDataAnalyzerService {
     * @return A {@link Collection} of {@link ItemProperty}s
     * @throws ClassNotFoundException
     */
-   public Collection<ItemProperty> getItemPropertiesFor(Element el) throws ClassNotFoundException {
-      Collection<ItemProperty> properties = new HashSet<ItemProperty>();
-
-      List<Element> list = getItemsPropertyElements(el);
-      for (Element item : list) {
-         ItemProperty itemProperty = getItemPropertyFor(item);
-         properties.add(itemProperty);
-      }
-
-      return properties;
+   public Collection<ItemProperty> getItemPropertiesFor(final Element el) throws ClassNotFoundException {
+      return getItemsPropertyElements(el)
+         .stream()
+         .map(rethrowFunction( this::getItemPropertyFor ) )
+         .collect(toSet());
    }
 
    /**
@@ -325,14 +303,11 @@ public class ExportDataAnalyzerService {
     * @return A {@link List} of {@link ItemProperty}s
     * @throws ClassNotFoundException
     */
-   protected List<ItemProperty> getCollectionValuesFor(Element el) throws ClassNotFoundException {
-      List<ItemProperty> values = new ArrayList<ItemProperty>();
-
-      List<Element> list = getCollectionValueElementsFor(el);
-      for (Element item : list)
-         values.add(getItemPropertyFor(item));
-
-      return values;
+   protected List<ItemProperty> getCollectionValuesFor(final Element el) throws ClassNotFoundException {
+      return getCollectionValueElementsFor(el)
+         .stream()
+         .map(rethrowFunction(this::getItemPropertyFor))
+         .collect(toList());
    }
 
    /**
@@ -362,20 +337,11 @@ public class ExportDataAnalyzerService {
          final Class<? extends Exporter> exporter) {
       String locationStr = "/rsexim:" + ExImportHelperService.DOCUMENT_ROOT_ELEMENT + "/rsexim:"
             + ExImportHelperService.DOCUMENT_DATA_ELEMENT + "/rsexim:" + ExImportHelperService.EXPORTER_BASE_ELEMENT;
-      Builder builder = new Builder(new StreamingPathFilter(locationStr, eiHelper.getNamespaceMap())
-            .createNodeFactory(null, new StreamingTransform() {
-               @Override
-               public Nodes transform(nu.xom.Element element) {
-                  Nodes result = element.query(
+      Builder builder = new Builder(
+            new StreamingPathFilter(locationStr, eiHelper.getNamespaceMap()).createNodeFactory(null,
+                  element -> element.query(
                         ".[@" + ExImportHelperService.EXPORTER_TYPE + "='" + exporter.getName() + "']",
-                        eiHelper.xpathContext());
-
-//				Nodes result = XQueryUtil.xquery(element, 
-//						 eiHelper.xqueryNamespaces() + 
-//						 ".[@" + ExImportHelperService.EXPORTER_TYPE + "='" + exporter.getName() + "']");
-                  return result;
-               }
-            }));
+                        eiHelper.xpathContext())));
       try {
          InputStream xmlStream = dataProvider.getXmlStream();
          Document doc = builder.build(xmlStream);
