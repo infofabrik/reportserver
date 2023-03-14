@@ -8,6 +8,8 @@ import net.datenwerke.rs.adminutils.client.systemconsole.generalinfo.dto.General
 
 public interface GeneralInfoService {
    
+   String getRestURL();
+   
    String getRequestURL();
    
    String getServerName();

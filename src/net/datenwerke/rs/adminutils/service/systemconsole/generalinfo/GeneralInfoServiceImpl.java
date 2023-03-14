@@ -192,6 +192,7 @@ public class GeneralInfoServiceImpl implements GeneralInfoService {
       info.setJavaVersion(getJavaVersion());
       info.setVmArguments(getVmArguments());
       info.setApplicationServer(getApplicationServer());
+      info.setRestURL(getRestURL());
       info.setRequestURL(getRequestURL());
       info.setServerName(getServerName());
       info.setServerPort(getServerPort());
@@ -446,6 +447,14 @@ public class GeneralInfoServiceImpl implements GeneralInfoService {
          return -1;
       }
    }
+   
+   @Override
+   public String getRestURL() {
+      String requestURL = getRequestURL();
+      if (null == requestURL)
+         return null;
+      return requestURL.substring(0, requestURL.lastIndexOf("/")) + "/rest";
+   }
 
    @Override
    public String getRequestURL() {
@@ -577,4 +586,6 @@ public class GeneralInfoServiceImpl implements GeneralInfoService {
    public String getNow() {
       return DateUtils.formatCurrentDate();
    }
+
+   
 }

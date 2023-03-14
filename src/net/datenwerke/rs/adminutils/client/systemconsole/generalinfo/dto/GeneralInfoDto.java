@@ -19,6 +19,7 @@ public class GeneralInfoDto implements Serializable {
    private String catalinaHome;
    private String catalinaBase;
    private String logFilesDirectory;
+   private String restURL;
    private String requestURL;
    private String serverName;
    private int serverPort;
@@ -543,6 +544,14 @@ public class GeneralInfoDto implements Serializable {
 
    public void setSftpPort(int sftpPort) {
       this.sftpPort = sftpPort;
+   }
+
+   public void setRestURL(String restURL) {
+      this.restURL = restURL;
+   }
+   
+   public String getRestURL() {
+      return restURL;
    }
 
 }
