@@ -101,6 +101,8 @@ public interface SystemConsoleMessages extends Messages {
 
    public String configDirLabel();
    
+   public String restUrl();
+   
    public String requestUrl();
    
    public String scheme();

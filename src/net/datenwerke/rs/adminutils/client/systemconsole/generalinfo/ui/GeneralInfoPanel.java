@@ -41,7 +41,7 @@ public class GeneralInfoPanel extends DwContentPanel {
    
    private enum Type {
       RS_VERSION, JAVA_VERSION, JAVA_HOME, JAVA_VM_ARGUMENTS, APPLICATION_SERVER, CATALINA_HOME, CATALINA_BASE, LOG_FILES_DIRECTORY,
-      REQUEST_URL, REQUEST_SCHEME, REQUEST_SERVER_NAME, REQUEST_SERVER_PORT, REQUEST_CONTEXT_PATH, REQUEST_PROTOCOL,
+      REST_URL, REQUEST_URL, REQUEST_SCHEME, REQUEST_SERVER_NAME, REQUEST_SERVER_PORT, REQUEST_CONTEXT_PATH, REQUEST_PROTOCOL,
       MAX_MEMORY, CONFIG_DIR, GROOVY_VERSION, LOCALE, JVM_LOCALE, JVM_USER_LANGUAGE, JVM_USER_COUNTRY,
       JVM_USER_TIMEZONE, JVM_FILE_ENCODING, JVM_SERVER_TIME, OS_SYSTEM, USER_AGENT, STATIC_PAMS, HIBERNATE_DIALECT,
       HIBERNATE_DB_DATABASE_NAME, HIBERNATE_DB_DATABASE_VERSION,
@@ -145,6 +145,8 @@ public class GeneralInfoPanel extends DwContentPanel {
             SystemConsoleMessages.INSTANCE.operationSystemLabel(), Optional.of(generalInfoDto.getOsVersion())));
       generalInfo.put(Type.USER_AGENT, new SimpleImmutableEntry<String, Optional<Object>>(
             SystemConsoleMessages.INSTANCE.userAgentLabel(), Optional.of(generalInfoDto.getUserAgent())));
+      generalInfo.put(Type.REST_URL, new SimpleImmutableEntry<String, Optional<Object>>(
+            SystemConsoleMessages.INSTANCE.restUrl(), Optional.of(generalInfoDto.getRestURL())));
       generalInfo.put(Type.REQUEST_URL, new SimpleImmutableEntry<String, Optional<Object>>(
             SystemConsoleMessages.INSTANCE.requestUrl(), Optional.of(generalInfoDto.getRequestURL())));
       generalInfo.put(Type.REQUEST_SCHEME, new SimpleImmutableEntry<String, Optional<Object>>(
