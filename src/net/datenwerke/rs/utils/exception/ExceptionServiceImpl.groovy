@@ -56,6 +56,7 @@ import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.REQ
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.REQUEST_SCHEME
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.REQUEST_SERVER_NAME
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.REQUEST_SERVER_PORT
+import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.REST_URL
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.REQUEST_URL
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.STATIC_PAMS
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.SUPPORTED_SSL_PROTOCOLS
@@ -361,6 +362,9 @@ public class ExceptionServiceImpl implements ExceptionService {
             break
          case LOG_FILES_DIRECTORY:
             propertyValues[property] = generalInfoService.getLogFilesDirectory(true)
+            break
+         case REST_URL:
+            propertyValues[property] = generalInfoService.restURL
             break
          case REQUEST_URL:
             propertyValues[property] = generalInfoService.requestURL
