@@ -52,13 +52,30 @@ import net.datenwerke.rs.adminutils.client.systemconsole.generalinfo.dto.General
 import net.datenwerke.rs.adminutils.service.logs.LogFilesService;
 import net.datenwerke.rs.base.service.datasources.DatasourceHelperService;
 import net.datenwerke.rs.base.service.datasources.definitions.DatabaseDatasource;
+import net.datenwerke.rs.base.service.reportengines.jasper.entities.JasperReport;
+import net.datenwerke.rs.base.service.reportengines.jasper.entities.JasperReportVariant;
+import net.datenwerke.rs.base.service.reportengines.table.entities.TableReport;
+import net.datenwerke.rs.base.service.reportengines.table.entities.TableReportVariant;
+import net.datenwerke.rs.birt.service.reportengine.entities.BirtReport;
+import net.datenwerke.rs.birt.service.reportengine.entities.BirtReportVariant;
 import net.datenwerke.rs.configservice.service.configservice.ConfigDirService;
 import net.datenwerke.rs.configservice.service.configservice.ConfigService;
 import net.datenwerke.rs.core.service.internaldb.TempTableService;
+import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
+import net.datenwerke.rs.crystal.service.crystal.entities.CrystalReport;
+import net.datenwerke.rs.crystal.service.crystal.entities.CrystalReportVariant;
+import net.datenwerke.rs.grideditor.service.grideditor.entities.GridEditorReport;
+import net.datenwerke.rs.grideditor.service.grideditor.entities.GridEditorReportVariant;
+import net.datenwerke.rs.jxlsreport.service.jxlsreport.entities.JxlsReport;
+import net.datenwerke.rs.jxlsreport.service.jxlsreport.entities.JxlsReportVariant;
 import net.datenwerke.rs.license.service.LicenseService;
 import net.datenwerke.rs.remoteaccess.service.sftp.annotations.KeyLocation;
 import net.datenwerke.rs.remoteaccess.service.sftp.annotations.SftpEnabled;
 import net.datenwerke.rs.remoteaccess.service.sftp.annotations.SftpPort;
+import net.datenwerke.rs.saiku.service.saiku.entities.SaikuReport;
+import net.datenwerke.rs.saiku.service.saiku.entities.SaikuReportVariant;
+import net.datenwerke.rs.scriptreport.service.scriptreport.entities.ScriptReport;
+import net.datenwerke.rs.scriptreport.service.scriptreport.entities.ScriptReportVariant;
 import net.datenwerke.rs.utils.localization.LocalizationServiceImpl;
 import net.datenwerke.rs.utils.misc.DateUtils;
 import net.datenwerke.rs.utils.misc.Nullable;
@@ -224,10 +241,7 @@ public class GeneralInfoServiceImpl implements GeneralInfoService {
       info.setEnabledSslProtocols(getEnabledSslProtocols());
       info.setStaticPams(getStaticPams());
       
-      ImmutablePair<Long, Long> reportCount = getReportCount();
-      info.setBaseReportCount(reportCount.getLeft());
-      info.setVariantReportCount(reportCount.getRight());
-      
+      setUsageStatistics(info);
       setHibernateProperties(info);
       setSchemaVersion(info);
       setInternalDb(info);
@@ -236,6 +250,52 @@ public class GeneralInfoServiceImpl implements GeneralInfoService {
       info.setConfigDir(getConfigDirectory(true));
       
       return info;
+   }
+   
+   private void setUsageStatistics(GeneralInfoDto info) {
+      final ImmutablePair<Long, Long> reportCount = getReportCount();
+      info.setBaseReportCount(reportCount.getLeft());
+      info.setVariantReportCount(reportCount.getRight());
+      
+      final ImmutablePair<Long, Long> jasperReportCount = getSpecificReportCount(JasperReport.class,
+            JasperReportVariant.class);
+      info.setBaseJasperCount(jasperReportCount.getLeft());
+      info.setVariantJasperCount(jasperReportCount.getRight());
+      
+      final ImmutablePair<Long, Long> birtReportCount = getSpecificReportCount(BirtReport.class,
+            BirtReportVariant.class);
+      info.setBaseBirtCount(birtReportCount.getLeft());
+      info.setVariantBirtCount(birtReportCount.getRight());
+      
+      final ImmutablePair<Long, Long> crystalReportCount = getSpecificReportCount(CrystalReport.class,
+            CrystalReportVariant.class);
+      info.setBaseCrystalCount(crystalReportCount.getLeft());
+      info.setVariantCrystalCount(crystalReportCount.getRight());
+      
+      final ImmutablePair<Long, Long> dynamicListReportCount = getSpecificReportCount(TableReport.class,
+            TableReportVariant.class);
+      info.setBaseDynamicListCount(dynamicListReportCount.getLeft());
+      info.setVariantDynamicListCount(dynamicListReportCount.getRight());
+      
+      final ImmutablePair<Long, Long> scriptReportReportCount = getSpecificReportCount(ScriptReport.class,
+            ScriptReportVariant.class);
+      info.setBaseScriptReportCount(scriptReportReportCount.getLeft());
+      info.setVariantScriptReportCount(scriptReportReportCount.getRight());
+      
+      final ImmutablePair<Long, Long> gridReportReportCount = getSpecificReportCount(GridEditorReport.class,
+            GridEditorReportVariant.class);
+      info.setBaseGridReportCount(gridReportReportCount.getLeft());
+      info.setVariantGridReportCount(gridReportReportCount.getRight());
+      
+      final ImmutablePair<Long, Long> jxlsReportReportCount = getSpecificReportCount(JxlsReport.class,
+            JxlsReportVariant.class);
+      info.setBaseJxlsReportCount(jxlsReportReportCount.getLeft());
+      info.setVariantJxlsReportCount(jxlsReportReportCount.getRight());
+      
+      final ImmutablePair<Long, Long> saikuReportReportCount = getSpecificReportCount(SaikuReport.class,
+            SaikuReportVariant.class);
+      info.setBaseSaikuReportCount(saikuReportReportCount.getLeft());
+      info.setVariantSaikuReportCount(saikuReportReportCount.getRight());
    }
    
    private void setSftp(GeneralInfoDto info) {
@@ -598,6 +658,12 @@ public class GeneralInfoServiceImpl implements GeneralInfoService {
    @Override
    public ImmutablePair<Long, Long> getReportCount() {
       return usageStatisticsServiceProvider.get().getReportCount();
+   }
+
+   @Override
+   public ImmutablePair<Long, Long> getSpecificReportCount(Class<? extends Report> reportClazz,
+         Class<? extends Report> variantClazz) {
+      return usageStatisticsServiceProvider.get().getSpecificReportCount(reportClazz, variantClazz);
    }
 
    

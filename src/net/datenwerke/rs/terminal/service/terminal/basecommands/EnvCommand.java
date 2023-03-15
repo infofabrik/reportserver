@@ -224,10 +224,26 @@ public class EnvCommand implements TerminalCommandHook {
       TableDefinition td = new TableDefinition(Arrays.asList("Usage statistics", ""),
             Arrays.asList(String.class, Long.class));
       table.setTableDefinition(td);
-      td.setDisplaySizes(Arrays.asList(150, 0));
+      td.setDisplaySizes(Arrays.asList(200, 0));
 
       table.addDataRow(new RSStringTableRow("Base report count", generalInfo.getBaseReportCount()+""));
-      table.addDataRow(new RSStringTableRow("Variant count", generalInfo.getVariantReportCount()+""));
+      table.addDataRow(new RSStringTableRow("Report variant count", generalInfo.getVariantReportCount()+""));
+      table.addDataRow(new RSStringTableRow("Dynamic list count", generalInfo.getBaseDynamicListCount()+""));
+      table.addDataRow(new RSStringTableRow("Dynamic list variant count", generalInfo.getVariantDynamicListCount()+""));
+      table.addDataRow(new RSStringTableRow("BIRT report count", generalInfo.getBaseBirtCount()+""));
+      table.addDataRow(new RSStringTableRow("BIRT report variant count", generalInfo.getVariantBirtCount()+""));
+      table.addDataRow(new RSStringTableRow("Jasper report count", generalInfo.getBaseJasperCount()+""));
+      table.addDataRow(new RSStringTableRow("Jasper report variant count", generalInfo.getVariantJasperCount()+""));
+      table.addDataRow(new RSStringTableRow("Crystal report count", generalInfo.getBaseCrystalCount()+""));
+      table.addDataRow(new RSStringTableRow("Crystal report variant count", generalInfo.getVariantCrystalCount()+""));
+      table.addDataRow(new RSStringTableRow("JXLS report count", generalInfo.getBaseJxlsReportCount()+""));
+      table.addDataRow(new RSStringTableRow("JXLS report variant count", generalInfo.getVariantJxlsReportCount()+""));
+      table.addDataRow(new RSStringTableRow("Saiku report count", generalInfo.getBaseSaikuReportCount()+""));
+      table.addDataRow(new RSStringTableRow("Saiku variant count", generalInfo.getVariantSaikuReportCount()+""));
+      table.addDataRow(new RSStringTableRow("Grid editor report count", generalInfo.getBaseGridReportCount()+""));
+      table.addDataRow(new RSStringTableRow("Grid editor variant count", generalInfo.getVariantGridReportCount()+""));
+      table.addDataRow(new RSStringTableRow("Script report count", generalInfo.getBaseScriptReportCount()+""));
+      table.addDataRow(new RSStringTableRow("Script report variant count", generalInfo.getVariantScriptReportCount()+""));
 
       return table;
    }

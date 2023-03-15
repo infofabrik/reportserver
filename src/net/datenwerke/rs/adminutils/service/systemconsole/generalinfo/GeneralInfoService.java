@@ -7,6 +7,7 @@ import org.apache.commons.lang3.tuple.ImmutablePair;
 
 import net.datenwerke.rs.adminutils.client.systemconsole.generalinfo.Memory;
 import net.datenwerke.rs.adminutils.client.systemconsole.generalinfo.dto.GeneralInfoDto;
+import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
 
 public interface GeneralInfoService {
    
@@ -79,4 +80,6 @@ public interface GeneralInfoService {
    String getNow();
    
    ImmutablePair<Long, Long> getReportCount();
+   
+   ImmutablePair<Long, Long> getSpecificReportCount(Class<? extends Report> reportClazz, Class<? extends Report> variantClazz);
 }

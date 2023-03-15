@@ -29,7 +29,7 @@ public class UsageStatisticsServiceImpl implements UsageStatisticsService {
       return ((Number) entityManagerProvider.get().createQuery("SELECT COUNT(r) FROM " + clazz.getSimpleName() + " r")
             .getSingleResult()).longValue();
    }
-
+   
    @Override
    public ImmutablePair<Long, Long> getReportCount() {
       long totalCount = getReportCount(Report.class);
@@ -41,4 +41,11 @@ public class UsageStatisticsServiceImpl implements UsageStatisticsService {
       return ImmutablePair.of(totalCount - variantCount, variantCount);
    }
 
+   @Override
+   public ImmutablePair<Long, Long> getSpecificReportCount(Class<? extends Report> reportClazz,
+         Class<? extends Report> variantClazz) {
+      long totalCount = getReportCount(reportClazz);
+      long variantCount = getReportCount(variantClazz);
+      return ImmutablePair.of(totalCount - variantCount, variantCount);
+   }
 }

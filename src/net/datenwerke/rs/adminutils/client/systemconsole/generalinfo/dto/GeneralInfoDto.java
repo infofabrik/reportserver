@@ -81,6 +81,22 @@ public class GeneralInfoDto implements Serializable {
    
    private long baseReportCount;
    private long variantReportCount;
+   private long baseJasperCount;
+   private long variantJasperCount;
+   private long baseBirtCount;
+   private long variantBirtCount;
+   private long baseCrystalCount;
+   private long variantCrystalCount;
+   private long baseDynamicListCount;
+   private long variantDynamicListCount;
+   private long baseScriptReportCount;
+   private long variantScriptReportCount;
+   private long baseGridReportCount;
+   private long variantGridReportCount;
+   private long baseJxlsReportCount;
+   private long variantJxlsReportCount;
+   private long baseSaikuReportCount;
+   private long variantSaikuReportCount;
 
    public GeneralInfoDto() {
    }
@@ -573,4 +589,132 @@ public class GeneralInfoDto implements Serializable {
       this.variantReportCount = variantReportCount;
    }
 
+   public long getBaseJasperCount() {
+      return baseJasperCount;
+   }
+
+   public void setBaseJasperCount(long baseJasperCount) {
+      this.baseJasperCount = baseJasperCount;
+   }
+
+   public long getVariantJasperCount() {
+      return variantJasperCount;
+   }
+
+   public void setVariantJasperCount(long variantJasperCount) {
+      this.variantJasperCount = variantJasperCount;
+   }
+
+   public long getBaseBirtCount() {
+      return baseBirtCount;
+   }
+
+   public void setBaseBirtCount(long baseBirtCount) {
+      this.baseBirtCount = baseBirtCount;
+   }
+
+   public long getVariantBirtCount() {
+      return variantBirtCount;
+   }
+
+   public void setVariantBirtCount(long variantBirtCount) {
+      this.variantBirtCount = variantBirtCount;
+   }
+
+   public long getBaseCrystalCount() {
+      return baseCrystalCount;
+   }
+
+   public void setBaseCrystalCount(long baseCrystalCount) {
+      this.baseCrystalCount = baseCrystalCount;
+   }
+
+   public long getVariantCrystalCount() {
+      return variantCrystalCount;
+   }
+
+   public void setVariantCrystalCount(long variantCrystalCount) {
+      this.variantCrystalCount = variantCrystalCount;
+   }
+
+   public long getBaseDynamicListCount() {
+      return baseDynamicListCount;
+   }
+
+   public void setBaseDynamicListCount(long baseDynamicListCount) {
+      this.baseDynamicListCount = baseDynamicListCount;
+   }
+
+   public long getVariantDynamicListCount() {
+      return variantDynamicListCount;
+   }
+
+   public void setVariantDynamicListCount(long variantDynamicListCount) {
+      this.variantDynamicListCount = variantDynamicListCount;
+   }
+
+   public long getBaseScriptReportCount() {
+      return baseScriptReportCount;
+   }
+
+   public void setBaseScriptReportCount(long baseScriptReportCount) {
+      this.baseScriptReportCount = baseScriptReportCount;
+   }
+
+   public long getVariantScriptReportCount() {
+      return variantScriptReportCount;
+   }
+
+   public void setVariantScriptReportCount(long variantScriptReportCount) {
+      this.variantScriptReportCount = variantScriptReportCount;
+   }
+
+   public long getBaseGridReportCount() {
+      return baseGridReportCount;
+   }
+
+   public void setBaseGridReportCount(long baseGridReportCount) {
+      this.baseGridReportCount = baseGridReportCount;
+   }
+
+   public long getVariantGridReportCount() {
+      return variantGridReportCount;
+   }
+
+   public void setVariantGridReportCount(long variantGridReportCount) {
+      this.variantGridReportCount = variantGridReportCount;
+   }
+
+   public long getBaseJxlsReportCount() {
+      return baseJxlsReportCount;
+   }
+
+   public void setBaseJxlsReportCount(long baseJxlsReportCount) {
+      this.baseJxlsReportCount = baseJxlsReportCount;
+   }
+
+   public long getVariantJxlsReportCount() {
+      return variantJxlsReportCount;
+   }
+
+   public void setVariantJxlsReportCount(long variantJxlsReportCount) {
+      this.variantJxlsReportCount = variantJxlsReportCount;
+   }
+
+   public long getBaseSaikuReportCount() {
+      return baseSaikuReportCount;
+   }
+
+   public void setBaseSaikuReportCount(long baseSaikuReportCount) {
+      this.baseSaikuReportCount = baseSaikuReportCount;
+   }
+
+   public long getVariantSaikuReportCount() {
+      return variantSaikuReportCount;
+   }
+
+   public void setVariantSaikuReportCount(long variantSaikuReportCount) {
+      this.variantSaikuReportCount = variantSaikuReportCount;
+   }
+   
 }
