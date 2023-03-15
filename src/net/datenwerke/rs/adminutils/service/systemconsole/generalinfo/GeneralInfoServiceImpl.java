@@ -36,6 +36,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -79,6 +80,7 @@ public class GeneralInfoServiceImpl implements GeneralInfoService {
    private final Provider<ConfigDirService> configDirServiceProvider;
    private final Provider<LogFilesService> logFilesServiceProvider;
    private final Provider<ConfigService> configServiceProvider;
+   private final Provider<UsageStatisticsService> usageStatisticsServiceProvider;
    
    private final Provider<String> sftpKeyLocation;
    private final Provider<Integer> sftpPort;
@@ -99,6 +101,7 @@ public class GeneralInfoServiceImpl implements GeneralInfoService {
          Provider<ConfigDirService> configDirServiceProvider,
          Provider<LogFilesService> logFilesServiceProvider,
          Provider<ConfigService> configServiceProvider,
+         Provider<UsageStatisticsService> usageStatisticsServiceProvider,
          
          @Nullable @KeyLocation Provider<String> sftpKeyLocation,
          @SftpPort Provider<Integer> sftpPort, 
@@ -115,6 +118,7 @@ public class GeneralInfoServiceImpl implements GeneralInfoService {
       this.configDirServiceProvider = configDirServiceProvider;
       this.logFilesServiceProvider = logFilesServiceProvider;
       this.configServiceProvider = configServiceProvider;
+      this.usageStatisticsServiceProvider = usageStatisticsServiceProvider;
       
       this.sftpKeyLocation = sftpKeyLocation;
       this.sftpPort = sftpPort;
@@ -219,6 +223,10 @@ public class GeneralInfoServiceImpl implements GeneralInfoService {
       info.setDefaultSslProtocols(getDefaultSslProtocols());
       info.setEnabledSslProtocols(getEnabledSslProtocols());
       info.setStaticPams(getStaticPams());
+      
+      ImmutablePair<Long, Long> reportCount = getReportCount();
+      info.setBaseReportCount(reportCount.getLeft());
+      info.setVariantReportCount(reportCount.getRight());
       
       setHibernateProperties(info);
       setSchemaVersion(info);
@@ -585,6 +593,11 @@ public class GeneralInfoServiceImpl implements GeneralInfoService {
    @Override
    public String getNow() {
       return DateUtils.formatCurrentDate();
+   }
+
+   @Override
+   public ImmutablePair<Long, Long> getReportCount() {
+      return usageStatisticsServiceProvider.get().getReportCount();
    }
 
    

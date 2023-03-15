@@ -3,6 +3,8 @@ package net.datenwerke.rs.adminutils.service.systemconsole.generalinfo;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.tuple.ImmutablePair;
+
 import net.datenwerke.rs.adminutils.client.systemconsole.generalinfo.Memory;
 import net.datenwerke.rs.adminutils.client.systemconsole.generalinfo.dto.GeneralInfoDto;
 
@@ -76,4 +78,5 @@ public interface GeneralInfoService {
    
    String getNow();
    
+   ImmutablePair<Long, Long> getReportCount();
 }

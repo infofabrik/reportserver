@@ -1,7 +1,8 @@
 package net.datenwerke.rs.core.service.reportmanager;
 
+import static java.util.stream.Collectors.toSet;
+
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.Set;
 
 import com.google.inject.Inject;
@@ -13,6 +14,7 @@ import net.datenwerke.rs.core.service.parameters.entities.ParameterDefinition;
 import net.datenwerke.rs.core.service.parameters.entities.ParameterInstance;
 import net.datenwerke.rs.core.service.reportmanager.annotations.ReportServerParameter;
 import net.datenwerke.rs.core.service.reportmanager.annotations.ReportServerReportTypes;
+import net.datenwerke.rs.core.service.reportmanager.annotations.ReportServerReportVariantTypes;
 import net.datenwerke.rs.core.service.reportmanager.engine.ReportEngine;
 import net.datenwerke.rs.core.service.reportmanager.engine.ReportEngines;
 import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
@@ -48,12 +50,11 @@ public class ReportManagerModule extends AbstractReportServerModule {
    @ReportEngines
    @Inject
    protected Set<Class<? extends ReportEngine>> provideReportEngines(HookHandlerService hookHandler) {
-      Set<Class<? extends ReportEngine>> engines = new HashSet<Class<? extends ReportEngine>>();
-
-      for (ReportEngineProviderHook engineProvider : hookHandler.getHookers(ReportEngineProviderHook.class))
-         engines.addAll(engineProvider.getReportEngines());
-
-      return engines;
+      return hookHandler.getHookers(ReportEngineProviderHook.class)
+         .stream()
+         .map(ReportEngineProviderHook::getReportEngines)
+         .flatMap(Collection::stream)
+         .collect(toSet());
    }
 
    /**
@@ -64,12 +65,11 @@ public class ReportManagerModule extends AbstractReportServerModule {
    @Provides
    @ReportServerParameter
    public Set<Class<? extends ParameterDefinition>> provideParameters(HookHandlerService hookHandler) {
-      Set<Class<? extends ParameterDefinition>> definitions = new HashSet<Class<? extends ParameterDefinition>>();
-
-      for (ParameterProviderHook parameterProvider : hookHandler.getHookers(ParameterProviderHook.class))
-         definitions.addAll(parameterProvider.getParameterDefinitions());
-
-      return definitions;
+      return hookHandler.getHookers(ParameterProviderHook.class)
+         .stream()
+         .map(ParameterProviderHook::getParameterDefinitions)
+         .flatMap(Collection::stream)
+         .collect(toSet());
    }
 
    /**
@@ -80,23 +80,35 @@ public class ReportManagerModule extends AbstractReportServerModule {
    @ReportServerReportTypes
    @Inject
    public Set<Class<? extends Report>> provideReportServerReportTypes(HookHandlerService hookHandler) {
-      Set<Class<? extends Report>> types = new HashSet<Class<? extends Report>>();
-
-      for (ReportTypeProviderHook provider : hookHandler.getHookers(ReportTypeProviderHook.class))
-         types.addAll(provider.getReportTypes());
-
-      return types;
+      return hookHandler.getHookers(ReportTypeProviderHook.class)
+         .stream()
+         .map(ReportTypeProviderHook::getReportTypes)
+         .flatMap(Collection::stream)
+         .collect(toSet());
+   }
+   
+   /**
+    * Register Report Variant types
+    * 
+    */
+   @Provides
+   @ReportServerReportVariantTypes
+   @Inject
+   public Set<Class<? extends Report>> provideReportServerReportVariantTypes(HookHandlerService hookHandler) {
+      return hookHandler.getHookers(ReportTypeProviderHook.class)
+         .stream()
+         .map(ReportTypeProviderHook::getReportVariantTypes)
+         .flatMap(Collection::stream)
+         .collect(toSet());
    }
 
    @Provides
    @Inject
    public Collection<ParameterSetReplacementProvider> providerReplacementProviders(HookHandlerService hookHandler) {
-      Set<ParameterSetReplacementProvider> providers = new HashSet<ParameterSetReplacementProvider>();
-
-      for (ParameterSetReplacementProviderHook provider : hookHandler
-            .getHookers(ParameterSetReplacementProviderHook.class))
-         providers.addAll(provider.getProviders());
-
-      return providers;
+      return hookHandler.getHookers(ParameterSetReplacementProviderHook.class)
+         .stream()
+         .map(ParameterSetReplacementProviderHook::getProviders)
+         .flatMap(Collection::stream)
+         .collect(toSet());
    }
 }

@@ -78,6 +78,9 @@ public class GeneralInfoDto implements Serializable {
    private boolean sftpEnabled;
    private String sftpKey;
    private int sftpPort;
+   
+   private long baseReportCount;
+   private long variantReportCount;
 
    public GeneralInfoDto() {
    }
@@ -552,6 +555,22 @@ public class GeneralInfoDto implements Serializable {
    
    public String getRestURL() {
       return restURL;
+   }
+
+   public long getBaseReportCount() {
+      return baseReportCount;
+   }
+
+   public void setBaseReportCount(long baseReportCount) {
+      this.baseReportCount = baseReportCount;
+   }
+
+   public long getVariantReportCount() {
+      return variantReportCount;
+   }
+
+   public void setVariantReportCount(long variantReportCount) {
+      this.variantReportCount = variantReportCount;
    }
 
 }

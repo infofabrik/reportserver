@@ -29,31 +29,37 @@ public interface ReportService extends TreeDBManager<AbstractReportManagerNode> 
     * Returns all installed report types.
     * 
     */
-   public Set<Class<? extends Report>> getInstalledReportTypes();
+   Set<Class<? extends Report>> getInstalledReportTypes();
+   
+   /**
+    * Returns all installed report variant types.
+    * 
+    */
+   Set<Class<? extends Report>> getInstalledReportVariantTypes();
 
-   public List<Report> getAllReports();
+   List<Report> getAllReports();
 
-   public Report getReportById(long id);
+   Report getReportById(long id);
 
-   public Report getUnmanagedReportById(long id);
+   Report getUnmanagedReportById(long id);
 
-   public void persist(ReportMetadata reportMetadata);
+   void persist(ReportMetadata reportMetadata);
 
-   public void remove(Report report, ReportMetadata reportMetadata);
+   void remove(Report report, ReportMetadata reportMetadata);
 
-   public void persist(ReportProperty property);
+   void persist(ReportProperty property);
 
    void remove(Report report, ReportProperty property);
 
-   public List<ReportVariant> getVariantsOf(AbstractReportManagerNode realReport);
+   List<ReportVariant> getVariantsOf(AbstractReportManagerNode realReport);
 
-   public List<ReportVariant> getVariantsOf(AbstractReportManagerNode report, User user);
+   List<ReportVariant> getVariantsOf(AbstractReportManagerNode report, User user);
 
-   public long getReportIdFromKey(String key);
+   long getReportIdFromKey(String key);
 
-   public List<String> getReportMetadataKeys();
+   List<String> getReportMetadataKeys();
 
-   public Report getReportByKey(String conditionKey);
+   Report getReportByKey(String conditionKey);
 
    List<Report> getReportsByDatasource(DatasourceDefinition ds);
 
@@ -71,7 +77,7 @@ public interface ReportService extends TreeDBManager<AbstractReportManagerNode> 
    void prepareVariantForEdit(ReportVariant referenceReport, ReportDto reportDto, String executeToken)
          throws ServerCallFailedException;
 
-   public List<String> getReportStringPropertyKeys();
+   List<String> getReportStringPropertyKeys();
 
    AbstractReportManagerNode getNodeByPath(String path);
 

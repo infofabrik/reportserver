@@ -34,6 +34,7 @@ import net.datenwerke.rs.core.service.datasourcemanager.entities.DatasourceDefin
 import net.datenwerke.rs.core.service.parameters.entities.ParameterDefinition;
 import net.datenwerke.rs.core.service.parameters.entities.ParameterInstance;
 import net.datenwerke.rs.core.service.reportmanager.annotations.ReportServerReportTypes;
+import net.datenwerke.rs.core.service.reportmanager.annotations.ReportServerReportVariantTypes;
 import net.datenwerke.rs.core.service.reportmanager.entities.AbstractReportManagerNode;
 import net.datenwerke.rs.core.service.reportmanager.entities.AbstractReportManagerNode__;
 import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
@@ -74,6 +75,7 @@ public class ReportServiceImpl extends SecuredTreeDBManagerImpl<AbstractReportMa
 
    private final HookHandlerService hookHandler;
    private final Provider<Set<Class<? extends Report>>> installedReportTypes;
+   private final Provider<Set<Class<? extends Report>>> installedReportVariantTypes;
    private final Provider<EntityManager> entityManagerProvider;
    private final EntityClonerService entityCloner;
    private final Provider<AuthenticatorService> authenticatorServiceProvider;
@@ -81,14 +83,21 @@ public class ReportServiceImpl extends SecuredTreeDBManagerImpl<AbstractReportMa
    private final TerminalService terminalService;
 
    @Inject
-   public ReportServiceImpl(Provider<EntityManager> entityManagerProvider, HookHandlerService hookHandler,
+   public ReportServiceImpl(
+         Provider<EntityManager> entityManagerProvider, 
+         HookHandlerService hookHandler,
          @ReportServerReportTypes Provider<Set<Class<? extends Report>>> installedReportTypes,
-         SecurityService securityService, EntityClonerService entityCloner,
-         ReportParameterService reportParameterService, TerminalService terminalService,
-         Provider<AuthenticatorService> authenticatorServiceProvider) {
+         @ReportServerReportVariantTypes Provider<Set<Class<? extends Report>>> installedReportVariantTypes,
+         SecurityService securityService, 
+         EntityClonerService entityCloner,
+         ReportParameterService reportParameterService, 
+         TerminalService terminalService,
+         Provider<AuthenticatorService> authenticatorServiceProvider
+         ) {
       this.entityManagerProvider = entityManagerProvider;
       this.hookHandler = hookHandler;
       this.installedReportTypes = installedReportTypes;
+      this.installedReportVariantTypes = installedReportVariantTypes;
       this.securityService = securityService;
       this.entityCloner = entityCloner;
       this.reportParameterService = reportParameterService;
@@ -132,6 +141,11 @@ public class ReportServiceImpl extends SecuredTreeDBManagerImpl<AbstractReportMa
    @Override
    public Set<Class<? extends Report>> getInstalledReportTypes() {
       return installedReportTypes.get();
+   }
+   
+   @Override
+   public Set<Class<? extends Report>> getInstalledReportVariantTypes() {
+      return installedReportVariantTypes.get();
    }
 
    @Override

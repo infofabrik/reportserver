@@ -9,4 +9,5 @@ public interface ReportTypeProviderHook extends Hook {
 
    Collection<? extends Class<? extends Report>> getReportTypes();
 
+   Collection<? extends Class<? extends Report>> getReportVariantTypes();
 }

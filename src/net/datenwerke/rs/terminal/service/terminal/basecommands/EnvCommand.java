@@ -93,6 +93,7 @@ public class EnvCommand implements TerminalCommandHook {
          result.addResultTable(getInternalDbInformationAsTable(generalInfo));
          result.addResultTable(getSftpInformationAsTable(generalInfo));
          result.addResultTable(getSecurityInformationAsTable(generalInfo));
+         result.addResultTable(getUsageStatisticsAsTable(generalInfo));
       } catch (SQLException e) {
          throw new TerminalException(e);
       }
@@ -214,6 +215,19 @@ public class EnvCommand implements TerminalCommandHook {
          table.addDataRow(new RSStringTableRow("JDBC properties",
                null != generalInfo.getInternalDbJdbcProperties() ? generalInfo.getInternalDbJdbcProperties().toString()
                      : null));
+
+      return table;
+   }
+   
+   private RSTableModel getUsageStatisticsAsTable(GeneralInfoDto generalInfo) throws SQLException {
+      RSTableModel table = new RSTableModel();
+      TableDefinition td = new TableDefinition(Arrays.asList("Usage statistics", ""),
+            Arrays.asList(String.class, Long.class));
+      table.setTableDefinition(td);
+      td.setDisplaySizes(Arrays.asList(150, 0));
+
+      table.addDataRow(new RSStringTableRow("Base report count", generalInfo.getBaseReportCount()+""));
+      table.addDataRow(new RSStringTableRow("Variant count", generalInfo.getVariantReportCount()+""));
 
       return table;
    }
