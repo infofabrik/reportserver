@@ -226,24 +226,24 @@ public class EnvCommand implements TerminalCommandHook {
       table.setTableDefinition(td);
       td.setDisplaySizes(Arrays.asList(200, 0));
 
-      table.addDataRow(new RSStringTableRow("Base report count", generalInfo.getBaseReportCount()+""));
-      table.addDataRow(new RSStringTableRow("Report variant count", generalInfo.getVariantReportCount()+""));
-      table.addDataRow(new RSStringTableRow("Dynamic list count", generalInfo.getBaseDynamicListCount()+""));
-      table.addDataRow(new RSStringTableRow("Dynamic list variant count", generalInfo.getVariantDynamicListCount()+""));
-      table.addDataRow(new RSStringTableRow("BIRT report count", generalInfo.getBaseBirtCount()+""));
-      table.addDataRow(new RSStringTableRow("BIRT report variant count", generalInfo.getVariantBirtCount()+""));
-      table.addDataRow(new RSStringTableRow("Jasper report count", generalInfo.getBaseJasperCount()+""));
-      table.addDataRow(new RSStringTableRow("Jasper report variant count", generalInfo.getVariantJasperCount()+""));
-      table.addDataRow(new RSStringTableRow("Crystal report count", generalInfo.getBaseCrystalCount()+""));
-      table.addDataRow(new RSStringTableRow("Crystal report variant count", generalInfo.getVariantCrystalCount()+""));
-      table.addDataRow(new RSStringTableRow("JXLS report count", generalInfo.getBaseJxlsReportCount()+""));
-      table.addDataRow(new RSStringTableRow("JXLS report variant count", generalInfo.getVariantJxlsReportCount()+""));
-      table.addDataRow(new RSStringTableRow("Saiku report count", generalInfo.getBaseSaikuReportCount()+""));
-      table.addDataRow(new RSStringTableRow("Saiku variant count", generalInfo.getVariantSaikuReportCount()+""));
-      table.addDataRow(new RSStringTableRow("Grid editor report count", generalInfo.getBaseGridReportCount()+""));
-      table.addDataRow(new RSStringTableRow("Grid editor variant count", generalInfo.getVariantGridReportCount()+""));
-      table.addDataRow(new RSStringTableRow("Script report count", generalInfo.getBaseScriptReportCount()+""));
-      table.addDataRow(new RSStringTableRow("Script report variant count", generalInfo.getVariantScriptReportCount()+""));
+      table.addDataRow(new RSStringTableRow("Base reports", generalInfo.getBaseReportCount()+""));
+      table.addDataRow(new RSStringTableRow("Report variants", generalInfo.getVariantReportCount()+""));
+      table.addDataRow(new RSStringTableRow("Dynamic lists", generalInfo.getBaseDynamicListCount()+""));
+      table.addDataRow(new RSStringTableRow("Dynamic list variants", generalInfo.getVariantDynamicListCount()+""));
+      table.addDataRow(new RSStringTableRow("BIRT reports", generalInfo.getBaseBirtCount()+""));
+      table.addDataRow(new RSStringTableRow("BIRT report variants", generalInfo.getVariantBirtCount()+""));
+      table.addDataRow(new RSStringTableRow("Jasper reports", generalInfo.getBaseJasperCount()+""));
+      table.addDataRow(new RSStringTableRow("Jasper report variants", generalInfo.getVariantJasperCount()+""));
+      table.addDataRow(new RSStringTableRow("Crystal reports", generalInfo.getBaseCrystalCount()+""));
+      table.addDataRow(new RSStringTableRow("Crystal report variants", generalInfo.getVariantCrystalCount()+""));
+      table.addDataRow(new RSStringTableRow("JXLS reports", generalInfo.getBaseJxlsReportCount()+""));
+      table.addDataRow(new RSStringTableRow("JXLS report variants", generalInfo.getVariantJxlsReportCount()+""));
+      table.addDataRow(new RSStringTableRow("Saiku reports", generalInfo.getBaseSaikuReportCount()+""));
+      table.addDataRow(new RSStringTableRow("Saiku variants", generalInfo.getVariantSaikuReportCount()+""));
+      table.addDataRow(new RSStringTableRow("Grid editor reports", generalInfo.getBaseGridReportCount()+""));
+      table.addDataRow(new RSStringTableRow("Grid editor variants", generalInfo.getVariantGridReportCount()+""));
+      table.addDataRow(new RSStringTableRow("Script reports", generalInfo.getBaseScriptReportCount()+""));
+      table.addDataRow(new RSStringTableRow("Script report variants", generalInfo.getVariantScriptReportCount()+""));
 
       return table;
    }

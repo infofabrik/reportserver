@@ -20,7 +20,7 @@ public interface SystemConsoleMessages extends Messages {
    public String groovyVersionLabel();
 
    public String applicationServerLabel();
-   
+
    public String maxMemoryLabel();
 
    public String operationSystemLabel();
@@ -68,7 +68,7 @@ public interface SystemConsoleMessages extends Messages {
    public String total();
 
    public String maximum();
-   
+
    public String internalDb();
 
    public String internalDbName();
@@ -86,60 +86,98 @@ public interface SystemConsoleMessages extends Messages {
    public String internalDbJdbcUrl();
 
    public String internalDbUsername();
-   
+
    public String internalDbJdbcProperties();
-   
+
    public String supportedSslProtocols();
-   
+
    public String defaultSslProtocols();
-   
+
    public String enabledSslProtocols();
 
    public String dbConfig();
-   
+
    public String schemaVersion();
 
    public String configDirLabel();
-   
+
    public String restUrl();
-   
+
    public String requestUrl();
-   
+
    public String scheme();
-   
+
    public String serverName();
-   
+
    public String serverPort();
-   
+
    public String contextPath();
-   
+
    public String protocol();
 
    public String jvmUserLanguage();
-   
+
    public String jvmUserCountry();
-   
+
    public String jvmUserTimezone();
-   
+
    public String jvmFileEncoding();
-   
+
    public String logsDirectory();
-   
+
    public String sftpServer();
-   
+
    public String sftpKey();
-   
+
    public String sftpPort();
-   
+
    public String disabled();
-   
+
    public String knownHostsFile();
 
    public String adminPanel();
 
    public String openTerminal();
-   
+
    public String openTerminalInNewWindow();
-   
+
    public String jvmServerTime();
+
+   public String baseReports();
+
+   public String reportVariants();
+
+   public String dynamicLists();
+
+   public String dynamicListVariants();
+
+   public String birtReports();
+
+   public String birtReportVariants();
+
+   public String jasperReports();
+
+   public String jasperReportVariants();
+
+   public String crystalReports();
+
+   public String crystalReportVariants();
+
+   public String jxlsReports();
+
+   public String jxlsReportVariants();
+   
+   public String saikuReports();
+
+   public String saikuReportVariants();
+   
+   public String gridEditorReports();
+
+   public String gridEditorReportVariants();
+   
+   public String scriptReports();
+
+   public String scriptReportVariants();
+
+   public String usageStatistics();
 }

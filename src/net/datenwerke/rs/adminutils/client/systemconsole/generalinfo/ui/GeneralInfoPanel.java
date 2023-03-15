@@ -53,7 +53,11 @@ public class GeneralInfoPanel extends DwContentPanel {
       INTERNAL_DB_JDBC_MINOR_VERSION, INTERNAL_DB_JDBC_URL, INTERNAL_DB_USERNAME, INTERNAL_DB_JDBC_PROPERTIES,
       KNOWN_HOSTS_FILE, SUPPORTED_SSL_PROTOCOLS, DEFAULT_SSL_PROTOCOLS, ENABLED_SSL_PROTOCOLS,
       
-      SFTP_SERVER_DISABLED, SFTP_SERVER_PORT, SFTP_SERVER_KEY
+      SFTP_SERVER_DISABLED, SFTP_SERVER_PORT, SFTP_SERVER_KEY,
+      
+      BASE_REPORTS, REPORT_VARIANTS, DYNAMIC_LISTS, DYNAMIC_LIST_VARIANTS, BIRT_REPORTS, BIRT_REPORT_VARIANTS,
+      JASPER_REPORTS, JASPER_REPORT_VARIANTS, CRYSTAL_REPORTS, CRYSTAL_REPORT_VARIANTS, JXLS_REPORTS, JXLS_REPORT_VARIANTS,
+      SAIKU_REPORTS, SAIKU_REPORT_VARIANTS, GRID_REPORTS, GRID_REPORT_VARIANTS, SCRIPT_REPORTS, SCRIPT_REPORT_VARIANTS
    }
 
    @Inject
@@ -322,6 +326,63 @@ public class GeneralInfoPanel extends DwContentPanel {
             new SimpleImmutableEntry<String, Optional<Object>>(SystemConsoleMessages.INSTANCE.enabledSslProtocols(),
                   Optional.of(generalInfoDto.getEnabledSslProtocols().stream().collect(joining(", ")))));
       sslInfo.forEach((key, pair) -> addFieldToForm(pair.getKey(), pair.getValue(), form));
+      
+      form.addField(Separator.class, new SFFCSpace());
+      form.addField(Separator.class, new SFFCSpace());
+      
+      form.addField(StaticLabel.class, SystemConsoleMessages.INSTANCE.usageStatistics(), new SFFCStaticLabel() {
+         @Override
+         public String getLabel() {
+            return "";
+         }
+      });
+      
+      final Map<Type, SimpleImmutableEntry<String, Optional<Object>>> usageStatistics = new LinkedHashMap<>();
+      usageStatistics.put(Type.BASE_REPORTS, new SimpleImmutableEntry<String, Optional<Object>>(
+            SystemConsoleMessages.INSTANCE.baseReports(), Optional.of(generalInfoDto.getBaseReportCount())));
+      usageStatistics.put(Type.REPORT_VARIANTS, new SimpleImmutableEntry<String, Optional<Object>>(
+            SystemConsoleMessages.INSTANCE.reportVariants(), Optional.of(generalInfoDto.getVariantReportCount())));
+      usageStatistics.put(Type.DYNAMIC_LISTS, new SimpleImmutableEntry<String, Optional<Object>>(
+            SystemConsoleMessages.INSTANCE.dynamicLists(), Optional.of(generalInfoDto.getBaseDynamicListCount())));
+      usageStatistics.put(Type.DYNAMIC_LIST_VARIANTS,
+            new SimpleImmutableEntry<String, Optional<Object>>(SystemConsoleMessages.INSTANCE.dynamicListVariants(),
+                  Optional.of(generalInfoDto.getVariantDynamicListCount())));
+      usageStatistics.put(Type.BIRT_REPORTS, new SimpleImmutableEntry<String, Optional<Object>>(
+            SystemConsoleMessages.INSTANCE.birtReports(), Optional.of(generalInfoDto.getBaseBirtCount())));
+      usageStatistics.put(Type.BIRT_REPORT_VARIANTS, new SimpleImmutableEntry<String, Optional<Object>>(
+            SystemConsoleMessages.INSTANCE.birtReportVariants(), Optional.of(generalInfoDto.getVariantBirtCount())));
+      usageStatistics.put(Type.JASPER_REPORTS, new SimpleImmutableEntry<String, Optional<Object>>(
+            SystemConsoleMessages.INSTANCE.jasperReports(), Optional.of(generalInfoDto.getBaseJasperCount())));
+      usageStatistics.put(Type.JASPER_REPORT_VARIANTS,
+            new SimpleImmutableEntry<String, Optional<Object>>(SystemConsoleMessages.INSTANCE.jasperReportVariants(),
+                  Optional.of(generalInfoDto.getVariantJasperCount())));
+      usageStatistics.put(Type.CRYSTAL_REPORTS, new SimpleImmutableEntry<String, Optional<Object>>(
+            SystemConsoleMessages.INSTANCE.crystalReports(), Optional.of(generalInfoDto.getBaseCrystalCount())));
+      usageStatistics.put(Type.CRYSTAL_REPORT_VARIANTS,
+            new SimpleImmutableEntry<String, Optional<Object>>(SystemConsoleMessages.INSTANCE.crystalReportVariants(),
+                  Optional.of(generalInfoDto.getVariantCrystalCount())));
+      usageStatistics.put(Type.JXLS_REPORTS, new SimpleImmutableEntry<String, Optional<Object>>(
+            SystemConsoleMessages.INSTANCE.jxlsReports(), Optional.of(generalInfoDto.getBaseJxlsReportCount())));
+      usageStatistics.put(Type.JXLS_REPORT_VARIANTS,
+            new SimpleImmutableEntry<String, Optional<Object>>(SystemConsoleMessages.INSTANCE.jxlsReportVariants(),
+                  Optional.of(generalInfoDto.getVariantJxlsReportCount())));
+      usageStatistics.put(Type.SAIKU_REPORTS, new SimpleImmutableEntry<String, Optional<Object>>(
+            SystemConsoleMessages.INSTANCE.saikuReports(), Optional.of(generalInfoDto.getBaseSaikuReportCount())));
+      usageStatistics.put(Type.SAIKU_REPORT_VARIANTS,
+            new SimpleImmutableEntry<String, Optional<Object>>(SystemConsoleMessages.INSTANCE.saikuReportVariants(),
+                  Optional.of(generalInfoDto.getVariantSaikuReportCount())));
+      usageStatistics.put(Type.GRID_REPORTS, new SimpleImmutableEntry<String, Optional<Object>>(
+            SystemConsoleMessages.INSTANCE.gridEditorReports(), Optional.of(generalInfoDto.getBaseGridReportCount())));
+      usageStatistics.put(Type.GRID_REPORT_VARIANTS,
+            new SimpleImmutableEntry<String, Optional<Object>>(
+                  SystemConsoleMessages.INSTANCE.gridEditorReportVariants(),
+                  Optional.of(generalInfoDto.getVariantGridReportCount())));
+      usageStatistics.put(Type.SCRIPT_REPORTS, new SimpleImmutableEntry<String, Optional<Object>>(
+            SystemConsoleMessages.INSTANCE.scriptReports(), Optional.of(generalInfoDto.getBaseScriptReportCount())));
+      usageStatistics.put(Type.SCRIPT_REPORT_VARIANTS,
+            new SimpleImmutableEntry<String, Optional<Object>>(SystemConsoleMessages.INSTANCE.scriptReportVariants(),
+                  Optional.of(generalInfoDto.getVariantScriptReportCount())));
+      usageStatistics.forEach((key, pair) -> addFieldToForm(pair.getKey(), pair.getValue(), form));
       
       form.loadFields();
 
