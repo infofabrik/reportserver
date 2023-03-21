@@ -1,6 +1,7 @@
 package net.datenwerke.security.service.security;
 
 import java.util.Collection;
+import java.util.List;
 
 import net.datenwerke.security.service.security.action.SecurityAction;
 import net.datenwerke.security.service.security.annotation.GenericSecurityTarget;
@@ -293,5 +294,12 @@ public interface SecurityService {
    void assertRights(Collection<User> users, Object target, Class<? extends Right>... rights);
 
    void assertUserLoggedIn();
+   
+   List<String> getSupportedSslProtocols();
 
+   List<String> getDefaultSslProtocols();
+
+   List<String> getEnabledSslProtocols();
+
+   String getKnownHostsFile(boolean appendFileCheck);
 }

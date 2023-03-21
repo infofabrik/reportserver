@@ -16,4 +16,8 @@ public interface GridEditorMessages extends Messages {
    String validationFailedExceptionMessage(String casted, String valueOf, String name, String error);
 
    String foreignKeyException(String name);
+   
+   String gridEditorReports();
+   
+   String gridEditorReportVariants();
 }

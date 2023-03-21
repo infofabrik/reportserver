@@ -7,7 +7,8 @@ public class GeneralInfoModule extends AbstractModule {
    @Override
    protected void configure() {
       bind(GeneralInfoService.class).to(GeneralInfoServiceImpl.class);
-      bind(UsageStatisticsService.class).to(UsageStatisticsServiceImpl.class);
+      
+      bind(GeneralInfoStartup.class).asEagerSingleton();
    }
 
 }

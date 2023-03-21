@@ -38,6 +38,8 @@ public class AuthenticatorModule extends AbstractModule {
       bind(CurrentUser.class).in(ServletScopes.SESSION);
       bind(AuthenticatorService.class).to(AuthenticatorServiceImpl.class);
       bind(RequestUserCache.class).to(RequestUserCacheImpl.class).in(ServletScopes.REQUEST);
+      
+      bind(AuthenticatorStartup.class).asEagerSingleton();
    }
 
    @Inject

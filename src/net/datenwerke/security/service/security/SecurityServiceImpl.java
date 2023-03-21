@@ -2,9 +2,12 @@ package net.datenwerke.security.service.security;
 
 import static java.util.stream.Collectors.toSet;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -12,8 +15,10 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import javax.net.ssl.SSLContext;
 import javax.persistence.EntityManager;
 
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.hibernate.proxy.HibernateProxy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,6 +27,9 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.Singleton;
 
+import net.datenwerke.rs.adminutils.service.systemconsole.generalinfo.GeneralInfoService;
+import net.datenwerke.rs.configservice.service.configservice.ConfigService;
+import net.datenwerke.rs.utils.file.RsFileUtils;
 import net.datenwerke.rs.utils.simplequery.annotations.QueryByAttribute;
 import net.datenwerke.security.service.authenticator.AuthenticatorService;
 import net.datenwerke.security.service.authenticator.exceptions.AuthenticatorRuntimeException;
@@ -58,15 +66,23 @@ public class SecurityServiceImpl implements SecurityService {
    private final Provider<EntityManager> entityManagerProvider;
    private final Provider<AuthenticatorService> authenticatorProvider;
    private final Provider<UserManagerService> userManagerProvider;
+   private final Provider<ConfigService> configServiceProvider;
+   private final Provider<GeneralInfoService> generalInfoServiceProvider;
 
    @Inject
-   public SecurityServiceImpl(Provider<EntityManager> entityManagerProvider,
-         Provider<AuthenticatorService> authenticatorProvider, Provider<UserManagerService> userManagerProvider) {
+   public SecurityServiceImpl(
+         Provider<EntityManager> entityManagerProvider,
+         Provider<AuthenticatorService> authenticatorProvider, 
+         Provider<UserManagerService> userManagerProvider,
+         Provider<ConfigService> configServiceProvider,
+         Provider<GeneralInfoService> generalInfoServiceProvider
+         ) {
 
-      /* store objects */
       this.entityManagerProvider = entityManagerProvider;
       this.authenticatorProvider = authenticatorProvider;
       this.userManagerProvider = userManagerProvider;
+      this.configServiceProvider = configServiceProvider;
+      this.generalInfoServiceProvider = generalInfoServiceProvider;
    }
 
    @SuppressWarnings("unchecked")
@@ -825,6 +841,55 @@ public class SecurityServiceImpl implements SecurityService {
          throw new ViolatedSecurityException("Users missing rights ("
                + Arrays.stream(rights).collect(Collectors.toSet()) + "): " + usersMissingRights);
       }
+   }
+   
+   @Override
+   public List<String> getSupportedSslProtocols() {
+      try {
+         String[] protocols = SSLContext.getDefault().getSupportedSSLParameters().getProtocols();
+         if (null == protocols)
+            return Collections.emptyList();
+         return Arrays.asList(protocols);
+      } catch (Exception e) {
+         logger.warn("cannot read supported SSL protocols", e); 
+         return Arrays.asList("Unknown (" + ExceptionUtils.getRootCauseMessage(e) + ")");
+      }
+   }
+
+   @Override
+   public List<String> getDefaultSslProtocols() {
+      try {
+         String[] protocols = SSLContext.getDefault().getDefaultSSLParameters().getProtocols();
+         if (null == protocols)
+            return Collections.emptyList();
+         return Arrays.asList(protocols);
+      } catch (Exception e) {
+         logger.warn("cannot read default SSL protocols", e); 
+         return Arrays.asList("Unknown (" + ExceptionUtils.getRootCauseMessage(e) + ")");
+      }
+   }
+
+   @Override
+   public List<String> getEnabledSslProtocols() {
+      try {
+         String[] protocols = SSLContext.getDefault().createSSLEngine().getEnabledProtocols();
+         if (null == protocols)
+            return Collections.emptyList();
+         return Arrays.asList(protocols);
+      } catch (Exception e) {
+         logger.warn("cannot read enabled SSL protocols", e); 
+         return Arrays.asList("Unknown (" + ExceptionUtils.getRootCauseMessage(e) + ")");
+      }
+   }
+   
+   @Override
+   public String getKnownHostsFile(boolean appendFileCheck) {
+      Path knownHostsFile = Paths.get(configServiceProvider.get().getConfigFailsafe("security/misc.cf")
+            .getString("knownHosts", generalInfoServiceProvider.get().getUserHome() + "/.ssh/known_hosts"));
+      if (appendFileCheck)
+         return RsFileUtils.appendFileCheck(knownHostsFile);
+
+      return knownHostsFile.toAbsolutePath().toString();
    }
 
 }

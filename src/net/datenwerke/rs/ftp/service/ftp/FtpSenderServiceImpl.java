@@ -27,7 +27,6 @@ import org.apache.commons.vfs2.provider.sftp.SftpFileSystemConfigBuilder;
 
 import com.google.inject.Provider;
 
-import net.datenwerke.rs.adminutils.service.systemconsole.generalinfo.GeneralInfoService;
 import net.datenwerke.rs.core.service.datasinkmanager.HostDatasink;
 import net.datenwerke.rs.core.service.datasinkmanager.configs.DatasinkConfiguration;
 import net.datenwerke.rs.core.service.datasinkmanager.configs.DatasinkFilenameFolderConfig;
@@ -38,21 +37,22 @@ import net.datenwerke.rs.ftp.service.ftp.definitions.FtpDatasink;
 import net.datenwerke.rs.ftp.service.ftp.definitions.FtpsDatasink;
 import net.datenwerke.rs.ftp.service.ftp.definitions.SftpDatasink;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
+import net.datenwerke.security.service.security.SecurityService;
 
 public class FtpSenderServiceImpl implements FtpSenderService {
 
    private final static String TLS_PROPERTY = "jdk.tls.client.protocols";
 
    private final Provider<ReportService> reportServiceProvider;
-   private final Provider<GeneralInfoService> generalInfoServiceProvider;
+   private final Provider<SecurityService> securityServiceProvider;
 
    @Inject
    public FtpSenderServiceImpl(
          Provider<ReportService> reportServiceProvider,
-         Provider<GeneralInfoService> generalInfoServiceProvider
+         Provider<SecurityService> securityServiceProvider
          ) {
       this.reportServiceProvider = reportServiceProvider;
-      this.generalInfoServiceProvider = generalInfoServiceProvider;
+      this.securityServiceProvider = securityServiceProvider;
    }
 
    @Override
@@ -139,7 +139,7 @@ public class FtpSenderServiceImpl implements FtpSenderService {
 
    private void configureSftp(SftpDatasink sftpDatasink, FileSystemOptions opts, String host, int port, String username)
          throws FileSystemException {
-      Path knownHostsFile = Paths.get(generalInfoServiceProvider.get().getKnownHostsFile(false));
+      Path knownHostsFile = Paths.get(securityServiceProvider.get().getKnownHostsFile(false));
       if (!Files.exists(knownHostsFile) || !Files.isReadable(knownHostsFile))
          throw new IllegalArgumentException("known_hosts file does not exist or is not readable");
 

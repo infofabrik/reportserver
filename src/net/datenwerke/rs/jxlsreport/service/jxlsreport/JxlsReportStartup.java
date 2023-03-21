@@ -14,15 +14,20 @@ import net.datenwerke.rs.jxlsreport.service.jxlsreport.hookers.BaseJxlsOutputGen
 import net.datenwerke.rs.jxlsreport.service.jxlsreport.hookers.JxlsReportEngineProviderHooker;
 import net.datenwerke.rs.jxlsreport.service.jxlsreport.hookers.JxlsReportTypeProviderHooker;
 import net.datenwerke.rs.jxlsreport.service.jxlsreport.hookers.JxlsReportUploadHooker;
+import net.datenwerke.rs.jxlsreport.service.jxlsreport.hookers.UsageStatisticsJxlsProviderHooker;
 import net.datenwerke.rs.jxlsreport.service.jxlsreport.reportengine.hooks.JxlsOutputGeneratorProviderHook;
+import net.datenwerke.rs.usagestatistics.service.usagestatistics.hooks.UsageStatisticsEntryProviderHook;
 
 public class JxlsReportStartup {
 
    @Inject
-   public JxlsReportStartup(HookHandlerService hookHandlerService,
-         JxlsReportEngineProviderHooker jxlsReportEngineProviderHooker,
-         Provider<BaseJxlsOutputGeneratorProvider> baseOutputGenerators,
-         JxlsReportUploadHooker jxlsReportUploadHooker
+   public JxlsReportStartup(
+         final HookHandlerService hookHandlerService,
+         final JxlsReportEngineProviderHooker jxlsReportEngineProviderHooker,
+         final Provider<BaseJxlsOutputGeneratorProvider> baseOutputGenerators,
+         final JxlsReportUploadHooker jxlsReportUploadHooker,
+         
+         final Provider<UsageStatisticsJxlsProviderHooker> usageStatsJxlsProvider
          ) {
 
       hookHandlerService.attachHooker(ReportTypeProviderHook.class, new JxlsReportTypeProviderHooker());
@@ -42,6 +47,8 @@ public class JxlsReportStartup {
       });
       
 
+      hookHandlerService.attachHooker(UsageStatisticsEntryProviderHook.class, usageStatsJxlsProvider,
+            HookHandlerService.PRIORITY_LOW + 50);
    }
 
 }

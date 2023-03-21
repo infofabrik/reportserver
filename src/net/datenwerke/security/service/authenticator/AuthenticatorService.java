@@ -41,5 +41,7 @@ public interface AuthenticatorService {
    void setAuthenticatedInThread(Long userId);
 
    void logoffUserInThread();
+   
+   Set<ReportServerPAM> getStaticPams();
 
 }

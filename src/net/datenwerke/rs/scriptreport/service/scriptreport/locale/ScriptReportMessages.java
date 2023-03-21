@@ -10,5 +10,9 @@ public interface ScriptReportMessages extends Messages {
    String scriptReportTypeName();
    
    String reportVariantTypeName();
+   
+   String scriptReports();
+   
+   String scriptReportVariants();
 
 }

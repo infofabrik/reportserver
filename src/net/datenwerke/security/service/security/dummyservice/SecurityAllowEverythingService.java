@@ -1,6 +1,7 @@
 package net.datenwerke.security.service.security.dummyservice;
 
 import java.util.Collection;
+import java.util.List;
 
 import net.datenwerke.security.service.security.Securee;
 import net.datenwerke.security.service.security.SecurityService;
@@ -228,6 +229,30 @@ public class SecurityAllowEverythingService implements SecurityService {
    public boolean checkRights(Object target, Class<? extends Right>... rights) {
       // TODO Auto-generated method stub
       return false;
+   }
+
+   @Override
+   public List<String> getSupportedSslProtocols() {
+      // TODO Auto-generated method stub
+      return null;
+   }
+
+   @Override
+   public List<String> getDefaultSslProtocols() {
+      // TODO Auto-generated method stub
+      return null;
+   }
+
+   @Override
+   public List<String> getEnabledSslProtocols() {
+      // TODO Auto-generated method stub
+      return null;
+   }
+
+   @Override
+   public String getKnownHostsFile(boolean appendFileCheck) {
+      // TODO Auto-generated method stub
+      return null;
    }
 
 }

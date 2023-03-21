@@ -8,26 +8,43 @@ import net.datenwerke.rs.base.service.reportengines.hookers.AdjustBaseReportForE
 import net.datenwerke.rs.base.service.reportengines.hookers.BaseReportEngineProviderHooker;
 import net.datenwerke.rs.base.service.reportengines.hookers.BaseReportTypeProviderHooker;
 import net.datenwerke.rs.base.service.reportengines.hookers.ConfigureBaseReportViaRequestHooker;
+import net.datenwerke.rs.base.service.reportengines.hookers.UsageStatisticsBaseReportProviderHooker;
+import net.datenwerke.rs.base.service.reportengines.hookers.UsageStatisticsDynaListProviderHooker;
+import net.datenwerke.rs.base.service.reportengines.hookers.UsageStatisticsJasperProviderHooker;
 import net.datenwerke.rs.core.service.reportmanager.hooks.AdjustReportForExecutionHook;
 import net.datenwerke.rs.core.service.reportmanager.hooks.ConfigureReportViaHistoryLocationHook;
 import net.datenwerke.rs.core.service.reportmanager.hooks.ConfigureReportViaHttpRequestHook;
 import net.datenwerke.rs.core.service.reportmanager.hooks.ReportEngineProviderHook;
 import net.datenwerke.rs.core.service.reportmanager.hooks.ReportTypeProviderHook;
+import net.datenwerke.rs.usagestatistics.service.usagestatistics.hooks.UsageStatisticsEntryProviderHook;
 
 public class BaseReportEnginesStartup {
 
    @Inject
-   public BaseReportEnginesStartup(HookHandlerService hookHandler,
+   public BaseReportEnginesStartup(
+         final HookHandlerService hookHandler,
 
-         Provider<AdjustBaseReportForExecutionHooker> adjustReportForExecutionProvider,
-         Provider<ConfigureBaseReportViaRequestHooker> adjustReportViaRequestProvider,
-         Provider<BaseReportEngineProviderHooker> reportEngineProvider,
-         Provider<BaseReportTypeProviderHooker> reportTypeProvider) {
+         final Provider<AdjustBaseReportForExecutionHooker> adjustReportForExecutionProvider,
+         final Provider<ConfigureBaseReportViaRequestHooker> adjustReportViaRequestProvider,
+         final Provider<BaseReportEngineProviderHooker> reportEngineProvider,
+         final Provider<BaseReportTypeProviderHooker> reportTypeProvider,
+         
+         final Provider<UsageStatisticsBaseReportProviderHooker> usageStatsBaseReportProvider,
+         final Provider<UsageStatisticsDynaListProviderHooker> usageStatsDynaListProvider,
+         final Provider<UsageStatisticsJasperProviderHooker> usageStatsJasperProvider
+         ) {
 
       hookHandler.attachHooker(AdjustReportForExecutionHook.class, adjustReportForExecutionProvider);
       hookHandler.attachHooker(ConfigureReportViaHttpRequestHook.class, adjustReportViaRequestProvider);
       hookHandler.attachHooker(ConfigureReportViaHistoryLocationHook.class, adjustReportViaRequestProvider);
       hookHandler.attachHooker(ReportEngineProviderHook.class, reportEngineProvider);
       hookHandler.attachHooker(ReportTypeProviderHook.class, reportTypeProvider);
+      
+      hookHandler.attachHooker(UsageStatisticsEntryProviderHook.class, usageStatsBaseReportProvider,
+            HookHandlerService.PRIORITY_LOW);
+      hookHandler.attachHooker(UsageStatisticsEntryProviderHook.class, usageStatsDynaListProvider,
+            HookHandlerService.PRIORITY_LOW + 10);
+      hookHandler.attachHooker(UsageStatisticsEntryProviderHook.class, usageStatsJasperProvider,
+            HookHandlerService.PRIORITY_LOW + 30);
    }
 }

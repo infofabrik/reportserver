@@ -1,6 +1,5 @@
 package net.datenwerke.rs.adminutils.service.systemconsole.generalinfo;
 
-import static java.util.stream.Collectors.toList;
 import static net.datenwerke.rs.adminutils.client.systemconsole.generalinfo.Memory.FREE;
 import static net.datenwerke.rs.adminutils.client.systemconsole.generalinfo.Memory.FREE_FORMATTED;
 import static net.datenwerke.rs.adminutils.client.systemconsole.generalinfo.Memory.FREE_IN_MB;
@@ -17,21 +16,14 @@ import static net.datenwerke.rs.utils.file.RsFileUtils.byteCountToDisplaySize;
 
 import java.lang.management.ManagementFactory;
 import java.lang.management.RuntimeMXBean;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.sql.SQLException;
 import java.time.ZoneId;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
+import java.util.LinkedHashMap;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Properties;
-import java.util.Set;
 
-import javax.net.ssl.SSLContext;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
@@ -45,42 +37,15 @@ import com.google.inject.Provider;
 import com.google.inject.ProvisionException;
 
 import groovy.lang.GroovySystem;
-import net.datenwerke.gf.service.history.HistoryService;
-import net.datenwerke.rs.EnvironmentValidatorHelperService;
+import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.adminutils.client.systemconsole.generalinfo.Memory;
-import net.datenwerke.rs.adminutils.client.systemconsole.generalinfo.dto.GeneralInfoDto;
 import net.datenwerke.rs.adminutils.service.logs.LogFilesService;
-import net.datenwerke.rs.base.service.datasources.DatasourceHelperService;
-import net.datenwerke.rs.base.service.datasources.definitions.DatabaseDatasource;
-import net.datenwerke.rs.base.service.reportengines.jasper.entities.JasperReport;
-import net.datenwerke.rs.base.service.reportengines.jasper.entities.JasperReportVariant;
-import net.datenwerke.rs.base.service.reportengines.table.entities.TableReport;
-import net.datenwerke.rs.base.service.reportengines.table.entities.TableReportVariant;
-import net.datenwerke.rs.birt.service.reportengine.entities.BirtReport;
-import net.datenwerke.rs.birt.service.reportengine.entities.BirtReportVariant;
+import net.datenwerke.rs.adminutils.service.systemconsole.generalinfo.hooks.GeneralInfoCategoryProviderHook;
 import net.datenwerke.rs.configservice.service.configservice.ConfigDirService;
-import net.datenwerke.rs.configservice.service.configservice.ConfigService;
-import net.datenwerke.rs.core.service.internaldb.TempTableService;
-import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
-import net.datenwerke.rs.crystal.service.crystal.entities.CrystalReport;
-import net.datenwerke.rs.crystal.service.crystal.entities.CrystalReportVariant;
-import net.datenwerke.rs.grideditor.service.grideditor.entities.GridEditorReport;
-import net.datenwerke.rs.grideditor.service.grideditor.entities.GridEditorReportVariant;
-import net.datenwerke.rs.jxlsreport.service.jxlsreport.entities.JxlsReport;
-import net.datenwerke.rs.jxlsreport.service.jxlsreport.entities.JxlsReportVariant;
 import net.datenwerke.rs.license.service.LicenseService;
-import net.datenwerke.rs.remoteaccess.service.sftp.annotations.KeyLocation;
-import net.datenwerke.rs.remoteaccess.service.sftp.annotations.SftpEnabled;
-import net.datenwerke.rs.remoteaccess.service.sftp.annotations.SftpPort;
-import net.datenwerke.rs.saiku.service.saiku.entities.SaikuReport;
-import net.datenwerke.rs.saiku.service.saiku.entities.SaikuReportVariant;
-import net.datenwerke.rs.scriptreport.service.scriptreport.entities.ScriptReport;
-import net.datenwerke.rs.scriptreport.service.scriptreport.entities.ScriptReportVariant;
+import net.datenwerke.rs.utils.file.RsFileUtils;
 import net.datenwerke.rs.utils.localization.LocalizationServiceImpl;
 import net.datenwerke.rs.utils.misc.DateUtils;
-import net.datenwerke.rs.utils.misc.Nullable;
-import net.datenwerke.rs.utils.properties.PropertiesUtilService;
-import net.datenwerke.security.service.authenticator.ReportServerPAM;
 
 public class GeneralInfoServiceImpl implements GeneralInfoService {
 
@@ -89,19 +54,9 @@ public class GeneralInfoServiceImpl implements GeneralInfoService {
    private final Provider<ServletContext> servletContextProvider;
    private final Provider<HttpServletRequest> servletRequestProvider;
    private final Provider<LicenseService> licenseServiceProvider;
-   private final Provider<DatasourceHelperService> datasourceHelperServiceProvider;
-   private final Provider<TempTableService> tempTableServiceProvider;
-   private final Provider<Set<ReportServerPAM>> pamProvider;
-   private final Provider<EnvironmentValidatorHelperService> envServiceProvider;
-   private final Provider<HistoryService> historyServiceProvider;
    private final Provider<ConfigDirService> configDirServiceProvider;
    private final Provider<LogFilesService> logFilesServiceProvider;
-   private final Provider<ConfigService> configServiceProvider;
-   private final Provider<UsageStatisticsService> usageStatisticsServiceProvider;
-   
-   private final Provider<String> sftpKeyLocation;
-   private final Provider<Integer> sftpPort;
-   private final Provider<Boolean> sftpEnabled;
+   private final Provider<HookHandlerService> hookHandlerServiceProvider;
    
    private final Logger log = LoggerFactory.getLogger( getClass() );
    
@@ -110,36 +65,16 @@ public class GeneralInfoServiceImpl implements GeneralInfoService {
          Provider<ServletContext> servletContextProvider,
          Provider<HttpServletRequest> servletRequestProvider, 
          Provider<LicenseService> licenseServiceProvider,
-         Provider<DatasourceHelperService> datasourceHelperServiceProvider,
-         Provider<TempTableService> tempTableServiceProvider,
-         Provider<Set<ReportServerPAM>> pamProvider,
-         Provider<EnvironmentValidatorHelperService> environmentValidatorHelperServiceProvider,
-         Provider<HistoryService> historyServiceProvider,
          Provider<ConfigDirService> configDirServiceProvider,
          Provider<LogFilesService> logFilesServiceProvider,
-         Provider<ConfigService> configServiceProvider,
-         Provider<UsageStatisticsService> usageStatisticsServiceProvider,
-         
-         @Nullable @KeyLocation Provider<String> sftpKeyLocation,
-         @SftpPort Provider<Integer> sftpPort, 
-         @SftpEnabled Provider<Boolean> sftpEnabled
+         Provider<HookHandlerService> hookHandlerServiceProvider
          ) {
       this.servletContextProvider = servletContextProvider;
       this.servletRequestProvider = servletRequestProvider;
       this.licenseServiceProvider = licenseServiceProvider;
-      this.datasourceHelperServiceProvider = datasourceHelperServiceProvider;
-      this.tempTableServiceProvider = tempTableServiceProvider;
-      this.pamProvider = pamProvider;
-      this.envServiceProvider = environmentValidatorHelperServiceProvider;
-      this.historyServiceProvider = historyServiceProvider;
       this.configDirServiceProvider = configDirServiceProvider;
       this.logFilesServiceProvider = logFilesServiceProvider;
-      this.configServiceProvider = configServiceProvider;
-      this.usageStatisticsServiceProvider = usageStatisticsServiceProvider;
-      
-      this.sftpKeyLocation = sftpKeyLocation;
-      this.sftpPort = sftpPort;
-      this.sftpEnabled = sftpEnabled;
+      this.hookHandlerServiceProvider = hookHandlerServiceProvider;
    }
 
    @Override
@@ -206,189 +141,17 @@ public class GeneralInfoServiceImpl implements GeneralInfoService {
    }
 
    @Override
-   public GeneralInfoDto getGeneralInfo() {
-      GeneralInfoDto info = new GeneralInfoDto();
-
-      info.setRsVersion(getRsVersion());
-      info.setJavaVersion(getJavaVersion());
-      info.setVmArguments(getVmArguments());
-      info.setApplicationServer(getApplicationServer());
-      info.setRestURL(getRestURL());
-      info.setRequestURL(getRequestURL());
-      info.setServerName(getServerName());
-      info.setServerPort(getServerPort());
-      info.setScheme(getScheme());
-      info.setContextPath(getContextPath());
-      info.setProtocol(getProtocol());
-      info.setMaxMemory(getMemoryValues().get(MAX_FORMATTED)+ "");
-      info.setNow(getNow());
-      info.setOsVersion(getOsVersion());
-      info.setCatalinaHome(getCatalinaHome());
-      info.setCatalinaBase(getCatalinaBase());
-      info.setLogFilesDirectory(getLogFilesDirectory(true));
-      info.setJvmUserTimezone(getJvmUserTimezone());
-      info.setJvmUserCountry(getJvmUserCountry());
-      info.setJvmUserLanguage(getJvmUserLanguage());
-      info.setJavaHome(getJavaHome());
-      info.setJvmFileEncoding(getJvmFileEncoding());
-      info.setUserAgent(getUserAgent());
-      info.setGroovyVersion(getGroovyVersion());
-      info.setLocale(getLocale());
-      info.setJvmLocale(getJvmLocale());
-      info.setSslKnownHosts(getKnownHostsFile(true));
-      info.setSupportedSslProtocols(getSupportedSslProtocols());
-      info.setDefaultSslProtocols(getDefaultSslProtocols());
-      info.setEnabledSslProtocols(getEnabledSslProtocols());
-      info.setStaticPams(getStaticPams());
-      
-      setUsageStatistics(info);
-      setHibernateProperties(info);
-      setSchemaVersion(info);
-      setInternalDb(info);
-      setSftp(info);
-      
-      info.setConfigDir(getConfigDirectory(true));
-      
-      return info;
+   public Map<ImmutablePair<String, String>, Map<ImmutablePair<String, String>, Object>> getGeneralInfo() {
+      return hookHandlerServiceProvider.get().getHookers(GeneralInfoCategoryProviderHook.class)
+         .stream()
+         .map(GeneralInfoCategoryProviderHook::provideCategory)
+         .reduce( new LinkedHashMap<>(), (into, valuesToAdd) -> {
+            into.putAll(valuesToAdd);
+            return into;
+         });
    }
    
-   private void setUsageStatistics(GeneralInfoDto info) {
-      final ImmutablePair<Long, Long> reportCount = getReportCount();
-      info.setBaseReportCount(reportCount.getLeft());
-      info.setVariantReportCount(reportCount.getRight());
-      
-      final ImmutablePair<Long, Long> jasperReportCount = getSpecificReportCount(JasperReport.class,
-            JasperReportVariant.class);
-      info.setBaseJasperCount(jasperReportCount.getLeft());
-      info.setVariantJasperCount(jasperReportCount.getRight());
-      
-      final ImmutablePair<Long, Long> birtReportCount = getSpecificReportCount(BirtReport.class,
-            BirtReportVariant.class);
-      info.setBaseBirtCount(birtReportCount.getLeft());
-      info.setVariantBirtCount(birtReportCount.getRight());
-      
-      final ImmutablePair<Long, Long> crystalReportCount = getSpecificReportCount(CrystalReport.class,
-            CrystalReportVariant.class);
-      info.setBaseCrystalCount(crystalReportCount.getLeft());
-      info.setVariantCrystalCount(crystalReportCount.getRight());
-      
-      final ImmutablePair<Long, Long> dynamicListReportCount = getSpecificReportCount(TableReport.class,
-            TableReportVariant.class);
-      info.setBaseDynamicListCount(dynamicListReportCount.getLeft());
-      info.setVariantDynamicListCount(dynamicListReportCount.getRight());
-      
-      final ImmutablePair<Long, Long> scriptReportReportCount = getSpecificReportCount(ScriptReport.class,
-            ScriptReportVariant.class);
-      info.setBaseScriptReportCount(scriptReportReportCount.getLeft());
-      info.setVariantScriptReportCount(scriptReportReportCount.getRight());
-      
-      final ImmutablePair<Long, Long> gridReportReportCount = getSpecificReportCount(GridEditorReport.class,
-            GridEditorReportVariant.class);
-      info.setBaseGridReportCount(gridReportReportCount.getLeft());
-      info.setVariantGridReportCount(gridReportReportCount.getRight());
-      
-      final ImmutablePair<Long, Long> jxlsReportReportCount = getSpecificReportCount(JxlsReport.class,
-            JxlsReportVariant.class);
-      info.setBaseJxlsReportCount(jxlsReportReportCount.getLeft());
-      info.setVariantJxlsReportCount(jxlsReportReportCount.getRight());
-      
-      final ImmutablePair<Long, Long> saikuReportReportCount = getSpecificReportCount(SaikuReport.class,
-            SaikuReportVariant.class);
-      info.setBaseSaikuReportCount(saikuReportReportCount.getLeft());
-      info.setVariantSaikuReportCount(saikuReportReportCount.getRight());
-   }
    
-   private void setSftp(GeneralInfoDto info) {
-      info.setSftpEnabled(sftpEnabled.get());
-      info.setSftpPort(sftpPort.get());
-      String keylo = sftpKeyLocation.get();
-      
-      if (keylo.contains(":")) {
-         info.setSftpKey("URL: " + keylo);
-      } else if (keylo.equals("$generated")) {
-         info.setSftpKey("Generated");
-      } else {
-         info.setSftpKey("File: " + appendFileCheck(Paths.get(keylo)));
-      }
-   }
-   
-   private void setInternalDb(GeneralInfoDto info) {
-      final String errorMsg = "No internal database found. Check your /fileserver/etc/datasources/internaldb.cf configuration file.";
-      DatasourceHelperService datasourceHelperService = datasourceHelperServiceProvider.get();
-      
-      DatabaseDatasource internalDbDatasource = tempTableServiceProvider.get().getInternalDbDatasource();
-      if (null == internalDbDatasource) {
-         info.setInternalDbConfigured(false);
-         info.setInternalDbDatasourceName(errorMsg);
-         return;
-      }
-      
-      try {
-         info.setInternalDbConfigured(true);
-         info.setInternalDbId(internalDbDatasource.getId()+"");
-         final List<String> paths = historyServiceProvider.get().getFormattedObjectPaths(internalDbDatasource);
-         info.setInternalDbPath(paths.isEmpty()? "path not found": paths.get(0));
-         info.setInternalDbDatasourceName(internalDbDatasource.getName());
-         Map<String, Object> datasourceMetadata = datasourceHelperService
-               .fetchInfoDatasourceMetadata(internalDbDatasource, true, true, false, false);
-         info.setInternalDbDatabaseName(datasourceMetadata.get("getDatabaseProductName").toString());
-         info.setInternalDbVersion(datasourceMetadata.get("getDatabaseProductVersion").toString());
-         info.setInternalDbDriverName(datasourceMetadata.get("getDriverName").toString());
-         info.setInternalDbDriverVersion(datasourceMetadata.get("getDriverVersion").toString());
-         info.setInternalDbJdbcMajorVersion(datasourceMetadata.get("getJDBCMajorVersion").toString());
-         info.setInternalDbJdbcMinorVersion(datasourceMetadata.get("getJDBCMinorVersion").toString());
-         info.setInternalDbJdbcUrl(datasourceMetadata.get("getURL").toString());
-         info.setInternalDbUsername(datasourceMetadata.get("getUserName").toString());
-         try {
-            info.setInternalDbJdbcProperties(null != internalDbDatasource.parseJdbcProperties()
-                  ? PropertiesUtilService.convert(internalDbDatasource.parseJdbcProperties())
-                  : null);
-         } catch (Exception e) {
-            info.setInternalDbJdbcProperties(new HashMap<String,String>() {
-               private static final long serialVersionUID = 1L;
-            {
-               put("error", ExceptionUtils.getRootCauseMessage(e));
-            }});
-         }
-      } catch (Exception e) {
-         info.setInternalDbDatasourceName(internalDbDatasource.getName() + ": " + ExceptionUtils.getRootCauseMessage(e));
-      }
-   }
-   
-   private void setSchemaVersion(GeneralInfoDto info) {
-      try {
-         info.setSchemaVersion(envServiceProvider.get().getSchemaVersion());
-      } catch (SQLException e) {
-         info.setSchemaVersion("Unknown (" + ExceptionUtils.getRootCauseMessage(e) + ")");
-      }
-   }
-   
-   private void setHibernateProperties(GeneralInfoDto info) {
-      final Properties jpaProperties = envServiceProvider.get().getJpaProperties();
-      info.setHibernateDialect(jpaProperties.getProperty("hibernate.dialect"));
-      info.setHibernateDefaultSchema(jpaProperties.getProperty("hibernate.default_schema"));
-      
-      DatasourceHelperService datasourceHelperService = datasourceHelperServiceProvider.get();
-      
-      try {
-         Map<String, Object> datasourceMetadata = datasourceHelperService
-               .fetchInfoDatasourceMetadata(jpaProperties.getProperty("hibernate.connection.driver_class"), 
-                     jpaProperties.getProperty("hibernate.connection.url"),
-                     jpaProperties.getProperty("hibernate.connection.username"),
-                     jpaProperties.getProperty("hibernate.connection.password"), true, true, false, false);
-         info.setHibernateDbDatabaseName(datasourceMetadata.get("getDatabaseProductName").toString());
-         info.setHibernateDbVersion(datasourceMetadata.get("getDatabaseProductVersion").toString());
-         info.setHibernateDbDriverName(datasourceMetadata.get("getDriverName").toString());
-         info.setHibernateDbDriverVersion(datasourceMetadata.get("getDriverVersion").toString());
-         info.setHibernateDbJdbcMajorVersion(datasourceMetadata.get("getJDBCMajorVersion").toString());
-         info.setHibernateDbJdbcMinorVersion(datasourceMetadata.get("getJDBCMinorVersion").toString());
-         info.setHibernateDbJdbcUrl(datasourceMetadata.get("getURL").toString());
-         info.setHibernateDbJdbcUsername(datasourceMetadata.get("getUserName").toString());
-      } catch (Exception e) {
-         info.setHibernateDbDatabaseName(ExceptionUtils.getRootCauseMessage(e));
-      }
-   }
-
    @Override
    public String getLocale() {
       return LocalizationServiceImpl.getLocale().toString();
@@ -400,55 +163,8 @@ public class GeneralInfoServiceImpl implements GeneralInfoService {
    }
 
    @Override
-   public List<String> getSupportedSslProtocols() {
-      try {
-         String[] protocols = SSLContext.getDefault().getSupportedSSLParameters().getProtocols();
-         if (null == protocols)
-            return Collections.emptyList();
-         return Arrays.asList(protocols);
-      } catch (Exception e) {
-         log.warn("cannot read supported SSL protocols", e); 
-         return Arrays.asList("Unknown (" + ExceptionUtils.getRootCauseMessage(e) + ")");
-      }
-   }
-
-   @Override
-   public List<String> getDefaultSslProtocols() {
-      try {
-         String[] protocols = SSLContext.getDefault().getDefaultSSLParameters().getProtocols();
-         if (null == protocols)
-            return Collections.emptyList();
-         return Arrays.asList(protocols);
-      } catch (Exception e) {
-         log.warn("cannot read default SSL protocols", e); 
-         return Arrays.asList("Unknown (" + ExceptionUtils.getRootCauseMessage(e) + ")");
-      }
-   }
-
-   @Override
-   public List<String> getEnabledSslProtocols() {
-      try {
-         String[] protocols = SSLContext.getDefault().createSSLEngine().getEnabledProtocols();
-         if (null == protocols)
-            return Collections.emptyList();
-         return Arrays.asList(protocols);
-      } catch (Exception e) {
-         log.warn("cannot read enabled SSL protocols", e); 
-         return Arrays.asList("Unknown (" + ExceptionUtils.getRootCauseMessage(e) + ")");
-      }
-   }
-   
-   @Override
    public String getGroovyVersion() {
       return GroovySystem.getVersion();
-   }
-
-   @Override
-   public List<String> getStaticPams() {
-      return pamProvider.get()
-         .stream()
-         .map(pam -> pam.getClass().getName())
-         .collect(toList());
    }
 
    @Override
@@ -487,7 +203,7 @@ public class GeneralInfoServiceImpl implements GeneralInfoService {
       
       Path configDir = configDirService.getConfigDir().toPath();
       if (appendFileCheck)
-         return appendFileCheck(configDir);
+         return RsFileUtils.appendFileCheck(configDir);
       
       return configDir.toAbsolutePath().toString(); 
    }
@@ -620,31 +336,11 @@ public class GeneralInfoServiceImpl implements GeneralInfoService {
    public String getLogFilesDirectory(boolean appendFileCheck) {
       Path logDir = Paths.get(logFilesServiceProvider.get().getLogDirectory());
       if (appendFileCheck)
-         return appendFileCheck(logDir);
+         return RsFileUtils.appendFileCheck(logDir);
       
       return logDir.toAbsolutePath().toString(); 
    }
    
-   private String appendFileCheck(Path path) {
-      StringBuilder sb = new StringBuilder();
-      sb.append(path.toAbsolutePath().toString());
-      
-      sb.append(" (")
-         .append((Files.exists(path) && Files.isReadable(path))? "OK)" : "INACCESSIBLE)");
-      
-      return sb.toString();
-   }
-
-   @Override
-   public String getKnownHostsFile(boolean appendFileCheck) {
-      Path knownHostsFile = Paths.get(configServiceProvider.get().getConfigFailsafe("security/misc.cf")
-            .getString("knownHosts", getUserHome() + "/.ssh/known_hosts"));
-      if (appendFileCheck)
-         return appendFileCheck(knownHostsFile);
-
-      return knownHostsFile.toAbsolutePath().toString();
-   }
-
    @Override
    public String getUserHome() {
       return readSystemProperty("user.home");
@@ -655,16 +351,4 @@ public class GeneralInfoServiceImpl implements GeneralInfoService {
       return DateUtils.formatCurrentDate();
    }
 
-   @Override
-   public ImmutablePair<Long, Long> getReportCount() {
-      return usageStatisticsServiceProvider.get().getReportCount();
-   }
-
-   @Override
-   public ImmutablePair<Long, Long> getSpecificReportCount(Class<? extends Report> reportClazz,
-         Class<? extends Report> variantClazz) {
-      return usageStatisticsServiceProvider.get().getSpecificReportCount(reportClazz, variantClazz);
-   }
-
-   
 }

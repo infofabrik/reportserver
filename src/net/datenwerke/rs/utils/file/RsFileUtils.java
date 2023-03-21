@@ -3,6 +3,8 @@ package net.datenwerke.rs.utils.file;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.RoundingMode;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 import org.apache.commons.io.FileUtils;
 
@@ -88,6 +90,16 @@ public class RsFileUtils extends FileUtils {
     */
    public static String byteCountToDisplaySize(final long fileSize) {
        return byteCountToDisplaySize(BigInteger.valueOf(fileSize));
+   }
+   
+   public static String appendFileCheck(Path path) {
+      StringBuilder sb = new StringBuilder();
+      sb.append(path.toAbsolutePath().toString());
+      
+      sb.append(" (")
+         .append((Files.exists(path) && Files.isReadable(path))? "OK)" : "INACCESSIBLE)");
+      
+      return sb.toString();
    }
 
 }

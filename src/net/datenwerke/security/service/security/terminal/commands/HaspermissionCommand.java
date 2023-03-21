@@ -59,18 +59,18 @@ public class HaspermissionCommand implements TerminalCommandHook {
                      name = "user", 
                      description = "commandHaspermission_user", 
                      mandatory = true
-                     ),
+               ),
                @NonOptArgument(
                      name = "target", 
                      description = "commandHaspermission_target", 
                      mandatory = true
-                     ),
+               ),
                @NonOptArgument(
                      name = "right", 
                      description = "commandHaspermission_right", 
                      mandatory = true
-                     ),
-               },
+               ),
+         },
          args = {
                @Argument(
                      flag = "g", 
@@ -78,9 +78,9 @@ public class HaspermissionCommand implements TerminalCommandHook {
                      valueName = "generic", 
                      description = "commandHaspermission_flagG", 
                      mandatory = false
-                     )
-               }
-         )
+               )
+         }
+   )
    @Override
    public CommandResult execute(CommandParser parser, TerminalSession session) throws TerminalException {
       List<?> nonOptionArguments = parser.getNonOptionArguments();

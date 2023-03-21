@@ -4,11 +4,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.inject.Inject;
+import com.google.inject.Provider;
 
 import net.datenwerke.gf.service.lateinit.LateInitHook;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
+import net.datenwerke.rs.adminutils.service.systemconsole.generalinfo.hooks.GeneralInfoCategoryProviderHook;
 import net.datenwerke.rs.remoteaccess.service.sftp.SftpService;
 import net.datenwerke.rs.remoteaccess.service.sftp.genrights.SftpSecurityTarget;
+import net.datenwerke.rs.remoteaccess.service.sftp.hookers.GeneralInfoSftpServerCategoryProviderHooker;
 import net.datenwerke.security.service.security.SecurityService;
 
 public class RemoteAccessStartup {
@@ -17,20 +20,22 @@ public class RemoteAccessStartup {
 
    @Inject
    public RemoteAccessStartup(
-
-         SecurityService securityService, HookHandlerService hookHandlerService, final SftpService sftpService) {
+         final SecurityService securityService, 
+         final HookHandlerService hookHandlerService, 
+         final SftpService sftpService,
+         final Provider<GeneralInfoSftpServerCategoryProviderHooker> generalInfoSftpServerCategoryProviderHooker
+         ) {
 
       securityService.registerSecurityTarget(SftpSecurityTarget.class);
+      
+      hookHandlerService.attachHooker(GeneralInfoCategoryProviderHook.class, generalInfoSftpServerCategoryProviderHooker,
+            HookHandlerService.PRIORITY_LOW + 40);
 
-      hookHandlerService.attachHooker(LateInitHook.class, new LateInitHook() {
-
-         @Override
-         public void initialize() {
-            try {
-               sftpService.start();
-            } catch (Exception e) {
-               logger.warn("Failed to start SFTP Server", e);
-            }
+      hookHandlerService.attachHooker(LateInitHook.class, () -> {
+         try {
+            sftpService.start();
+         } catch (Exception e) {
+            logger.warn("Failed to start SFTP Server", e);
          }
       });
 

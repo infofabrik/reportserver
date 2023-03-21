@@ -234,5 +234,10 @@ public class AuthenticatorServiceImpl implements AuthenticatorService {
    public Map<Long, Long> getLastRequests() {
       return new HashMap<Long, Long>(lastRequests);
    }
+   
+   @Override
+   public Set<ReportServerPAM> getStaticPams() {
+      return pams.get();
+   }
 
 }

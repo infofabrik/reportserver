@@ -7,6 +7,7 @@ import java.util.Set;
 import net.datenwerke.security.client.login.AuthToken;
 import net.datenwerke.security.service.authenticator.AuthenticationResult;
 import net.datenwerke.security.service.authenticator.AuthenticatorService;
+import net.datenwerke.security.service.authenticator.ReportServerPAM;
 import net.datenwerke.security.service.usermanager.entities.User;
 
 public class AuthenticatorTestServiceImpl implements AuthenticatorService {
@@ -61,5 +62,11 @@ public class AuthenticatorTestServiceImpl implements AuthenticatorService {
    public void setAuthenticatedInThread(Long userId) {
       // TODO Auto-generated method stub
 
+   }
+
+   @Override
+   public Set<ReportServerPAM> getStaticPams() {
+      // TODO Auto-generated method stub
+      return null;
    }
 }

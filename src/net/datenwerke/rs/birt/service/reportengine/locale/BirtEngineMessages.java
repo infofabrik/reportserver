@@ -16,4 +16,8 @@ public interface BirtEngineMessages extends Messages {
    String commandBirt_sub_shutdown_description();
 
    String shutdownComplete();
+
+   String birtReports();
+   
+   String birtReportVariants();
 }

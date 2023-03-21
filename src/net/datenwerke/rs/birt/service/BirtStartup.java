@@ -10,6 +10,7 @@ import net.datenwerke.rs.birt.service.reportengine.hookers.BaseBirtOutputGenerat
 import net.datenwerke.rs.birt.service.reportengine.hookers.BirtReportEngineProviderHooker;
 import net.datenwerke.rs.birt.service.reportengine.hookers.BirtReportTypeProviderHooker;
 import net.datenwerke.rs.birt.service.reportengine.hookers.BirtReportUploadHooker;
+import net.datenwerke.rs.birt.service.reportengine.hookers.UsageStatisticsBirtProviderHooker;
 import net.datenwerke.rs.birt.service.reportengine.hooks.BirtOutputGeneratorProviderHook;
 import net.datenwerke.rs.birt.service.reportengine.terminal.BirtCommand;
 import net.datenwerke.rs.birt.service.reportengine.terminal.BirtShutdownCommand;
@@ -18,6 +19,7 @@ import net.datenwerke.rs.core.service.datasourcemanager.hooks.DatasourceProvider
 import net.datenwerke.rs.core.service.reportmanager.hooks.ReportEngineProviderHook;
 import net.datenwerke.rs.core.service.reportmanager.hooks.ReportTypeProviderHook;
 import net.datenwerke.rs.terminal.service.terminal.hooks.TerminalCommandHook;
+import net.datenwerke.rs.usagestatistics.service.usagestatistics.hooks.UsageStatisticsEntryProviderHook;
 
 public class BirtStartup {
 
@@ -27,7 +29,9 @@ public class BirtStartup {
 
          Provider<BaseBirtOutputGeneratorProvider> baseOutputGenerators,
 
-         Provider<BirtCommand> birtCommand, Provider<BirtShutdownCommand> birtShutdownCommand
+         Provider<BirtCommand> birtCommand, Provider<BirtShutdownCommand> birtShutdownCommand,
+         
+         final Provider<UsageStatisticsBirtProviderHooker> usageStatsBirtProvider
 
    ) {
       hookHandlerService.attachHooker(FileUploadHandlerHook.class, birtReportUploadHooker);
@@ -42,6 +46,9 @@ public class BirtStartup {
       /* base exporters */
       hookHandlerService.attachHooker(BirtOutputGeneratorProviderHook.class, baseOutputGenerators,
             HookHandlerService.PRIORITY_LOW);
+      
+      hookHandlerService.attachHooker(UsageStatisticsEntryProviderHook.class, usageStatsBirtProvider,
+            HookHandlerService.PRIORITY_LOW + 20);
    }
 
 }

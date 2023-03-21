@@ -97,4 +97,16 @@ public interface ReportEnginesMessages extends Messages {
    String nofilters();
 
    String noprefilter();
+
+   String baseReports();
+
+   String reportVariants();
+
+   String dynamicLists();
+
+   String dynamicListVariants();
+
+   String jasperReports();
+   
+   String jasperReportVariants();
 }

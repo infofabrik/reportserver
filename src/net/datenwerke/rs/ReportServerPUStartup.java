@@ -14,8 +14,11 @@ import org.apache.commons.configuration2.builder.FileBasedConfigurationBuilder;
 import org.apache.commons.configuration2.builder.fluent.Parameters;
 import org.apache.commons.configuration2.ex.ConfigurationException;
 
+import com.google.inject.Provider;
+
 import net.datenwerke.gf.service.jpa.annotations.JpaUnit;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
+import net.datenwerke.rs.adminutils.service.systemconsole.generalinfo.hooks.GeneralInfoCategoryProviderHook;
 import net.datenwerke.rs.configservice.service.configservice.ConfigDirService;
 
 public class ReportServerPUStartup {
@@ -23,15 +26,20 @@ public class ReportServerPUStartup {
    public static final String PERSISTENCE_PROP_NAME = "persistence.properties";
 
    @Inject
-   public ReportServerPUStartup(HookHandlerService hookHandlerService, ConfigDirService configDirService,
-         @JpaUnit Properties jpaProperties) {
+   public ReportServerPUStartup(
+         HookHandlerService hookHandlerService, 
+         ConfigDirService configDirService,
+         final @JpaUnit Properties jpaProperties,
+         Provider<GeneralInfoHibernateCategoryProviderHooker> generalInfoHibernateCategoryProviderHooker
+         ) {
 
       loadPersistenceProperties(configDirService, jpaProperties);
 
-      for (JpaPropertyConfiguratorHook hook : hookHandlerService.getHookers(JpaPropertyConfiguratorHook.class)) {
-         hook.configureProperties(jpaProperties);
-      }
+      hookHandlerService.getHookers(JpaPropertyConfiguratorHook.class)
+         .forEach(hook -> hook.configureProperties(jpaProperties));
 
+      hookHandlerService.attachHooker(GeneralInfoCategoryProviderHook.class, generalInfoHibernateCategoryProviderHooker,
+            HookHandlerService.PRIORITY_LOW + 20);
    }
 
    public static void loadPersistenceProperties(ConfigDirService configDirService, Properties jpaProperties) {

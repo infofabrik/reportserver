@@ -16,28 +16,35 @@ import net.datenwerke.rs.saiku.service.hooker.ReportExportViaSessionHooker;
 import net.datenwerke.rs.saiku.service.hooker.SaikuClientConfigExposerHooker;
 import net.datenwerke.rs.saiku.service.hooker.SaikuJuelParameterAdapter;
 import net.datenwerke.rs.saiku.service.hooker.SaikuReportTypeProviderHooker;
+import net.datenwerke.rs.saiku.service.hooker.UsageStatisticsSaikuProviderHooker;
 import net.datenwerke.rs.saiku.service.hooker.VariantCreatedAdjustSaikuQueryHooker;
 import net.datenwerke.rs.saiku.service.hooker.VariantStoreHooker;
 import net.datenwerke.rs.saiku.service.hooks.SaikuQueryParameterAdapterHook;
 import net.datenwerke.rs.saiku.service.saiku.reportengine.hookers.BaseSaikuOutputGeneratorProvider;
 import net.datenwerke.rs.saiku.service.saiku.reportengine.hookers.SaikuReportEngineProviderHooker;
 import net.datenwerke.rs.saiku.service.saiku.reportengine.hooks.SaikuOutputGeneratorProviderHook;
+import net.datenwerke.rs.usagestatistics.service.usagestatistics.hooks.UsageStatisticsEntryProviderHook;
 
 public class SaikuStartup {
 
    @Inject
-   public SaikuStartup(HookHandlerService hookHandler, MondrianDatasourceProviderHooker mondrianDatasourceProvider,
-         SaikuReportEngineProviderHooker saikuReportEngineProviderHooker,
-         ReportExportViaSessionHooker reportExportViaSessionHooker,
-         VariantStoreHooker variantStoreHooker, 
-         SaikuReportTypeProviderHooker saikuReportTypeProviderHooker,
-         VariantCreatedAdjustSaikuQueryHooker adjustSaikuQueryHooker,
+   public SaikuStartup(
+         final HookHandlerService hookHandler, 
+         final MondrianDatasourceProviderHooker mondrianDatasourceProvider,
+         final SaikuReportEngineProviderHooker saikuReportEngineProviderHooker,
+         final ReportExportViaSessionHooker reportExportViaSessionHooker,
+         final VariantStoreHooker variantStoreHooker, 
+         final SaikuReportTypeProviderHooker saikuReportTypeProviderHooker,
+         final VariantCreatedAdjustSaikuQueryHooker adjustSaikuQueryHooker,
 
-         SaikuClientConfigExposerHooker clientConfigExposer,
+         final SaikuClientConfigExposerHooker clientConfigExposer,
 
-         Provider<BaseSaikuOutputGeneratorProvider> baseOutputGenerators,
+         final Provider<BaseSaikuOutputGeneratorProvider> baseOutputGenerators,
 
-         SaikuJuelParameterAdapter juelParameterAdapter) {
+         final SaikuJuelParameterAdapter juelParameterAdapter,
+         
+         final Provider<UsageStatisticsSaikuProviderHooker> usageStatsSaikuProvider
+         ) {
 
       hookHandler.attachHooker(ReportEngineProviderHook.class, saikuReportEngineProviderHooker);
       hookHandler.attachHooker(DatasourceProviderHook.class, mondrianDatasourceProvider);
@@ -54,6 +61,9 @@ public class SaikuStartup {
       /* base exporters */
       hookHandler.attachHooker(SaikuOutputGeneratorProviderHook.class, baseOutputGenerators,
             HookHandlerService.PRIORITY_LOW);
+      
+      hookHandler.attachHooker(UsageStatisticsEntryProviderHook.class, usageStatsSaikuProvider,
+            HookHandlerService.PRIORITY_LOW + 60);
    }
 }
 

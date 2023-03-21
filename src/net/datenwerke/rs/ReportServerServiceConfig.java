@@ -157,6 +157,7 @@ import net.datenwerke.rs.incubator.service.outputformatauth.OutputFormatAuthModu
 import net.datenwerke.rs.incubator.service.versioning.VersioningModule;
 import net.datenwerke.rs.installation.ReportServerInstallationModule;
 import net.datenwerke.rs.installation.RsInstallModule;
+import net.datenwerke.rs.json.service.json.JsonModule;
 import net.datenwerke.rs.jxlsreport.server.JxlsReportFileDownloadServlet;
 import net.datenwerke.rs.jxlsreport.service.jxlsreport.JxlsReportModule;
 import net.datenwerke.rs.license.server.LicenseRpcServiceImpl;
@@ -203,6 +204,7 @@ import net.datenwerke.rs.terminal.server.terminal.TerminalRpcServiceImpl;
 import net.datenwerke.rs.terminal.service.terminal.TerminalModule;
 import net.datenwerke.rs.tsreportarea.server.tsreportarea.TsDiskRpcServiceImpl;
 import net.datenwerke.rs.tsreportarea.service.tsreportarea.TsDiskModule;
+import net.datenwerke.rs.usagestatistics.service.usagestatistics.UsageStatisticsModule;
 import net.datenwerke.rs.uservariables.server.uservariables.UserVariablesRpcServiceImpl;
 import net.datenwerke.rs.uservariables.service.UserVariableModule;
 import net.datenwerke.rs.utils.entitycloner.EntityClonerModule;
@@ -606,6 +608,8 @@ public class ReportServerServiceConfig extends DwGwtFrameworkBase {
             new FilterReplacementsModule(),
 
             new JxlsReportModule(),
+            
+            new JsonModule(),
 
             new GlobalConstantsModule(),
 
@@ -646,6 +650,8 @@ public class ReportServerServiceConfig extends DwGwtFrameworkBase {
 
             new LogFilesModule(), 
             new SystemConsoleModule(),
+            
+            new UsageStatisticsModule(),
 
             new TreeDBModule(), 
             new TreeDbExtModule(),

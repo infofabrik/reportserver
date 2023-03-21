@@ -9,7 +9,11 @@ public interface CrystalEngineMessages extends Messages {
          .getMessages(CrystalEngineMessages.class);
 
    String reportTypeName();
-   
+
    String reportVariantTypeName();
+
+   String crystalReports();
+
+   String crystalReportVariants();
 
 }

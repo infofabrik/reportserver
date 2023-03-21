@@ -10,5 +10,9 @@ public interface JxlsReportMessages extends Messages {
    String reportTypeName();
    
    String reportVariantTypeName();
+   
+   String jxlsReports();
+   
+   String jxlsReportVariants();
 
 }

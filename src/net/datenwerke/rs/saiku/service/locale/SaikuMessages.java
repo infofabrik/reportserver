@@ -14,5 +14,9 @@ public interface SaikuMessages extends Messages {
    String errorClearCacheXMLA();
 
    String mondrianDatasourceTypeName();
+   
+   String saikuReports();
+   
+   String saikuReportVariants();
 
 }
