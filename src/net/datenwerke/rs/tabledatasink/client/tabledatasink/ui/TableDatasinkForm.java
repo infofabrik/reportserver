@@ -18,6 +18,7 @@ import com.sencha.gxt.widget.core.client.form.TextField;
 
 import net.datenwerke.gf.client.managerhelper.mainpanel.FormView;
 import net.datenwerke.gf.client.treedb.UITree;
+import net.datenwerke.gf.client.validator.KeyValidator;
 import net.datenwerke.gxtdto.client.forms.binding.FormBinding;
 import net.datenwerke.gxtdto.client.locale.BaseMessages;
 import net.datenwerke.rs.core.client.datasinkmanager.locale.DatasinksMessages;
@@ -37,6 +38,7 @@ public class TableDatasinkForm extends FormView {
    private final DatasourceUIService datasourceService;
    
    private TextField nameField;
+   private TextField keyField;
    private TextArea descriptionField;
    private TextField tableNameField;
    private TextField primaryKeysField;
@@ -69,6 +71,15 @@ public class TableDatasinkForm extends FormView {
       nameData.setFlex(2);
       nameData.setMinSize(54);
       firstRow.add(new FieldLabel(nameField, BaseMessages.INSTANCE.name()), nameData);
+      
+      /* key */
+      keyField = new TextField();
+      keyField.setWidth(-1);
+      keyField.addValidator(new KeyValidator(BaseMessages.INSTANCE.invalidKey()));
+      BoxLayoutData keyData = new BoxLayoutData(new Margins(0, 5, 0, 0));
+      keyData.setFlex(2);
+      keyData.setMinSize(54);
+      firstRow.add(new FieldLabel(keyField, BaseMessages.INSTANCE.key()), keyData);
       
       /* description */
       descriptionField = new TextArea();
@@ -118,6 +129,7 @@ public class TableDatasinkForm extends FormView {
       datasourceFieldCreator.initFormBinding((DatasourceContainerProviderDto) model);
 
       binding.addHtmlSafeStringBinding(nameField, model, TableDatasinkDtoPA.INSTANCE.name());
+      binding.addHtmlSafeStringBinding(keyField, model, TableDatasinkDtoPA.INSTANCE.key());
       binding.addHtmlSafeStringBinding(descriptionField, model, TableDatasinkDtoPA.INSTANCE.description());
       binding.addHtmlSafeStringBinding(tableNameField, model, TableDatasinkDtoPA.INSTANCE.tableName());
       binding.addHtmlSafeStringBinding(primaryKeysField, model, TableDatasinkDtoPA.INSTANCE.primaryKeys());

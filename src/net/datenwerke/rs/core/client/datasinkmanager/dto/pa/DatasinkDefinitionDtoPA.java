@@ -24,6 +24,7 @@ public interface DatasinkDefinitionDtoPA extends AbstractDatasinkManagerNodeDtoP
 
 	/* Properties */
 	public ValueProvider<DatasinkDefinitionDto,String> description();
+	public ValueProvider<DatasinkDefinitionDto,String> key();
 	public ValueProvider<DatasinkDefinitionDto,String> name();
 
 

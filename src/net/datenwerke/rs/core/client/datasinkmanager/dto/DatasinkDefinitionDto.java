@@ -67,6 +67,42 @@ abstract public class DatasinkDefinitionDto extends AbstractDatasinkManagerNodeD
 		}
 	};
 
+	private String key;
+	private  boolean key_m;
+	public static final String PROPERTY_KEY = "dpi-datasinkdefinition-key";
+
+	private transient static PropertyAccessor<DatasinkDefinitionDto, String> key_pa = new PropertyAccessor<DatasinkDefinitionDto, String>() {
+		@Override
+		public void setValue(DatasinkDefinitionDto container, String object) {
+			container.setKey(object);
+		}
+
+		@Override
+		public String getValue(DatasinkDefinitionDto container) {
+			return container.getKey();
+		}
+
+		@Override
+		public Class<?> getType() {
+			return String.class;
+		}
+
+		@Override
+		public String getPath() {
+			return "key";
+		}
+
+		@Override
+		public void setModified(DatasinkDefinitionDto container, boolean modified) {
+			container.key_m = modified;
+		}
+
+		@Override
+		public boolean isModified(DatasinkDefinitionDto container) {
+			return container.isKeyModified();
+		}
+	};
+
 	private String name;
 	private  boolean name_m;
 	public static final String PROPERTY_NAME = "dpi-datasinkdefinition-name";
@@ -154,6 +190,55 @@ abstract public class DatasinkDefinitionDto extends AbstractDatasinkManagerNodeD
 
 	public static PropertyAccessor<DatasinkDefinitionDto, String> getDescriptionPropertyAccessor()  {
 		return description_pa;
+	}
+
+
+	public String getKey()  {
+		if(! isDtoProxy()){
+			return this.key;
+		}
+
+		if(isKeyModified())
+			return this.key;
+
+		if(! GWT.isClient())
+			return null;
+
+		String _value = dtoManager.getProperty(this, instantiatePropertyAccess().key());
+
+		return _value;
+	}
+
+
+	public void setKey(String key)  {
+		/* old value */
+		String oldValue = null;
+		if(GWT.isClient())
+			oldValue = getKey();
+
+		/* set new value */
+		this.key = key;
+
+		if(! GWT.isClient())
+			return;
+
+		if(isTrackChanges())
+			addChange(new ChangeTracker(key_pa, oldValue, key, this.key_m));
+
+		/* set indicator */
+		this.key_m = true;
+
+		this.fireObjectChangedEvent(DatasinkDefinitionDtoPA.INSTANCE.key(), oldValue);
+	}
+
+
+	public boolean isKeyModified()  {
+		return key_m;
+	}
+
+
+	public static PropertyAccessor<DatasinkDefinitionDto, String> getKeyPropertyAccessor()  {
+		return key_pa;
 	}
 
 
@@ -255,6 +340,8 @@ abstract public class DatasinkDefinitionDto extends AbstractDatasinkManagerNodeD
 	public void clearModified()  {
 		this.description = null;
 		this.description_m = false;
+		this.key = null;
+		this.key_m = false;
 		this.name = null;
 		this.name_m = false;
 	}
@@ -265,6 +352,8 @@ abstract public class DatasinkDefinitionDto extends AbstractDatasinkManagerNodeD
 			return true;
 		if(description_m)
 			return true;
+		if(key_m)
+			return true;
 		if(name_m)
 			return true;
 		return false;
@@ -274,6 +363,7 @@ abstract public class DatasinkDefinitionDto extends AbstractDatasinkManagerNodeD
 	public List<PropertyAccessor> getPropertyAccessors()  {
 		List<PropertyAccessor> list = super.getPropertyAccessors();
 		list.add(description_pa);
+		list.add(key_pa);
 		list.add(name_pa);
 		return list;
 	}
@@ -283,6 +373,8 @@ abstract public class DatasinkDefinitionDto extends AbstractDatasinkManagerNodeD
 		List<PropertyAccessor> list = super.getModifiedPropertyAccessors();
 		if(description_m)
 			list.add(description_pa);
+		if(key_m)
+			list.add(key_pa);
 		if(name_m)
 			list.add(name_pa);
 		return list;
@@ -294,6 +386,9 @@ abstract public class DatasinkDefinitionDto extends AbstractDatasinkManagerNodeD
 		if(view.compareTo(DtoView.MINIMAL) >= 0){
 			list.add(description_pa);
 			list.add(name_pa);
+		}
+		if(view.compareTo(DtoView.LIST) >= 0){
+			list.add(key_pa);
 		}
 		return list;
 	}

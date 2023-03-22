@@ -162,7 +162,14 @@ abstract public class Report extends AbstractReportManagerNode
    @Description
    private String description;
 
-   @ExposeToClient(view = DtoView.LIST, validateDtoProperty = @PropertyValidator(string = @StringValidator(regex = "^[a-zA-Z0-9_\\-]*$")))
+   @ExposeToClient(
+         view = DtoView.LIST, 
+         validateDtoProperty = @PropertyValidator(
+               string = @StringValidator(
+                     regex = "^[a-zA-Z0-9_\\-]*$"
+               )
+         )
+   )
    @Field
    @Column(length = 40)
    private String key;
@@ -670,8 +677,8 @@ abstract public class Report extends AbstractReportManagerNode
    public String toString() {
        return MoreObjects.toStringHelper(getClass())
              .add("ID", getIdOrOldTransient())
-             .add("Name", name)
              .add("Key", key)
+             .add("Name", name)
              .add("Variant", this instanceof ReportVariant)
              .toString();
    }

@@ -1,10 +1,5 @@
 package net.datenwerke.rs.core.client.reportmanager.ui.forms;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import com.google.gwt.editor.client.Editor;
-import com.google.gwt.editor.client.EditorError;
 import com.google.inject.Provider;
 import com.sencha.gxt.core.client.util.Margins;
 import com.sencha.gxt.widget.core.client.container.BoxLayoutContainer.BoxLayoutData;
@@ -17,11 +12,10 @@ import com.sencha.gxt.widget.core.client.form.FieldLabel;
 import com.sencha.gxt.widget.core.client.form.FormPanel;
 import com.sencha.gxt.widget.core.client.form.TextArea;
 import com.sencha.gxt.widget.core.client.form.TextField;
-import com.sencha.gxt.widget.core.client.form.Validator;
-import com.sencha.gxt.widget.core.client.form.error.DefaultEditorError;
 
 import net.datenwerke.gf.client.managerhelper.mainpanel.FormView;
 import net.datenwerke.gf.client.treedb.UITree;
+import net.datenwerke.gf.client.validator.KeyValidator;
 import net.datenwerke.gxtdto.client.forms.binding.FormBinding;
 import net.datenwerke.gxtdto.client.locale.BaseMessages;
 import net.datenwerke.rs.core.client.datasourcemanager.DatasourceUIService;
@@ -71,16 +65,7 @@ public abstract class AbstractReportForm extends FormView {
       /* key */
       keyField = new TextField();
       keyField.setWidth(-1);
-      keyField.addValidator(new Validator<String>() {
-         @Override
-         public List<EditorError> validate(Editor<String> editor, String value) {
-            if (null == value || value.matches("^[a-zA-Z0-9_\\-]*$"))
-               return null;
-            List<EditorError> errors = new ArrayList<EditorError>();
-            errors.add(new DefaultEditorError(editor, BaseMessages.INSTANCE.alphaNumericErrorMsg(), value));
-            return errors;
-         }
-      });
+      keyField.addValidator(new KeyValidator(BaseMessages.INSTANCE.invalidKey()));
       BoxLayoutData keyData = new BoxLayoutData(new Margins(0, 0, 0, 5));
       keyData.setFlex(1);
       keyData.setMinSize(54);

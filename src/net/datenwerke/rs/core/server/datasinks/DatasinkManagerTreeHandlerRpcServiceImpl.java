@@ -1,9 +1,17 @@
 package net.datenwerke.rs.core.server.datasinks;
 
+import javax.persistence.NoResultException;
+
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import com.google.inject.name.Named;
+import com.google.inject.persist.Transactional;
 
+import net.datenwerke.gxtdto.client.dtomanager.Dto;
+import net.datenwerke.gxtdto.client.servercommunication.exceptions.ExpectedException;
+import net.datenwerke.gxtdto.client.servercommunication.exceptions.ServerCallFailedException;
 import net.datenwerke.gxtdto.server.dtomanager.DtoService;
+import net.datenwerke.rs.core.client.datasinkmanager.dto.DatasinkDefinitionDto;
 import net.datenwerke.rs.core.client.datasinkmanager.rpc.DatasinkTreeLoader;
 import net.datenwerke.rs.core.client.datasinkmanager.rpc.DatasinkTreeManager;
 import net.datenwerke.rs.core.service.datasinkmanager.DatasinkTreeService;
@@ -12,6 +20,11 @@ import net.datenwerke.rs.core.service.datasinkmanager.entities.DatasinkDefinitio
 import net.datenwerke.rs.utils.entitycloner.EntityClonerService;
 import net.datenwerke.security.server.TreeDBManagerTreeHandler;
 import net.datenwerke.security.service.security.SecurityService;
+import net.datenwerke.security.service.security.annotation.ArgumentVerification;
+import net.datenwerke.security.service.security.annotation.RightsVerification;
+import net.datenwerke.security.service.security.annotation.SecurityChecked;
+import net.datenwerke.security.service.security.rights.Write;
+import net.datenwerke.treedb.client.treedb.dto.AbstractNodeDto;
 
 /**
  * 
@@ -50,6 +63,43 @@ public class DatasinkManagerTreeHandlerRpcServiceImpl extends TreeDBManagerTreeH
       DatasinkDefinition datasink = (DatasinkDefinition) clonedNode;
 
       datasink.setName(datasink.getName() == null ? "copy" : datasink.getName() + " (copy)");
+   }
+   
+   @SecurityChecked(
+         argumentVerification = {
+               @ArgumentVerification(
+                     name = "node", 
+                     isDto = true, 
+                     verify = @RightsVerification(
+                           rights = Write.class
+                     )
+               ) 
+         }
+   )
+   @Override
+   @Transactional(rollbackOn = { Exception.class })
+   public AbstractNodeDto updateNode(@Named("node") AbstractNodeDto node, Dto state) throws ServerCallFailedException {
+      /* check if there already is a datasink with the same key */
+      if (node instanceof DatasinkDefinitionDto) {
+         String key = ((DatasinkDefinitionDto) node).getKey();
+         if (null != key && !"".equals(key.trim())) {
+            try {
+               long id = datasinkService.getDatasinkIdFromKey(((DatasinkDefinitionDto) node).getKey());
+
+               if (id != node.getId())
+                  throw new ExpectedException("There already is a datasink with the same key");
+
+               /*
+                * if the datasink id is the same as the id of the datasink to be changed do nothing
+                * because this is ok
+                */
+            } catch (NoResultException e) {
+               /* do nothing because this is good */
+            }
+         }
+      }
+
+      return super.updateNode(node, state);
    }
 
 }

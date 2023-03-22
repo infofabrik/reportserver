@@ -68,6 +68,9 @@ public class ScriptDatasink2DtoGenerator implements Poso2DtoGenerator<ScriptData
 			/*  set createdOn */
 			dto.setCreatedOn(poso.getCreatedOn() );
 
+			/*  set key */
+			dto.setKey(StringEscapeUtils.escapeXml(StringUtils.left(poso.getKey(),8192)));
+
 			/*  set lastUpdated */
 			dto.setLastUpdated(poso.getLastUpdated() );
 

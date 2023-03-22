@@ -8,6 +8,7 @@ import com.sencha.gxt.widget.core.client.menu.Menu;
 import com.sencha.gxt.widget.core.client.menu.MenuItem;
 
 import net.datenwerke.gf.client.managerhelper.mainpanel.SimpleFormView;
+import net.datenwerke.gf.client.validator.KeyValidator;
 import net.datenwerke.gxtdto.client.baseex.widget.btn.DwTextButton;
 import net.datenwerke.gxtdto.client.baseex.widget.menu.DwMenu;
 import net.datenwerke.gxtdto.client.baseex.widget.menu.DwMenuItem;
@@ -18,8 +19,10 @@ import net.datenwerke.gxtdto.client.forms.simpleform.SimpleForm;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCCodeMirror;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCNoHtmlDecode;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCPasswordField;
+import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCStringValidatorRegex;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.impl.SFFCTextAreaImpl;
 import net.datenwerke.gxtdto.client.locale.BaseMessages;
+import net.datenwerke.rs.base.client.datasources.dto.pa.DatabaseDatasourceDtoPA;
 import net.datenwerke.rs.core.client.datasourcemanager.locale.DatasourcesMessages;
 import net.datenwerke.rs.saiku.client.datasource.dto.MondrianDatasourceDto;
 import net.datenwerke.rs.saiku.client.datasource.dto.pa.MondrianDatasourceDtoPA;
@@ -53,7 +56,16 @@ public class MondrianDatasourceForm extends SimpleFormView {
             + (getSelectedNode() == null ? "" : " (" + getSelectedNode().getId() + ")"));
 
       /* add form fields */
+      form.beginFloatRow();
+      form.setFieldWidth(600);
       form.addField(String.class, MondrianDatasourceDtoPA.INSTANCE.name(), BaseMessages.INSTANCE.propertyName());
+      form.setFieldWidth(500);
+      /* key */
+      form.addField(String.class, DatabaseDatasourceDtoPA.INSTANCE.key(),
+            BaseMessages.INSTANCE.key(), new SFFCStringValidatorRegex(KeyValidator.KEY_REGEX, BaseMessages.INSTANCE.invalidKey()));
+      form.endRow();
+      
+      form.setFieldWidth(1);
       form.addField(String.class, MondrianDatasourceDtoPA.INSTANCE.description(),
             BaseMessages.INSTANCE.propertyDescription(), new SFFCTextAreaImpl());
 

@@ -166,24 +166,26 @@ public abstract class SimpleFormView extends MainPanelView {
    }
 
    protected void onSubmit(final SimpleFormSubmissionCallback callback) {
-      /* upload */
-      if (isUploadForm())
-         form.submit();
-
-      /* perform server call */
-      treeManager.updateNode(getSelectedNode(),
-            new NotamCallback<AbstractNodeDto>(ManagerhelperMessages.INSTANCE.updated()) {
-               @Override
-               public void doOnSuccess(AbstractNodeDto result) {
-                  callback.cbSuccess();
-                  onSuccessfulSubmit();
-               }
-
-               @Override
-               public void doOnFailure(Throwable caught) {
-                  callback.cbFailure(caught);
-               }
-            });
+      if (form.isValid()) {
+         /* upload */
+         if (isUploadForm())
+            form.submit();
+   
+         /* perform server call */
+         treeManager.updateNode(getSelectedNode(),
+               new NotamCallback<AbstractNodeDto>(ManagerhelperMessages.INSTANCE.updated()) {
+                  @Override
+                  public void doOnSuccess(AbstractNodeDto result) {
+                     callback.cbSuccess();
+                     onSuccessfulSubmit();
+                  }
+   
+                  @Override
+                  public void doOnFailure(Throwable caught) {
+                     callback.cbFailure(caught);
+                  }
+               });
+      }
    }
 
    protected void onSuccessfulSubmit() {

@@ -13,12 +13,14 @@ import com.sencha.gxt.widget.core.client.container.MarginData;
 
 import net.datenwerke.gf.client.managerhelper.mainpanel.SimpleFormView;
 import net.datenwerke.gf.client.upload.FileUploadUiService;
+import net.datenwerke.gf.client.validator.KeyValidator;
 import net.datenwerke.gxtdto.client.baseex.widget.DwContentPanel;
 import net.datenwerke.gxtdto.client.forms.simpleform.SimpleForm;
 import net.datenwerke.gxtdto.client.forms.simpleform.SimpleFormSubmissionCallback;
 import net.datenwerke.gxtdto.client.forms.simpleform.actions.SimpleFormAction;
 import net.datenwerke.gxtdto.client.forms.simpleform.conditions.FieldChanged;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCCustomComponent;
+import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCStringValidatorRegex;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.impl.SFFCStaticDropdownList;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.impl.SFFCTextAreaImpl;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.dummy.CustomComponent;
@@ -62,8 +64,20 @@ public class FtpsDatasinkForm extends SimpleFormView {
       form.setHeading(DatasinksMessages.INSTANCE.editDatasink()
             + (getSelectedNode() == null ? "" : " (" + getSelectedNode().getId() + ")"));
 
-      /* name name */
+      form.beginFloatRow();
+      form.setFieldWidth(600);
+      
+      /* name */
       form.addField(String.class, FtpsDatasinkDtoPA.INSTANCE.name(), BaseMessages.INSTANCE.name());
+      
+      form.setFieldWidth(500);
+      /* key */
+      form.addField(String.class, FtpsDatasinkDtoPA.INSTANCE.key(), BaseMessages.INSTANCE.key(),
+            new SFFCStringValidatorRegex(KeyValidator.KEY_REGEX, BaseMessages.INSTANCE.invalidKey()));
+      
+      form.endRow();
+      
+      form.setFieldWidth(1);
 
       form.addField(String.class, FtpsDatasinkDtoPA.INSTANCE.description(), BaseMessages.INSTANCE.description(),
             new SFFCTextAreaImpl());

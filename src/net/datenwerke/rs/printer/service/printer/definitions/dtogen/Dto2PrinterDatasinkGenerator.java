@@ -12,6 +12,7 @@ import net.datenwerke.dtoservices.dtogenerator.annotations.GeneratedType;
 import net.datenwerke.dtoservices.dtogenerator.dto2posogenerator.interfaces.Dto2PosoGenerator;
 import net.datenwerke.dtoservices.dtogenerator.dto2posogenerator.validator.DtoPropertyValidator;
 import net.datenwerke.gxtdto.client.servercommunication.exceptions.ExpectedException;
+import net.datenwerke.gxtdto.client.servercommunication.exceptions.ValidationFailedException;
 import net.datenwerke.gxtdto.server.dtomanager.DtoMainService;
 import net.datenwerke.gxtdto.server.dtomanager.DtoService;
 import net.datenwerke.rs.printer.client.printer.dto.PrinterDatasinkDto;
@@ -113,6 +114,11 @@ public class Dto2PrinterDatasinkGenerator implements Dto2PosoGenerator<PrinterDa
 		} catch(NullPointerException e){
 		}
 
+		/*  set key */
+		if(validateKeyProperty(dto, poso)){
+			poso.setKey(dto.getKey() );
+		}
+
 		/*  set name */
 		poso.setName(dto.getName() );
 
@@ -132,6 +138,13 @@ public class Dto2PrinterDatasinkGenerator implements Dto2PosoGenerator<PrinterDa
 			try{
 				poso.setFlags(dto.getFlags() );
 			} catch(NullPointerException e){
+			}
+		}
+
+		/*  set key */
+		if(dto.isKeyModified()){
+			if(validateKeyProperty(dto, poso)){
+				poso.setKey(dto.getKey() );
 			}
 		}
 
@@ -164,6 +177,11 @@ public class Dto2PrinterDatasinkGenerator implements Dto2PosoGenerator<PrinterDa
 		} catch(NullPointerException e){
 		}
 
+		/*  set key */
+		if(validateKeyProperty(dto, poso)){
+			poso.setKey(dto.getKey() );
+		}
+
 		/*  set name */
 		poso.setName(dto.getName() );
 
@@ -183,6 +201,13 @@ public class Dto2PrinterDatasinkGenerator implements Dto2PosoGenerator<PrinterDa
 			try{
 				poso.setFlags(dto.getFlags() );
 			} catch(NullPointerException e){
+			}
+		}
+
+		/*  set key */
+		if(dto.isKeyModified()){
+			if(validateKeyProperty(dto, poso)){
+				poso.setKey(dto.getKey() );
 			}
 		}
 
@@ -226,6 +251,24 @@ public class Dto2PrinterDatasinkGenerator implements Dto2PosoGenerator<PrinterDa
 	public void postProcessInstantiate(PrinterDatasink poso)  {
 	}
 
+
+	public boolean validateKeyProperty(PrinterDatasinkDto dto, PrinterDatasink poso)  throws ExpectedException {
+		Object propertyValue = dto.getKey();
+
+		/* allow null */
+		if(null == propertyValue)
+			return true;
+
+		/* make sure property is string */
+		if(! java.lang.String.class.isAssignableFrom(propertyValue.getClass()))
+			throw new ValidationFailedException("String validation failed for key", "expected a String");
+
+		if(! ((String)propertyValue).matches("^[a-zA-Z0-9_\\-]*$"))
+			throw new ValidationFailedException("String validation failed for key", " Regex test failed.");
+
+		/* all went well */
+		return true;
+	}
 
 
 }

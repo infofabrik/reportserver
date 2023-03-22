@@ -5,7 +5,9 @@ import com.google.inject.Inject;
 import net.datenwerke.gf.client.managerhelper.mainpanel.SimpleFormView;
 import net.datenwerke.gf.client.treedb.UITree;
 import net.datenwerke.gf.client.treedb.simpleform.SFFCGenericTreeNode;
+import net.datenwerke.gf.client.validator.KeyValidator;
 import net.datenwerke.gxtdto.client.forms.simpleform.SimpleForm;
+import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCStringValidatorRegex;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.impl.SFFCTextAreaImpl;
 import net.datenwerke.gxtdto.client.locale.BaseMessages;
 import net.datenwerke.rs.fileserver.client.fileserver.dto.FileServerFileDto;
@@ -29,8 +31,18 @@ public class ScriptDatasourceForm extends SimpleFormView {
       form.setHeading(ScriptDatasourceMessages.INSTANCE.editDataSource()
             + (getSelectedNode() == null ? "" : " (" + getSelectedNode().getId() + ")"));
 
-      /* name name */
+      /* name */
+      form.beginFloatRow();
+      form.setFieldWidth(600);
       form.addField(String.class, ScriptDatasourceDtoPA.INSTANCE.name(), BaseMessages.INSTANCE.propertyName());
+      form.setFieldWidth(500);
+      
+      /* key */
+      form.addField(String.class, ScriptDatasourceDtoPA.INSTANCE.key(),
+            BaseMessages.INSTANCE.key(), new SFFCStringValidatorRegex(KeyValidator.KEY_REGEX, BaseMessages.INSTANCE.invalidKey()));
+      form.endRow();
+      
+      form.setFieldWidth(1);
 
       form.addField(String.class, ScriptDatasourceDtoPA.INSTANCE.description(),
             BaseMessages.INSTANCE.propertyDescription(), new SFFCTextAreaImpl());

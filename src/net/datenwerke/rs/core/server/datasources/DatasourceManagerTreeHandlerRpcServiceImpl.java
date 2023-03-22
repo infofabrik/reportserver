@@ -3,12 +3,17 @@ package net.datenwerke.rs.core.server.datasources;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.persistence.NoResultException;
+
 import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import com.google.inject.name.Named;
 import com.google.inject.persist.Transactional;
 
+import net.datenwerke.gxtdto.client.dtomanager.Dto;
+import net.datenwerke.gxtdto.client.servercommunication.exceptions.ExpectedException;
 import net.datenwerke.gxtdto.client.servercommunication.exceptions.ServerCallFailedException;
 import net.datenwerke.gxtdto.server.dtomanager.DtoService;
 import net.datenwerke.rs.base.client.datasources.DatasourceInfoType;
@@ -27,7 +32,12 @@ import net.datenwerke.rs.utils.entitycloner.EntityClonerService;
 import net.datenwerke.rs.utils.properties.PropertiesUtilService;
 import net.datenwerke.security.server.TreeDBManagerTreeHandler;
 import net.datenwerke.security.service.security.SecurityService;
+import net.datenwerke.security.service.security.annotation.ArgumentVerification;
+import net.datenwerke.security.service.security.annotation.RightsVerification;
+import net.datenwerke.security.service.security.annotation.SecurityChecked;
 import net.datenwerke.security.service.security.rights.Read;
+import net.datenwerke.security.service.security.rights.Write;
+import net.datenwerke.treedb.client.treedb.dto.AbstractNodeDto;
 
 /**
  * 
@@ -136,6 +146,43 @@ public class DatasourceManagerTreeHandlerRpcServiceImpl extends TreeDBManagerTre
       }
       builder = builder.appendHtmlConstant("</table>");
       return builder.toSafeHtml();
+   }
+   
+   @SecurityChecked(
+         argumentVerification = {
+               @ArgumentVerification(
+                     name = "node", 
+                     isDto = true, 
+                     verify = @RightsVerification(
+                           rights = Write.class
+                     )
+               ) 
+         }
+   )
+   @Override
+   @Transactional(rollbackOn = { Exception.class })
+   public AbstractNodeDto updateNode(@Named("node") AbstractNodeDto node, Dto state) throws ServerCallFailedException {
+      /* check if there already is a datasource with the same key */
+      if (node instanceof DatasourceDefinitionDto) {
+         String key = ((DatasourceDefinitionDto) node).getKey();
+         if (null != key && !"".equals(key.trim())) {
+            try {
+               long id = datasourceService.getDatasourceIdFromKey(((DatasourceDefinitionDto) node).getKey());
+
+               if (id != node.getId())
+                  throw new ExpectedException("There already is a datasource with the same key");
+
+               /*
+                * if the datasource id is the same as the id of the datasource to be changed do nothing
+                * because this is ok
+                */
+            } catch (NoResultException e) {
+               /* do nothing because this is good */
+            }
+         }
+      }
+
+      return super.updateNode(node, state);
    }
 
 }

@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Set;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NonUniqueResultException;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
@@ -125,6 +126,37 @@ public class DatasourceServiceImpl extends SecuredTreeDBManagerImpl<AbstractData
       datasourceConfig = em.find(datasourceConfig.getClass(), datasourceConfig.getId());
       if (null != datasourceConfig)
          em.remove(datasourceConfig);
+   }
+
+   @Override
+   @QueryByAttribute(
+         select = DatasourceDefinition__.id, 
+         from = DatasourceDefinition.class, 
+         where = DatasourceDefinition__.key, 
+         throwNoResultException = true
+   )
+   public long getDatasourceIdFromKey(String key) {
+      return -1; // magic
+   }
+
+   @Override
+   public DatasourceDefinition getDatasourceByKey(String key) {
+      try {
+         return doGetDatasourceByKey(key);
+      } catch (NonUniqueResultException e) {
+         throw new IllegalArgumentException("There seem to be multiple datasources with the same key: " + key, e);
+      } catch (IllegalStateException e) {
+         if (null != e.getCause() && e.getCause() instanceof NonUniqueResultException)
+            throw new IllegalArgumentException("There seem to be multiple datasources with the same key: " + key, e);
+         throw e;
+      }
+   }
+   
+   @QueryByAttribute(
+         where = DatasourceDefinition__.key
+   )
+   public DatasourceDefinition doGetDatasourceByKey(String key) {
+      return null; // by magic
    }
 
 }

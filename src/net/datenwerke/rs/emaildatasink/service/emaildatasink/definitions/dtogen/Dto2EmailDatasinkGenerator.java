@@ -12,6 +12,7 @@ import net.datenwerke.dtoservices.dtogenerator.annotations.GeneratedType;
 import net.datenwerke.dtoservices.dtogenerator.dto2posogenerator.interfaces.Dto2PosoGenerator;
 import net.datenwerke.dtoservices.dtogenerator.dto2posogenerator.validator.DtoPropertyValidator;
 import net.datenwerke.gxtdto.client.servercommunication.exceptions.ExpectedException;
+import net.datenwerke.gxtdto.client.servercommunication.exceptions.ValidationFailedException;
 import net.datenwerke.gxtdto.server.dtomanager.DtoMainService;
 import net.datenwerke.gxtdto.server.dtomanager.DtoService;
 import net.datenwerke.rs.emaildatasink.client.emaildatasink.dto.EmailDatasinkDto;
@@ -125,6 +126,11 @@ public class Dto2EmailDatasinkGenerator implements Dto2PosoGenerator<EmailDatasi
 		/*  set host */
 		poso.setHost(dto.getHost() );
 
+		/*  set key */
+		if(validateKeyProperty(dto, poso)){
+			poso.setKey(dto.getKey() );
+		}
+
 		/*  set name */
 		poso.setName(dto.getName() );
 
@@ -196,6 +202,13 @@ public class Dto2EmailDatasinkGenerator implements Dto2PosoGenerator<EmailDatasi
 		/*  set host */
 		if(dto.isHostModified()){
 			poso.setHost(dto.getHost() );
+		}
+
+		/*  set key */
+		if(dto.isKeyModified()){
+			if(validateKeyProperty(dto, poso)){
+				poso.setKey(dto.getKey() );
+			}
 		}
 
 		/*  set name */
@@ -286,6 +299,11 @@ public class Dto2EmailDatasinkGenerator implements Dto2PosoGenerator<EmailDatasi
 		/*  set host */
 		poso.setHost(dto.getHost() );
 
+		/*  set key */
+		if(validateKeyProperty(dto, poso)){
+			poso.setKey(dto.getKey() );
+		}
+
 		/*  set name */
 		poso.setName(dto.getName() );
 
@@ -357,6 +375,13 @@ public class Dto2EmailDatasinkGenerator implements Dto2PosoGenerator<EmailDatasi
 		/*  set host */
 		if(dto.isHostModified()){
 			poso.setHost(dto.getHost() );
+		}
+
+		/*  set key */
+		if(dto.isKeyModified()){
+			if(validateKeyProperty(dto, poso)){
+				poso.setKey(dto.getKey() );
+			}
 		}
 
 		/*  set name */
@@ -446,6 +471,24 @@ public class Dto2EmailDatasinkGenerator implements Dto2PosoGenerator<EmailDatasi
 	public void postProcessInstantiate(EmailDatasink poso)  {
 	}
 
+
+	public boolean validateKeyProperty(EmailDatasinkDto dto, EmailDatasink poso)  throws ExpectedException {
+		Object propertyValue = dto.getKey();
+
+		/* allow null */
+		if(null == propertyValue)
+			return true;
+
+		/* make sure property is string */
+		if(! java.lang.String.class.isAssignableFrom(propertyValue.getClass()))
+			throw new ValidationFailedException("String validation failed for key", "expected a String");
+
+		if(! ((String)propertyValue).matches("^[a-zA-Z0-9_\\-]*$"))
+			throw new ValidationFailedException("String validation failed for key", " Regex test failed.");
+
+		/* all went well */
+		return true;
+	}
 
 
 }

@@ -24,6 +24,7 @@ public interface DatasourceDefinitionDtoPA extends AbstractDatasourceManagerNode
 
 	/* Properties */
 	public ValueProvider<DatasourceDefinitionDto,String> description();
+	public ValueProvider<DatasourceDefinitionDto,String> key();
 	public ValueProvider<DatasourceDefinitionDto,String> name();
 
 

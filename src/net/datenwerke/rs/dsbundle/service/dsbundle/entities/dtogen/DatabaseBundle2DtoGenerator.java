@@ -75,6 +75,9 @@ public class DatabaseBundle2DtoGenerator implements Poso2DtoGenerator<DatabaseBu
 			/*  set createdOn */
 			dto.setCreatedOn(poso.getCreatedOn() );
 
+			/*  set key */
+			dto.setKey(StringEscapeUtils.escapeXml(StringUtils.left(poso.getKey(),8192)));
+
 			/*  set lastUpdated */
 			dto.setLastUpdated(poso.getLastUpdated() );
 

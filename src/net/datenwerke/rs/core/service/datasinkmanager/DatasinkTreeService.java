@@ -24,4 +24,7 @@ public interface DatasinkTreeService extends TreeDBManager<AbstractDatasinkManag
    <T extends DatasinkDefinition> Optional<T> getDefaultDatasink(Class<T> type, String defaultDatasinkIdProperty,
          String defaultDatasinkNameProperty);
 
+   long getDatasinkIdFromKey(String key);
+   
+   DatasinkDefinition getDatasinkByKey(String key);
 }

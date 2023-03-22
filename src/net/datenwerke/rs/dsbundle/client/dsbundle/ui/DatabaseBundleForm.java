@@ -33,6 +33,7 @@ import com.sencha.gxt.widget.core.client.toolbar.ToolBar;
 import net.datenwerke.gf.client.managerhelper.mainpanel.SimpleFormView;
 import net.datenwerke.gf.client.treedb.UITree;
 import net.datenwerke.gf.client.treedb.selection.SingleTreeSelectionField;
+import net.datenwerke.gf.client.validator.KeyValidator;
 import net.datenwerke.gxtdto.client.baseex.widget.DwContentPanel;
 import net.datenwerke.gxtdto.client.baseex.widget.btn.DwSplitButton;
 import net.datenwerke.gxtdto.client.baseex.widget.btn.DwTextButton;
@@ -44,6 +45,7 @@ import net.datenwerke.gxtdto.client.forms.simpleform.actions.SimpleFormAction;
 import net.datenwerke.gxtdto.client.forms.simpleform.conditions.FieldChanged;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCCustomComponent;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCSpace;
+import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCStringValidatorRegex;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.impl.SFFCCustomComponentImpl;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.impl.SFFCStaticDropdownList;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.impl.SFFCTextAreaImpl;
@@ -53,7 +55,6 @@ import net.datenwerke.gxtdto.client.locale.BaseMessages;
 import net.datenwerke.gxtdto.client.utilityservices.toolbar.DwToolBar;
 import net.datenwerke.gxtdto.client.utilityservices.toolbar.ToolbarService;
 import net.datenwerke.gxtdto.client.utils.handlers.GenericStoreHandler;
-import net.datenwerke.rs.base.client.datasources.dto.pa.DatabaseDatasourceDtoPA;
 import net.datenwerke.rs.core.client.datasourcemanager.dto.AbstractDatasourceManagerNodeDto;
 import net.datenwerke.rs.core.client.datasourcemanager.provider.annotations.DatasourceTreeBasic;
 import net.datenwerke.rs.dsbundle.client.dsbundle.DatasourceBundleUiService;
@@ -91,10 +92,20 @@ public class DatabaseBundleForm extends SimpleFormView {
       form.setHeading(DatasourceBundleMessages.INSTANCE.editDataSource()
             + (getSelectedNode() == null ? "" : " (" + getSelectedNode().getId() + ")"));
 
-      /* name name */
-      form.addField(String.class, DatabaseDatasourceDtoPA.INSTANCE.name(), BaseMessages.INSTANCE.propertyName());
+      form.beginFloatRow();
+      form.setFieldWidth(600);
+      /* name */
+      form.addField(String.class, DatabaseBundleDtoPA.INSTANCE.name(), BaseMessages.INSTANCE.propertyName());
+      form.setFieldWidth(500);
+      
+      /* key */
+      form.addField(String.class, DatabaseBundleDtoPA.INSTANCE.key(),
+            BaseMessages.INSTANCE.key(), new SFFCStringValidatorRegex(KeyValidator.KEY_REGEX, BaseMessages.INSTANCE.invalidKey()));
+      form.endRow();
+      
+      form.setFieldWidth(1);
 
-      form.addField(String.class, DatabaseDatasourceDtoPA.INSTANCE.description(),
+      form.addField(String.class, DatabaseBundleDtoPA.INSTANCE.description(),
             BaseMessages.INSTANCE.propertyDescription(), new SFFCTextAreaImpl());
 
       /* initialize grid */

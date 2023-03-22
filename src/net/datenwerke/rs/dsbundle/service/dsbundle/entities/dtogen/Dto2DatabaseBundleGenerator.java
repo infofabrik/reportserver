@@ -15,6 +15,7 @@ import net.datenwerke.dtoservices.dtogenerator.annotations.GeneratedType;
 import net.datenwerke.dtoservices.dtogenerator.dto2posogenerator.interfaces.Dto2PosoGenerator;
 import net.datenwerke.dtoservices.dtogenerator.dto2posogenerator.validator.DtoPropertyValidator;
 import net.datenwerke.gxtdto.client.servercommunication.exceptions.ExpectedException;
+import net.datenwerke.gxtdto.client.servercommunication.exceptions.ValidationFailedException;
 import net.datenwerke.gxtdto.server.dtomanager.DtoMainService;
 import net.datenwerke.gxtdto.server.dtomanager.DtoService;
 import net.datenwerke.rs.dsbundle.client.dsbundle.dto.DatabaseBundleDto;
@@ -168,6 +169,11 @@ public class Dto2DatabaseBundleGenerator implements Dto2PosoGenerator<DatabaseBu
 		/*  set jdbcProperties */
 		poso.setJdbcProperties(dto.getJdbcProperties() );
 
+		/*  set key */
+		if(validateKeyProperty(dto, poso)){
+			poso.setKey(dto.getKey() );
+		}
+
 		/*  set keySource */
 		poso.setKeySource(dto.getKeySource() );
 
@@ -262,6 +268,13 @@ public class Dto2DatabaseBundleGenerator implements Dto2PosoGenerator<DatabaseBu
 			poso.setJdbcProperties(dto.getJdbcProperties() );
 		}
 
+		/*  set key */
+		if(dto.isKeyModified()){
+			if(validateKeyProperty(dto, poso)){
+				poso.setKey(dto.getKey() );
+			}
+		}
+
 		/*  set keySource */
 		if(dto.isKeySourceModified()){
 			poso.setKeySource(dto.getKeySource() );
@@ -333,6 +346,11 @@ public class Dto2DatabaseBundleGenerator implements Dto2PosoGenerator<DatabaseBu
 		/*  set jdbcProperties */
 		poso.setJdbcProperties(dto.getJdbcProperties() );
 
+		/*  set key */
+		if(validateKeyProperty(dto, poso)){
+			poso.setKey(dto.getKey() );
+		}
+
 		/*  set keySource */
 		poso.setKeySource(dto.getKeySource() );
 
@@ -392,6 +410,13 @@ public class Dto2DatabaseBundleGenerator implements Dto2PosoGenerator<DatabaseBu
 		/*  set jdbcProperties */
 		if(dto.isJdbcPropertiesModified()){
 			poso.setJdbcProperties(dto.getJdbcProperties() );
+		}
+
+		/*  set key */
+		if(dto.isKeyModified()){
+			if(validateKeyProperty(dto, poso)){
+				poso.setKey(dto.getKey() );
+			}
 		}
 
 		/*  set keySource */
@@ -459,6 +484,24 @@ public class Dto2DatabaseBundleGenerator implements Dto2PosoGenerator<DatabaseBu
 	public void postProcessInstantiate(DatabaseBundle poso)  {
 	}
 
+
+	public boolean validateKeyProperty(DatabaseBundleDto dto, DatabaseBundle poso)  throws ExpectedException {
+		Object propertyValue = dto.getKey();
+
+		/* allow null */
+		if(null == propertyValue)
+			return true;
+
+		/* make sure property is string */
+		if(! java.lang.String.class.isAssignableFrom(propertyValue.getClass()))
+			throw new ValidationFailedException("String validation failed for key", "expected a String");
+
+		if(! ((String)propertyValue).matches("^[a-zA-Z0-9_\\-]*$"))
+			throw new ValidationFailedException("String validation failed for key", " Regex test failed.");
+
+		/* all went well */
+		return true;
+	}
 
 
 }

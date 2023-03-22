@@ -191,4 +191,6 @@ public interface BaseMessages extends Messages {
    
    String path();
 
+   String invalidKey();
+
 }

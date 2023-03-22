@@ -11,6 +11,7 @@ import com.sencha.gxt.widget.core.client.menu.Menu;
 import com.sencha.gxt.widget.core.client.menu.MenuItem;
 
 import net.datenwerke.gf.client.managerhelper.mainpanel.SimpleFormView;
+import net.datenwerke.gf.client.validator.KeyValidator;
 import net.datenwerke.gxtdto.client.baseex.widget.menu.DwMenu;
 import net.datenwerke.gxtdto.client.baseex.widget.menu.DwMenuItem;
 import net.datenwerke.gxtdto.client.forms.simpleform.SimpleForm;
@@ -19,6 +20,7 @@ import net.datenwerke.gxtdto.client.forms.simpleform.conditions.SimpleFormCondit
 import net.datenwerke.gxtdto.client.forms.simpleform.hooks.FormFieldProviderHook;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCPasswordField;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCStaticLabel;
+import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCStringValidatorRegex;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.impl.SFFCStaticDropdownList;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.impl.SFFCTextAreaImpl;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.dummy.StaticLabel;
@@ -53,9 +55,19 @@ public class DatabaseDatasourceForm extends SimpleFormView {
       form.setHeading(DatasourcesMessages.INSTANCE.editDataSource()
             + (getSelectedNode() == null ? "" : " (" + getSelectedNode().getId() + ")"));
 
-      /* name name */
+      form.beginFloatRow();
+      form.setFieldWidth(600);
+      /* name */
       form.addField(String.class, DatabaseDatasourceDtoPA.INSTANCE.name(), BaseMessages.INSTANCE.name());
+      
+      form.setFieldWidth(500);
+      /* key */
+      form.addField(String.class, DatabaseDatasourceDtoPA.INSTANCE.key(),
+            BaseMessages.INSTANCE.key(), new SFFCStringValidatorRegex(KeyValidator.KEY_REGEX, BaseMessages.INSTANCE.invalidKey()));
 
+      form.endRow();
+      
+      form.setFieldWidth(1);
       form.addField(String.class, DatabaseDatasourceDtoPA.INSTANCE.description(), BaseMessages.INSTANCE.description(),
             new SFFCTextAreaImpl());
 

@@ -11,20 +11,24 @@ import net.datenwerke.treedb.service.treedb.TreeDBManager;
 
 public interface DatasourceService extends TreeDBManager<AbstractDatasourceManagerNode> {
 
-   public Set<Class<? extends DatasourceDefinition>> getInstalledDataSourceDefinitions();
+   Set<Class<? extends DatasourceDefinition>> getInstalledDataSourceDefinitions();
 
-   public DatasourceDefinition getDatasourceByName(String name);
+   DatasourceDefinition getDatasourceByName(String name);
 
-   public DatasourceDefinition getDatasourceById(Long id);
+   DatasourceDefinition getDatasourceById(Long id);
 
-   public DatasourceFolder getDatasourceFolderByName(String name);
+   DatasourceFolder getDatasourceFolderByName(String name);
 
-   public String getDefaultDatasourceId();
+   String getDefaultDatasourceId();
 
-   public DatasourceDefinition getDefaultDatasource();
+   DatasourceDefinition getDefaultDatasource();
 
-   public DatasourceContainer merge(DatasourceContainer container);
+   DatasourceContainer merge(DatasourceContainer container);
 
-   public void remove(DatasourceDefinitionConfig datasourceConfig);
+   void remove(DatasourceDefinitionConfig datasourceConfig);
+
+   long getDatasourceIdFromKey(String key);
+   
+   DatasourceDefinition getDatasourceByKey(String key);
 
 }

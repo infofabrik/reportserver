@@ -5,6 +5,7 @@ import java.util.Optional;
 import java.util.Set;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NonUniqueResultException;
 
 import org.apache.commons.configuration2.Configuration;
 
@@ -118,6 +119,37 @@ public class DatasinkTreeServiceImpl extends SecuredTreeDBManagerImpl<AbstractDa
          return Optional.of((T) datasink);
 
       return Optional.empty();
+   }
+   
+   @Override
+   @QueryByAttribute(
+         select = DatasinkDefinition__.id, 
+         from = DatasinkDefinition.class, 
+         where = DatasinkDefinition__.key, 
+         throwNoResultException = true
+   )
+   public long getDatasinkIdFromKey(String key) {
+      return -1; // magic
+   }
+
+   @Override
+   public DatasinkDefinition getDatasinkByKey(String key) {
+      try {
+         return doGetDatasinkByKey(key);
+      } catch (NonUniqueResultException e) {
+         throw new IllegalArgumentException("There seem to be multiple datasinks with the same key: " + key, e);
+      } catch (IllegalStateException e) {
+         if (null != e.getCause() && e.getCause() instanceof NonUniqueResultException)
+            throw new IllegalArgumentException("There seem to be multiple datasinks with the same key: " + key, e);
+         throw e;
+      }
+   }
+   
+   @QueryByAttribute(
+         where = DatasinkDefinition__.key
+   )
+   public DatasinkDefinition doGetDatasinkByKey(String key) {
+      return null; // by magic
    }
 
 }
