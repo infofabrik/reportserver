@@ -87,7 +87,7 @@ public class DatasinkManagerTreeHandlerRpcServiceImpl extends TreeDBManagerTreeH
                long id = datasinkService.getDatasinkIdFromKey(((DatasinkDefinitionDto) node).getKey());
 
                if (id != node.getId())
-                  throw new ExpectedException("There already is a datasink with the same key");
+                  throw new ExpectedException("There already is a datasink with the same key. ID: " + id);
 
                /*
                 * if the datasink id is the same as the id of the datasink to be changed do nothing

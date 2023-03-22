@@ -87,7 +87,7 @@ public class ReportManagerTreeHandlerImpl extends TreeDBManagerTreeHandler<Abstr
                long id = reportManager.getReportIdFromKey(((ReportDto) node).getKey());
 
                if (id != node.getId())
-                  throw new ExpectedException("There already is a report with the same key");
+                  throw new ExpectedException("There already is a report with the same key: " + id);
 
                /*
                 * if the report id is the same as the id of the report to be changed do nothing

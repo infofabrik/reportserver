@@ -170,7 +170,7 @@ public class DatasourceManagerTreeHandlerRpcServiceImpl extends TreeDBManagerTre
                long id = datasourceService.getDatasourceIdFromKey(((DatasourceDefinitionDto) node).getKey());
 
                if (id != node.getId())
-                  throw new ExpectedException("There already is a datasource with the same key");
+                  throw new ExpectedException("There already is a datasource with the same key: " + id);
 
                /*
                 * if the datasource id is the same as the id of the datasource to be changed do nothing
