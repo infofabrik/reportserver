@@ -28,6 +28,7 @@ public class InstallBaseDataTask implements DbInstallationTask {
    private final Logger logger = LoggerFactory.getLogger(getClass().getName());
 
    public final static String REPORTSERVER_DATA_SOURCE_NAME = "ReportServer Data Source"; //$NON-NLS-1$
+   public final static String REPORTSERVER_DATA_SOURCE_KEY = "REPORTSERVER_DATASOURCE"; //$NON-NLS-1$
    public static final String INTERNAL_DATASOURCES_FOLDER_NAME = "internal datasources"; //$NON-NLS-1$
    public static final String ADMINISTRATIVE_REPORTS_FOLDER = "administrative reports"; //$NON-NLS-1$
 
@@ -38,9 +39,14 @@ public class InstallBaseDataTask implements DbInstallationTask {
    private final ConfigDirService configDirService;
 
    @Inject
-   public InstallBaseDataTask(@JpaUnit String persistenceUnitName,
-         AuditLoggingInstallReportService auditLoggingInstallService, DatasourceService datasourceService,
-         DBHelperService dbHelperService, ConfigDirService configDirService, ReportService reportService) {
+   public InstallBaseDataTask(
+         @JpaUnit String persistenceUnitName,
+         AuditLoggingInstallReportService auditLoggingInstallService, 
+         DatasourceService datasourceService,
+         DBHelperService dbHelperService, 
+         ConfigDirService configDirService, 
+         ReportService reportService
+         ) {
 
       /* store objects */
       this.auditLoggingInstallService = auditLoggingInstallService;
@@ -129,6 +135,7 @@ public class InstallBaseDataTask implements DbInstallationTask {
          rsDataSource.setDatabaseDescriptor(dbHelperName);
          rsDataSource.setUrl(url);
          rsDataSource.setName(REPORTSERVER_DATA_SOURCE_NAME);
+         rsDataSource.setKey(REPORTSERVER_DATA_SOURCE_KEY);
          rsDataSource.setUsername(username);
          rsDataSource.setPassword(password);
          folder.addChild(rsDataSource);

@@ -86,8 +86,12 @@ public class DemoDataInstallTask implements DbInstallationTask {
       String username = "demo";
       String password = "demo";
       final String driver = "org.h2.Driver";
-      final String dbHelperName = dbHelperService.getDatabaseHelpers().stream()
-            .filter(dh -> driver.equals(dh.getDriver())).map(DatabaseHelper::getDescriptor).findAny().orElse("");
+      final String dbHelperName = dbHelperService.getDatabaseHelpers()
+            .stream()
+            .filter(dh -> driver.equals(dh.getDriver()))
+            .map(DatabaseHelper::getDescriptor)
+            .findAny()
+            .orElse("");
 
       DatabaseDatasource demoDataSource = new DatabaseDatasource();
       demoDataSource.setDatabaseDescriptor(dbHelperName);
