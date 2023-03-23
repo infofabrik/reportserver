@@ -72,7 +72,7 @@ public class DatabaseDatasourceForm extends SimpleFormView {
             new SFFCTextAreaImpl());
 
       /* database */
-      form.setFieldWidth(250);
+      form.setFieldWidth(1);
       form.addField(List.class, DatabaseDatasourceDtoPA.INSTANCE.databaseDescriptor(),
             DatasourcesMessages.INSTANCE.database(), new SFFCStaticDropdownList<String>() {
                public Map<String, String> getValues() {
@@ -82,7 +82,7 @@ public class DatabaseDatasourceForm extends SimpleFormView {
                            String name = databaseHelper.getName();
                            if (!databaseHelper.isJdbcDriverAvailable())
                               name += " " + BaseDatasourceMessages.INSTANCE.jdbcDriverIsNotAvailable();
-                           return name;
+                           return name + " (" + databaseHelper.getDescription() + ")";
                         }, DatabaseHelperDto::getDescriptor));
                }
             });

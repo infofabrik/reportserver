@@ -11,6 +11,7 @@ public class MariaDB extends DatabaseHelper {
    public static final String DB_NAME = "MariaDB";
    public static final String DB_DRIVER = "org.mariadb.jdbc.Driver";
    public static final String DB_DESCRIPTOR = "DBHelper_MariaDB";
+   public static final String DB_DESCRIPTION = "MariaDB JDBC driver";
 
    @Override
    public String getDescriptor() {
@@ -30,6 +31,11 @@ public class MariaDB extends DatabaseHelper {
    @Override
    public String getIdentifierQuoteChar() {
       return "`";
+   }
+   
+   @Override
+   public String getDescription() {
+      return DB_DESCRIPTION;
    }
 
 }

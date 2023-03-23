@@ -2,11 +2,12 @@ package net.datenwerke.rs.base.service.dbhelper.db;
 
 import net.datenwerke.rs.base.service.dbhelper.DatabaseHelper;
 
-public class AmazonRedshift extends DatabaseHelper {
+public class Redshift extends DatabaseHelper {
 
-   public static final String DB_NAME = "Amazon Redshift";
+   public static final String DB_NAME = "Redshift";
    public static final String DB_DRIVER = "com.amazon.redshift.jdbc42.Driver";
-   public static final String DB_DESCRIPTOR = "DBHelper_AmazonRedshift";
+   public static final String DB_DESCRIPTOR = "DBHelper_Redshift";
+   public static final String DB_DESCRIPTION = "AWS Redshift JDBC driver";
 
    @Override
    public String getDescriptor() {
@@ -26,5 +27,10 @@ public class AmazonRedshift extends DatabaseHelper {
    @Override
    public String getIdentifierQuoteChar() {
       return "";
+   }
+   
+   @Override
+   public String getDescription() {
+      return DB_DESCRIPTION;
    }
 }

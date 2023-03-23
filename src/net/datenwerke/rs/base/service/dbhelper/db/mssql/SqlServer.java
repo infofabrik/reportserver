@@ -13,11 +13,12 @@ import net.datenwerke.rs.base.service.dbhelper.querybuilder.QueryBuilder;
  * 
  *
  */
-public class MsSQL extends DatabaseHelper {
+public class SqlServer extends DatabaseHelper {
 
-   public static final String DB_NAME = "Microsoft SQL Server";
+   public static final String DB_NAME = "SQL Server";
    public static final String DB_DRIVER = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
-   public static final String DB_DESCRIPTOR = "DBHelper_MsSQL";
+   public static final String DB_DESCRIPTOR = "DBHelper_SQL_Server";
+   public static final String DB_DESCRIPTION = "Microsoft JDBC driver for SQL Server (MSSQL)";
 
    @Override
    public String getDescriptor() {
@@ -55,6 +56,11 @@ public class MsSQL extends DatabaseHelper {
    public OrderOffsetQuery getNewOrderOffsetQuery(Query nestedQuery, QueryBuilder queryBuilder,
          ColumnNamingService columnNamingService) {
       return new MsSQLOrderOffsetQuery(nestedQuery, queryBuilder, columnNamingService);
+   }
+   
+   @Override
+   public String getDescription() {
+      return DB_DESCRIPTION;
    }
 
 }

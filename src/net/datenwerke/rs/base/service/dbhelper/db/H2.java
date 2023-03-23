@@ -11,6 +11,7 @@ public class H2 extends DatabaseHelper {
    public static final String DB_NAME = "H2";
    public static final String DB_DRIVER = "org.h2.Driver";
    public static final String DB_DESCRIPTOR = "DBHelper_H2";
+   public static final String DB_DESCRIPTION = "H2 JDBC driver";
 
    @Override
    public String getDescriptor() {
@@ -25,6 +26,11 @@ public class H2 extends DatabaseHelper {
    @Override
    public String getName() {
       return DB_NAME;
+   }
+   
+   @Override
+   public String getDescription() {
+      return DB_DESCRIPTION;
    }
 
 }

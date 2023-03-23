@@ -11,11 +11,12 @@ import net.datenwerke.rs.base.service.dbhelper.querybuilder.QueryBuilder;
  * 
  *
  */
-public class DB2 extends DatabaseHelper {
+public class Db2z extends DatabaseHelper {
 
-   public static final String DB_DESCRIPTOR = "DBHelper_DB2";
-   public static final String DB_NAME = "DB2";
+   public static final String DB_NAME = "Db2 for z/OS";
+   public static final String DB_DESCRIPTOR = "DBHelper_DB2_z";
    public static final String DB_DRIVER = "com.ibm.db2.jcc.DB2Driver";
+   public static final String DB_DESCRIPTION = "IBM Db2 driver for z/OS";
 
    @Override
    public String getDescriptor() {
@@ -43,4 +44,8 @@ public class DB2 extends DatabaseHelper {
       return new DB2OffsetQuery(nestedQuery, queryBuilder, columnNamingService);
    }
 
+   @Override
+   public String getDescription() {
+      return DB_DESCRIPTION;
+   }
 }

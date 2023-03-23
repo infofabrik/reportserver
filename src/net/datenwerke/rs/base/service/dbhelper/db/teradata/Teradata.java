@@ -13,6 +13,7 @@ public class Teradata extends DatabaseHelper {
    public static final String DB_NAME = "Teradata";
    public static final String DB_DRIVER = "com.teradata.jdbc.TeraDriver";
    public static final String DB_DESCRIPTOR = "DBHelper_Teradata";
+   public static final String DB_DESCRIPTION = "Teradata JDBC driver";
 
    @Override
    public String getDescriptor() {
@@ -46,4 +47,8 @@ public class Teradata extends DatabaseHelper {
       return new TeradataOrderOffsetQuery(nestedQuery, queryBuilder, columnNamingService);
    }
 
+   @Override
+   public String getDescription() {
+      return DB_DESCRIPTION;
+   }
 }

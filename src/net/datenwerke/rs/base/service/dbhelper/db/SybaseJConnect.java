@@ -7,11 +7,12 @@ import net.datenwerke.rs.base.service.dbhelper.queries.Query;
 import net.datenwerke.rs.base.service.dbhelper.querybuilder.ColumnNamingService;
 import net.datenwerke.rs.base.service.dbhelper.querybuilder.QueryBuilder;
 
-public class Sybase extends DatabaseHelper {
+public class SybaseJConnect extends DatabaseHelper {
 
-   public static final String DB_NAME = "Sybase";
+   public static final String DB_NAME = "Sybase jConnect";
    public static final String DB_DRIVER = "com.sybase.jdbc4.jdbc.SybDriver";
-   public static final String DB_DESCRIPTOR = "DBHelper_Sybase";
+   public static final String DB_DESCRIPTOR = "DBHelper_Sybase_jConnect";
+   public static final String DB_DESCRIPTION = "Sybase jConnect driver";
 
    @Override
    public String getDescriptor() {
@@ -57,5 +58,10 @@ public class Sybase extends DatabaseHelper {
             buf.append(") limitQry");
          }
       };
+   }
+   
+   @Override
+   public String getDescription() {
+      return DB_DESCRIPTION;
    }
 }

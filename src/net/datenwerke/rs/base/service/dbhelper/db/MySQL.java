@@ -11,6 +11,7 @@ public class MySQL extends DatabaseHelper {
    public static final String DB_NAME = "MySQL";
    public static final String DB_DRIVER = "com.mysql.cj.jdbc.Driver";
    public static final String DB_DESCRIPTOR = "DBHelper_MySQL";
+   public static final String DB_DESCRIPTION = "MySQL JDBC driver";
 
    @Override
    public String getDescriptor() {
@@ -32,4 +33,9 @@ public class MySQL extends DatabaseHelper {
       return "`";
    }
 
+   @Override
+   public String getDescription() {
+      return DB_DESCRIPTION;
+   }
+   
 }

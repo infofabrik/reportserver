@@ -12,7 +12,8 @@ public class Firebird extends DatabaseHelper {
    public static final String DB_NAME = "Firebird";
    public static final String DB_DRIVER = "org.firebirdsql.jdbc.FBDriver";
    public static final String DB_DESCRIPTOR = "DBHelper_Firebird";
-
+   public static final String DB_DESCRIPTION = "Firebird Jaybird driver";
+   
    @Override
    public String getDescriptor() {
       return DB_DESCRIPTOR;
@@ -57,5 +58,10 @@ public class Firebird extends DatabaseHelper {
             buf.append(") limitQry");
          }
       };
+   }
+   
+   @Override
+   public String getDescription() {
+      return DB_DESCRIPTION;
    }
 }

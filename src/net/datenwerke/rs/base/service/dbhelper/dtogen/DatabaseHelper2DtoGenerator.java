@@ -44,6 +44,9 @@ public class DatabaseHelper2DtoGenerator implements Poso2DtoGenerator<DatabaseHe
 		dto.setDtoView(here);
 
 		if(here.compareTo(DtoView.NORMAL) >= 0){
+			/*  set Description */
+			dto.setDescription(poso.getDescription() );
+
 			/*  set Descriptor */
 			dto.setDescriptor(poso.getDescriptor() );
 

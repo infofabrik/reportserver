@@ -17,6 +17,7 @@ public class MonetDB extends DatabaseHelper {
    public static final String DB_NAME = "MonetDB";
    public static final String DB_DRIVER = "nl.cwi.monetdb.jdbc.MonetDriver";
    public static final String DB_DESCRIPTOR = "DBHelper_MonetDB";
+   public static final String DB_DESCRIPTION = "MonetDB JDBC driver";
 
    @Override
    public String getDescriptor() {
@@ -59,5 +60,10 @@ public class MonetDB extends DatabaseHelper {
       LimitQuery limitQuery = super.getNewLimitQuery(nestedQuery, queryBuilder);
       limitQuery.setNestQuery(false);
       return limitQuery;
+   }
+   
+   @Override
+   public String getDescription() {
+      return DB_DESCRIPTION;
    }
 }

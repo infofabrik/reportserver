@@ -15,6 +15,7 @@ public class Exasol extends DatabaseHelper {
    public static final String DB_NAME = "Exasol";
    public static final String DB_DRIVER = "com.exasol.jdbc.EXADriver";
    public static final String DB_DESCRIPTOR = "DBHelper_Exasol";
+   public static final String DB_DESCRIPTION = "Exasol JDBC driver";
 
    @Override
    public String getDescriptor() {
@@ -52,6 +53,11 @@ public class Exasol extends DatabaseHelper {
             buf.append(queryBuilder.getOffset());
          }
       };
+   }
+   
+   @Override
+   public String getDescription() {
+      return DB_DESCRIPTION;
    }
 
 }

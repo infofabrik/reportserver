@@ -11,6 +11,7 @@ public class SapHana extends DatabaseHelper {
    public static final String DB_NAME = "SAP HANA";
    public static final String DB_DRIVER = "com.sap.db.jdbc.Driver";
    public static final String DB_DESCRIPTOR = "DBHelper_SAPHANADB";
+   public static final String DB_DESCRIPTION = "SAP / HANA JDBC driver";
 
    @Override
    public String getDescriptor() {
@@ -27,4 +28,8 @@ public class SapHana extends DatabaseHelper {
       return DB_NAME;
    }
 
+   @Override
+   public String getDescription() {
+      return DB_DESCRIPTION;
+   }
 }

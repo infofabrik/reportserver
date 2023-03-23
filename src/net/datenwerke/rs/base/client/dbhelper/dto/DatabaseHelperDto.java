@@ -29,6 +29,42 @@ public class DatabaseHelperDto extends RsDto {
 
 
 	/* Fields */
+	private String description;
+	private  boolean description_m;
+	public static final String PROPERTY_DESCRIPTION = "dpi-databasehelper-description";
+
+	private transient static PropertyAccessor<DatabaseHelperDto, String> description_pa = new PropertyAccessor<DatabaseHelperDto, String>() {
+		@Override
+		public void setValue(DatabaseHelperDto container, String object) {
+			container.setDescription(object);
+		}
+
+		@Override
+		public String getValue(DatabaseHelperDto container) {
+			return container.getDescription();
+		}
+
+		@Override
+		public Class<?> getType() {
+			return String.class;
+		}
+
+		@Override
+		public String getPath() {
+			return "description";
+		}
+
+		@Override
+		public void setModified(DatabaseHelperDto container, boolean modified) {
+			container.description_m = modified;
+		}
+
+		@Override
+		public boolean isModified(DatabaseHelperDto container) {
+			return container.isDescriptionModified();
+		}
+	};
+
 	private String descriptor;
 	private  boolean descriptor_m;
 	public static final String PROPERTY_DESCRIPTOR = "dpi-databasehelper-descriptor";
@@ -177,6 +213,55 @@ public class DatabaseHelperDto extends RsDto {
 	public DatabaseHelperDto() {
 		super();
 	}
+
+	public String getDescription()  {
+		if(! isDtoProxy()){
+			return this.description;
+		}
+
+		if(isDescriptionModified())
+			return this.description;
+
+		if(! GWT.isClient())
+			return null;
+
+		String _value = dtoManager.getProperty(this, instantiatePropertyAccess().description());
+
+		return _value;
+	}
+
+
+	public void setDescription(String description)  {
+		/* old value */
+		String oldValue = null;
+		if(GWT.isClient())
+			oldValue = getDescription();
+
+		/* set new value */
+		this.description = description;
+
+		if(! GWT.isClient())
+			return;
+
+		if(isTrackChanges())
+			addChange(new ChangeTracker(description_pa, oldValue, description, this.description_m));
+
+		/* set indicator */
+		this.description_m = true;
+
+		this.fireObjectChangedEvent(DatabaseHelperDtoPA.INSTANCE.description(), oldValue);
+	}
+
+
+	public boolean isDescriptionModified()  {
+		return description_m;
+	}
+
+
+	public static PropertyAccessor<DatabaseHelperDto, String> getDescriptionPropertyAccessor()  {
+		return description_pa;
+	}
+
 
 	public String getDescriptor()  {
 		if(! isDtoProxy()){
@@ -388,6 +473,8 @@ public class DatabaseHelperDto extends RsDto {
 	}
 
 	public void clearModified()  {
+		this.description = null;
+		this.description_m = false;
 		this.descriptor = null;
 		this.descriptor_m = false;
 		this.driver = null;
@@ -401,6 +488,8 @@ public class DatabaseHelperDto extends RsDto {
 
 	public boolean isModified()  {
 		if(super.isModified())
+			return true;
+		if(description_m)
 			return true;
 		if(descriptor_m)
 			return true;
@@ -416,6 +505,7 @@ public class DatabaseHelperDto extends RsDto {
 
 	public List<PropertyAccessor> getPropertyAccessors()  {
 		List<PropertyAccessor> list = super.getPropertyAccessors();
+		list.add(description_pa);
 		list.add(descriptor_pa);
 		list.add(driver_pa);
 		list.add(name_pa);
@@ -426,6 +516,8 @@ public class DatabaseHelperDto extends RsDto {
 
 	public List<PropertyAccessor> getModifiedPropertyAccessors()  {
 		List<PropertyAccessor> list = super.getModifiedPropertyAccessors();
+		if(description_m)
+			list.add(description_pa);
 		if(descriptor_m)
 			list.add(descriptor_pa);
 		if(driver_m)
@@ -444,6 +536,7 @@ public class DatabaseHelperDto extends RsDto {
 			list.add(jdbcDriverAvailable_pa);
 		}
 		if(view.compareTo(DtoView.NORMAL) >= 0){
+			list.add(description_pa);
 			list.add(descriptor_pa);
 			list.add(driver_pa);
 			list.add(name_pa);

@@ -7,7 +7,7 @@ import java.util.List;
 import com.google.inject.Inject;
 
 import net.datenwerke.rs.base.service.dbhelper.DatabaseHelper;
-import net.datenwerke.rs.base.service.dbhelper.db.AmazonRedshift;
+import net.datenwerke.rs.base.service.dbhelper.db.Redshift;
 import net.datenwerke.rs.base.service.dbhelper.db.CockroachDB;
 import net.datenwerke.rs.base.service.dbhelper.db.Exasol;
 import net.datenwerke.rs.base.service.dbhelper.db.Firebird;
@@ -21,12 +21,12 @@ import net.datenwerke.rs.base.service.dbhelper.db.MySQL;
 import net.datenwerke.rs.base.service.dbhelper.db.PostgreSQL;
 import net.datenwerke.rs.base.service.dbhelper.db.SQLite;
 import net.datenwerke.rs.base.service.dbhelper.db.SapHana;
-import net.datenwerke.rs.base.service.dbhelper.db.Sybase;
+import net.datenwerke.rs.base.service.dbhelper.db.SybaseJConnect;
 import net.datenwerke.rs.base.service.dbhelper.db.Vertica;
 import net.datenwerke.rs.base.service.dbhelper.db.YugabyteDB;
-import net.datenwerke.rs.base.service.dbhelper.db.db2.DB2;
+import net.datenwerke.rs.base.service.dbhelper.db.db2.Db2z;
 import net.datenwerke.rs.base.service.dbhelper.db.informix.Informix;
-import net.datenwerke.rs.base.service.dbhelper.db.mssql.MsSQL;
+import net.datenwerke.rs.base.service.dbhelper.db.mssql.SqlServer;
 import net.datenwerke.rs.base.service.dbhelper.db.oracle.Oracle;
 import net.datenwerke.rs.base.service.dbhelper.db.teradata.Teradata;
 import net.datenwerke.rs.base.service.dbhelper.hooks.DatabaseHelperProviderHook;
@@ -37,11 +37,11 @@ public class ProvideBaseDatabaseHelpersHookers implements DatabaseHelperProvider
 
    @Inject
    public ProvideBaseDatabaseHelpersHookers(
-         DB2 db2, 
+         Db2z db2, 
          H2 h2, 
          Firebird firebird, 
          MariaDB mariaDb, 
-         MsSQL mssql,
+         SqlServer mssql,
          MySQL mysql,
          MonetDB monetdb, 
          Oracle oracle, 
@@ -49,9 +49,9 @@ public class ProvideBaseDatabaseHelpersHookers implements DatabaseHelperProvider
          PostgreSQL postgres, 
          Informix informix,
          Vertica vertica, 
-         Sybase sybase, 
+         SybaseJConnect sybase, 
          GoogleBigQuery googleBigQuery, 
-         AmazonRedshift amazonRedshift,
+         Redshift amazonRedshift,
          Teradata teradata,
          SQLite sqlite,
          YugabyteDB yugabyteDb,

@@ -11,6 +11,7 @@ public class HSQL extends DatabaseHelper {
    public static final String DB_NAME = "HSQL";
    public static final String DB_DRIVER = "org.hsqldb.jdbcDriver";
    public static final String DB_DESCRIPTOR = "DBHelper_HSQL";
+   public static final String DB_DESCRIPTION = "HyperSQL DataBase JDBC driver";
 
    @Override
    public String getDescriptor() {
@@ -25,6 +26,11 @@ public class HSQL extends DatabaseHelper {
    @Override
    public String getName() {
       return DB_NAME;
+   }
+   
+   @Override
+   public String getDescription() {
+      return DB_DESCRIPTION;
    }
 
 }

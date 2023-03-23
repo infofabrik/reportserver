@@ -9,6 +9,7 @@ public class Incorta extends PostgreSQL {
    public static final String DB_NAME = "Incorta";
    public static final String DB_DRIVER = "org.postgresql.Driver";
    public static final String DB_DESCRIPTOR = "DBHelper_Incorta";
+   public static final String DB_DESCRIPTION = "Incorta JDBC driver";
 
    @Override
    public String getDescriptor() {
@@ -23,6 +24,11 @@ public class Incorta extends PostgreSQL {
    @Override
    public String getName() {
       return DB_NAME;
+   }
+   
+   @Override
+   public String getDescription() {
+      return DB_DESCRIPTION;
    }
 
 }

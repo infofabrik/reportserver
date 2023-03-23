@@ -36,6 +36,7 @@ public class Oracle extends DatabaseHelper {
    public static final String DB_NAME = "Oracle";
    public static final String DB_DRIVER = "oracle.jdbc.driver.OracleDriver";
    public static final String DB_DESCRIPTOR = "DBHelper_Oracle";
+   public static final String DB_DESCRIPTION = "Oracle JDBC driver";
 
    private final StupidOracleService sos;
 
@@ -141,5 +142,10 @@ public class Oracle extends DatabaseHelper {
    public OrderOffsetQuery getNewOrderOffsetQuery(Query nestedQuery, QueryBuilder queryBuilder,
          ColumnNamingService columnNamingService) {
       return new OracleOrderOffsetQuery(nestedQuery, queryBuilder, columnNamingService);
+   }
+   
+   @Override
+   public String getDescription() {
+      return DB_DESCRIPTION;
    }
 }

@@ -17,6 +17,7 @@ public class PostgreSQL extends DatabaseHelper {
    public static final String DB_NAME = "PostgreSQL";
    public static final String DB_DRIVER = "org.postgresql.Driver";
    public static final String DB_DESCRIPTOR = "DBHelper_PostgreSQL";
+   public static final String DB_DESCRIPTION = "PostgreSQL JDBC driver";
 
    @Override
    public String getDescriptor() {
@@ -46,5 +47,10 @@ public class PostgreSQL extends DatabaseHelper {
          }
          return o;
       };
+   }
+   
+   @Override
+   public String getDescription() {
+      return DB_DESCRIPTION;
    }
 }

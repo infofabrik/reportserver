@@ -9,6 +9,7 @@ public class CockroachDB extends PostgreSQL {
    public static final String DB_NAME = "CockroachDB";
    public static final String DB_DRIVER = "org.postgresql.Driver";
    public static final String DB_DESCRIPTOR = "DBHelper_CockroachDB";
+   protected static final String DB_DESCRIPTION = "CockroachDB JDBC driver";
 
    @Override
    public String getDescriptor() {
@@ -24,5 +25,10 @@ public class CockroachDB extends PostgreSQL {
    public String getName() {
       return DB_NAME;
    }
-
+   
+   @Override
+   public String getDescription() {
+      return DB_DESCRIPTION;
+   }
+   
 }

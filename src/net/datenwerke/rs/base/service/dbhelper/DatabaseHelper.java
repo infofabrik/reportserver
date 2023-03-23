@@ -26,7 +26,7 @@ import net.datenwerke.dtoservices.dtogenerator.annotations.ExposeMethodToClient;
 import net.datenwerke.dtoservices.dtogenerator.annotations.GenerateDto;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.base.service.dbhelper.annotations.QueryConditionInMaxSize;
-import net.datenwerke.rs.base.service.dbhelper.db.AmazonRedshift;
+import net.datenwerke.rs.base.service.dbhelper.db.Redshift;
 import net.datenwerke.rs.base.service.dbhelper.db.CockroachDB;
 import net.datenwerke.rs.base.service.dbhelper.db.Exasol;
 import net.datenwerke.rs.base.service.dbhelper.db.GoogleBigQuery;
@@ -36,7 +36,7 @@ import net.datenwerke.rs.base.service.dbhelper.db.MySQL;
 import net.datenwerke.rs.base.service.dbhelper.db.PostgreSQL;
 import net.datenwerke.rs.base.service.dbhelper.db.SapHana;
 import net.datenwerke.rs.base.service.dbhelper.db.YugabyteDB;
-import net.datenwerke.rs.base.service.dbhelper.db.mssql.MsSQL;
+import net.datenwerke.rs.base.service.dbhelper.db.mssql.SqlServer;
 import net.datenwerke.rs.base.service.dbhelper.db.oracle.Oracle;
 import net.datenwerke.rs.base.service.dbhelper.db.teradata.Teradata;
 import net.datenwerke.rs.base.service.dbhelper.dtogen.post.DatabaseHelper2DtoPostProcessor;
@@ -88,7 +88,7 @@ import net.datenwerke.rs.utils.misc.StringEscapeUtils;
       @AdditionalField(name = "jdbcDriverAvailable", type = Boolean.class) }, poso2DtoPostProcessors = {
             DatabaseHelper2DtoPostProcessor.class })
 abstract public class DatabaseHelper {
-
+   
    public interface ResultSetObjectHandler {
       public Object getObject(int pos) throws SQLException;
    }
@@ -114,7 +114,12 @@ abstract public class DatabaseHelper {
 
    @ExposeMethodToClient
    public abstract String getName();
-
+   
+   @ExposeMethodToClient
+   public String getDescription() {
+      return "JDBC driver";
+   }
+   
    public String getStringQuoteChar() {
       return "'";
    }
@@ -219,9 +224,9 @@ abstract public class DatabaseHelper {
           * Patch for sorting issues (e.g. RS-3230). This will be refactored in RS-3239.
           */
          if (builder.getDbHelper() instanceof MariaDB || builder.getDbHelper() instanceof Teradata
-               || builder.getDbHelper() instanceof MsSQL || builder.getDbHelper() instanceof MySQL
+               || builder.getDbHelper() instanceof SqlServer || builder.getDbHelper() instanceof MySQL
                || builder.getDbHelper() instanceof PostgreSQL || builder.getDbHelper() instanceof Oracle
-               || builder.getDbHelper() instanceof GoogleBigQuery || builder.getDbHelper() instanceof AmazonRedshift
+               || builder.getDbHelper() instanceof GoogleBigQuery || builder.getDbHelper() instanceof Redshift
                || builder.getDbHelper() instanceof YugabyteDB
                || builder.getDbHelper() instanceof CockroachDB
                || builder.getDbHelper() instanceof SapHana

@@ -23,6 +23,7 @@ public interface DatabaseHelperDtoPA extends PropertyAccess<DatabaseHelperDto> {
 
 
 	/* Properties */
+	public ValueProvider<DatabaseHelperDto,String> description();
 	public ValueProvider<DatabaseHelperDto,String> descriptor();
 	public ValueProvider<DatabaseHelperDto,String> driver();
 	public ValueProvider<DatabaseHelperDto,String> name();

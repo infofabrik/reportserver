@@ -12,6 +12,7 @@ public class Informix extends DatabaseHelper {
    public static final String DB_DESCRIPTOR = "DBHelper_Informix";
    public static final String DB_NAME = "Informix";
    public static final String DB_DRIVER = "com.informix.jdbc.IfxDriver";
+   public static final String DB_DESCRIPTION = "IBM Informix Dynamic Server JDBC driver";
 
    @Override
    public String getDescriptor() {
@@ -42,5 +43,10 @@ public class Informix extends DatabaseHelper {
    @Override
    public String getIdentifierQuoteChar() {
       return "";
+   }
+   
+   @Override
+   public String getDescription() {
+      return DB_DESCRIPTION;
    }
 }
