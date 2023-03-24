@@ -109,4 +109,12 @@ public interface DatasinksMessages extends Messages {
    
    String printerWarning();
 
+   String destinationTableName();
+
+   String dstTablePrimaryKeys();
+
+   String copyPrimaryKeys();
+
+   String batchSize();
+
 }

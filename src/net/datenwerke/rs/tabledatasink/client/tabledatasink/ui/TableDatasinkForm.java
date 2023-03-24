@@ -63,7 +63,7 @@ public class TableDatasinkForm extends FormView {
       HBoxLayoutContainer firstRow = new HBoxLayoutContainer();
       firstRow.setHBoxLayoutAlign(HBoxLayoutAlign.STRETCHMAX);
       fieldWrapper.add(firstRow, new VerticalLayoutData(1, -1));
-      
+
       /* name */
       nameField = new TextField();
       nameField.setWidth(-1);
@@ -71,7 +71,7 @@ public class TableDatasinkForm extends FormView {
       nameData.setFlex(2);
       nameData.setMinSize(54);
       firstRow.add(new FieldLabel(nameField, BaseMessages.INSTANCE.name()), nameData);
-      
+
       /* key */
       keyField = new TextField();
       keyField.setWidth(-1);
@@ -80,50 +80,50 @@ public class TableDatasinkForm extends FormView {
       keyData.setFlex(2);
       keyData.setMinSize(54);
       firstRow.add(new FieldLabel(keyField, BaseMessages.INSTANCE.key()), keyData);
-      
+
       /* description */
       descriptionField = new TextArea();
       descriptionField.setWidth(-1);
       fieldWrapper.add(new FieldLabel(descriptionField, BaseMessages.INSTANCE.propertyDescription()),
             new VerticalLayoutData(1, 150));
-      
+
       /* datasource */
       addDatasourceField(fieldWrapper, false);
-      
+
       /* table name */
       tableNameField = new TextField();
       tableNameField.setWidth(300);
       BoxLayoutData tableNameData = new BoxLayoutData(new Margins(0, 5, 0, 0));
       tableNameData.setFlex(2);
       tableNameData.setMinSize(54);
-      fieldWrapper.add(new FieldLabel(tableNameField, "Destination table name"));
-      
+      fieldWrapper.add(new FieldLabel(tableNameField, DatasinksMessages.INSTANCE.destinationTableName()));
+
       /* primary keys */
       primaryKeysField = new TextField();
       primaryKeysField.setWidth(300);
       BoxLayoutData primaryKeysData = new BoxLayoutData(new Margins(0, 5, 0, 0));
       primaryKeysData.setFlex(2);
       primaryKeysData.setMinSize(54);
-      fieldWrapper.add(new FieldLabel(primaryKeysField, ";-separated list of primary keys in destination table"));
-      
+      fieldWrapper.add(new FieldLabel(primaryKeysField, DatasinksMessages.INSTANCE.dstTablePrimaryKeys()));
+
       /* copy primary keys */
       copyPrimaryKeysField = new CheckBox();
       BoxLayoutData copyPrimaryKeysData = new BoxLayoutData(new Margins(0, 5, 0, 0));
       copyPrimaryKeysData.setFlex(2);
       copyPrimaryKeysData.setMinSize(54);
-      fieldWrapper.add(new FieldLabel(copyPrimaryKeysField, "Copy primary keys"));
-      
+      fieldWrapper.add(new FieldLabel(copyPrimaryKeysField, DatasinksMessages.INSTANCE.copyPrimaryKeys()));
+
       /* batch size */
       batchSizeField = new IntegerField();
       batchSizeField.setWidth(300);
       BoxLayoutData batchSizeData = new BoxLayoutData(new Margins(0, 5, 0, 0));
       batchSizeData.setFlex(2);
       batchSizeData.setMinSize(54);
-      fieldWrapper.add(new FieldLabel(batchSizeField, "Batch size"));
-      
+      fieldWrapper.add(new FieldLabel(batchSizeField, DatasinksMessages.INSTANCE.batchSize()));
+
       form.add(fieldWrapper);
    }
-   
+
    @Override
    protected void doInitFormBinding(FormBinding binding, AbstractNodeDto model) {
       datasourceFieldCreator.initFormBinding((DatasourceContainerProviderDto) model);
