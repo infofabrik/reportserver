@@ -31,8 +31,11 @@ public class EnvironmentValidatorHelperServiceImpl implements EnvironmentValidat
       ]
       Sql.newInstance(db.url, db.user, db.password, db.driver).withCloseable { sql ->
          def rows = sql.rows("SELECT * FROM RS_SCHEMAINFO WHERE KEY_FIELD = 'schemaversion' ORDER BY ENTITY_ID DESC")
-         if (rows.size())
+         if (rows.size()) {
             schemaVersion = rows[0].value
+            if (!(schemaVersion instanceof String)) // CLOB
+               schemaVersion = schemaVersion.asciiStream.text
+         }
       }
       if (!schemaVersion)
          return 'No version number found. Did you forget a commit during installation?'
