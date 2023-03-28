@@ -17,9 +17,9 @@ import com.google.inject.Singleton;
 @Singleton
 public class EventBusImpl implements EventBus {
 
-   private final Map<Class<? extends Event>, Collection<EventHandler>> eventHandlers = new ConcurrentHashMap<Class<? extends Event>, Collection<EventHandler>>();
+   private final Map<Class<? extends Event>, Collection<EventHandler>> eventHandlers = new ConcurrentHashMap<>();
 
-   private final Map<Class<? extends ObjectEvent>, Map<Class<?>, Collection<EventHandler>>> objectEventHandlers = new ConcurrentHashMap<Class<? extends ObjectEvent>, Map<Class<?>, Collection<EventHandler>>>();
+   private final Map<Class<? extends ObjectEvent>, Map<Class<?>, Collection<EventHandler>>> objectEventHandlers = new ConcurrentHashMap<>();
 
    @Inject
    protected Injector injector;
@@ -27,15 +27,15 @@ public class EventBusImpl implements EventBus {
    @Override
    public <E extends ObjectEvent> void attachObjectEventHandler(Class<E> eventType, Class<?> objectType,
          EventHandler<E> handler) {
+
       if (!objectEventHandlers.containsKey(eventType))
          objectEventHandlers.put(eventType, new HashMap<Class<?>, Collection<EventHandler>>());
 
       Map<Class<?>, Collection<EventHandler>> entityToCallbacks = objectEventHandlers.get(eventType);
       if (!entityToCallbacks.containsKey(objectType))
-         entityToCallbacks.put(objectType, new HashSet<EventHandler>());
+         entityToCallbacks.put(objectType, new HashSet<>());
 
-      Collection<EventHandler> handlers = entityToCallbacks.get(objectType);
-      handlers.add(handler);
+      entityToCallbacks.get(objectType).add(handler);
    }
 
    @Override
@@ -57,7 +57,7 @@ public class EventBusImpl implements EventBus {
    @Override
    public <E extends Event> void attachEventHandler(Class<E> eventType, EventHandler<E> handler) {
       if (!eventHandlers.containsKey(eventType))
-         eventHandlers.put(eventType, new HashSet<EventHandler>());
+         eventHandlers.put(eventType, new HashSet<>());
       eventHandlers.get(eventType).add(handler);
    }
 
@@ -81,7 +81,7 @@ public class EventBusImpl implements EventBus {
          if (null != ((ObjectEvent) event).getObject()) {
             Class<?> objectType = ((ObjectEvent) event).getObject().getClass();
 
-            Set<EventHandler> processedEventHandlers = new HashSet<EventHandler>();
+            Set<EventHandler> processedEventHandlers = new HashSet<>();
             for (Class<?> eventType : eventTypesToCheck) {
                if (objectEventHandlers.containsKey(eventType)) {
                   for (Entry<Class<?>, Collection<EventHandler>> handlerEntry : objectEventHandlers.get(eventType)
@@ -105,7 +105,7 @@ public class EventBusImpl implements EventBus {
       /* additionally .. normal event handlers */
       for (Class<?> eventType : eventTypesToCheck) {
          if (eventHandlers.containsKey(eventType))
-            for (EventHandler handler : new ArrayList<EventHandler>(eventHandlers.get(eventType)))
+            for (EventHandler handler : new ArrayList<>(eventHandlers.get(eventType)))
                handler.handle(event);
       }
    }
