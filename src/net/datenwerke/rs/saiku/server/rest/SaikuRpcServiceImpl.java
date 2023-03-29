@@ -6,6 +6,7 @@ import javax.inject.Inject;
 import javax.inject.Provider;
 import javax.inject.Singleton;
 
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -135,7 +136,7 @@ public class SaikuRpcServiceImpl extends SecuredRemoteServiceServlet implements 
       try {
          olapService.testConnection((MondrianDatasource) dtoService.loadPoso(datasourceDto));
       } catch (Exception e) {
-         ConnectionTestFailedException ex = new ConnectionTestFailedException(e.getMessage(), e);
+         ConnectionTestFailedException ex = new ConnectionTestFailedException(ExceptionUtils.getRootCauseMessage(e), e);
          ex.setStackTraceAsString(exceptionServices.exceptionToString(e));
          throw ex;
       }

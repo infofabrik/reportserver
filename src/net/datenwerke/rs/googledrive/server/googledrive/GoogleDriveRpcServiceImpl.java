@@ -9,6 +9,8 @@ import java.util.stream.Stream;
 
 import javax.inject.Singleton;
 
+import org.apache.commons.lang3.exception.ExceptionUtils;
+
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
@@ -166,7 +168,7 @@ public class GoogleDriveRpcServiceImpl extends SecuredRemoteServiceServlet imple
 
                });
       } catch (Exception e) {
-         DatasinkTestFailedException ex = new DatasinkTestFailedException(e.getMessage(), e);
+         DatasinkTestFailedException ex = new DatasinkTestFailedException(ExceptionUtils.getRootCauseMessage(e), e);
          ex.setStackTraceAsString(exceptionServices.exceptionToString(e));
          throw ex;
       }

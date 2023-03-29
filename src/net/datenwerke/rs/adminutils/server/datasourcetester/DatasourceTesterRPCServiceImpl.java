@@ -1,5 +1,7 @@
 package net.datenwerke.rs.adminutils.server.datasourcetester;
 
+import org.apache.commons.lang3.exception.ExceptionUtils;
+
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.google.inject.name.Named;
@@ -51,7 +53,7 @@ public class DatasourceTesterRPCServiceImpl extends SecuredRemoteServiceServlet 
       try {
          datasourceTesterService.testConnection((DatabaseDatasource) dtoService.loadPoso(databaseDto));
       } catch (Exception e) {
-         ConnectionTestFailedException ex = new ConnectionTestFailedException(e.getMessage(), e);
+         ConnectionTestFailedException ex = new ConnectionTestFailedException(ExceptionUtils.getRootCauseMessage(e), e);
          ex.setStackTraceAsString(exceptionServices.exceptionToString(e));
          throw ex;
       }
