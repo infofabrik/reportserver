@@ -7,8 +7,8 @@ import java.util.List;
 import com.google.inject.Inject;
 
 import net.datenwerke.rs.base.service.dbhelper.DatabaseHelper;
-import net.datenwerke.rs.base.service.dbhelper.db.Redshift;
 import net.datenwerke.rs.base.service.dbhelper.db.CockroachDB;
+import net.datenwerke.rs.base.service.dbhelper.db.CrateDB;
 import net.datenwerke.rs.base.service.dbhelper.db.Exasol;
 import net.datenwerke.rs.base.service.dbhelper.db.Firebird;
 import net.datenwerke.rs.base.service.dbhelper.db.GoogleBigQuery;
@@ -19,6 +19,7 @@ import net.datenwerke.rs.base.service.dbhelper.db.MariaDB;
 import net.datenwerke.rs.base.service.dbhelper.db.MonetDB;
 import net.datenwerke.rs.base.service.dbhelper.db.MySQL;
 import net.datenwerke.rs.base.service.dbhelper.db.PostgreSQL;
+import net.datenwerke.rs.base.service.dbhelper.db.Redshift;
 import net.datenwerke.rs.base.service.dbhelper.db.SQLite;
 import net.datenwerke.rs.base.service.dbhelper.db.SapHana;
 import net.datenwerke.rs.base.service.dbhelper.db.SybaseJConnect;
@@ -58,7 +59,8 @@ public class ProvideBaseDatabaseHelpersHookers implements DatabaseHelperProvider
          CockroachDB cockroachDb,
          SapHana saphana,
          Exasol exasol,
-         Incorta incorta
+         Incorta incorta,
+         CrateDB crateDb
          ) {
 
       helpers.add(db2);
@@ -83,6 +85,7 @@ public class ProvideBaseDatabaseHelpersHookers implements DatabaseHelperProvider
       helpers.add(saphana);
       helpers.add(exasol);
       helpers.add(incorta);
+      helpers.add(crateDb);
    }
 
    @Override

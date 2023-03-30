@@ -26,14 +26,15 @@ import net.datenwerke.dtoservices.dtogenerator.annotations.ExposeMethodToClient;
 import net.datenwerke.dtoservices.dtogenerator.annotations.GenerateDto;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.base.service.dbhelper.annotations.QueryConditionInMaxSize;
-import net.datenwerke.rs.base.service.dbhelper.db.Redshift;
 import net.datenwerke.rs.base.service.dbhelper.db.CockroachDB;
+import net.datenwerke.rs.base.service.dbhelper.db.CrateDB;
 import net.datenwerke.rs.base.service.dbhelper.db.Exasol;
 import net.datenwerke.rs.base.service.dbhelper.db.GoogleBigQuery;
 import net.datenwerke.rs.base.service.dbhelper.db.Incorta;
 import net.datenwerke.rs.base.service.dbhelper.db.MariaDB;
 import net.datenwerke.rs.base.service.dbhelper.db.MySQL;
 import net.datenwerke.rs.base.service.dbhelper.db.PostgreSQL;
+import net.datenwerke.rs.base.service.dbhelper.db.Redshift;
 import net.datenwerke.rs.base.service.dbhelper.db.SapHana;
 import net.datenwerke.rs.base.service.dbhelper.db.YugabyteDB;
 import net.datenwerke.rs.base.service.dbhelper.db.mssql.SqlServer;
@@ -231,7 +232,9 @@ abstract public class DatabaseHelper {
                || builder.getDbHelper() instanceof CockroachDB
                || builder.getDbHelper() instanceof SapHana
                || builder.getDbHelper() instanceof Exasol
-               || builder.getDbHelper() instanceof Incorta) {
+               || builder.getDbHelper() instanceof Incorta
+               || builder.getDbHelper() instanceof CrateDB
+               ) {
             /* Order by */
             if (!builder.getOrderDefinitions().isEmpty() && !builder.isLimit() && !builder.isOffset())
                currentInnerQuery = getNewOrderQuery(currentInnerQuery, builder, uniqueNameService);
