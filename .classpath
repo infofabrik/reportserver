@@ -212,19 +212,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/hibernate-core-5.6.15.Final.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/hibernate-entitymanager-5.6.15.Final.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/hibernate-envers-5.6.15.Final.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-4.0.10.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-astbuilder-4.0.10.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-cli-picocli-4.0.10.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-datetime-4.0.10.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-dateutil-4.0.10.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-json-4.0.10.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-jsr223-4.0.10.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-macro-4.0.10.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-nio-4.0.10.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-servlet-4.0.10.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-sql-4.0.10.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-templates-4.0.10.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-xml-4.0.10.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/picocli-4.7.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/commons-compress-1.23.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/liquibase-core-4.20.0.jar"/>
@@ -238,5 +225,18 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/postgresql-42.6.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/sqlite-jdbc-3.41.2.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/unboundid-ldapsdk-6.0.8.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-4.0.11.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-astbuilder-4.0.11.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-cli-picocli-4.0.11.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-datetime-4.0.11.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-dateutil-4.0.11.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-json-4.0.11.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-jsr223-4.0.11.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-macro-4.0.11.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-nio-4.0.11.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-servlet-4.0.11.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-sql-4.0.11.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-templates-4.0.11.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-xml-4.0.11.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
