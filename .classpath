@@ -181,7 +181,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/sshd-core-2.9.2.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/sshd-sftp-2.9.2.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/byte-buddy-1.12.19.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/commons-compress-1.22.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/fop-2.8.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/fop-core-2.8.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/fop-events-2.8.jar"/>
@@ -228,5 +227,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-templates-4.0.10.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-xml-4.0.10.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/picocli-4.7.1.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/commons-compress-1.23.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
