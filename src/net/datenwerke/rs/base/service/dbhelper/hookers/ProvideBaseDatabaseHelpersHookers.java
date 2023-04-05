@@ -27,6 +27,7 @@ import net.datenwerke.rs.base.service.dbhelper.db.Vertica;
 import net.datenwerke.rs.base.service.dbhelper.db.YugabyteDB;
 import net.datenwerke.rs.base.service.dbhelper.db.athena.Athena;
 import net.datenwerke.rs.base.service.dbhelper.db.db2.Db2z;
+import net.datenwerke.rs.base.service.dbhelper.db.derby.Derby;
 import net.datenwerke.rs.base.service.dbhelper.db.informix.Informix;
 import net.datenwerke.rs.base.service.dbhelper.db.mssql.SqlServer;
 import net.datenwerke.rs.base.service.dbhelper.db.oracle.Oracle;
@@ -62,7 +63,8 @@ public class ProvideBaseDatabaseHelpersHookers implements DatabaseHelperProvider
          Exasol exasol,
          Incorta incorta,
          CrateDB crateDb,
-         Athena athena
+         Athena athena,
+         Derby derby
          ) {
 
       helpers.add(db2);
@@ -89,6 +91,7 @@ public class ProvideBaseDatabaseHelpersHookers implements DatabaseHelperProvider
       helpers.add(incorta);
       helpers.add(crateDb);
       helpers.add(athena);
+      helpers.add(derby);
    }
 
    @Override
