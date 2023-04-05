@@ -25,6 +25,7 @@ import net.datenwerke.rs.base.service.dbhelper.db.SapHana;
 import net.datenwerke.rs.base.service.dbhelper.db.SybaseJConnect;
 import net.datenwerke.rs.base.service.dbhelper.db.Vertica;
 import net.datenwerke.rs.base.service.dbhelper.db.YugabyteDB;
+import net.datenwerke.rs.base.service.dbhelper.db.athena.Athena;
 import net.datenwerke.rs.base.service.dbhelper.db.db2.Db2z;
 import net.datenwerke.rs.base.service.dbhelper.db.informix.Informix;
 import net.datenwerke.rs.base.service.dbhelper.db.mssql.SqlServer;
@@ -60,7 +61,8 @@ public class ProvideBaseDatabaseHelpersHookers implements DatabaseHelperProvider
          SapHana saphana,
          Exasol exasol,
          Incorta incorta,
-         CrateDB crateDb
+         CrateDB crateDb,
+         Athena athena
          ) {
 
       helpers.add(db2);
@@ -86,6 +88,7 @@ public class ProvideBaseDatabaseHelpersHookers implements DatabaseHelperProvider
       helpers.add(exasol);
       helpers.add(incorta);
       helpers.add(crateDb);
+      helpers.add(athena);
    }
 
    @Override

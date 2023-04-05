@@ -37,6 +37,7 @@ import net.datenwerke.rs.base.service.dbhelper.db.PostgreSQL;
 import net.datenwerke.rs.base.service.dbhelper.db.Redshift;
 import net.datenwerke.rs.base.service.dbhelper.db.SapHana;
 import net.datenwerke.rs.base.service.dbhelper.db.YugabyteDB;
+import net.datenwerke.rs.base.service.dbhelper.db.athena.Athena;
 import net.datenwerke.rs.base.service.dbhelper.db.mssql.SqlServer;
 import net.datenwerke.rs.base.service.dbhelper.db.oracle.Oracle;
 import net.datenwerke.rs.base.service.dbhelper.db.teradata.Teradata;
@@ -234,6 +235,7 @@ abstract public class DatabaseHelper {
                || builder.getDbHelper() instanceof Exasol
                || builder.getDbHelper() instanceof Incorta
                || builder.getDbHelper() instanceof CrateDB
+               || builder.getDbHelper() instanceof Athena
                ) {
             /* Order by */
             if (!builder.getOrderDefinitions().isEmpty() && !builder.isLimit() && !builder.isOffset())
