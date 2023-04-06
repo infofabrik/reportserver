@@ -13,17 +13,25 @@ import net.datenwerke.rs.core.service.datasinkmanager.entities.AbstractDatasinkM
 import net.datenwerke.rs.core.service.datasinkmanager.entities.DatasinkFolder;
 import net.datenwerke.rs.ftp.service.ftp.action.ScheduleAsFtpFileAction;
 import net.datenwerke.rs.ftp.service.ftp.definitions.FtpDatasink;
+import net.datenwerke.rs.remoteserver.service.remoteservermanager.RemoteServerTreeService;
+import net.datenwerke.rs.remoteserver.service.remoteservermanager.entities.RemoteServerFolder;
 
 public class InstallMissingEntitiesTask implements DbInstallationTask {
 
    private final DatasinkTreeService datasinkService;
+   private final RemoteServerTreeService remoteServerService;
    private final Provider<EntityManager> emp;
 
    @Inject
-   public InstallMissingEntitiesTask(DatasinkTreeService datasinkService, Provider<EntityManager> emp) {
+   public InstallMissingEntitiesTask(
+         DatasinkTreeService datasinkService, 
+         RemoteServerTreeService remoteServerService,
+         Provider<EntityManager> emp
+         ) {
 
       /* store objects */
       this.datasinkService = datasinkService;
+      this.remoteServerService = remoteServerService;
       this.emp = emp;
    }
 
@@ -41,6 +49,11 @@ public class InstallMissingEntitiesTask implements DbInstallationTask {
          DatasinkFolder dsRoot = new DatasinkFolder();
          dsRoot.setName(PrepareDbForReportServer.REPORTSERVER_ROOT_DATASINK);
          datasinkService.persist(dsRoot);
+      }
+      if (remoteServerService.getRoots().isEmpty()) {
+         RemoteServerFolder remoteRoot = new RemoteServerFolder();
+         remoteRoot.setName(PrepareDbForReportServer.REPORTSERVER_ROOT_REMOTE_SERVER);
+         remoteServerService.persist(remoteRoot);
       }
    }
 

@@ -37,8 +37,6 @@ public interface GeneralInfoMessages extends Messages {
 
    String userAgentLabel();
 
-   String restUrl();
-
    String requestUrl();
 
    String scheme();

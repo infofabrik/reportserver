@@ -242,6 +242,9 @@ public class DtoServiceImpl implements DtoMainService, DtoService {
 		dtoGeneratorByPosoLookup.put(net.datenwerke.rs.localfsdatasink.service.localfsdatasink.definitions.LocalFileSystemDatasink.class, injector.getInstance(net.datenwerke.rs.localfsdatasink.service.localfsdatasink.definitions.dtogen.LocalFileSystemDatasink2DtoGenerator.class));
 		dtoGeneratorByPosoLookup.put(net.datenwerke.rs.onedrive.service.onedrive.definitions.OneDriveDatasink.class, injector.getInstance(net.datenwerke.rs.onedrive.service.onedrive.definitions.dtogen.OneDriveDatasink2DtoGenerator.class));
 		dtoGeneratorByPosoLookup.put(net.datenwerke.rs.printer.service.printer.definitions.PrinterDatasink.class, injector.getInstance(net.datenwerke.rs.printer.service.printer.definitions.dtogen.PrinterDatasink2DtoGenerator.class));
+		dtoGeneratorByPosoLookup.put(net.datenwerke.rs.remoteserver.service.remoteservermanager.entities.RemoteServer.class, injector.getInstance(net.datenwerke.rs.remoteserver.service.remoteservermanager.entities.dtogen.RemoteServer2DtoGenerator.class));
+		dtoGeneratorByPosoLookup.put(net.datenwerke.rs.remoteserver.service.remoteservermanager.entities.RemoteServerContainer.class, injector.getInstance(net.datenwerke.rs.remoteserver.service.remoteservermanager.entities.dtogen.RemoteServerContainer2DtoGenerator.class));
+		dtoGeneratorByPosoLookup.put(net.datenwerke.rs.remoteserver.service.remoteservermanager.entities.RemoteServerFolder.class, injector.getInstance(net.datenwerke.rs.remoteserver.service.remoteservermanager.entities.dtogen.RemoteServerFolder2DtoGenerator.class));
 		dtoGeneratorByPosoLookup.put(net.datenwerke.rs.reportdoc.service.terminal.commands.DeployAnalyzeCommandResultExtension.class, injector.getInstance(net.datenwerke.rs.reportdoc.service.terminal.commands.dtogen.DeployAnalyzeCommandResultExtension2DtoGenerator.class));
 		dtoGeneratorByPosoLookup.put(net.datenwerke.rs.reportdoc.service.terminal.commands.VariantTestCommandResultExtension.class, injector.getInstance(net.datenwerke.rs.reportdoc.service.terminal.commands.dtogen.VariantTestCommandResultExtension2DtoGenerator.class));
 		dtoGeneratorByPosoLookup.put(net.datenwerke.rs.saiku.service.datasource.MondrianDatasource.class, injector.getInstance(net.datenwerke.rs.saiku.service.datasource.dtogen.MondrianDatasource2DtoGenerator.class));
@@ -489,6 +492,9 @@ public class DtoServiceImpl implements DtoMainService, DtoService {
 		dto2PosoGeneratorLookup.put(net.datenwerke.rs.localfsdatasink.client.localfsdatasink.dto.LocalFileSystemDatasinkDto.class, injector.getInstance(net.datenwerke.rs.localfsdatasink.service.localfsdatasink.definitions.dtogen.Dto2LocalFileSystemDatasinkGenerator.class));
 		dto2PosoGeneratorLookup.put(net.datenwerke.rs.onedrive.client.onedrive.dto.OneDriveDatasinkDto.class, injector.getInstance(net.datenwerke.rs.onedrive.service.onedrive.definitions.dtogen.Dto2OneDriveDatasinkGenerator.class));
 		dto2PosoGeneratorLookup.put(net.datenwerke.rs.printer.client.printer.dto.PrinterDatasinkDto.class, injector.getInstance(net.datenwerke.rs.printer.service.printer.definitions.dtogen.Dto2PrinterDatasinkGenerator.class));
+		dto2PosoGeneratorLookup.put(net.datenwerke.rs.remoteserver.client.remoteservermanager.dto.RemoteServerDto.class, injector.getInstance(net.datenwerke.rs.remoteserver.service.remoteservermanager.entities.dtogen.Dto2RemoteServerGenerator.class));
+		dto2PosoGeneratorLookup.put(net.datenwerke.rs.remoteserver.client.remoteservermanager.dto.RemoteServerContainerDto.class, injector.getInstance(net.datenwerke.rs.remoteserver.service.remoteservermanager.entities.dtogen.Dto2RemoteServerContainerGenerator.class));
+		dto2PosoGeneratorLookup.put(net.datenwerke.rs.remoteserver.client.remoteservermanager.dto.RemoteServerFolderDto.class, injector.getInstance(net.datenwerke.rs.remoteserver.service.remoteservermanager.entities.dtogen.Dto2RemoteServerFolderGenerator.class));
 		dto2PosoGeneratorLookup.put(net.datenwerke.rs.reportdoc.client.dto.DeployAnalyzeCommandResultExtensionDto.class, injector.getInstance(net.datenwerke.rs.reportdoc.service.terminal.commands.dtogen.Dto2DeployAnalyzeCommandResultExtensionGenerator.class));
 		dto2PosoGeneratorLookup.put(net.datenwerke.rs.reportdoc.client.dto.VariantTestCommandResultExtensionDto.class, injector.getInstance(net.datenwerke.rs.reportdoc.service.terminal.commands.dtogen.Dto2VariantTestCommandResultExtensionGenerator.class));
 		dto2PosoGeneratorLookup.put(net.datenwerke.rs.saiku.client.datasource.dto.MondrianDatasourceDto.class, injector.getInstance(net.datenwerke.rs.saiku.service.datasource.dtogen.Dto2MondrianDatasourceGenerator.class));
@@ -892,6 +898,12 @@ public class DtoServiceImpl implements DtoMainService, DtoService {
 		dtoClassLookup.add(net.datenwerke.rs.localfsdatasink.client.localfsdatasink.dto.LocalFileSystemDatasinkDto.class);
 		dtoClassLookup.add(net.datenwerke.rs.onedrive.client.onedrive.dto.OneDriveDatasinkDto.class);
 		dtoClassLookup.add(net.datenwerke.rs.printer.client.printer.dto.PrinterDatasinkDto.class);
+		dtoClassLookup.add(net.datenwerke.rs.remoteserver.client.remoteservermanager.dto.AbstractRemoteServerManagerNodeDto.class);
+		dtoClassLookup.add(net.datenwerke.rs.remoteserver.client.remoteservermanager.dto.RemoteServerDto.class);
+		dtoClassLookup.add(net.datenwerke.rs.remoteserver.client.remoteservermanager.dto.RemoteServerContainerDto.class);
+		dtoClassLookup.add(net.datenwerke.rs.remoteserver.client.remoteservermanager.dto.RemoteServerContainerProviderDto.class);
+		dtoClassLookup.add(net.datenwerke.rs.remoteserver.client.remoteservermanager.dto.RemoteServerDefinitionDto.class);
+		dtoClassLookup.add(net.datenwerke.rs.remoteserver.client.remoteservermanager.dto.RemoteServerFolderDto.class);
 		dtoClassLookup.add(net.datenwerke.rs.reportdoc.client.dto.DeployAnalyzeCommandResultExtensionDto.class);
 		dtoClassLookup.add(net.datenwerke.rs.reportdoc.client.dto.VariantTestCommandResultExtensionDto.class);
 		dtoClassLookup.add(net.datenwerke.rs.saiku.client.datasource.dto.MondrianDatasourceDto.class);
@@ -1250,6 +1262,12 @@ public class DtoServiceImpl implements DtoMainService, DtoService {
 		posoClassLookup.add(net.datenwerke.rs.localfsdatasink.service.localfsdatasink.definitions.LocalFileSystemDatasink.class);
 		posoClassLookup.add(net.datenwerke.rs.onedrive.service.onedrive.definitions.OneDriveDatasink.class);
 		posoClassLookup.add(net.datenwerke.rs.printer.service.printer.definitions.PrinterDatasink.class);
+		posoClassLookup.add(net.datenwerke.rs.remoteserver.service.remoteservermanager.entities.AbstractRemoteServerManagerNode.class);
+		posoClassLookup.add(net.datenwerke.rs.remoteserver.service.remoteservermanager.entities.RemoteServer.class);
+		posoClassLookup.add(net.datenwerke.rs.remoteserver.service.remoteservermanager.entities.RemoteServerContainer.class);
+		posoClassLookup.add(net.datenwerke.rs.remoteserver.service.remoteservermanager.entities.RemoteServerContainerProvider.class);
+		posoClassLookup.add(net.datenwerke.rs.remoteserver.service.remoteservermanager.entities.RemoteServerDefinition.class);
+		posoClassLookup.add(net.datenwerke.rs.remoteserver.service.remoteservermanager.entities.RemoteServerFolder.class);
 		posoClassLookup.add(net.datenwerke.rs.reportdoc.service.terminal.commands.DeployAnalyzeCommandResultExtension.class);
 		posoClassLookup.add(net.datenwerke.rs.reportdoc.service.terminal.commands.VariantTestCommandResultExtension.class);
 		posoClassLookup.add(net.datenwerke.rs.saiku.service.datasource.MondrianDatasource.class);

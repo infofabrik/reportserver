@@ -42,6 +42,7 @@ import net.datenwerke.rs.core.client.RsCoreUiModule;
 import net.datenwerke.rs.core.client.datasinkmanager.DatasinkUIModule;
 import net.datenwerke.rs.core.client.datasourcemanager.DatasourceUIModule;
 import net.datenwerke.rs.core.client.parameters.ParameterUIModule;
+import net.datenwerke.rs.remoteserver.client.remoteservermanager.RemoteServerUIModule;
 import net.datenwerke.rs.core.client.reportexecutor.ReportExecutorUIModule;
 import net.datenwerke.rs.core.client.reportexporter.ReportExporterUIModule;
 import net.datenwerke.rs.core.client.reportmanager.ReportManagerUIModule;
@@ -121,6 +122,7 @@ public class DispatcherModule extends AbstractGinModule {
       install(new DashboardUiModule());
       install(new DatasourceUIModule());
       install(new SystemConsoleUiModule());
+      install(new RemoteServerUIModule());
       install(new DatasinkUIModule());
       install(new FtpUiModule());
       install(new DropboxUiModule());

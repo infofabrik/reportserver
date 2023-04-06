@@ -2,10 +2,12 @@
     <persistence-unit name="reportServerPU" transaction-type="RESOURCE_LOCAL">
     	<provider>org.hibernate.ejb.HibernatePersistence</provider>
     	
-        <class>net.datenwerke.rs.core.service.parameters.entities.ParameterDefinition</class>
+        <class>net.datenwerke.rs.remoteserver.service.remoteservermanager.entities.RemoteServerDefinition</class>
+          <class>net.datenwerke.rs.core.service.parameters.entities.ParameterDefinition</class>
           <class>net.datenwerke.rs.dashboard.service.dashboard.dagets.ParameterDadget</class>
           <class>net.datenwerke.rs.dashboard.service.dashboard.dagets.StaticHtmlDadget</class>
           <class>net.datenwerke.rs.base.service.reportengines.table.entities.filters.PreFilter</class>
+          <class>net.datenwerke.rs.remoteserver.service.remoteservermanager.entities.AbstractRemoteServerManagerNode</class>
           <class>net.datenwerke.rs.core.service.datasourcemanager.entities.AbstractDatasourceManagerNode</class>
           <class>net.datenwerke.rs.grideditor.service.grideditor.entities.GridEditorReportVariant</class>
           <class>net.datenwerke.rs.base.service.parameters.blatext.BlatextParameterDefinition</class>
@@ -79,6 +81,7 @@
           <class>net.datenwerke.rs.base.ext.service.parameters.fileselection.FileSelectionParameterDefinition</class>
           <class>net.datenwerke.rs.scp.service.scp.definitions.ScpDatasink</class>
           <class>net.datenwerke.rs.dashboard.service.dashboard.dagets.FavoriteListDadget</class>
+          <class>net.datenwerke.rs.remoteserver.service.remoteservermanager.entities.RemoteServer</class>
           <class>net.datenwerke.rs.fileserver.service.fileserver.entities.FileServerFileData</class>
           <class>net.datenwerke.rs.base.service.datasources.definitions.DatabaseDatasource</class>
           <class>net.datenwerke.rs.tsreportarea.service.tsreportarea.entities.TsDiskRoot</class>
@@ -119,6 +122,7 @@
           <class>net.datenwerke.rs.emaildatasink.service.emaildatasink.action.ScheduleAsEmailFileAction</class>
           <class>net.datenwerke.rs.dsbundle.service.dsbundle.entities.DatabaseBundle</class>
           <class>net.datenwerke.security.service.security.entities.Acl</class>
+          <class>net.datenwerke.rs.remoteserver.service.remoteservermanager.entities.RemoteServerFolder</class>
           <class>net.datenwerke.rs.incubator.service.jaspertotable.entities.JasperToTableConfig</class>
           <class>net.datenwerke.rs.base.service.reportengines.table.entities.filters.ColumnFilter</class>
           <class>net.datenwerke.rs.fileserver.service.fileserver.entities.FileServerFolder</class>
@@ -208,6 +212,7 @@
           <class>net.datenwerke.rs.ftp.service.ftp.action.ScheduleAsFtpsFileAction</class>
           <class>net.datenwerke.rs.core.service.reportmanager.entities.reports.ReportMetadata</class>
           <class>net.datenwerke.rs.base.service.datasources.connectors.DatasourceConnectorConfig</class>
+          <class>net.datenwerke.rs.remoteserver.service.remoteservermanager.entities.RemoteServerContainer</class>
           <class>net.datenwerke.rs.tabledatasink.service.tabledatasink.action.ScheduleAsTableDatasinkFileAction</class>
           <class>net.datenwerke.rs.base.service.reportengines.table.entities.format.ColumnFormatDate</class>
           <class>net.datenwerke.rs.box.service.box.definitions.BoxDatasink</class>

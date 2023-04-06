@@ -136,6 +136,7 @@
 	<source path="rs/localfsdatasink/client"/>
 	<source path="rs/scriptdatasink/client"/>
 	<source path="rs/emaildatasink/client"/>
+	<source path="rs/remoteserver/client"/>
 	<source path="rs/scheduler/client"/>
 	<source path="rs/scheduler/shared"/>
 	<source path="rs/scripting/client"/>

@@ -12,7 +12,10 @@ import net.datenwerke.rs.core.service.datasourcemanager.entities.DatasourceFolde
 import net.datenwerke.rs.core.service.genrights.access.AccessRsSecurityTarget;
 import net.datenwerke.rs.core.service.genrights.datasinks.DatasinkManagerAdminViewSecurityTarget;
 import net.datenwerke.rs.core.service.genrights.datasources.DatasourceManagerAdminViewSecurityTarget;
+import net.datenwerke.rs.core.service.genrights.remoteservers.RemoteServerManagerAdminViewSecurityTarget;
 import net.datenwerke.rs.core.service.genrights.reportmanager.ReportManagerAdminViewSecurityTarget;
+import net.datenwerke.rs.remoteserver.service.remoteservermanager.RemoteServerTreeService;
+import net.datenwerke.rs.remoteserver.service.remoteservermanager.entities.RemoteServerFolder;
 import net.datenwerke.rs.core.service.reportmanager.ReportService;
 import net.datenwerke.rs.core.service.reportmanager.entities.ReportFolder;
 import net.datenwerke.rs.dashboard.service.dashboard.DashboardManagerService;
@@ -52,6 +55,7 @@ public class PrepareDbForReportServer implements DbInstallationTask {
    public static final String OU_NAME_ADMINISTRATION = "Administration";
 
    public final static String REPORTSERVER_ROOT_DATASINK = "Datasink Root";
+   public final static String REPORTSERVER_ROOT_REMOTE_SERVER = "Remote RS Servers Root";
 
    private final PasswordHasher passwordHasher;
    private final SecurityService securityService;
@@ -59,6 +63,7 @@ public class PrepareDbForReportServer implements DbInstallationTask {
    private final ReportService reportService;
    private final DatasourceService datasourceService;
    private final DatasinkTreeService datasinkService;
+   private final RemoteServerTreeService remoteServerService;
    private final FileServerService fileServerService;
 
    private final UserPropertiesService userPropertiesService;
@@ -69,7 +74,8 @@ public class PrepareDbForReportServer implements DbInstallationTask {
    public PrepareDbForReportServer(PasswordHasher passwordHasher, SecurityService securityService,
          UserManagerService userService, ReportService reportService, DatasourceService datasourceService,
          DatasinkTreeService datasinkService, FileServerService fileServerService,
-         UserPropertiesService userPropertiesService, DashboardManagerService dashboardService) {
+         UserPropertiesService userPropertiesService, DashboardManagerService dashboardService,
+         RemoteServerTreeService remoteServerService) {
 
       this.passwordHasher = passwordHasher;
       this.securityService = securityService;
@@ -80,6 +86,7 @@ public class PrepareDbForReportServer implements DbInstallationTask {
       this.fileServerService = fileServerService;
       this.userPropertiesService = userPropertiesService;
       this.dashboardService = dashboardService;
+      this.remoteServerService = remoteServerService;
    }
 
    @Override
@@ -89,6 +96,7 @@ public class PrepareDbForReportServer implements DbInstallationTask {
       prepareDashboardTree();
       prepareDatasourceTree();
       prepareDatasinkTree();
+      prepareRemoteServerTree();
       prepareFileServerTree();
       prepareGenericSecurityTargets();
    }
@@ -266,12 +274,20 @@ public class PrepareDbForReportServer implements DbInstallationTask {
       securityService.merge(systemConsoleEntity);
 
       /* datasinks */
-      GenericSecurityTargetEntity datasinksEntity = securityService
+      GenericSecurityTargetEntity datasinkEntity = securityService
             .createGenericSecurityTargetEntity(DatasinkManagerAdminViewSecurityTarget.class);
 
       Acl datasinkACL = new Acl();
-      datasinksEntity.setAcl(datasinkACL);
-      securityService.merge(datasinksEntity);
+      datasinkEntity.setAcl(datasinkACL);
+      securityService.merge(datasinkEntity);
+
+      /* remote servers */
+      GenericSecurityTargetEntity remoteServerEntity = securityService
+            .createGenericSecurityTargetEntity(RemoteServerManagerAdminViewSecurityTarget.class);
+      
+      Acl remoteServerACL = new Acl();
+      remoteServerEntity.setAcl(remoteServerACL);
+      securityService.merge(remoteServerEntity);
    }
 
    private void prepareDatasourceTree() {
@@ -281,9 +297,15 @@ public class PrepareDbForReportServer implements DbInstallationTask {
    }
 
    private void prepareDatasinkTree() {
-      DatasinkFolder dsRoot = new DatasinkFolder();
+      DatasinkFolder dsRoot = new DatasinkFolder(); 
       dsRoot.setName(REPORTSERVER_ROOT_DATASINK); // $NON-NLS-1$
       datasinkService.persist(dsRoot);
+   }
+
+   private void prepareRemoteServerTree() {
+      RemoteServerFolder rsRoot = new RemoteServerFolder();
+      rsRoot.setName(REPORTSERVER_ROOT_REMOTE_SERVER); // $NON-NLS-1$
+      remoteServerService.persist(rsRoot);
    }
 
    private void prepareFileServerTree() {

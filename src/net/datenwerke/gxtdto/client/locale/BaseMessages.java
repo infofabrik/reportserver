@@ -193,4 +193,10 @@ public interface BaseMessages extends Messages {
 
    String invalidKey();
 
+   String restUrl();
+
+   String apiKey();
+
+   String clearApikey();
+
 }

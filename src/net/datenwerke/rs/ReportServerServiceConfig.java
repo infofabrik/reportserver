@@ -176,6 +176,8 @@ import net.datenwerke.rs.passwordpolicy.service.activateuser.ActivateUserModule;
 import net.datenwerke.rs.printer.server.printer.PrinterRpcServiceImpl;
 import net.datenwerke.rs.printer.service.printer.PrinterModule;
 import net.datenwerke.rs.remoteaccess.service.RemoteAccessModule;
+import net.datenwerke.rs.remoteserver.server.remoteservermanager.RemoteServerManagerTreeHandlerRpcServiceImpl;
+import net.datenwerke.rs.remoteserver.service.remoteservermanager.RemoteServerModule;
 import net.datenwerke.rs.reportdoc.server.ReportDocumentationServlet;
 import net.datenwerke.rs.reportdoc.service.ReportDocumentationModule;
 import net.datenwerke.rs.rest.service.rest.RestModule;
@@ -388,8 +390,10 @@ public class ReportServerServiceConfig extends DwGwtFrameworkBase {
 
             serve(BASE_URL + "datasources").with(DatasourceManagerTreeHandlerRpcServiceImpl.class); //$NON-NLS-1$
             serve(BASE_URL + "datasinks").with(DatasinkManagerTreeHandlerRpcServiceImpl.class); //$NON-NLS-1$
+            serve(BASE_URL + "remoteserver").with(RemoteServerManagerTreeHandlerRpcServiceImpl.class); //$NON-NLS-1$
             serve(BASE_URL + "datasources_tree").with(DatasourceManagerTreeHandlerRpcServiceImpl.class); //$NON-NLS-1$
             serve(BASE_URL + "datasinks_tree").with(DatasinkManagerTreeHandlerRpcServiceImpl.class); //$NON-NLS-1$
+            serve(BASE_URL + "remoteserver_tree").with(RemoteServerManagerTreeHandlerRpcServiceImpl.class); //$NON-NLS-1$
             serve(BASE_URL + "datasources_import").with(DatasourceManagerImportRpcServiceImpl.class); //$NON-NLS-1$
             serve(BASE_URL + "datasourcemanager_export").with(DatasourceManagerExportRpcServiceImpl.class); //$NON-NLS-1$
 
@@ -595,6 +599,7 @@ public class ReportServerServiceConfig extends DwGwtFrameworkBase {
             new DashboardModule(), 
             new DatasourceModule(), 
             new DatasinkModule(),
+            new RemoteServerModule(),
             new DBHelperModule(), 
             new DtoModule(),
 
