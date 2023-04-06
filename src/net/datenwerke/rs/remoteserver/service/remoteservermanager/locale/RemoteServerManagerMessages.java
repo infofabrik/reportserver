@@ -10,5 +10,4 @@ public interface RemoteServerManagerMessages extends Messages {
 
    String remoteServerFolderTypeName();
 
-   String remoteServer();
 }

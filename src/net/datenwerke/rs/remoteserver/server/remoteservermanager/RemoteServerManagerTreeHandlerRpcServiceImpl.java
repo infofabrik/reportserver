@@ -16,7 +16,7 @@ import net.datenwerke.security.service.security.SecurityService;
 public class RemoteServerManagerTreeHandlerRpcServiceImpl extends TreeDBManagerTreeHandler<AbstractRemoteServerManagerNode>
       implements RemoteServerTreeLoader, RemoteServerTreeManager {
 
-   private static final long serialVersionUID = -455777535667237770L;
+   private static final long serialVersionUID = -455777535667237770L; 
 
    @Inject
    public RemoteServerManagerTreeHandlerRpcServiceImpl(RemoteServerTreeService remoteserverService, DtoService dtoGenerator,
