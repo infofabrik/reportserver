@@ -25,7 +25,6 @@ public interface RemoteServerDtoPA extends RemoteServerDefinitionDtoPA {
 
 	/* Properties */
 	public ValueProvider<RemoteServerDto,String> apikey();
-	public ValueProvider<RemoteServerDto,String> key();
 	public ValueProvider<RemoteServerDto,String> url();
 	public ValueProvider<RemoteServerDto,String> username();
 	public ValueProvider<RemoteServerDto,Boolean> hasApikey();

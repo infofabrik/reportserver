@@ -16,9 +16,12 @@ import com.google.inject.Injector;
 
 import net.datenwerke.dtoservices.dtogenerator.annotations.ExposeToClient;
 import net.datenwerke.dtoservices.dtogenerator.annotations.GenerateDto;
+import net.datenwerke.dtoservices.dtogenerator.annotations.PropertyValidator;
+import net.datenwerke.dtoservices.dtogenerator.annotations.StringValidator;
 import net.datenwerke.gf.base.service.annotations.Field;
 import net.datenwerke.gxtdto.client.dtomanager.DtoView;
 import net.datenwerke.rs.remoteserver.client.remoteservermanager.locale.RemoteServerManagerMessages;
+import net.datenwerke.rs.utils.entitycloner.annotation.EntityClonerIgnore;
 import net.datenwerke.rs.utils.instancedescription.annotations.Description;
 import net.datenwerke.rs.utils.instancedescription.annotations.Title;
 
@@ -55,6 +58,22 @@ abstract public class RemoteServerDefinition extends AbstractRemoteServerManager
    @Type(type = "net.datenwerke.rs.utils.hibernate.RsClobType")
    @Description
    private String description;
+   
+   @ExposeToClient(
+         view = DtoView.LIST, 
+         validateDtoProperty = @PropertyValidator(
+               string = @StringValidator(
+                     regex = "^[a-zA-Z0-9_\\-]*$"
+               )
+         )
+   )
+   @Field
+   @Column(
+         length = 40,
+         unique = true
+   )
+   @EntityClonerIgnore
+   private String key;
 
    public String getName() {
       return name;
@@ -71,7 +90,17 @@ abstract public class RemoteServerDefinition extends AbstractRemoteServerManager
    public String getDescription() {
       return description;
    }
+   
+   public String getKey() {
+      return key;
+   }
 
+   public void setKey(String key) {
+      if (null != key && "".equals(key.trim()))
+         key = null;
+      this.key = key;
+   }
+   
    @Transient
    public String escapeString(Injector injector, String string) {
       return string;
@@ -86,6 +115,7 @@ abstract public class RemoteServerDefinition extends AbstractRemoteServerManager
    public String toString() {
        return MoreObjects.toStringHelper(getClass())
              .add("ID", getIdOrOldTransient())
+             .add("Key", key)
              .add("Name", name)
              .toString();
    }

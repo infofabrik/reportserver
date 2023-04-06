@@ -68,42 +68,6 @@ public class RemoteServerDto extends RemoteServerDefinitionDto {
 		}
 	};
 
-	private String key;
-	private  boolean key_m;
-	public static final String PROPERTY_KEY = "dpi-remoteserver-key";
-
-	private transient static PropertyAccessor<RemoteServerDto, String> key_pa = new PropertyAccessor<RemoteServerDto, String>() {
-		@Override
-		public void setValue(RemoteServerDto container, String object) {
-			container.setKey(object);
-		}
-
-		@Override
-		public String getValue(RemoteServerDto container) {
-			return container.getKey();
-		}
-
-		@Override
-		public Class<?> getType() {
-			return String.class;
-		}
-
-		@Override
-		public String getPath() {
-			return "key";
-		}
-
-		@Override
-		public void setModified(RemoteServerDto container, boolean modified) {
-			container.key_m = modified;
-		}
-
-		@Override
-		public boolean isModified(RemoteServerDto container) {
-			return container.isKeyModified();
-		}
-	};
-
 	private String url;
 	private  boolean url_m;
 	public static final String PROPERTY_URL = "dpi-remoteserver-url";
@@ -263,55 +227,6 @@ public class RemoteServerDto extends RemoteServerDefinitionDto {
 
 	public static PropertyAccessor<RemoteServerDto, String> getApikeyPropertyAccessor()  {
 		return apikey_pa;
-	}
-
-
-	public String getKey()  {
-		if(! isDtoProxy()){
-			return this.key;
-		}
-
-		if(isKeyModified())
-			return this.key;
-
-		if(! GWT.isClient())
-			return null;
-
-		String _value = dtoManager.getProperty(this, instantiatePropertyAccess().key());
-
-		return _value;
-	}
-
-
-	public void setKey(String key)  {
-		/* old value */
-		String oldValue = null;
-		if(GWT.isClient())
-			oldValue = getKey();
-
-		/* set new value */
-		this.key = key;
-
-		if(! GWT.isClient())
-			return;
-
-		if(isTrackChanges())
-			addChange(new ChangeTracker(key_pa, oldValue, key, this.key_m));
-
-		/* set indicator */
-		this.key_m = true;
-
-		this.fireObjectChangedEvent(RemoteServerDtoPA.INSTANCE.key(), oldValue);
-	}
-
-
-	public boolean isKeyModified()  {
-		return key_m;
-	}
-
-
-	public static PropertyAccessor<RemoteServerDto, String> getKeyPropertyAccessor()  {
-		return key_pa;
 	}
 
 
@@ -511,8 +426,6 @@ public class RemoteServerDto extends RemoteServerDefinitionDto {
 	public void clearModified()  {
 		this.apikey = null;
 		this.apikey_m = false;
-		this.key = null;
-		this.key_m = false;
 		this.url = null;
 		this.url_m = false;
 		this.username = null;
@@ -527,8 +440,6 @@ public class RemoteServerDto extends RemoteServerDefinitionDto {
 			return true;
 		if(apikey_m)
 			return true;
-		if(key_m)
-			return true;
 		if(url_m)
 			return true;
 		if(username_m)
@@ -542,7 +453,6 @@ public class RemoteServerDto extends RemoteServerDefinitionDto {
 	public List<PropertyAccessor> getPropertyAccessors()  {
 		List<PropertyAccessor> list = super.getPropertyAccessors();
 		list.add(apikey_pa);
-		list.add(key_pa);
 		list.add(url_pa);
 		list.add(username_pa);
 		list.add(hasApikey_pa);
@@ -554,8 +464,6 @@ public class RemoteServerDto extends RemoteServerDefinitionDto {
 		List<PropertyAccessor> list = super.getModifiedPropertyAccessors();
 		if(apikey_m)
 			list.add(apikey_pa);
-		if(key_m)
-			list.add(key_pa);
 		if(url_m)
 			list.add(url_pa);
 		if(username_m)
@@ -570,9 +478,6 @@ public class RemoteServerDto extends RemoteServerDefinitionDto {
 		List<PropertyAccessor> list = super.getPropertyAccessorsByView(view);
 		if(view.compareTo(DtoView.MINIMAL) >= 0){
 			list.add(hasApikey_pa);
-		}
-		if(view.compareTo(DtoView.LIST) >= 0){
-			list.add(key_pa);
 		}
 		if(view.compareTo(DtoView.NORMAL) >= 0){
 			list.add(apikey_pa);

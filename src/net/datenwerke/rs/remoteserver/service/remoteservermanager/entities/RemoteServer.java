@@ -13,11 +13,8 @@ import com.google.inject.Provider;
 import net.datenwerke.dtoservices.dtogenerator.annotations.AdditionalField;
 import net.datenwerke.dtoservices.dtogenerator.annotations.ExposeToClient;
 import net.datenwerke.dtoservices.dtogenerator.annotations.GenerateDto;
-import net.datenwerke.dtoservices.dtogenerator.annotations.PropertyValidator;
-import net.datenwerke.dtoservices.dtogenerator.annotations.StringValidator;
 import net.datenwerke.gf.base.service.annotations.Field;
 import net.datenwerke.gf.base.service.annotations.Indexed;
-import net.datenwerke.gxtdto.client.dtomanager.DtoView;
 import net.datenwerke.rs.remoteserver.service.remoteservermanager.entities.dtogen.RemoteServer2DtoPostProcessor;
 import net.datenwerke.rs.remoteserver.service.remoteservermanager.locale.RemoteServerManagerMessages;
 import net.datenwerke.rs.utils.instancedescription.annotations.InstanceDescription;
@@ -30,7 +27,7 @@ import net.datenwerke.security.service.crypto.pbe.encrypt.EncryptionService;
  */
 
 @Entity
-@Table(name = "RS_REMOTE_SERVER")
+@Table(name = "REMOTE_SERVER")
 @Audited
 @GenerateDto(
       dtoPackage = "net.datenwerke.rs.remoteserver.client.remoteservermanager.dto", 
@@ -73,18 +70,6 @@ public class RemoteServer extends RemoteServerDefinition {
    private String username;
 
 
-   @ExposeToClient(
-         view = DtoView.LIST, 
-         validateDtoProperty = @PropertyValidator(
-               string = @StringValidator(
-                     regex = "^[a-zA-Z0-9_\\-]*$"
-               )
-         )
-   )
-   @Field
-   @Column(length = 40)
-   private String key;
-   
    public String getUrl() {
       return url;
    }
@@ -130,14 +115,6 @@ public class RemoteServer extends RemoteServerDefinition {
 
    public void setUsername(String username) {
       this.username = username;
-   }
-
-   public String getKey() {
-      return key;
-   }
-
-   public void setKey(String key) {
-      this.key = key;
    }
 
 }

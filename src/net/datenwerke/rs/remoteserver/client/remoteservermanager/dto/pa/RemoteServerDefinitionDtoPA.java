@@ -24,6 +24,7 @@ public interface RemoteServerDefinitionDtoPA extends AbstractRemoteServerManager
 
 	/* Properties */
 	public ValueProvider<RemoteServerDefinitionDto,String> description();
+	public ValueProvider<RemoteServerDefinitionDto,String> key();
 	public ValueProvider<RemoteServerDefinitionDto,String> name();
 
 
