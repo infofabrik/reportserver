@@ -14,6 +14,7 @@ import net.datenwerke.gf.client.treedb.helper.menu.InfoMenuItem;
 import net.datenwerke.gf.client.treedb.helper.menu.InsertMenuItem;
 import net.datenwerke.gf.client.treedb.helper.menu.ReloadMenuItem;
 import net.datenwerke.gf.client.treedb.helper.menu.TreeDBUIMenuProvider;
+import net.datenwerke.gf.client.treedb.icon.IconMapping;
 import net.datenwerke.gf.client.treedb.icon.TreeDBUIIconProvider;
 import net.datenwerke.gxtdto.client.baseex.widget.menu.DwMenu;
 import net.datenwerke.gxtdto.client.baseex.widget.menu.DwMenuItem;
@@ -102,7 +103,10 @@ public class RemoteServerManagerTreeConfigurationHooker implements TreeConfigura
 
    @Override
    public void configureTreeIcons(TreeDBUIIconProvider iconProvider) {
-      // TODO Auto-generated method stub
+      iconProvider.addMappings(hookHandler.getHookers(RemoteServerDefinitionConfigProviderHook.class)
+            .stream()
+            .map(config -> new IconMapping(config.getRemoteServerClass(), config.getRemoteServerIcon()))
+            .toArray(IconMapping[]::new));
       
    }
 }

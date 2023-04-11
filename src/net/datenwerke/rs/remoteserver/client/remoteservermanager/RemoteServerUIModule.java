@@ -22,7 +22,7 @@ public class RemoteServerUIModule extends AbstractGinModule {
 
    public static final String REMOTE_SERVER_FAV_HISTORY_TOKEN = "remoteservermgr";
    public static final String ADMIN_TREE_MENU_NAME = "remoteserver:admin:tree:menu";
-   public final static BaseIcon ICON = BaseIcon.ARROW_UP;
+   public final static BaseIcon ICON = BaseIcon.LAPTOP;
    public final static Class<? extends RemoteServerDefinitionDto> TYPE = RemoteServerDto.class;
 
 

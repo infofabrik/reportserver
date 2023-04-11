@@ -47,7 +47,8 @@ public class DatasinkManagerTreeConfigurationHooker implements TreeConfiguratorH
 
    @Override
    public void configureTreeIcons(TreeDBUIIconProvider iconProvider) {
-      iconProvider.addMappings(hookHandler.getHookers(DatasinkDefinitionConfigProviderHook.class).stream()
+      iconProvider.addMappings(hookHandler.getHookers(DatasinkDefinitionConfigProviderHook.class)
+            .stream()
             .map(config -> new IconMapping(config.getDatasinkClass(), config.getDatasinkIcon()))
             .toArray(IconMapping[]::new));
    }

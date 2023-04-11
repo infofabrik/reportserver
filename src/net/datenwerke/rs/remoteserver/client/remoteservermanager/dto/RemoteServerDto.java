@@ -390,7 +390,7 @@ public class RemoteServerDto extends RemoteServerDefinitionDto {
 
 	@Override
 	public BaseIcon toIcon()  {
-		return BaseIcon.from("upload");
+		return BaseIcon.from("laptop");
 	}
 
 	@Override

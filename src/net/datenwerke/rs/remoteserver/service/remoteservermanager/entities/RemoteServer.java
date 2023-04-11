@@ -23,7 +23,7 @@ import net.datenwerke.security.service.crypto.pbe.encrypt.EncryptionService;
 
 
 /**
- * Used to define a connection to the external report server
+ * Used to define a connection to the external RS server
  */
 
 @Entity
@@ -38,12 +38,12 @@ import net.datenwerke.security.service.crypto.pbe.encrypt.EncryptionService;
                   type = Boolean.class
                   )
             }, 
-            icon = "upload"
+            icon = "laptop"
             )
 @InstanceDescription(
       msgLocation = RemoteServerManagerMessages.class, 
       objNameKey = "remoteServer",
-      icon = "upload"
+      icon = "laptop"
       )
 @Indexed
 public class RemoteServer extends RemoteServerDefinition {
