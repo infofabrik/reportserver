@@ -17,6 +17,7 @@ import net.datenwerke.rs.remoteserver.client.remoteservermanager.rpc.RemoteServe
 import net.datenwerke.rs.remoteserver.client.remoteservermanager.rpc.RemoteServerTreeManager;
 import net.datenwerke.rs.remoteserver.service.remoteservermanager.RemoteServerTreeService;
 import net.datenwerke.rs.remoteserver.service.remoteservermanager.entities.AbstractRemoteServerManagerNode;
+import net.datenwerke.rs.remoteserver.service.remoteservermanager.entities.RemoteServerDefinition;
 import net.datenwerke.rs.utils.entitycloner.EntityClonerService;
 import net.datenwerke.security.server.TreeDBManagerTreeHandler;
 import net.datenwerke.security.service.security.SecurityService;
@@ -44,6 +45,20 @@ public class RemoteServerManagerTreeHandlerRpcServiceImpl extends TreeDBManagerT
          ) {
       super(remoteserverService, dtoGenerator, securityService, entityClonerService);
       this.remoteServerTreeServiceProvider = remoteServerTreeServiceProvider;
+   }
+   
+   @Override
+   protected boolean allowDuplicateNode(AbstractRemoteServerManagerNode node) {
+      return node instanceof RemoteServerDefinition;
+   }
+   
+   @Override
+   protected void nodeCloned(AbstractRemoteServerManagerNode clonedNode) {
+      if (!(clonedNode instanceof RemoteServerDefinition))
+         throw new IllegalArgumentException();
+      RemoteServerDefinition remoteServer = (RemoteServerDefinition) clonedNode;
+
+      remoteServer.setName(remoteServer.getName() == null ? "copy" : remoteServer.getName() + " (copy)");
    }
    
    @SecurityChecked(
