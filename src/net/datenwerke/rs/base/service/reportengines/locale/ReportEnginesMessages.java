@@ -109,4 +109,8 @@ public interface ReportEnginesMessages extends Messages {
    String jasperReports();
    
    String jasperReportVariants();
+
+   String totalBaseReports();
+
+   String totalReportVariants();
 }

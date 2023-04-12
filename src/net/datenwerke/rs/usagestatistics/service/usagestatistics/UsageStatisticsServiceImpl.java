@@ -9,6 +9,7 @@ import com.google.inject.Provider;
 
 import net.datenwerke.rs.core.service.reportmanager.ReportService;
 import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
+import net.datenwerke.treedb.service.treedb.AbstractNode;
 
 public class UsageStatisticsServiceImpl implements UsageStatisticsService {
 
@@ -26,8 +27,7 @@ public class UsageStatisticsServiceImpl implements UsageStatisticsService {
          
    @Override
    public long getReportCount(Class<? extends Report> clazz) {
-      return ((Number) entityManagerProvider.get().createQuery("SELECT COUNT(r) FROM " + clazz.getSimpleName() + " r")
-            .getSingleResult()).longValue();
+      return getNodeCount(clazz);
    }
    
    @Override
@@ -47,5 +47,11 @@ public class UsageStatisticsServiceImpl implements UsageStatisticsService {
       long totalCount = getReportCount(reportClazz);
       long variantCount = getReportCount(variantClazz);
       return ImmutablePair.of(totalCount - variantCount, variantCount);
+   }
+
+   @Override
+   public long getNodeCount(Class<? extends AbstractNode<?>> nodeClazz) {
+      return ((Number) entityManagerProvider.get().createQuery("SELECT COUNT(n) FROM " + nodeClazz.getSimpleName() + " n")
+            .getSingleResult()).longValue();
    }
 }

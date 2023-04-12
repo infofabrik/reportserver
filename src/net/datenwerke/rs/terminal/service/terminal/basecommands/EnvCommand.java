@@ -82,7 +82,7 @@ public class EnvCommand implements TerminalCommandHook {
          properties.forEach((key, val) -> {
             if (!key.getRight().equals(GeneralInfoUiModule.ENABLED)
                   && !key.getRight().equals(GeneralInfoUiModule.DISABLED_MESSAGE))
-               table.addDataRow(new RSStringTableRow(key.getRight(), val.toString()));
+               table.addDataRow(new RSStringTableRow(key.getRight(), null != val ? val.toString(): null));
          });
       } else {
          table.addDataRow(new RSStringTableRow("Message", disabledMsg.get()));

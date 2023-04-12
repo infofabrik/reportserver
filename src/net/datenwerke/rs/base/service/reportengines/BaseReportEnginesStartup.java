@@ -8,7 +8,7 @@ import net.datenwerke.rs.base.service.reportengines.hookers.AdjustBaseReportForE
 import net.datenwerke.rs.base.service.reportengines.hookers.BaseReportEngineProviderHooker;
 import net.datenwerke.rs.base.service.reportengines.hookers.BaseReportTypeProviderHooker;
 import net.datenwerke.rs.base.service.reportengines.hookers.ConfigureBaseReportViaRequestHooker;
-import net.datenwerke.rs.base.service.reportengines.hookers.UsageStatisticsBaseReportProviderHooker;
+import net.datenwerke.rs.base.service.reportengines.hookers.UsageStatisticsTotalReportProviderHooker;
 import net.datenwerke.rs.base.service.reportengines.hookers.UsageStatisticsDynaListProviderHooker;
 import net.datenwerke.rs.base.service.reportengines.hookers.UsageStatisticsJasperProviderHooker;
 import net.datenwerke.rs.core.service.reportmanager.hooks.AdjustReportForExecutionHook;
@@ -29,7 +29,7 @@ public class BaseReportEnginesStartup {
          final Provider<BaseReportEngineProviderHooker> reportEngineProvider,
          final Provider<BaseReportTypeProviderHooker> reportTypeProvider,
          
-         final Provider<UsageStatisticsBaseReportProviderHooker> usageStatsBaseReportProvider,
+         final Provider<UsageStatisticsTotalReportProviderHooker> usageStatsTotalReportProvider,
          final Provider<UsageStatisticsDynaListProviderHooker> usageStatsDynaListProvider,
          final Provider<UsageStatisticsJasperProviderHooker> usageStatsJasperProvider
          ) {
@@ -40,7 +40,7 @@ public class BaseReportEnginesStartup {
       hookHandler.attachHooker(ReportEngineProviderHook.class, reportEngineProvider);
       hookHandler.attachHooker(ReportTypeProviderHook.class, reportTypeProvider);
       
-      hookHandler.attachHooker(UsageStatisticsEntryProviderHook.class, usageStatsBaseReportProvider,
+      hookHandler.attachHooker(UsageStatisticsEntryProviderHook.class, usageStatsTotalReportProvider,
             HookHandlerService.PRIORITY_LOW);
       hookHandler.attachHooker(UsageStatisticsEntryProviderHook.class, usageStatsDynaListProvider,
             HookHandlerService.PRIORITY_LOW + 10);

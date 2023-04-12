@@ -36,12 +36,11 @@ public class UsageStatisticsDynaListProviderHooker implements UsageStatisticsEnt
    public Map<ImmutablePair<String, String>, Object> provideEntry() {
       final ImmutablePair<Long, Long> reportCount = usageStatisticsService.getSpecificReportCount(TableReport.class,
             TableReportVariant.class);
-      return Stream
-            .of(new SimpleEntry<>(ImmutablePair.of(DYNAMIC_LISTS, ReportEnginesMessages.INSTANCE.dynamicLists()),
+      return Stream.of(
+            new SimpleEntry<>(ImmutablePair.of(DYNAMIC_LISTS, ReportEnginesMessages.INSTANCE.dynamicLists()),
                   reportCount.getLeft()),
-                  new SimpleEntry<>(
-                        ImmutablePair.of(DYNAMIC_LIST_VAR, ReportEnginesMessages.INSTANCE.dynamicListVariants()),
-                        reportCount.getRight()))
+            new SimpleEntry<>(ImmutablePair.of(DYNAMIC_LIST_VAR, ReportEnginesMessages.INSTANCE.dynamicListVariants()),
+                  reportCount.getRight()))
             .collect(toMap(Entry::getKey, Entry::getValue, (val1, val2) -> val2, LinkedHashMap::new));
    }
 

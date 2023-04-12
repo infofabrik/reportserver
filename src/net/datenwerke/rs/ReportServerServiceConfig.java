@@ -176,6 +176,7 @@ import net.datenwerke.rs.passwordpolicy.service.activateuser.ActivateUserModule;
 import net.datenwerke.rs.printer.server.printer.PrinterRpcServiceImpl;
 import net.datenwerke.rs.printer.service.printer.PrinterModule;
 import net.datenwerke.rs.remoteaccess.service.RemoteAccessModule;
+import net.datenwerke.rs.remotersserver.service.remotersserver.RemoteRsServerModule;
 import net.datenwerke.rs.remoteserver.server.remoteservermanager.RemoteServerManagerExportRpcServiceImpl;
 import net.datenwerke.rs.remoteserver.server.remoteservermanager.RemoteServerManagerImportRpcServiceImpl;
 import net.datenwerke.rs.remoteserver.server.remoteservermanager.RemoteServerManagerTreeHandlerRpcServiceImpl;
@@ -605,6 +606,7 @@ public class ReportServerServiceConfig extends DwGwtFrameworkBase {
             new DatasourceModule(), 
             new DatasinkModule(),
             new RemoteServerModule(),
+            new RemoteRsServerModule(),
             new DBHelperModule(), 
             new DtoModule(),
 

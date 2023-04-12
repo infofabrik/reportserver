@@ -9,6 +9,8 @@ import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.remotersserver.service.remotersserver.entities.RemoteRsServer;
 import net.datenwerke.rs.remoteserver.service.remoteservermanager.entities.RemoteServerFolder;
 import net.datenwerke.rs.remoteserver.service.remoteservermanager.history.RemoteServerManagerHistoryUrlBuilderHooker;
+import net.datenwerke.rs.remoteserver.service.remoteservermanager.hookers.UsageStatisticsTotalRemoteServersProviderHooker;
+import net.datenwerke.rs.usagestatistics.service.usagestatistics.hooks.UsageStatisticsEntryProviderHook;
 import net.datenwerke.rs.utils.eventbus.EventBus;
 import net.datenwerke.security.service.security.SecurityService;
 
@@ -16,25 +18,25 @@ public class RemoteServerStartup {
 
    @Inject
    public RemoteServerStartup(
-         HookHandlerService hookHandler, 
-         EventBus eventBus,
+         final HookHandlerService hookHandler, 
+         final EventBus eventBus,
          final Provider<SecurityService> securityServiceProvider,
-         Provider<RemoteServerManagerHistoryUrlBuilderHooker> remoteServerManagerUrlBuilder
+         final Provider<RemoteServerManagerHistoryUrlBuilderHooker> remoteServerManagerUrlBuilder,
+         final Provider<UsageStatisticsTotalRemoteServersProviderHooker> usageStatsTotalRemoteServerProvider
          ) {
 
       /* history */
       hookHandler.attachHooker(HistoryUrlBuilderHook.class, remoteServerManagerUrlBuilder);
       
+      hookHandler.attachHooker(UsageStatisticsEntryProviderHook.class, usageStatsTotalRemoteServerProvider,
+            HookHandlerService.PRIORITY_LOW + 90);
+      
       /* register security targets */
-      hookHandler.attachHooker(ConfigDoneHook.class, new ConfigDoneHook() {
-
-         @Override
-         public void configDone() {
-            /* secure folder */
-            securityServiceProvider.get().registerSecurityTarget(RemoteServerFolder.class);
-            /* secure object */
-            securityServiceProvider.get().registerSecurityTarget(RemoteRsServer.class);
-         }
+      hookHandler.attachHooker(ConfigDoneHook.class, () -> {
+         /* secure folder */
+         securityServiceProvider.get().registerSecurityTarget(RemoteServerFolder.class);
+         /* secure object */
+         securityServiceProvider.get().registerSecurityTarget(RemoteRsServer.class);
       });
    }
 }
