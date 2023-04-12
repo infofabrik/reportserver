@@ -1,4 +1,4 @@
-package net.datenwerke.rs.remoteserver.client.remoteservermanager.hookers;
+package net.datenwerke.rs.remotersserver.client.remotersserver.hookers;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -8,20 +8,20 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 
 import net.datenwerke.gf.client.managerhelper.mainpanel.MainPanelView;
+import net.datenwerke.rs.remotersserver.client.remotersserver.dto.RemoteRsServerDto;
+import net.datenwerke.rs.remotersserver.client.remotersserver.ui.RemoteRsServerForm;
 import net.datenwerke.rs.remoteserver.client.remoteservermanager.RemoteServerUIModule;
 import net.datenwerke.rs.remoteserver.client.remoteservermanager.dto.AbstractRemoteServerManagerNodeDto;
 import net.datenwerke.rs.remoteserver.client.remoteservermanager.dto.RemoteServerDefinitionDto;
-import net.datenwerke.rs.remoteserver.client.remoteservermanager.dto.RemoteServerDto;
-import net.datenwerke.rs.remoteserver.client.remoteservermanager.helper.forms.RemoteServerForm;
 import net.datenwerke.rs.remoteserver.client.remoteservermanager.hooks.RemoteServerDefinitionConfigProviderHook;
 import net.datenwerke.rs.remoteserver.client.remoteservermanager.locale.RemoteServerMessages;
 
 public class RemoteServerConfigProviderHooker implements RemoteServerDefinitionConfigProviderHook {
 
-   private final Provider<RemoteServerForm> formProvider;
+   private final Provider<RemoteRsServerForm> formProvider;
 
    @Inject
-   public RemoteServerConfigProviderHooker(Provider<RemoteServerForm> formProvider) {
+   public RemoteServerConfigProviderHooker(Provider<RemoteRsServerForm> formProvider) {
 
       /* store objects */
       this.formProvider = formProvider;
@@ -49,7 +49,7 @@ public class RemoteServerConfigProviderHooker implements RemoteServerDefinitionC
 
    @Override
    public AbstractRemoteServerManagerNodeDto instantiateRemoteServer() {
-      return new RemoteServerDto();
+      return new RemoteRsServerDto();
    }
 
    @Override

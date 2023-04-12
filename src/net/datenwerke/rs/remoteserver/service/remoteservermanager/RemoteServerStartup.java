@@ -6,7 +6,7 @@ import com.google.inject.Provider;
 import net.datenwerke.gf.service.history.hooks.HistoryUrlBuilderHook;
 import net.datenwerke.gf.service.lifecycle.hooks.ConfigDoneHook;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
-import net.datenwerke.rs.remoteserver.service.remoteservermanager.entities.RemoteServer;
+import net.datenwerke.rs.remotersserver.service.remotersserver.entities.RemoteRsServer;
 import net.datenwerke.rs.remoteserver.service.remoteservermanager.entities.RemoteServerFolder;
 import net.datenwerke.rs.remoteserver.service.remoteservermanager.history.RemoteServerManagerHistoryUrlBuilderHooker;
 import net.datenwerke.rs.utils.eventbus.EventBus;
@@ -33,7 +33,7 @@ public class RemoteServerStartup {
             /* secure folder */
             securityServiceProvider.get().registerSecurityTarget(RemoteServerFolder.class);
             /* secure object */
-            securityServiceProvider.get().registerSecurityTarget(RemoteServer.class);
+            securityServiceProvider.get().registerSecurityTarget(RemoteRsServer.class);
          }
       });
    }

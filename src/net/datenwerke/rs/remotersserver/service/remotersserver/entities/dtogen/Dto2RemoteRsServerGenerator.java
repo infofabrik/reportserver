@@ -1,4 +1,4 @@
-package net.datenwerke.rs.remoteserver.service.remoteservermanager.entities.dtogen;
+package net.datenwerke.rs.remotersserver.service.remotersserver.entities.dtogen;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
@@ -15,19 +15,19 @@ import net.datenwerke.gxtdto.client.servercommunication.exceptions.ExpectedExcep
 import net.datenwerke.gxtdto.client.servercommunication.exceptions.ValidationFailedException;
 import net.datenwerke.gxtdto.server.dtomanager.DtoMainService;
 import net.datenwerke.gxtdto.server.dtomanager.DtoService;
-import net.datenwerke.rs.remoteserver.client.remoteservermanager.dto.RemoteServerDto;
-import net.datenwerke.rs.remoteserver.service.remoteservermanager.entities.RemoteServer;
-import net.datenwerke.rs.remoteserver.service.remoteservermanager.entities.dtogen.Dto2RemoteServerGenerator;
+import net.datenwerke.rs.remotersserver.client.remotersserver.dto.RemoteRsServerDto;
+import net.datenwerke.rs.remotersserver.service.remotersserver.entities.RemoteRsServer;
+import net.datenwerke.rs.remotersserver.service.remotersserver.entities.dtogen.Dto2RemoteRsServerGenerator;
 import net.datenwerke.rs.utils.entitycloner.annotation.TransientID;
 import net.datenwerke.rs.utils.reflection.ReflectionService;
 
 /**
- * Dto2PosoGenerator for RemoteServer
+ * Dto2PosoGenerator for RemoteRsServer
  *
  * This file was automatically created by DtoAnnotationProcessor, version 0.1
  */
 @GeneratedType("net.datenwerke.dtoservices.dtogenerator.DtoAnnotationProcessor")
-public class Dto2RemoteServerGenerator implements Dto2PosoGenerator<RemoteServerDto,RemoteServer> {
+public class Dto2RemoteRsServerGenerator implements Dto2PosoGenerator<RemoteRsServerDto,RemoteRsServer> {
 
 	private final Provider<DtoService> dtoServiceProvider;
 
@@ -37,7 +37,7 @@ public class Dto2RemoteServerGenerator implements Dto2PosoGenerator<RemoteServer
 
 	private final ReflectionService reflectionService;
 	@Inject
-	public Dto2RemoteServerGenerator(
+	public Dto2RemoteRsServerGenerator(
 		net.datenwerke.dtoservices.dtogenerator.dto2posogenerator.interfaces.Dto2PosoSupervisorDefaultImpl dto2PosoSupervisor,
 		Provider<DtoService> dtoServiceProvider,
 		Provider<EntityManager> entityManagerProvider,
@@ -49,7 +49,7 @@ public class Dto2RemoteServerGenerator implements Dto2PosoGenerator<RemoteServer
 		this.reflectionService = reflectionService;
 	}
 
-	public RemoteServer loadPoso(RemoteServerDto dto)  {
+	public RemoteRsServer loadPoso(RemoteRsServerDto dto)  {
 		if(null == dto)
 			return null;
 
@@ -60,25 +60,25 @@ public class Dto2RemoteServerGenerator implements Dto2PosoGenerator<RemoteServer
 
 		/* load poso from db */
 		EntityManager entityManager = entityManagerProvider.get();
-		RemoteServer poso = entityManager.find(RemoteServer.class, id);
+		RemoteRsServer poso = entityManager.find(RemoteRsServer.class, id);
 		return poso;
 	}
 
-	public RemoteServer instantiatePoso()  {
-		RemoteServer poso = new RemoteServer();
+	public RemoteRsServer instantiatePoso()  {
+		RemoteRsServer poso = new RemoteRsServer();
 		return poso;
 	}
 
-	public RemoteServer createPoso(RemoteServerDto dto)  throws ExpectedException {
-		RemoteServer poso = new RemoteServer();
+	public RemoteRsServer createPoso(RemoteRsServerDto dto)  throws ExpectedException {
+		RemoteRsServer poso = new RemoteRsServer();
 
 		/* merge data */
 		mergePoso(dto, poso);
 		return poso;
 	}
 
-	public RemoteServer createUnmanagedPoso(RemoteServerDto dto)  throws ExpectedException {
-		RemoteServer poso = new RemoteServer();
+	public RemoteRsServer createUnmanagedPoso(RemoteRsServerDto dto)  throws ExpectedException {
+		RemoteRsServer poso = new RemoteRsServer();
 
 		/* store old id */
 		if(null != dto.getId()){
@@ -97,14 +97,14 @@ public class Dto2RemoteServerGenerator implements Dto2PosoGenerator<RemoteServer
 		return poso;
 	}
 
-	public void mergePoso(RemoteServerDto dto, final RemoteServer poso)  throws ExpectedException {
+	public void mergePoso(RemoteRsServerDto dto, final RemoteRsServer poso)  throws ExpectedException {
 		if(dto.isDtoProxy())
 			mergeProxy2Poso(dto, poso);
 		else
 			mergePlainDto2Poso(dto, poso);
 	}
 
-	protected void mergePlainDto2Poso(RemoteServerDto dto, final RemoteServer poso)  throws ExpectedException {
+	protected void mergePlainDto2Poso(RemoteRsServerDto dto, final RemoteRsServer poso)  throws ExpectedException {
 		/*  set apikey */
 		poso.setApikey(dto.getApikey() );
 
@@ -133,7 +133,7 @@ public class Dto2RemoteServerGenerator implements Dto2PosoGenerator<RemoteServer
 
 	}
 
-	protected void mergeProxy2Poso(RemoteServerDto dto, final RemoteServer poso)  throws ExpectedException {
+	protected void mergeProxy2Poso(RemoteRsServerDto dto, final RemoteRsServer poso)  throws ExpectedException {
 		/*  set apikey */
 		if(dto.isApikeyModified()){
 			poso.setApikey(dto.getApikey() );
@@ -176,14 +176,14 @@ public class Dto2RemoteServerGenerator implements Dto2PosoGenerator<RemoteServer
 
 	}
 
-	public void mergeUnmanagedPoso(RemoteServerDto dto, final RemoteServer poso)  throws ExpectedException {
+	public void mergeUnmanagedPoso(RemoteRsServerDto dto, final RemoteRsServer poso)  throws ExpectedException {
 		if(dto.isDtoProxy())
 			mergeProxy2UnmanagedPoso(dto, poso);
 		else
 			mergePlainDto2UnmanagedPoso(dto, poso);
 	}
 
-	protected void mergePlainDto2UnmanagedPoso(RemoteServerDto dto, final RemoteServer poso)  throws ExpectedException {
+	protected void mergePlainDto2UnmanagedPoso(RemoteRsServerDto dto, final RemoteRsServer poso)  throws ExpectedException {
 		/*  set apikey */
 		poso.setApikey(dto.getApikey() );
 
@@ -212,7 +212,7 @@ public class Dto2RemoteServerGenerator implements Dto2PosoGenerator<RemoteServer
 
 	}
 
-	protected void mergeProxy2UnmanagedPoso(RemoteServerDto dto, final RemoteServer poso)  throws ExpectedException {
+	protected void mergeProxy2UnmanagedPoso(RemoteRsServerDto dto, final RemoteRsServer poso)  throws ExpectedException {
 		/*  set apikey */
 		if(dto.isApikeyModified()){
 			poso.setApikey(dto.getApikey() );
@@ -255,8 +255,8 @@ public class Dto2RemoteServerGenerator implements Dto2PosoGenerator<RemoteServer
 
 	}
 
-	public RemoteServer loadAndMergePoso(RemoteServerDto dto)  throws ExpectedException {
-		RemoteServer poso = loadPoso(dto);
+	public RemoteRsServer loadAndMergePoso(RemoteRsServerDto dto)  throws ExpectedException {
+		RemoteRsServer poso = loadPoso(dto);
 		if(null != poso){
 			mergePoso(dto, poso);
 			return poso;
@@ -264,27 +264,27 @@ public class Dto2RemoteServerGenerator implements Dto2PosoGenerator<RemoteServer
 		return createPoso(dto);
 	}
 
-	public void postProcessCreate(RemoteServerDto dto, RemoteServer poso)  {
+	public void postProcessCreate(RemoteRsServerDto dto, RemoteRsServer poso)  {
 	}
 
 
-	public void postProcessCreateUnmanaged(RemoteServerDto dto, RemoteServer poso)  {
+	public void postProcessCreateUnmanaged(RemoteRsServerDto dto, RemoteRsServer poso)  {
 	}
 
 
-	public void postProcessLoad(RemoteServerDto dto, RemoteServer poso)  {
+	public void postProcessLoad(RemoteRsServerDto dto, RemoteRsServer poso)  {
 	}
 
 
-	public void postProcessMerge(RemoteServerDto dto, RemoteServer poso)  {
+	public void postProcessMerge(RemoteRsServerDto dto, RemoteRsServer poso)  {
 	}
 
 
-	public void postProcessInstantiate(RemoteServer poso)  {
+	public void postProcessInstantiate(RemoteRsServer poso)  {
 	}
 
 
-	public boolean validateKeyProperty(RemoteServerDto dto, RemoteServer poso)  throws ExpectedException {
+	public boolean validateKeyProperty(RemoteRsServerDto dto, RemoteRsServer poso)  throws ExpectedException {
 		Object propertyValue = dto.getKey();
 
 		/* allow null */

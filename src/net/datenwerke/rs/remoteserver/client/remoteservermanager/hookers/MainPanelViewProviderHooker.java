@@ -49,9 +49,11 @@ public class MainPanelViewProviderHooker implements MainPanelViewProviderHook {
    private List<MainPanelView> getViewForRemoteServers(final RemoteServerDefinitionDto remoteServerDefinition) {
       final List<MainPanelView> views = new ArrayList<>();
 
-      views.addAll(hookHandler.getHookers(RemoteServerDefinitionConfigProviderHook.class).stream()
+      views.addAll(hookHandler.getHookers(RemoteServerDefinitionConfigProviderHook.class)
+            .stream()
             .filter(config -> config.consumes(remoteServerDefinition))
-            .flatMap(config -> config.getAdminViews(remoteServerDefinition).stream()).collect(toList()));
+            .flatMap(config -> config.getAdminViews(remoteServerDefinition).stream())
+            .collect(toList()));
 
       views.add(securityViewProvider.get());
       return views;

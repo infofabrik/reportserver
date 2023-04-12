@@ -3,7 +3,7 @@ package net.datenwerke.rs.remoteserver.service.remoteservermanager;
 import com.google.inject.Scopes;
 
 import net.datenwerke.rs.core.service.guice.AbstractReportServerModule;
-import net.datenwerke.rs.remoteserver.service.remoteservermanager.entities.RemoteServer;
+import net.datenwerke.rs.remotersserver.service.remotersserver.entities.RemoteRsServer;
 
 public class RemoteServerModule extends AbstractReportServerModule {
 
@@ -15,7 +15,7 @@ public class RemoteServerModule extends AbstractReportServerModule {
    protected void configure() {
       bind(RemoteServerTreeService.class).to(RemoteServerTreeServiceImpl.class).in(Scopes.SINGLETON);
       
-      requestStaticInjection(RemoteServer.class);
+      requestStaticInjection(RemoteRsServer.class);
       /* startup */
       bind(RemoteServerStartup.class).asEagerSingleton();
    }

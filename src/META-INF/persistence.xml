@@ -79,9 +79,9 @@
           <class>net.datenwerke.rs.uservariables.service.uservariables.entities.UserVariableInstance</class>
           <class>net.datenwerke.rs.base.service.parameters.datasource.DatasourceParameterInstance</class>
           <class>net.datenwerke.rs.base.ext.service.parameters.fileselection.FileSelectionParameterDefinition</class>
+          <class>net.datenwerke.rs.remotersserver.service.remotersserver.entities.RemoteRsServer</class>
           <class>net.datenwerke.rs.scp.service.scp.definitions.ScpDatasink</class>
           <class>net.datenwerke.rs.dashboard.service.dashboard.dagets.FavoriteListDadget</class>
-          <class>net.datenwerke.rs.remoteserver.service.remoteservermanager.entities.RemoteServer</class>
           <class>net.datenwerke.rs.fileserver.service.fileserver.entities.FileServerFileData</class>
           <class>net.datenwerke.rs.base.service.datasources.definitions.DatabaseDatasource</class>
           <class>net.datenwerke.rs.tsreportarea.service.tsreportarea.entities.TsDiskRoot</class>

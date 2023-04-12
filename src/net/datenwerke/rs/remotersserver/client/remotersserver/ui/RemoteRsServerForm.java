@@ -1,4 +1,4 @@
-package net.datenwerke.rs.remoteserver.client.remoteservermanager.helper.forms;
+package net.datenwerke.rs.remotersserver.client.remotersserver.ui;
 
 import com.sencha.gxt.widget.core.client.menu.Menu;
 import com.sencha.gxt.widget.core.client.menu.MenuItem;
@@ -12,15 +12,15 @@ import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCPassw
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCStringValidatorRegex;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.impl.SFFCTextAreaImpl;
 import net.datenwerke.gxtdto.client.locale.BaseMessages;
-import net.datenwerke.rs.remoteserver.client.remoteservermanager.dto.RemoteServerDto;
-import net.datenwerke.rs.remoteserver.client.remoteservermanager.dto.pa.RemoteServerDtoPA;
+import net.datenwerke.rs.remotersserver.client.remotersserver.dto.RemoteRsServerDto;
+import net.datenwerke.rs.remotersserver.client.remotersserver.dto.pa.RemoteRsServerDtoPA;
 import net.datenwerke.rs.remoteserver.client.remoteservermanager.locale.RemoteServerMessages;
 
 /**
  * 
  *
  */
-public class RemoteServerForm extends SimpleFormView {
+public class RemoteRsServerForm extends SimpleFormView {
 
    public void configureSimpleForm(SimpleForm form) {
       /* configure form */
@@ -31,12 +31,12 @@ public class RemoteServerForm extends SimpleFormView {
       form.setFieldWidth(600);
       
       /* name */
-      form.addField(String.class, RemoteServerDtoPA.INSTANCE.name(), BaseMessages.INSTANCE.name());
+      form.addField(String.class, RemoteRsServerDtoPA.INSTANCE.name(), BaseMessages.INSTANCE.name());
       
       form.setFieldWidth(500);
       
       /* key */
-      form.addField(String.class, RemoteServerDtoPA.INSTANCE.key(), BaseMessages.INSTANCE.key(),
+      form.addField(String.class, RemoteRsServerDtoPA.INSTANCE.key(), BaseMessages.INSTANCE.key(),
             new SFFCStringValidatorRegex(KeyValidator.KEY_REGEX, BaseMessages.INSTANCE.invalidKey()));
 
       form.endRow();
@@ -44,26 +44,26 @@ public class RemoteServerForm extends SimpleFormView {
       form.setFieldWidth(1);
       
       /* description */
-      form.addField(String.class, RemoteServerDtoPA.INSTANCE.description(), BaseMessages.INSTANCE.description(),
+      form.addField(String.class, RemoteRsServerDtoPA.INSTANCE.description(), BaseMessages.INSTANCE.description(),
             new SFFCTextAreaImpl());
 
       /* REST URL */
-      form.addField(String.class, RemoteServerDtoPA.INSTANCE.url(), BaseMessages.INSTANCE.restUrl());
+      form.addField(String.class, RemoteRsServerDtoPA.INSTANCE.url(), BaseMessages.INSTANCE.restUrl());
 
       form.setFieldWidth(250);
       form.beginFloatRow();
       
       /* username */
-      form.addField(String.class, RemoteServerDtoPA.INSTANCE.username(), BaseMessages.INSTANCE.username());
+      form.addField(String.class, RemoteRsServerDtoPA.INSTANCE.username(), BaseMessages.INSTANCE.username());
       
       form.setFieldWidth(850);
       
       /* api key */
-      String apikey = form.addField(String.class, RemoteServerDtoPA.INSTANCE.apikey(), 
+      String apikey = form.addField(String.class, RemoteRsServerDtoPA.INSTANCE.apikey(), 
          BaseMessages.INSTANCE.apiKey(), new SFFCPasswordField() {
             @Override
             public Boolean isPasswordSet() {
-               return ((RemoteServerDto) getSelectedNode()).isHasApikey();
+               return ((RemoteRsServerDto) getSelectedNode()).isHasApikey();
             }
       }); // $NON-NLS-1$
       form.endRow();
@@ -71,7 +71,7 @@ public class RemoteServerForm extends SimpleFormView {
       Menu clearPwMenu = new DwMenu();
       MenuItem clearApikeyItem = new DwMenuItem(BaseMessages.INSTANCE.clearApikey());
       clearPwMenu.add(clearApikeyItem);
-      clearApikeyItem.addSelectionHandler(event -> ((RemoteServerDto) getSelectedNode()).setApikey(null));
+      clearApikeyItem.addSelectionHandler(event -> ((RemoteRsServerDto) getSelectedNode()).setApikey(null));
       form.addFieldMenu(apikey, clearPwMenu);
       
    }

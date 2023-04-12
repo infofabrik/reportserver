@@ -1,4 +1,4 @@
-package net.datenwerke.rs.remoteserver.service.remoteservermanager.entities.dtogen;
+package net.datenwerke.rs.remotersserver.service.remotersserver.entities.dtogen;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
@@ -7,39 +7,39 @@ import net.datenwerke.dtoservices.dtogenerator.poso2dtogenerator.interfaces.Poso
 import net.datenwerke.gxtdto.client.dtomanager.DtoView;
 import net.datenwerke.gxtdto.server.dtomanager.DtoMainService;
 import net.datenwerke.gxtdto.server.dtomanager.DtoService;
-import net.datenwerke.rs.remoteserver.client.remoteservermanager.dto.RemoteServerDto;
-import net.datenwerke.rs.remoteserver.service.remoteservermanager.entities.RemoteServer;
-import net.datenwerke.rs.remoteserver.service.remoteservermanager.entities.dtogen.RemoteServer2DtoGenerator;
+import net.datenwerke.rs.remotersserver.client.remotersserver.dto.RemoteRsServerDto;
+import net.datenwerke.rs.remotersserver.service.remotersserver.entities.RemoteRsServer;
+import net.datenwerke.rs.remotersserver.service.remotersserver.entities.dtogen.RemoteRsServer2DtoGenerator;
 import net.datenwerke.rs.utils.misc.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
 
 /**
- * Poso2DtoGenerator for RemoteServer
+ * Poso2DtoGenerator for RemoteRsServer
  *
  * This file was automatically created by DtoAnnotationProcessor, version 0.1
  */
 @GeneratedType("net.datenwerke.dtoservices.dtogenerator.DtoAnnotationProcessor")
-public class RemoteServer2DtoGenerator implements Poso2DtoGenerator<RemoteServer,RemoteServerDto> {
+public class RemoteRsServer2DtoGenerator implements Poso2DtoGenerator<RemoteRsServer,RemoteRsServerDto> {
 
 	private final net.datenwerke.treedb.service.treedb.dtogen.AbstractNode2DtoPostProcessor postProcessor_1;
 	private final net.datenwerke.security.service.treedb.entities.SecuredAbstractNode2DtoPostProcessor postProcessor_2;
-	private final net.datenwerke.rs.remoteserver.service.remoteservermanager.entities.dtogen.RemoteServer2DtoPostProcessor postProcessor_3;
+	private final net.datenwerke.rs.remotersserver.service.remotersserver.entities.dtogen.RemoteRsServer2DtoPostProcessor postProcessor_3;
 	private final Provider<DtoService> dtoServiceProvider;
 
 	@Inject
-	public RemoteServer2DtoGenerator(
+	public RemoteRsServer2DtoGenerator(
 		Provider<DtoService> dtoServiceProvider,
 		net.datenwerke.treedb.service.treedb.dtogen.AbstractNode2DtoPostProcessor postProcessor_1,
 		net.datenwerke.security.service.treedb.entities.SecuredAbstractNode2DtoPostProcessor postProcessor_2,
-		net.datenwerke.rs.remoteserver.service.remoteservermanager.entities.dtogen.RemoteServer2DtoPostProcessor postProcessor_3	){
+		net.datenwerke.rs.remotersserver.service.remotersserver.entities.dtogen.RemoteRsServer2DtoPostProcessor postProcessor_3	){
 		this.dtoServiceProvider = dtoServiceProvider;
 		this.postProcessor_1 = postProcessor_1;
 		this.postProcessor_2 = postProcessor_2;
 		this.postProcessor_3 = postProcessor_3;
 	}
 
-	public RemoteServerDto instantiateDto(RemoteServer poso)  {
-		RemoteServerDto dto = new RemoteServerDto();
+	public RemoteRsServerDto instantiateDto(RemoteRsServer poso)  {
+		RemoteRsServerDto dto = new RemoteRsServerDto();
 
 		/* post processing */
 		this.postProcessor_1.dtoInstantiated(poso, dto);
@@ -48,9 +48,9 @@ public class RemoteServer2DtoGenerator implements Poso2DtoGenerator<RemoteServer
 		return dto;
 	}
 
-	public RemoteServerDto createDto(RemoteServer poso, DtoView here, DtoView referenced)  {
+	public RemoteRsServerDto createDto(RemoteRsServer poso, DtoView here, DtoView referenced)  {
 		/* create dto and set view */
-		final RemoteServerDto dto = new RemoteServerDto();
+		final RemoteRsServerDto dto = new RemoteRsServerDto();
 		dto.setDtoView(here);
 
 		if(here.compareTo(DtoView.MINIMAL) >= 0){

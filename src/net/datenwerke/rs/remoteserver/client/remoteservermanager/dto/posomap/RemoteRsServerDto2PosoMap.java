@@ -8,8 +8,8 @@ import net.datenwerke.gxtdto.client.dtomanager.Dto2PosoMapper;
  * This file was automatically created by DtoAnnotationProcessor, version 0.1
  */
 @GeneratedType("net.datenwerke.dtoservices.dtogenerator.DtoAnnotationProcessor")
-@CorrespondingPoso(net.datenwerke.rs.remoteserver.service.remoteservermanager.entities.RemoteServer.class)
-public class RemoteServerDto2PosoMap implements Dto2PosoMapper {
+@CorrespondingPoso(net.datenwerke.rs.remotersserver.service.remotersserver.entities.RemoteRsServer.class)
+public class RemoteRsServerDto2PosoMap implements Dto2PosoMapper {
 
 
 }
