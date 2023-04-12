@@ -49,42 +49,6 @@ public interface GeneralInfoMessages extends Messages {
 
    String protocol();
 
-   String baseReports();
-
-   String reportVariants();
-
-   String dynamicLists();
-
-   String dynamicListVariants();
-
-   String birtReports();
-
-   String birtReportVariants();
-
-   String jasperReports();
-
-   String jasperReportVariants();
-
-   String crystalReports();
-
-   String crystalReportVariants();
-
-   String jxlsReports();
-
-   String jxlsReportVariants();
-
-   String saikuReports();
-
-   String saikuReportVariants();
-
-   String gridEditorReports();
-
-   String gridEditorReportVariants();
-
-   String scriptReports();
-
-   String scriptReportVariants();
-
-   String configured();
+   String restUrl();
 
 }

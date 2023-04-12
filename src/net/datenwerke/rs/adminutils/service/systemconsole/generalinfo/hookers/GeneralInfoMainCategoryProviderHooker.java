@@ -10,7 +10,6 @@ import javax.inject.Inject;
 
 import org.apache.commons.lang3.tuple.ImmutablePair;
 
-import net.datenwerke.gxtdto.client.locale.BaseMessages;
 import net.datenwerke.rs.adminutils.service.systemconsole.generalinfo.GeneralInfoService;
 import net.datenwerke.rs.adminutils.service.systemconsole.generalinfo.hooks.GeneralInfoCategoryProviderHook;
 import net.datenwerke.rs.adminutils.service.systemconsole.generalinfo.locale.GeneralInfoMessages;
@@ -93,7 +92,7 @@ public class GeneralInfoMainCategoryProviderHooker implements GeneralInfoCategor
             generalInfoService.getOsVersion());
       props.put(ImmutablePair.of(USER_AGENT, GeneralInfoMessages.INSTANCE.userAgentLabel()),
             generalInfoService.getUserAgent());
-      props.put(ImmutablePair.of(REST_URL, BaseMessages.INSTANCE.restUrl()), generalInfoService.getRestURL());
+      props.put(ImmutablePair.of(REST_URL, GeneralInfoMessages.INSTANCE.restUrl()), generalInfoService.getRestURL());
       props.put(ImmutablePair.of(REQUEST_URL, GeneralInfoMessages.INSTANCE.requestUrl()),
             generalInfoService.getRequestURL());
       props.put(ImmutablePair.of(REQUEST_SCHEME, GeneralInfoMessages.INSTANCE.scheme()),
