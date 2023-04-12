@@ -9,5 +9,7 @@ public interface RemoteServerManagerMessages extends Messages {
    String historyUrlBuilderIcon();
 
    String remoteServerFolderTypeName();
+   
+   String remoteRsServer();
 
 }

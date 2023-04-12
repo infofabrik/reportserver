@@ -32,8 +32,18 @@ import net.datenwerke.treedb.service.treedb.annotation.TreeDBAllowedChildren;
 @Audited
 @Indexed
 @TreeDBAllowedChildren({ RemoteServerFolder.class, RemoteRsServer.class })
-@GenerateDto(dtoPackage = "net.datenwerke.rs.remoteserver.client.remoteservermanager.dto", dtoImplementInterfaces = FolderDto.class, typeDescriptionMsg = BaseMessages.class, typeDescriptionKey = "folder", icon = "folder")
-@InstanceDescription(msgLocation = RemoteServerManagerMessages.class, objNameKey = "remoteserverFolderTypeName", icon = "folder")
+@GenerateDto(
+      dtoPackage = "net.datenwerke.rs.remoteserver.client.remoteservermanager.dto", 
+      dtoImplementInterfaces = FolderDto.class, 
+      typeDescriptionMsg = BaseMessages.class, 
+      typeDescriptionKey = "folder", 
+      icon = "folder"
+)
+@InstanceDescription(
+      msgLocation = RemoteServerManagerMessages.class, 
+      objNameKey = "remoteServerFolderTypeName", 
+      icon = "folder"
+)
 public class RemoteServerFolder extends AbstractRemoteServerManagerNode {
 
    /**

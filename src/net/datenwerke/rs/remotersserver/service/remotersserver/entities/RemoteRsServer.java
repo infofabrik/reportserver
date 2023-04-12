@@ -43,7 +43,7 @@ import net.datenwerke.security.service.crypto.pbe.encrypt.EncryptionService;
             )
 @InstanceDescription(
       msgLocation = RemoteServerManagerMessages.class, 
-      objNameKey = "remoteServer",
+      objNameKey = "remoteRsServer",
       icon = "laptop"
       )
 @Indexed
