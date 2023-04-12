@@ -14,7 +14,7 @@ import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.impl.SFFC
 import net.datenwerke.gxtdto.client.locale.BaseMessages;
 import net.datenwerke.rs.remoteserver.client.remoteservermanager.dto.RemoteServerDto;
 import net.datenwerke.rs.remoteserver.client.remoteservermanager.dto.pa.RemoteServerDtoPA;
-import net.datenwerke.rs.remoteserver.client.remoteservermanager.locale.RemoteServerManagerMessages;
+import net.datenwerke.rs.remoteserver.client.remoteservermanager.locale.RemoteServerMessages;
 
 /**
  * 
@@ -24,7 +24,7 @@ public class RemoteServerForm extends SimpleFormView {
 
    public void configureSimpleForm(SimpleForm form) {
       /* configure form */
-      form.setHeading(RemoteServerManagerMessages.INSTANCE.editRemoteServer()
+      form.setHeading(RemoteServerMessages.INSTANCE.editRemoteRsServer()
             + (getSelectedNode() == null ? "" : " (" + getSelectedNode().getId() + ")"));
 
       form.beginFloatRow();

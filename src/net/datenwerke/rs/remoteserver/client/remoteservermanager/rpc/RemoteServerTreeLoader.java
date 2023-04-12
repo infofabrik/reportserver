@@ -5,7 +5,7 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
 import net.datenwerke.treedb.client.treedb.rpc.RPCTreeLoader;
 
-@RemoteServiceRelativePath("remoteserver_tree")
+@RemoteServiceRelativePath("remoteservers_tree")
 public interface RemoteServerTreeLoader extends RemoteService, RPCTreeLoader {
 
 }

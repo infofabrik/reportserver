@@ -176,6 +176,8 @@ import net.datenwerke.rs.passwordpolicy.service.activateuser.ActivateUserModule;
 import net.datenwerke.rs.printer.server.printer.PrinterRpcServiceImpl;
 import net.datenwerke.rs.printer.service.printer.PrinterModule;
 import net.datenwerke.rs.remoteaccess.service.RemoteAccessModule;
+import net.datenwerke.rs.remoteserver.server.remoteservermanager.RemoteServerManagerExportRpcServiceImpl;
+import net.datenwerke.rs.remoteserver.server.remoteservermanager.RemoteServerManagerImportRpcServiceImpl;
 import net.datenwerke.rs.remoteserver.server.remoteservermanager.RemoteServerManagerTreeHandlerRpcServiceImpl;
 import net.datenwerke.rs.remoteserver.service.remoteservermanager.RemoteServerModule;
 import net.datenwerke.rs.reportdoc.server.ReportDocumentationServlet;
@@ -387,21 +389,25 @@ public class ReportServerServiceConfig extends DwGwtFrameworkBase {
             serve(BASE_URL + "dashboard").with(DashboardRpcServiceImpl.class); //$NON-NLS-1$
             serve(BASE_URL + "dashboardmanager_import").with(DashboardManagerImportRpcServiceImpl.class); //$NON-NLS-1$
             serve(BASE_URL + "dashboardmanager_export").with(DashboardManagerExportRpcServiceImpl.class); //$NON-NLS-1$
+            
+            serve(BASE_URL + "remoteservers").with(RemoteServerManagerTreeHandlerRpcServiceImpl.class); //$NON-NLS-1$
+            serve(BASE_URL + "remoteservers_tree").with(RemoteServerManagerTreeHandlerRpcServiceImpl.class); //$NON-NLS-1$
+            serve(BASE_URL + "remoteservers_import").with(RemoteServerManagerImportRpcServiceImpl.class); //$NON-NLS-1$
+            serve(BASE_URL + "remoteservermanager_export").with(RemoteServerManagerExportRpcServiceImpl.class); //$NON-NLS-1$
 
             serve(BASE_URL + "datasources").with(DatasourceManagerTreeHandlerRpcServiceImpl.class); //$NON-NLS-1$
-            serve(BASE_URL + "datasinks").with(DatasinkManagerTreeHandlerRpcServiceImpl.class); //$NON-NLS-1$
-            serve(BASE_URL + "remoteserver").with(RemoteServerManagerTreeHandlerRpcServiceImpl.class); //$NON-NLS-1$
             serve(BASE_URL + "datasources_tree").with(DatasourceManagerTreeHandlerRpcServiceImpl.class); //$NON-NLS-1$
-            serve(BASE_URL + "datasinks_tree").with(DatasinkManagerTreeHandlerRpcServiceImpl.class); //$NON-NLS-1$
-            serve(BASE_URL + "remoteserver_tree").with(RemoteServerManagerTreeHandlerRpcServiceImpl.class); //$NON-NLS-1$
             serve(BASE_URL + "datasources_import").with(DatasourceManagerImportRpcServiceImpl.class); //$NON-NLS-1$
             serve(BASE_URL + "datasourcemanager_export").with(DatasourceManagerExportRpcServiceImpl.class); //$NON-NLS-1$
-
+            
+            serve(BASE_URL + "datasinks").with(DatasinkManagerTreeHandlerRpcServiceImpl.class); //$NON-NLS-1$
+            serve(BASE_URL + "datasinks_tree").with(DatasinkManagerTreeHandlerRpcServiceImpl.class); //$NON-NLS-1$
             serve(BASE_URL + "datasinks_import").with(DatasinkManagerImportRpcServiceImpl.class); //$NON-NLS-1$
-            serve(BASE_URL + "datasinks_service").with(DatasinkRpcServiceImpl.class); //$NON-NLS-1$
             serve(BASE_URL + "datasinkmanager_export").with(DatasinkManagerExportRpcServiceImpl.class); //$NON-NLS-1$
+            serve(BASE_URL + "datasinks_service").with(DatasinkRpcServiceImpl.class); //$NON-NLS-1$
 
             serve(BASE_URL + "reportdocumentation").with(ReportDocumentationServlet.class); //$NON-NLS-1$
+            
             serve(BASE_URL + "datenwerke/jaspertotable").with(JasperToTableRpcServiceImpl.class); //$NON-NLS-1$
             serve(BASE_URL + "datenwerke/suuser").with(SuUserRpcServiceImpl.class); //$NON-NLS-1$
 
@@ -445,7 +451,6 @@ public class ReportServerServiceConfig extends DwGwtFrameworkBase {
             serve(BASE_URL + "printer").with(PrinterRpcServiceImpl.class);
             serve(BASE_URL + "tabledatasink").with(TableDatasinkRpcServiceImpl.class);
             serve(BASE_URL + "scriptdatasink").with(ScriptDatasinkRpcServiceImpl.class);
-
             serve(BASE_URL + "localfilesystem").with(LocalFileSystemRpcServiceImpl.class);
             serve(BASE_URL + "email").with(EmailDatasinkRpcServiceImpl.class);
 

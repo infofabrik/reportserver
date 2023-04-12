@@ -22,6 +22,7 @@ import net.datenwerke.rs.core.client.parameters.hooks.ParameterProviderHook;
 import net.datenwerke.rs.dashboard.client.dashboard.hooks.ReportDadgetExportHook;
 import net.datenwerke.rs.dashboard.client.dashboard.security.DashboardViewGenericTargetIdentifier;
 import net.datenwerke.rs.eximport.client.eximport.im.hooks.ImporterConfiguratorHook;
+import net.datenwerke.rs.remoteserver.client.remoteservermanager.eximport.im.hookers.RemoteServerManagerUIImporterHooker;
 import net.datenwerke.security.client.security.SecurityUIService;
 import net.datenwerke.security.client.security.dto.ReadDto;
 
@@ -38,6 +39,7 @@ public class RsBaseExtUiStartup implements ParameterProviderHook {
          final DatasourceManagerUIImporterHooker datasourceImporterHooker,
          final ReportManagerUIImporterHooker reportmanagerImporterHooker,
          final DatasinkManagerUIImporterHooker datasinkImporterHooker,
+         final RemoteServerManagerUIImporterHooker remoteServerImporterHooker,
 
          final Provider<ReportDadgetExporter> reportDadgetExporterProvider,
 
@@ -53,6 +55,7 @@ public class RsBaseExtUiStartup implements ParameterProviderHook {
       hookHandler.attachHooker(ImporterConfiguratorHook.class, datasourceImporterHooker);
       hookHandler.attachHooker(ImporterConfiguratorHook.class, reportmanagerImporterHooker);
       hookHandler.attachHooker(ImporterConfiguratorHook.class, datasinkImporterHooker);
+      hookHandler.attachHooker(ImporterConfiguratorHook.class, remoteServerImporterHooker);
 
       /* request callback after login and check for rights */
       waitOnEventService.callbackOnEvent(SecurityUIService.REPORTSERVER_EVENT_GENERIC_RIGHTS_LOADED,

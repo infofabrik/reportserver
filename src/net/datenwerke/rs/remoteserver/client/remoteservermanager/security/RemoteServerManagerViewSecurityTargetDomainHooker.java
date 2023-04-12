@@ -2,7 +2,7 @@ package net.datenwerke.rs.remoteserver.client.remoteservermanager.security;
 
 import com.google.gwt.resources.client.ImageResource;
 
-import net.datenwerke.rs.remoteserver.client.remoteservermanager.locale.RemoteServerManagerMessages;
+import net.datenwerke.rs.remoteserver.client.remoteservermanager.locale.RemoteServerMessages;
 import net.datenwerke.rs.theme.client.icon.BaseIcon;
 import net.datenwerke.security.client.security.GenericTargetIdentifier;
 import net.datenwerke.security.client.security.hooks.GenericSecurityViewDomainHook;
@@ -14,11 +14,11 @@ public class RemoteServerManagerViewSecurityTargetDomainHooker implements Generi
    }
 
    public String genericSecurityViewDomainHook_getName() {
-      return RemoteServerManagerMessages.INSTANCE.remoteServers();
+      return RemoteServerMessages.INSTANCE.remoteServers();
    }
 
    public String genericSecurityViewDomainHook_getDescription() {
-      return RemoteServerManagerMessages.INSTANCE.remoteServerPermissionModuleDescription();
+      return RemoteServerMessages.INSTANCE.remoteServerPermissionModuleDescription();
    }
 
    public GenericTargetIdentifier genericSecurityViewDomainHook_getTargetId() {

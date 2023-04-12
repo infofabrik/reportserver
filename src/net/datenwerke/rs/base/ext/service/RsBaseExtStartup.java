@@ -50,6 +50,9 @@ import net.datenwerke.rs.base.ext.service.terminal.commands.RpullSubCommandHook;
 import net.datenwerke.rs.eximport.service.eximport.hooks.ExportAllHook;
 import net.datenwerke.rs.eximport.service.eximport.hooks.ImportAllHook;
 import net.datenwerke.rs.eximport.service.eximport.im.http.hooks.HttpImportConfigurationProviderHook;
+import net.datenwerke.rs.remoteserver.service.remoteservermanager.eximport.HttpRemoteServerManagerImportConfigurationHooker;
+import net.datenwerke.rs.remoteserver.service.remoteservermanager.eximport.RemoteServerManagerExporter;
+import net.datenwerke.rs.remoteserver.service.remoteservermanager.eximport.RemoteServerManagerImporter;
 import net.datenwerke.rs.terminal.service.terminal.hooks.TerminalCommandHook;
 
 public class RsBaseExtStartup {
@@ -79,6 +82,10 @@ public class RsBaseExtStartup {
          Provider<DatasinkManagerExporter> datasinkManagerExporter,
          Provider<DatasinkManagerImporter> datasinkImporterProvider,
          Provider<HttpDatasinkManagerImportConfigurationHooker> datasinkHttpImportConfigHookerProvider,
+         
+         Provider<RemoteServerManagerExporter> remoteServerManagerExporter,
+         Provider<RemoteServerManagerImporter> remoteServerImporterProvider,
+         Provider<HttpRemoteServerManagerImportConfigurationHooker> remoteServerHttpImportConfigHookerProvider,
 
          Provider<ExportAllDatasinksHooker> exportAllDatasinks,
 
@@ -129,6 +136,10 @@ public class RsBaseExtStartup {
       hookHandler.attachHooker(ExporterProviderHook.class, new ExporterProviderHook(datasinkManagerExporter));
       hookHandler.attachHooker(ImporterProviderHook.class, new ImporterProviderHook(datasinkImporterProvider));
       hookHandler.attachHooker(HttpImportConfigurationProviderHook.class, datasinkHttpImportConfigHookerProvider);
+      
+      hookHandler.attachHooker(ExporterProviderHook.class, new ExporterProviderHook(remoteServerManagerExporter));
+      hookHandler.attachHooker(ImporterProviderHook.class, new ImporterProviderHook(remoteServerImporterProvider));
+      hookHandler.attachHooker(HttpImportConfigurationProviderHook.class, remoteServerHttpImportConfigHookerProvider);
 
       hookHandler.attachHooker(ExportAllHook.class, exportAllReports);
       hookHandler.attachHooker(ImportAllHook.class, importAllReports);

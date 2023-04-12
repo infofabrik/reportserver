@@ -6,6 +6,7 @@ import net.datenwerke.rs.base.ext.client.dashboardmanager.eximport.ex.DashboardM
 import net.datenwerke.rs.base.ext.client.datasinkmanager.eximport.ex.DatasinkManagerExportUIModule;
 import net.datenwerke.rs.base.ext.client.datasourcemanager.eximport.ex.DatasourceManagerExportUIModule;
 import net.datenwerke.rs.base.ext.client.reportmanager.eximport.ex.ReportManagerExportUIModule;
+import net.datenwerke.rs.remoteserver.client.remoteservermanager.eximport.ex.RemoteServerManagerExportUIModule;
 
 public class RsBaseExtUiModule extends AbstractGinModule {
 
@@ -18,6 +19,7 @@ public class RsBaseExtUiModule extends AbstractGinModule {
       install(new ReportManagerExportUIModule());
       install(new DashboardManagerExportUIModule());
       install(new DatasinkManagerExportUIModule());
+      install(new RemoteServerManagerExportUIModule());
    }
 
 }

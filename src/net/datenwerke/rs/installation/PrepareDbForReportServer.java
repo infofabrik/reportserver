@@ -55,7 +55,7 @@ public class PrepareDbForReportServer implements DbInstallationTask {
    public static final String OU_NAME_ADMINISTRATION = "Administration";
 
    public final static String REPORTSERVER_ROOT_DATASINK = "Datasink Root";
-   public final static String REPORTSERVER_ROOT_REMOTE_SERVER = "Remote RS Servers Root";
+   public final static String REPORTSERVER_ROOT_REMOTE_SERVER = "Remote Servers Root";
 
    private final PasswordHasher passwordHasher;
    private final SecurityService securityService;

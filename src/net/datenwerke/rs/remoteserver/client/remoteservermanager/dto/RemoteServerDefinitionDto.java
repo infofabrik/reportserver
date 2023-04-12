@@ -15,7 +15,7 @@ import net.datenwerke.gxtdto.client.locale.BaseMessages;
 import net.datenwerke.rs.remoteserver.client.remoteservermanager.dto.AbstractRemoteServerManagerNodeDto;
 import net.datenwerke.rs.remoteserver.client.remoteservermanager.dto.pa.RemoteServerDefinitionDtoPA;
 import net.datenwerke.rs.remoteserver.client.remoteservermanager.dto.posomap.RemoteServerDefinitionDto2PosoMap;
-import net.datenwerke.rs.remoteserver.client.remoteservermanager.locale.RemoteServerManagerMessages;
+import net.datenwerke.rs.remoteserver.client.remoteservermanager.locale.RemoteServerMessages;
 import net.datenwerke.rs.remoteserver.service.remoteservermanager.entities.RemoteServerDefinition;
 
 /**
@@ -304,7 +304,7 @@ abstract public class RemoteServerDefinitionDto extends AbstractRemoteServerMana
 
 	@Override
 	public String toTypeDescription()  {
-		return RemoteServerManagerMessages.INSTANCE.remoteServers();
+		return RemoteServerMessages.INSTANCE.remoteServers();
 	}
 
 	@Override

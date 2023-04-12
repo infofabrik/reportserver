@@ -70,7 +70,7 @@ public class RemoteServerUIStartup {
          if (securityService.hasRight(RemoteServerManagerGenericTargetIdentifier.class, ReadDto.class))
             /* attach admin hooker */
             hookHandler.attachHooker(AdminModuleProviderHook.class, new AdminModuleProviderHook(adminModuleProvider),
-                  HookHandlerService.PRIORITY_HIGH + 60);
+                  HookHandlerService.PRIORITY_HIGH + 55);
 
          waitOnEventService.signalProcessingDone(ticket);
       });

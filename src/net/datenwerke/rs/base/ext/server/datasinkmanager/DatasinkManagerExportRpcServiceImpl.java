@@ -57,13 +57,6 @@ public class DatasinkManagerExportRpcServiceImpl extends SecuredRemoteServiceSer
       httpExportServiceProvider.get().storeExport(exportXML, node.getName());
    }
 
-   private void addChildren(ExportConfig exportConfig, AbstractDatasinkManagerNode report) {
-      for (AbstractDatasinkManagerNode childNode : report.getChildren()) {
-         exportConfig.addItemConfig(new TreeNodeExportItemConfig(childNode));
-         addChildren(exportConfig, childNode);
-      }
-   }
-
    @Override
    @Transactional(rollbackOn = { Exception.class })
    public String loadResult() throws ServerCallFailedException {

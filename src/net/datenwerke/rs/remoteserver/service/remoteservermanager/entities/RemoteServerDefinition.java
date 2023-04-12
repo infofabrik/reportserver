@@ -20,7 +20,7 @@ import net.datenwerke.dtoservices.dtogenerator.annotations.PropertyValidator;
 import net.datenwerke.dtoservices.dtogenerator.annotations.StringValidator;
 import net.datenwerke.gf.base.service.annotations.Field;
 import net.datenwerke.gxtdto.client.dtomanager.DtoView;
-import net.datenwerke.rs.remoteserver.client.remoteservermanager.locale.RemoteServerManagerMessages;
+import net.datenwerke.rs.remoteserver.client.remoteservermanager.locale.RemoteServerMessages;
 import net.datenwerke.rs.utils.entitycloner.annotation.EntityClonerIgnore;
 import net.datenwerke.rs.utils.instancedescription.annotations.Description;
 import net.datenwerke.rs.utils.instancedescription.annotations.Title;
@@ -36,7 +36,7 @@ import net.datenwerke.rs.utils.instancedescription.annotations.Title;
 @GenerateDto(
       dtoPackage = "net.datenwerke.rs.remoteserver.client.remoteservermanager.dto", 
       abstractDto = true, 
-      typeDescriptionMsg = RemoteServerManagerMessages.class, 
+      typeDescriptionMsg = RemoteServerMessages.class, 
       typeDescriptionKey = "remoteServers"
       )
 abstract public class RemoteServerDefinition extends AbstractRemoteServerManagerNode {

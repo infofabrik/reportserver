@@ -14,6 +14,7 @@ import net.datenwerke.rs.remoteserver.client.remoteservermanager.dto.RemoteServe
 import net.datenwerke.rs.remoteserver.client.remoteservermanager.dto.RemoteServerDto;
 import net.datenwerke.rs.remoteserver.client.remoteservermanager.helper.forms.RemoteServerForm;
 import net.datenwerke.rs.remoteserver.client.remoteservermanager.hooks.RemoteServerDefinitionConfigProviderHook;
+import net.datenwerke.rs.remoteserver.client.remoteservermanager.locale.RemoteServerMessages;
 
 public class RemoteServerConfigProviderHooker implements RemoteServerDefinitionConfigProviderHook {
 
@@ -43,7 +44,7 @@ public class RemoteServerConfigProviderHooker implements RemoteServerDefinitionC
 
    @Override
    public String getRemoteServerName() {
-      return "New Remote Server";
+      return RemoteServerMessages.INSTANCE.newRemoteRsServer();
    }
 
    @Override

@@ -6,7 +6,7 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 
 import net.datenwerke.gf.client.administration.interfaces.AdminModule;
-import net.datenwerke.rs.remoteserver.client.remoteservermanager.locale.RemoteServerManagerMessages;
+import net.datenwerke.rs.remoteserver.client.remoteservermanager.locale.RemoteServerMessages;
 import net.datenwerke.rs.remoteserver.client.remoteservermanager.ui.RemoteServerManagerPanel;
 import net.datenwerke.rs.theme.client.icon.BaseIcon;
 
@@ -32,7 +32,7 @@ public class RemoteServerAdminModule implements AdminModule {
 
    @Override
    public String getNavigationText() {
-      return RemoteServerManagerMessages.INSTANCE.remoteServers();
+      return RemoteServerMessages.INSTANCE.remoteServers();
    }
 
    @Override
