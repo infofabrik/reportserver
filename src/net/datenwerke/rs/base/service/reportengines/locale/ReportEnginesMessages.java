@@ -113,4 +113,6 @@ public interface ReportEnginesMessages extends Messages {
    String totalBaseReports();
 
    String totalReportVariants();
+
+   String reportUsageStatistics();
 }

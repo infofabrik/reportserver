@@ -8,6 +8,8 @@ public interface ScriptDatasinkMessages extends Messages {
    public final static ScriptDatasinkMessages INSTANCE = LocalizationServiceImpl
          .getMessages(ScriptDatasinkMessages.class);
 
-   String localFileSystemDatasinkTypeName();
+   String scriptDatasinkTypeName();
+
+   String scriptDatasinks();
 
 }

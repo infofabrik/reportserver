@@ -13,7 +13,7 @@ import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.adminutils.service.systemconsole.generalinfo.hooks.GeneralInfoCategoryProviderHook;
 import net.datenwerke.rs.configservice.service.configservice.ConfigService;
 import net.datenwerke.rs.core.service.internaldb.hookers.ClearInternalDbOnShutdown;
-import net.datenwerke.rs.core.service.internaldb.hookers.GeneralInfoInternalDbCategoryProviderHooker;
+import net.datenwerke.rs.core.service.internaldb.hookers.InternalDbCategoryProviderHooker;
 import net.datenwerke.rs.core.service.internaldb.hookers.TempTableMaintenanceTask;
 import net.datenwerke.rs.core.service.internaldb.terminal.commands.ClearInternalDbCommand;
 import net.datenwerke.rs.terminal.service.terminal.hooks.TerminalCommandHook;
@@ -33,7 +33,7 @@ public class InternalDbStartup {
          final ConfigService configService,
          final TempTableMaintenanceTask tempTableMaintencanceTask,
          final Provider<ClearInternalDbCommand> clearInternalDbCommand,
-         final Provider<GeneralInfoInternalDbCategoryProviderHooker> generalInfoInternalDbCategoryProviderHooker
+         final Provider<InternalDbCategoryProviderHooker> generalInfoInternalDbCategoryProviderHooker
    ) {
 
       hookHandler.attachHooker(ContextHook.class, shutdownHooker);

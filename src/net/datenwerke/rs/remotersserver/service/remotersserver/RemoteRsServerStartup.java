@@ -5,7 +5,7 @@ import com.google.inject.Provider;
 
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.remotersserver.service.remotersserver.hookers.UsageStatisticsRemoteRsServersProviderHooker;
-import net.datenwerke.rs.usagestatistics.service.usagestatistics.hooks.UsageStatisticsEntryProviderHook;
+import net.datenwerke.rs.remoteserver.service.remoteservermanager.hooks.RemoteServerEntryProviderHook;
 
 public class RemoteRsServerStartup {
 
@@ -16,7 +16,7 @@ public class RemoteRsServerStartup {
          final Provider<UsageStatisticsRemoteRsServersProviderHooker> usageStatsRemoteRsServerProvider
          ) {
 
-      hookHandler.attachHooker(UsageStatisticsEntryProviderHook.class, usageStatsRemoteRsServerProvider,
-            HookHandlerService.PRIORITY_LOW + 95);
+      hookHandler.attachHooker(RemoteServerEntryProviderHook.class, usageStatsRemoteRsServerProvider,
+            HookHandlerService.PRIORITY_LOW + 5);
    }
 }

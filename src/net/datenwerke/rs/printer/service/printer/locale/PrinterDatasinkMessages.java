@@ -9,4 +9,6 @@ public interface PrinterDatasinkMessages extends Messages {
          .getMessages(PrinterDatasinkMessages.class);
 
    String printerDatasinkTypeName();
+
+   String printerDatasinks();
 }

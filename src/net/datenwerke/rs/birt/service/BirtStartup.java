@@ -5,6 +5,7 @@ import com.google.inject.Provider;
 
 import net.datenwerke.gf.service.upload.hooks.FileUploadHandlerHook;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
+import net.datenwerke.rs.base.service.hooks.UsageStatisticsReportEntryProviderHook;
 import net.datenwerke.rs.birt.service.datasources.birtreport.hookers.BirtReportDatasourceProviderHooker;
 import net.datenwerke.rs.birt.service.reportengine.hookers.BaseBirtOutputGeneratorProvider;
 import net.datenwerke.rs.birt.service.reportengine.hookers.BirtReportEngineProviderHooker;
@@ -19,7 +20,6 @@ import net.datenwerke.rs.core.service.datasourcemanager.hooks.DatasourceProvider
 import net.datenwerke.rs.core.service.reportmanager.hooks.ReportEngineProviderHook;
 import net.datenwerke.rs.core.service.reportmanager.hooks.ReportTypeProviderHook;
 import net.datenwerke.rs.terminal.service.terminal.hooks.TerminalCommandHook;
-import net.datenwerke.rs.usagestatistics.service.usagestatistics.hooks.UsageStatisticsEntryProviderHook;
 
 public class BirtStartup {
 
@@ -47,8 +47,8 @@ public class BirtStartup {
       hookHandlerService.attachHooker(BirtOutputGeneratorProviderHook.class, baseOutputGenerators,
             HookHandlerService.PRIORITY_LOW);
       
-      hookHandlerService.attachHooker(UsageStatisticsEntryProviderHook.class, usageStatsBirtProvider,
-            HookHandlerService.PRIORITY_LOW + 20);
+      hookHandlerService.attachHooker(UsageStatisticsReportEntryProviderHook.class, usageStatsBirtProvider,
+            HookHandlerService.PRIORITY_LOW + 10);
    }
 
 }

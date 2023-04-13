@@ -10,7 +10,7 @@ import net.datenwerke.rs.terminal.service.terminal.hooks.TerminalCommandHook;
 import net.datenwerke.rs.utils.eventbus.EventBus;
 import net.datenwerke.security.service.eventlogger.jpa.RemoveEntityEvent;
 import net.datenwerke.security.service.security.eventhandler.SecurityIntegrityValidator;
-import net.datenwerke.security.service.security.hookers.GeneralInfoSecurityCategoryProviderHooker;
+import net.datenwerke.security.service.security.hookers.SecurityCategoryProviderHooker;
 import net.datenwerke.security.service.security.terminal.commands.HaspermissionCommand;
 import net.datenwerke.security.service.usermanager.entities.AbstractUserManagerNode;
 
@@ -24,7 +24,7 @@ public class SecurityStartup {
          final SecurityService securityService,
          final HookHandlerService hookHandler,
          final HaspermissionCommand haspermissionCommand,
-         final Provider<GeneralInfoSecurityCategoryProviderHooker> generalInfoSecurityCategoryProviderHooker
+         final Provider<SecurityCategoryProviderHooker> generalInfoSecurityCategoryProviderHooker
          ) {
 
       /* attach validator */

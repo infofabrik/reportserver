@@ -5,6 +5,7 @@ import com.google.inject.Provider;
 
 import net.datenwerke.gf.service.config.ClientConfigExposerHook;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
+import net.datenwerke.rs.base.service.hooks.UsageStatisticsReportEntryProviderHook;
 import net.datenwerke.rs.core.server.reportexport.hooks.ReportExportViaSessionHook;
 import net.datenwerke.rs.core.service.datasourcemanager.hooks.DatasourceProviderHook;
 import net.datenwerke.rs.core.service.reportmanager.hooks.ReportEngineProviderHook;
@@ -23,7 +24,6 @@ import net.datenwerke.rs.saiku.service.hooks.SaikuQueryParameterAdapterHook;
 import net.datenwerke.rs.saiku.service.saiku.reportengine.hookers.BaseSaikuOutputGeneratorProvider;
 import net.datenwerke.rs.saiku.service.saiku.reportengine.hookers.SaikuReportEngineProviderHooker;
 import net.datenwerke.rs.saiku.service.saiku.reportengine.hooks.SaikuOutputGeneratorProviderHook;
-import net.datenwerke.rs.usagestatistics.service.usagestatistics.hooks.UsageStatisticsEntryProviderHook;
 
 public class SaikuStartup {
 
@@ -62,8 +62,8 @@ public class SaikuStartup {
       hookHandler.attachHooker(SaikuOutputGeneratorProviderHook.class, baseOutputGenerators,
             HookHandlerService.PRIORITY_LOW);
       
-      hookHandler.attachHooker(UsageStatisticsEntryProviderHook.class, usageStatsSaikuProvider,
-            HookHandlerService.PRIORITY_LOW + 60);
+      hookHandler.attachHooker(UsageStatisticsReportEntryProviderHook.class, usageStatsSaikuProvider,
+            HookHandlerService.PRIORITY_LOW + 30);
    }
 }
 

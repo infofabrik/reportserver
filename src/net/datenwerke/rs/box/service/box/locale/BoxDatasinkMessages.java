@@ -9,4 +9,6 @@ public interface BoxDatasinkMessages extends Messages {
 
    String boxDatasinkTypeName();
 
+   String boxDatasinks();
+
 }

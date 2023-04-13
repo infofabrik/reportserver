@@ -10,4 +10,6 @@ public interface LocalFileSystemMessages extends Messages {
 
    String localFileSystemDatasinkTypeName();
 
+   String localFileSystemDatasinks();
+
 }

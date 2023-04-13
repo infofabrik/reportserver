@@ -9,4 +9,6 @@ public interface ScpMessages extends Messages {
 
    String scpDatasinkTypeName();
 
+   String scpDatasinks();
+
 }

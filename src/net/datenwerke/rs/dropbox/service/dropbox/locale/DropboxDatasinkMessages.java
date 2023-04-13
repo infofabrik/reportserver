@@ -10,4 +10,6 @@ public interface DropboxDatasinkMessages extends Messages {
 
    String dropboxDatasinkTypeName();
 
+   String dropboxDatasinks();
+
 }

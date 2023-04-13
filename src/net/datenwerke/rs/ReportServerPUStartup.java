@@ -30,7 +30,7 @@ public class ReportServerPUStartup {
          HookHandlerService hookHandlerService, 
          ConfigDirService configDirService,
          final @JpaUnit Properties jpaProperties,
-         Provider<GeneralInfoHibernateCategoryProviderHooker> generalInfoHibernateCategoryProviderHooker
+         Provider<HibernateCategoryProviderHooker> generalInfoHibernateCategoryProviderHooker
          ) {
 
       loadPersistenceProperties(configDirService, jpaProperties);

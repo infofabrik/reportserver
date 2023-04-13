@@ -10,4 +10,6 @@ public interface EmailDatasinkMessages extends Messages {
 
    String emailDatasinkTypeName();
 
+   String emailDatasinks();
+
 }

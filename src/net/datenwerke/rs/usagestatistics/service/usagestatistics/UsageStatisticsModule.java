@@ -7,8 +7,6 @@ public class UsageStatisticsModule extends AbstractModule {
    @Override
    protected void configure() {
       bind(UsageStatisticsService.class).to(UsageStatisticsServiceImpl.class);
-      
-      bind(UsageStatisticsStartup.class).asEagerSingleton();
    }
 
 }

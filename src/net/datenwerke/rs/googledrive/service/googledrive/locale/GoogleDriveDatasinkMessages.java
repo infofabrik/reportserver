@@ -10,4 +10,6 @@ public interface GoogleDriveDatasinkMessages extends Messages {
 
    String googleDriveDatasinkTypeName();
 
+   String googleDriveDatasinks();
+
 }

@@ -10,4 +10,6 @@ public interface AmazonS3DatasinkMessages extends Messages {
 
    String amazonS3DatasinkTypeName();
 
+   String amazonS3Datasinks();
+
 }

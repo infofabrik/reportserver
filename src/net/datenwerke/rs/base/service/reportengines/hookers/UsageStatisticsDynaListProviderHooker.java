@@ -1,24 +1,18 @@
 package net.datenwerke.rs.base.service.reportengines.hookers;
 
-import static java.util.stream.Collectors.toMap;
-
-import java.util.AbstractMap.SimpleEntry;
-import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Map.Entry;
-import java.util.stream.Stream;
 
 import javax.inject.Inject;
 
 import org.apache.commons.lang3.tuple.ImmutablePair;
 
+import net.datenwerke.rs.base.service.hooks.UsageStatisticsReportEntryProviderHook;
 import net.datenwerke.rs.base.service.reportengines.locale.ReportEnginesMessages;
 import net.datenwerke.rs.base.service.reportengines.table.entities.TableReport;
 import net.datenwerke.rs.base.service.reportengines.table.entities.TableReportVariant;
 import net.datenwerke.rs.usagestatistics.service.usagestatistics.UsageStatisticsService;
-import net.datenwerke.rs.usagestatistics.service.usagestatistics.hooks.UsageStatisticsEntryProviderHook;
 
-public class UsageStatisticsDynaListProviderHooker implements UsageStatisticsEntryProviderHook {
+public class UsageStatisticsDynaListProviderHooker implements UsageStatisticsReportEntryProviderHook {
 
    private final UsageStatisticsService usageStatisticsService;
    
@@ -34,14 +28,9 @@ public class UsageStatisticsDynaListProviderHooker implements UsageStatisticsEnt
    
    @Override
    public Map<ImmutablePair<String, String>, Object> provideEntry() {
-      final ImmutablePair<Long, Long> reportCount = usageStatisticsService.getSpecificReportCount(TableReport.class,
-            TableReportVariant.class);
-      return Stream.of(
-            new SimpleEntry<>(ImmutablePair.of(DYNAMIC_LISTS, ReportEnginesMessages.INSTANCE.dynamicLists()),
-                  reportCount.getLeft()),
-            new SimpleEntry<>(ImmutablePair.of(DYNAMIC_LIST_VAR, ReportEnginesMessages.INSTANCE.dynamicListVariants()),
-                  reportCount.getRight()))
-            .collect(toMap(Entry::getKey, Entry::getValue, (val1, val2) -> val2, LinkedHashMap::new));
+      return usageStatisticsService.provideReportCountValueEntry(DYNAMIC_LISTS,
+            ReportEnginesMessages.INSTANCE.dynamicLists(), TableReport.class, DYNAMIC_LIST_VAR,
+            ReportEnginesMessages.INSTANCE.dynamicListVariants(), TableReportVariant.class);
    }
 
 }

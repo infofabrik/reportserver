@@ -9,4 +9,6 @@ public interface SambaMessages extends Messages {
 
    String sambaDatasinkTypeName();
 
+   String sambaDatasinks();
+
 }

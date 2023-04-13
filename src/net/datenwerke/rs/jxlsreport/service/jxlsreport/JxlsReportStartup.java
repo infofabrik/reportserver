@@ -8,6 +8,7 @@ import com.google.inject.Provider;
 import net.datenwerke.gf.service.lateinit.LateInitHook;
 import net.datenwerke.gf.service.upload.hooks.FileUploadHandlerHook;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
+import net.datenwerke.rs.base.service.hooks.UsageStatisticsReportEntryProviderHook;
 import net.datenwerke.rs.core.service.reportmanager.hooks.ReportEngineProviderHook;
 import net.datenwerke.rs.core.service.reportmanager.hooks.ReportTypeProviderHook;
 import net.datenwerke.rs.jxlsreport.service.jxlsreport.hookers.BaseJxlsOutputGeneratorProvider;
@@ -16,7 +17,6 @@ import net.datenwerke.rs.jxlsreport.service.jxlsreport.hookers.JxlsReportTypePro
 import net.datenwerke.rs.jxlsreport.service.jxlsreport.hookers.JxlsReportUploadHooker;
 import net.datenwerke.rs.jxlsreport.service.jxlsreport.hookers.UsageStatisticsJxlsProviderHooker;
 import net.datenwerke.rs.jxlsreport.service.jxlsreport.reportengine.hooks.JxlsOutputGeneratorProviderHook;
-import net.datenwerke.rs.usagestatistics.service.usagestatistics.hooks.UsageStatisticsEntryProviderHook;
 
 public class JxlsReportStartup {
 
@@ -47,8 +47,8 @@ public class JxlsReportStartup {
       });
       
 
-      hookHandlerService.attachHooker(UsageStatisticsEntryProviderHook.class, usageStatsJxlsProvider,
-            HookHandlerService.PRIORITY_LOW + 50);
+      hookHandlerService.attachHooker(UsageStatisticsReportEntryProviderHook.class, usageStatsJxlsProvider,
+            HookHandlerService.PRIORITY_LOW + 25);
    }
 
 }

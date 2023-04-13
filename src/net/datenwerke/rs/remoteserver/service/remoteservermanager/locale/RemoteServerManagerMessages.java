@@ -20,4 +20,6 @@ public interface RemoteServerManagerMessages extends Messages {
 
    String totalRemoteServers();
 
+   String remoteServerUsageStatistics();
+
 }

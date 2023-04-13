@@ -119,6 +119,7 @@ import net.datenwerke.rs.core.service.reportmanager.ReportManagerModule;
 import net.datenwerke.rs.core.service.reportproperties.ReportPropertiesModule;
 import net.datenwerke.rs.core.service.reportserver.ReportServerModule;
 import net.datenwerke.rs.crystal.server.crystal.CrystalUtilsRpcDummyServiceImpl;
+import net.datenwerke.rs.crystal.service.crystal.CrystalModule;
 import net.datenwerke.rs.dashboard.server.dashboard.DashboardRpcServiceImpl;
 import net.datenwerke.rs.dashboard.server.dashboard.DashboardTreeRpcServiceImpl;
 import net.datenwerke.rs.dashboard.service.dashboard.DashboardModule;
@@ -145,6 +146,7 @@ import net.datenwerke.rs.globalconstants.server.globalconstants.GlobalConstantsR
 import net.datenwerke.rs.globalconstants.service.GlobalConstantsModule;
 import net.datenwerke.rs.googledrive.server.googledrive.GoogleDriveRpcServiceImpl;
 import net.datenwerke.rs.googledrive.service.googledrive.GoogleDriveModule;
+import net.datenwerke.rs.grideditor.service.grideditor.GridEditorModule;
 import net.datenwerke.rs.incubator.server.jaspertotable.JasperToTableRpcServiceImpl;
 import net.datenwerke.rs.incubator.server.jasperutils.JasperUtilsRpcServiceImpl;
 import net.datenwerke.rs.incubator.server.reportmetadata.ReportMetadataRpcServiceImpl;
@@ -199,6 +201,7 @@ import net.datenwerke.rs.scp.server.scp.ScpRpcServiceImpl;
 import net.datenwerke.rs.scp.service.scp.ScpModule;
 import net.datenwerke.rs.scriptdatasink.server.scriptdatasink.ScriptDatasinkRpcServiceImpl;
 import net.datenwerke.rs.scriptdatasink.service.scriptdatasink.ScriptDatasinkModule;
+import net.datenwerke.rs.scriptreport.service.scriptreport.ScriptReportModule;
 import net.datenwerke.rs.search.server.search.SearchRpcServiceImpl;
 import net.datenwerke.rs.search.service.search.SearchModule;
 import net.datenwerke.rs.tabledatasink.server.tabledatasink.TableDatasinkRpcServiceImpl;
@@ -642,6 +645,10 @@ public class ReportServerServiceConfig extends DwGwtFrameworkBase {
             new ParameterModule(),
 
             new FileServerModule(),
+            
+            new CrystalModule(),
+            new GridEditorModule(),
+            new ScriptReportModule(),
 
             new ReportManagerModule(),
 

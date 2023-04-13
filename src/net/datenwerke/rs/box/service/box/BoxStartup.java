@@ -8,7 +8,9 @@ import net.datenwerke.rs.box.service.box.hooker.BoxDatasinkProviderHooker;
 import net.datenwerke.rs.box.service.box.hooker.BoxRefreshTokenGeneratorHooker;
 import net.datenwerke.rs.box.service.box.hooker.ScheduleAsBoxFileEmailNotificationHooker;
 import net.datenwerke.rs.box.service.box.hooker.ScheduleConfigAsBoxDatasinkHooker;
+import net.datenwerke.rs.box.service.box.hooker.UsageStatisticsProviderHooker;
 import net.datenwerke.rs.core.service.datasinkmanager.hooks.DatasinkProviderHook;
+import net.datenwerke.rs.core.service.datasinkmanager.hooks.UsageStatisticsDatasinkEntryProviderHook;
 import net.datenwerke.rs.oauth.server.oauth.hooks.OAuthRefreshTokenGeneratorHook;
 import net.datenwerke.rs.scheduler.service.scheduler.hooks.ScheduleConfigProviderHook;
 import net.datenwerke.scheduler.service.scheduler.hooks.SchedulerExecutionHook;
@@ -16,14 +18,22 @@ import net.datenwerke.scheduler.service.scheduler.hooks.SchedulerExecutionHook;
 public class BoxStartup {
 
    @Inject
-   public BoxStartup(HookHandlerService hookHandler, Provider<BoxDatasinkProviderHooker> boxDatasinkProviderHooker,
-         Provider<ScheduleAsBoxFileEmailNotificationHooker> emailBoxNotificationHooker,
-         Provider<ScheduleConfigAsBoxDatasinkHooker> scheduleAsBoxConfigHooker,
-         Provider<BoxRefreshTokenGeneratorHooker> boxRefreshTokenGeneratorHooker) {
+   public BoxStartup(
+         final HookHandlerService hookHandler, 
+         final Provider<BoxDatasinkProviderHooker> boxDatasinkProviderHooker,
+         final Provider<ScheduleAsBoxFileEmailNotificationHooker> emailBoxNotificationHooker,
+         final Provider<ScheduleConfigAsBoxDatasinkHooker> scheduleAsBoxConfigHooker,
+         final Provider<BoxRefreshTokenGeneratorHooker> boxRefreshTokenGeneratorHooker,
+         
+         final Provider<UsageStatisticsProviderHooker> usageStats
+         ) {
       hookHandler.attachHooker(DatasinkProviderHook.class, boxDatasinkProviderHooker);
       hookHandler.attachHooker(SchedulerExecutionHook.class, emailBoxNotificationHooker);
       hookHandler.attachHooker(ScheduleConfigProviderHook.class, scheduleAsBoxConfigHooker);
       hookHandler.attachHooker(OAuthRefreshTokenGeneratorHook.class, boxRefreshTokenGeneratorHooker);
+      
+      hookHandler.attachHooker(UsageStatisticsDatasinkEntryProviderHook.class, usageStats,
+            HookHandlerService.PRIORITY_MEDIUM + 10);
    }
 
 }

@@ -9,4 +9,6 @@ public interface TableDatasinkMessages extends Messages {
 
    String tableDatasinkTypeName();
 
+   String tableDatasinks();
+
 }

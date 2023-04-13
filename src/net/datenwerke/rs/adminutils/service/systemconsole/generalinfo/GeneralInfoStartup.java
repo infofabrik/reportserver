@@ -4,7 +4,7 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
-import net.datenwerke.rs.adminutils.service.systemconsole.generalinfo.hookers.GeneralInfoMainCategoryProviderHooker;
+import net.datenwerke.rs.adminutils.service.systemconsole.generalinfo.hookers.MainInfoCategoryProviderHooker;
 import net.datenwerke.rs.adminutils.service.systemconsole.generalinfo.hooks.GeneralInfoCategoryProviderHook;
 
 public class GeneralInfoStartup {
@@ -12,7 +12,7 @@ public class GeneralInfoStartup {
    @Inject
    public GeneralInfoStartup(
          HookHandlerService hookHandlerService,
-         Provider<GeneralInfoMainCategoryProviderHooker> generalInfoMainCategoryProviderHooker
+         Provider<MainInfoCategoryProviderHooker> generalInfoMainCategoryProviderHooker
          ) {
 
             hookHandlerService.attachHooker(GeneralInfoCategoryProviderHook.class,
