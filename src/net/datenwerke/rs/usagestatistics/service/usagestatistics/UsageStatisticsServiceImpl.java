@@ -83,7 +83,7 @@ public class UsageStatisticsServiceImpl implements UsageStatisticsService {
       final ImmutablePair<Long, Long> reportCount = getSpecificReportCount(reportClazz, variantClazz);
       return Stream
             .of(new SimpleEntry<>(ImmutablePair.of(reportKey, reportMsg), reportCount.getLeft()),
-                  new SimpleEntry<>(ImmutablePair.of(variantKey, variantMsg), reportCount.getRight()))
+                new SimpleEntry<>(ImmutablePair.of(variantKey, variantMsg), reportCount.getRight()))
             .collect(toMap(Entry::getKey, Entry::getValue, (val1, val2) -> val2, LinkedHashMap::new));
    }
 
@@ -98,5 +98,17 @@ public class UsageStatisticsServiceImpl implements UsageStatisticsService {
                   into.putAll(valuesToAdd);
                   return into;
                }));
+   }
+   
+   @Override
+   public Map<ImmutablePair<String, String>, Object> provideTableTemplateCountValueEntry(String key, String msg,
+         String type) {
+      final long templateCount = ((Number) entityManagerProvider.get()
+            .createQuery("SELECT COUNT(t) FROM TableReportTemplate t WHERE t.templateType = :templateType")
+            .setParameter("templateType", type)
+            .getSingleResult()).longValue();
+      return Stream
+            .of(new SimpleEntry<>(ImmutablePair.of(key, msg), templateCount))
+            .collect(toMap(Entry::getKey, Entry::getValue, (val1, val2) -> val2, LinkedHashMap::new));
    }
 }

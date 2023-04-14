@@ -7,6 +7,8 @@ import javax.persistence.Table;
 import org.hibernate.annotations.Type;
 import org.hibernate.envers.Audited;
 
+import com.google.common.base.MoreObjects;
+
 import net.datenwerke.dtoservices.dtogenerator.annotations.ExposeToClient;
 import net.datenwerke.dtoservices.dtogenerator.annotations.GenerateDto;
 import net.datenwerke.rs.core.service.reportmanager.entities.reports.interfaces.ServerSideProperty;
@@ -36,4 +38,12 @@ public class ReportServerSideStringProperty extends ReportProperty implements Se
       return "true".equals(strValue.toLowerCase());
    }
 
+   @Override
+   public String toString() {
+       return MoreObjects.toStringHelper(getClass())
+             .add("ID", getId())
+             .add("Name", getName())
+             .add("String Value", strValue)
+             .toString();
+   }
 }

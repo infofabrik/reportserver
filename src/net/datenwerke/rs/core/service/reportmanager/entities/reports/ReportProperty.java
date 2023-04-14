@@ -12,6 +12,8 @@ import javax.persistence.Version;
 
 import org.hibernate.envers.Audited;
 
+import com.google.common.base.MoreObjects;
+
 import net.datenwerke.dtoservices.dtogenerator.annotations.ExposeToClient;
 import net.datenwerke.dtoservices.dtogenerator.annotations.GenerateDto;
 import net.datenwerke.gxtdto.client.dtomanager.DtoView;
@@ -89,5 +91,13 @@ public class ReportProperty {
 
    public boolean isIdentical(ReportProperty toCompare) {
       return equals(toCompare);
+   }
+   
+   @Override
+   public String toString() {
+       return MoreObjects.toStringHelper(getClass())
+             .add("ID", id)
+             .add("Name", name)
+             .toString();
    }
 }

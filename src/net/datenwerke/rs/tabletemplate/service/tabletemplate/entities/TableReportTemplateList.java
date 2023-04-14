@@ -12,6 +12,8 @@ import javax.persistence.Table;
 
 import org.hibernate.envers.Audited;
 
+import com.google.common.base.MoreObjects;
+
 import net.datenwerke.dtoservices.dtogenerator.annotations.GenerateDto;
 import net.datenwerke.rs.core.service.reportmanager.entities.reports.ReportProperty;
 import net.datenwerke.rs.tabletemplate.service.tabletemplate.TableTemplateConstants;
@@ -53,6 +55,15 @@ public class TableReportTemplateList extends ReportProperty implements Iterable<
 
    public void add(TableReportTemplate template) {
       templates.add(template);
+   }
+   
+   @Override
+   public String toString() {
+       return MoreObjects.toStringHelper(getClass())
+             .add("ID", getId())
+             .add("Name", getName())
+             .add("Templates", templates)
+             .toString();
    }
 
 }

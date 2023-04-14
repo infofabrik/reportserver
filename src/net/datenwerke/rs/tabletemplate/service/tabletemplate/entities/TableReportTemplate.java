@@ -14,6 +14,8 @@ import javax.persistence.Version;
 import org.hibernate.annotations.Type;
 import org.hibernate.envers.Audited;
 
+import com.google.common.base.MoreObjects;
+
 import net.datenwerke.dtoservices.dtogenerator.annotations.ExposeToClient;
 import net.datenwerke.dtoservices.dtogenerator.annotations.GenerateDto;
 import net.datenwerke.gxtdto.client.dtomanager.DtoView;
@@ -152,5 +154,15 @@ abstract public class TableReportTemplate {
    }
 
    abstract protected TableReportTemplate doCreateTemporary();
+   
+   @Override
+   public String toString() {
+       return MoreObjects.toStringHelper(getClass())
+             .add("ID", getId())
+             .add("Key", key)
+             .add("Name", key)
+             .add("Template Type", templateType)
+             .toString();
+   }
 
 }

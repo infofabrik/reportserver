@@ -206,6 +206,7 @@ import net.datenwerke.rs.search.server.search.SearchRpcServiceImpl;
 import net.datenwerke.rs.search.service.search.SearchModule;
 import net.datenwerke.rs.tabledatasink.server.tabledatasink.TableDatasinkRpcServiceImpl;
 import net.datenwerke.rs.tabledatasink.service.tabledatasink.TableDatasinkModule;
+import net.datenwerke.rs.tabletemplate.service.tabletemplate.TableTemplateModule;
 import net.datenwerke.rs.teamspace.server.teamspace.TeamSpaceRpcServiceImpl;
 import net.datenwerke.rs.teamspace.service.teamspace.TeamSpaceModule;
 import net.datenwerke.rs.terminal.server.terminal.TerminalRpcServiceImpl;
@@ -649,6 +650,7 @@ public class ReportServerServiceConfig extends DwGwtFrameworkBase {
             new CrystalModule(),
             new GridEditorModule(),
             new ScriptReportModule(),
+            new TableTemplateModule(),
 
             new ReportManagerModule(),
 

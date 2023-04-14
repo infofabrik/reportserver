@@ -28,5 +28,8 @@ public interface UsageStatisticsService {
 
    Map<ImmutablePair<String, String>, Map<ImmutablePair<String, String>, Object>> provideCategory(String key,
          String msg, Class<? extends UsageStatisticsEntryProviderHook> hookClazz);
+   
+   Map<ImmutablePair<String, String>, Object> provideTableTemplateCountValueEntry(String key, String msg,
+         String type);
 
 }
