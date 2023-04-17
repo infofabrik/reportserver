@@ -128,6 +128,10 @@ public interface TerminalService {
    RSTableModel convertSimpleMapToTableModel(Map<String, Object> map);
 
    RSTableModel convertSimpleListToTableModel(String headline, List<String> list);
+   
+   CommandResult convertSimpleListToCommandResult(String headline, List<String> list);
+   
+   CommandResult convertListOfListsToCommandResult(String headline, List<List<String>> lists);
 
    /**
     * Creates a {@link CommandResult} that contains a table created from the given

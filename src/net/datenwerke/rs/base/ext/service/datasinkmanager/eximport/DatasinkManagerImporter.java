@@ -5,7 +5,6 @@ import com.google.inject.Inject;
 import net.datenwerke.eximport.im.ImportItemWithKeyConfig;
 import net.datenwerke.rs.core.service.datasinkmanager.DatasinkTreeService;
 import net.datenwerke.rs.core.service.datasinkmanager.entities.DatasinkDefinition;
-import net.datenwerke.rs.remoteserver.service.remoteservermanager.entities.RemoteServerDefinition;
 import net.datenwerke.treedb.ext.service.eximport.TreeNodeImportItemConfig;
 import net.datenwerke.treedb.ext.service.eximport.TreeNodeImporter;
 import net.datenwerke.treedb.service.treedb.AbstractNode;

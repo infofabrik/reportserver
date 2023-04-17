@@ -1,6 +1,9 @@
 package net.datenwerke.rs.terminal.service.terminal.basecommands;
 
+import static java.util.stream.Collectors.toList;
+
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -11,8 +14,7 @@ import org.apache.commons.lang3.StringUtils;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
-import net.datenwerke.rs.base.service.reportengines.table.output.object.RSStringTableRow;
-import net.datenwerke.rs.base.service.reportengines.table.output.object.RSTableModel;
+import net.datenwerke.rs.terminal.service.terminal.TerminalService;
 import net.datenwerke.rs.terminal.service.terminal.TerminalSession;
 import net.datenwerke.rs.terminal.service.terminal.helpers.AutocompleteHelper;
 import net.datenwerke.rs.terminal.service.terminal.helpers.CommandParser;
@@ -22,23 +24,24 @@ import net.datenwerke.rs.terminal.service.terminal.helpmessenger.annotations.Non
 import net.datenwerke.rs.terminal.service.terminal.hooks.TerminalCommandHook;
 import net.datenwerke.rs.terminal.service.terminal.locale.TerminalMessages;
 import net.datenwerke.rs.terminal.service.terminal.obj.CommandResult;
-import net.datenwerke.rs.terminal.service.terminal.obj.CommandResultList;
 import net.datenwerke.rs.terminal.service.terminal.obj.DisplayMode;
-import net.datenwerke.rs.utils.jpa.EntityUtils;
 
 public class HqlTerminalCommand implements TerminalCommandHook {
 
    public static final String BASE_COMMAND = "hql";
 
    private final Provider<EntityManager> entityManagerProvider;
-   private final EntityUtils entityUtils;
+   private final TerminalService terminalService;
 
    @Inject
-   public HqlTerminalCommand(Provider<EntityManager> entityManagerProvider, EntityUtils entityUtils) {
+   public HqlTerminalCommand(
+         Provider<EntityManager> entityManagerProvider, 
+         TerminalService terminalService
+         ) {
 
       /* store objects */
       this.entityManagerProvider = entityManagerProvider;
-      this.entityUtils = entityUtils;
+      this.terminalService = terminalService;
    }
 
    @Override
@@ -46,46 +49,55 @@ public class HqlTerminalCommand implements TerminalCommandHook {
       return BASE_COMMAND.equals(parser.getBaseCommand());
    }
 
-   @CliHelpMessage(messageClass = TerminalMessages.class, name = BASE_COMMAND, description = "commandHql_description", args = {
-         @Argument(flag = "w", description = "commandHql_wFlag") }, nonOptArgs = {
-               @NonOptArgument(name = "query", description = "commandHql_hqlArgument") })
+   @CliHelpMessage(
+         messageClass = TerminalMessages.class, 
+         name = BASE_COMMAND, 
+         description = "commandHql_description", 
+         args = {
+               @Argument(
+                     flag = "w", 
+                     description = "commandHql_wFlag",
+                     mandatory = false
+               ) 
+         }, 
+         nonOptArgs = {
+               @NonOptArgument(
+                     name = "query", 
+                     description = "commandHql_hqlArgument",
+                     mandatory = true
+               )
+         }
+   )
    @Override
    public CommandResult execute(CommandParser parser, TerminalSession session) {
       String arg = StringUtils.join(parser.getNonOptionArguments(), " ");
 
       try {
          /* execute query */
-         List resultList = entityManagerProvider.get().createQuery(arg).getResultList();
+         List<?> resultList = entityManagerProvider.get().createQuery(arg).getResultList();
 
          /* prepare result */
          CommandResult result = new CommandResult();
 
          /* simple result */
-         if (!resultList.isEmpty() && entityUtils.isEntity(resultList.get(0))) {
+         if (!resultList.isEmpty()) {
             if (resultList.get(0) instanceof Object[]) {
-               RSTableModel table = new RSTableModel();
-
+               List<List<String>> results = new ArrayList<>();
                for (Object objArr : resultList) {
-                  List<String> row = new ArrayList<String>();
-                  for (Object obj : (Object[]) objArr) {
-                     if (null != obj)
-                        row.add(obj.toString());
-                     else
-                        row.add("null");
-                  }
-                  table.addDataRow(new RSStringTableRow(row));
+                  final List<String> row = Arrays.stream((Object[]) objArr)
+                     .map(obj -> null == obj? "null" : obj.toString())
+                     .collect(toList());
+                  results.add(row);
                }
 
-               result.addResultTable(table);
+               result = terminalService.convertListOfListsToCommandResult("Results", results);
             } else {
-               List<String> stringResults = new ArrayList<String>();
-               for (Object obj : resultList)
-                  stringResults.add(null == obj ? "NULL" : obj.toString());
-               CommandResultList entryList = new CommandResultList(stringResults);
-               entryList.setDenyBreakUp(true);
-               result.addEntry(entryList);
+               List<String> stringResults = resultList.stream()
+                     .map(obj -> null == obj ? "null" : obj.toString())
+                     .collect(toList());
+               result = terminalService.convertSimpleListToCommandResult("Results", stringResults);
             }
-         }
+         } 
 
          if (parser.hasOption("w"))
             result.setDisplayMode(DisplayMode.WINDOW);
@@ -97,7 +109,7 @@ public class HqlTerminalCommand implements TerminalCommandHook {
          return new CommandResult("Could not execute query: " + e.getMessage());
       }
    }
-
+   
    @Override
    public void addAutoCompletEntries(AutocompleteHelper autocompleteHelper, TerminalSession session) {
       autocompleteHelper.autocompleteBaseCommand(BASE_COMMAND);

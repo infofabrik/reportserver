@@ -243,4 +243,21 @@ public class TerminalServiceImpl implements TerminalService {
       return model
    }
 
+   @Override
+   public CommandResult convertSimpleListToCommandResult(String headline, List<String> list) {
+      CommandResult result = new CommandResult()
+      RSTableModel model = convertSimpleListToTableModel(headline, list)
+      result.addResultTable(model)
+      return result
+   }
+
+   @Override
+   public CommandResult convertListOfListsToCommandResult(String headline, List<List<String>> lists) {
+      CommandResult result = new CommandResult()
+      RSTableModel table = new RSTableModel()
+      lists.each { table.addDataRow(new RSStringTableRow(it))  }
+      result.addResultTable table
+      return result
+   }
+
 }
