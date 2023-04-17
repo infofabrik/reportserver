@@ -148,8 +148,8 @@ public class DatasinkTreeServiceImpl extends SecuredTreeDBManagerImpl<AbstractDa
    @QueryByAttribute(
          where = DatasinkDefinition__.key
    )
-   private DatasinkDefinition doGetDatasinkByKey(String key) {
-      return null; // by magic
+   public DatasinkDefinition doGetDatasinkByKey(String key) {
+      return null; // by magic, must be public for AOP interception to work
    }
 
 }

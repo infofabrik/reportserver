@@ -8,6 +8,7 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 
 import net.datenwerke.eximport.exceptions.IllegalImportConfigException;
+import net.datenwerke.eximport.im.ImportItemWithKeyConfig;
 import net.datenwerke.eximport.im.ImportMode;
 import net.datenwerke.eximport.obj.ExportedItem;
 import net.datenwerke.gxtdto.server.dtomanager.DtoService;
@@ -39,13 +40,18 @@ public class HttpDatasourceManagerImportConfigurationHooker extends
    }
 
    @Override
+   protected TreeNodeImportItemConfig initItemConfig(ImportTreeModel model) {
+      return new ImportItemWithKeyConfig(model.getId());
+   }
+   
+   @Override
    protected void finishUpConfiguration(TreeImportConfigDto<AbstractDatasourceManagerNodeDto> treeConfig) {
       finishUpConfiguration(new HashMap<String, ImportTreeModel>(), new HashMap<String, TreeNodeImportItemConfig>(),
             treeConfig);
    }
 
    @Override
-   protected void finishUpConfiguration(Map<String, ImportTreeModel> lookupMap,
+   protected void finishUpConfiguration(final Map<String, ImportTreeModel> lookupMap,
          Map<String, TreeNodeImportItemConfig> lookupConfigMap,
          TreeImportConfigDto<AbstractDatasourceManagerNodeDto> treeConfig) {
       DatasourceManagerImportConfigDto dsConfig = (DatasourceManagerImportConfigDto) treeConfig;
@@ -53,24 +59,34 @@ public class HttpDatasourceManagerImportConfigurationHooker extends
       if (null == dsConfig.getDefaultDatasource())
          return;
 
-      DatasourceDefinition defaultDatasource = (DatasourceDefinition) dtoService
+      final DatasourceDefinition defaultDatasource = (DatasourceDefinition) dtoService
             .loadPoso(dsConfig.getDefaultDatasource());
       if (null == defaultDatasource)
          throw new RuntimeException("Could not load default datasource");
 
-      HttpImportService importService = httpImportServiceProvider.get();
+      final HttpImportService importService = httpImportServiceProvider.get();
 
       try {
          List<ExportedItem> exportedItems = importService.getExportedItemsFor(DatasourceManagerExporter.class);
 
-         for (ExportedItem ei : exportedItems)
-            if (!lookupMap.containsKey(ei.getId()))
-               importService
-                     .addItemConfig(new TreeNodeImportItemConfig(ei.getId(), ImportMode.REFERENCE, defaultDatasource));
-
+         exportedItems
+            .stream()
+            .filter(ei -> !lookupMap.containsKey(ei.getId()))
+            .forEach(ei -> importService
+                     .addItemConfig(new TreeNodeImportItemConfig(ei.getId(), ImportMode.REFERENCE, defaultDatasource)));
+                  
       } catch (Exception e) {
          throw new RuntimeException(e);
       }
+   }
+   
+   @Override
+   protected void doConfigureNodeConfig(TreeNodeImportItemConfig realConfigNode, ImportTreeModel model,
+         TreeImportConfigDto<AbstractDatasourceManagerNodeDto> treeConfig) {
+      DatasourceManagerImportConfigDto rmConfig = (DatasourceManagerImportConfigDto) treeConfig;
+
+      if (rmConfig.isRemoveKey())
+         ((ImportItemWithKeyConfig) realConfigNode).setCleanKeys(true);
    }
 
    @Override

@@ -12,6 +12,7 @@ public class Column__ implements net.datenwerke.entityservices.metadatagenerator
 	public static final String aggregateFunction = "aggregateFunction";
 	public static final String alias = "alias";
 	public static final String dimension = "dimension";
+	public static final String exportNullAsString = "exportNullAsString";
 	public static final String filter = "filter";
 	public static final String format = "format";
 	public static final String hidden = "hidden";

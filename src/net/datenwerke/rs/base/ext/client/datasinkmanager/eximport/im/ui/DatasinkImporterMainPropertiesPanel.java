@@ -17,7 +17,7 @@ public class DatasinkImporterMainPropertiesPanel extends ImporterMainPropertiesP
    private final Provider<UITree> treeProvider;
 
    protected String parentKey;
-   protected String defaultDatasource;
+   private String removeKeyFieldsKey;
 
    @Inject
    public DatasinkImporterMainPropertiesPanel(@DatasinkTreeFolders Provider<UITree> treeProvider) {
@@ -35,7 +35,9 @@ public class DatasinkImporterMainPropertiesPanel extends ImporterMainPropertiesP
 
       DatasinkFolderDto parent = (DatasinkFolderDto) form.getValue(parentKey);
       config.setParent(parent);
-
+      
+      boolean removeKeys = (Boolean) form.getValue(removeKeyFieldsKey);
+      config.setRemoveKey(removeKeys);
    }
 
    @Override
@@ -55,6 +57,8 @@ public class DatasinkImporterMainPropertiesPanel extends ImporterMainPropertiesP
                   return treeProvider.get();
                }
             });
+      
+      removeKeyFieldsKey = form.addField(Boolean.class, DatasinksMessages.INSTANCE.importRemoveKeyFieldLabel());
    }
 
    @Override

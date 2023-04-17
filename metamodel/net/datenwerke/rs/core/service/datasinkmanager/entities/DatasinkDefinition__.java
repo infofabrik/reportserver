@@ -9,6 +9,7 @@ import net.datenwerke.dtoservices.dtogenerator.annotations.GeneratedType;
 public class DatasinkDefinition__ extends net.datenwerke.rs.core.service.datasinkmanager.entities.AbstractDatasinkManagerNode__ implements net.datenwerke.entityservices.metadatagenerator.interfaces.EntityMetadataProvider {
 
 	public static final String description = "description";
+	public static final String key = "key";
 	public static final String name = "name";
 	public static final String serialVersionUID = "serialVersionUID";
 

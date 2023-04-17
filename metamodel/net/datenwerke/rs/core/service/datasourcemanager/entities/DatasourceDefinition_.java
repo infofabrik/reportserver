@@ -10,6 +10,7 @@ public abstract class DatasourceDefinition_ extends net.datenwerke.rs.core.servi
 
 	public static volatile SingularAttribute<DatasourceDefinition, String> name;
 	public static volatile SingularAttribute<DatasourceDefinition, String> description;
+	public static volatile SingularAttribute<DatasourceDefinition, String> key;
 
 }
 

@@ -155,8 +155,8 @@ public class DatasourceServiceImpl extends SecuredTreeDBManagerImpl<AbstractData
    @QueryByAttribute(
          where = DatasourceDefinition__.key
    )
-   private DatasourceDefinition doGetDatasourceByKey(String key) {
-      return null; // by magic
+   public DatasourceDefinition doGetDatasourceByKey(String key) {
+      return null; // by magic, must be public for AOP interception to work
    }
 
 }

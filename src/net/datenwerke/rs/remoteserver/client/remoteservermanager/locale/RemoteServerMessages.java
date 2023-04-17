@@ -24,4 +24,6 @@ public interface RemoteServerMessages extends Messages {
    String importConfigFailureNoParent();
    
    String newRemoteRsServer();
+   
+   String importRemoveKeyFieldLabel();
 }

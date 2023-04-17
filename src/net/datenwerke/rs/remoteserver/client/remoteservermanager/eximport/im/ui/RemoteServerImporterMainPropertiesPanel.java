@@ -17,7 +17,7 @@ public class RemoteServerImporterMainPropertiesPanel extends ImporterMainPropert
    private final Provider<UITree> treeProvider;
 
    protected String parentKey;
-   protected String defaultDatasource;
+   private String removeKeyFieldsKey;
 
    @Inject
    public RemoteServerImporterMainPropertiesPanel(@RemoteServerTreeFolders Provider<UITree> treeProvider) {
@@ -36,6 +36,8 @@ public class RemoteServerImporterMainPropertiesPanel extends ImporterMainPropert
       RemoteServerFolderDto parent = (RemoteServerFolderDto) form.getValue(parentKey);
       config.setParent(parent);
 
+      boolean removeKeys = (Boolean) form.getValue(removeKeyFieldsKey);
+      config.setRemoveKey(removeKeys);
    }
 
    @Override
@@ -55,6 +57,8 @@ public class RemoteServerImporterMainPropertiesPanel extends ImporterMainPropert
                   return treeProvider.get();
                }
             });
+      
+      removeKeyFieldsKey = form.addField(Boolean.class, RemoteServerMessages.INSTANCE.importRemoveKeyFieldLabel());
    }
 
    @Override

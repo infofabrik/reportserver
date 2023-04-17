@@ -169,7 +169,7 @@ public class ReportServiceImpl extends SecuredTreeDBManagerImpl<AbstractReportMa
 
    @QueryByAttribute(where = Report__.key)
    public Report doGetReportByKey(String key) {
-      return null; // by magic
+      return null; // by magic, must be public for AOP interception to work
    }
 
    @Override

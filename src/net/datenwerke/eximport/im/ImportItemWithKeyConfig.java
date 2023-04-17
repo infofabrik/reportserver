@@ -1,12 +1,12 @@
-package net.datenwerke.rs.base.ext.service.reportmanager.eximport;
+package net.datenwerke.eximport.im;
 
 import net.datenwerke.treedb.ext.service.eximport.TreeNodeImportItemConfig;
 
-public class ImportReportItemConfig extends TreeNodeImportItemConfig {
+public class ImportItemWithKeyConfig extends TreeNodeImportItemConfig {
 
    private boolean cleanKeys = false;
 
-   public ImportReportItemConfig(String id) {
+   public ImportItemWithKeyConfig(String id) {
       super(id);
    }
 

@@ -116,5 +116,7 @@ public interface DatasinksMessages extends Messages {
    String copyPrimaryKeys();
 
    String batchSize();
+   
+   String importRemoveKeyFieldLabel();
 
 }

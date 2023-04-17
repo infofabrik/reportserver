@@ -6,6 +6,7 @@ import java.util.Set;
 import com.google.inject.Inject;
 
 import net.datenwerke.eximport.exceptions.ImportException;
+import net.datenwerke.eximport.im.ImportItemWithKeyConfig;
 import net.datenwerke.eximport.obj.EnclosedItemProperty;
 import net.datenwerke.rs.core.service.parameters.entities.ParameterDefinition;
 import net.datenwerke.rs.core.service.parameters.entities.ParameterInstance;
@@ -59,10 +60,10 @@ public class ReportManagerImporter extends TreeNodeImporter {
          if (null != key) {
             Report reportByKey = reportService.getReportByKey(key);
             if (null != reportByKey) {
-               if (itemConfig instanceof ImportReportItemConfig && ((ImportReportItemConfig) itemConfig).isCleanKeys())
+               if (itemConfig instanceof ImportItemWithKeyConfig && ((ImportItemWithKeyConfig) itemConfig).isCleanKeys())
                   ((Report) node).setKey(null);
                else
-                  throw new IllegalStateException("A report with key " + key + " already exists");
+                  throw new IllegalStateException("A report with key '" + key + "' already exists");
             }
          }
       }

@@ -13,6 +13,7 @@ public abstract class Column_ {
 	public static volatile SingularAttribute<Column, Boolean> subtotalGroup;
 	public static volatile SingularAttribute<Column, NullHandling> nullHandling;
 	public static volatile SingularAttribute<Column, Boolean> hidden;
+	public static volatile SingularAttribute<Column, Boolean> exportNullAsString;
 	public static volatile SingularAttribute<Column, ColumnFormat> format;
 	public static volatile SingularAttribute<Column, AggregateFunction> aggregateFunction;
 	public static volatile SingularAttribute<Column, Integer> type;

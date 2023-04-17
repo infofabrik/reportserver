@@ -21,6 +21,7 @@ public class DatasourceImporterMainPropertiesPanel
 
    protected String parentKey;
    protected String defaultDatasource;
+   private String removeKeyFieldsKey;
 
    @Inject
    public DatasourceImporterMainPropertiesPanel(@DatasourceTreeFolders Provider<UITree> treeProvider) {
@@ -42,6 +43,9 @@ public class DatasourceImporterMainPropertiesPanel
       DatasourceContainerDto dsContainer = (DatasourceContainerDto) form.getValue(defaultDatasource);
       if (null != dsContainer)
          config.setDefaultDatasource(dsContainer.getDatasource());
+      
+      boolean removeKeys = (Boolean) form.getValue(removeKeyFieldsKey);
+      config.setRemoveKey(removeKeys);
    }
 
    @Override
@@ -65,6 +69,8 @@ public class DatasourceImporterMainPropertiesPanel
       defaultDatasource = form.addField(DatasourceContainerDto.class, DatasourcesMessages.INSTANCE.defaultDatasource(),
             new SFFCDatasourceSuppressConfig() {
             });
+      
+      removeKeyFieldsKey = form.addField(Boolean.class, DatasourcesMessages.INSTANCE.importRemoveKeyFieldLabel());
    }
 
    @Override

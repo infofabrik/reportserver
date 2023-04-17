@@ -77,7 +77,7 @@ public class RemoteServerTreeServiceImpl extends SecuredTreeDBManagerImpl<Abstra
    @QueryByAttribute(
          where = RemoteServerDefinition__.key
    )
-   private RemoteServerDefinition doGetRemoteServerByKey(String key) {
-      return null; // by magic
+   public RemoteServerDefinition doGetRemoteServerByKey(String key) {
+      return null; // by magic, must be public for AOP interception to work
    }
 }

@@ -9,5 +9,15 @@ public class DatasinkManagerImportConfigDto extends TreeImportConfigDto<Abstract
     * 
     */
    private static final long serialVersionUID = 1L;
+   
+   private boolean removeKey;
+
+   public boolean isRemoveKey() {
+      return removeKey;
+   }
+
+   public void setRemoveKey(boolean removekey) {
+      this.removeKey = removekey;
+   }
 
 }

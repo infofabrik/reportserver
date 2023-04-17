@@ -4,6 +4,7 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 
 import net.datenwerke.eximport.exceptions.IllegalImportConfigException;
+import net.datenwerke.eximport.im.ImportItemWithKeyConfig;
 import net.datenwerke.gxtdto.server.dtomanager.DtoService;
 import net.datenwerke.rs.base.ext.client.reportmanager.eximport.im.dto.ReportManagerImportConfigDto;
 import net.datenwerke.rs.core.client.reportmanager.dto.interfaces.ReportVariantDto;
@@ -40,7 +41,7 @@ public class HttpReportManagerImportConfigurationHooker
 
    @Override
    protected TreeNodeImportItemConfig initItemConfig(ImportTreeModel model) {
-      return new ImportReportItemConfig(model.getId());
+      return new ImportItemWithKeyConfig(model.getId());
    }
 
    @Override
@@ -49,7 +50,7 @@ public class HttpReportManagerImportConfigurationHooker
       ReportManagerImportConfigDto rmConfig = (ReportManagerImportConfigDto) treeConfig;
 
       if (rmConfig.isRemoveKey())
-         ((ImportReportItemConfig) realConfigNode).setCleanKeys(true);
+         ((ImportItemWithKeyConfig) realConfigNode).setCleanKeys(true);
 
       /* always ignore uuids */
       realConfigNode.addIgnoredField(UUID_FIELD);

@@ -10,6 +10,7 @@ public abstract class DatasinkDefinition_ extends net.datenwerke.rs.core.service
 
 	public static volatile SingularAttribute<DatasinkDefinition, String> name;
 	public static volatile SingularAttribute<DatasinkDefinition, String> description;
+	public static volatile SingularAttribute<DatasinkDefinition, String> key;
 
 }
 

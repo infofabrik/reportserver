@@ -12,6 +12,7 @@ public class DatasourceManagerImportConfigDto extends TreeImportConfigDto<Abstra
    private static final long serialVersionUID = 1879599255965355795L;
 
    private DatasourceDefinitionDto defaultDatasource;
+   private boolean removeKey;
 
    public void setDefaultDatasource(DatasourceDefinitionDto defaultDatasource) {
       this.defaultDatasource = defaultDatasource;
@@ -20,5 +21,14 @@ public class DatasourceManagerImportConfigDto extends TreeImportConfigDto<Abstra
    public DatasourceDefinitionDto getDefaultDatasource() {
       return defaultDatasource;
    }
+   
+   public boolean isRemoveKey() {
+      return removeKey;
+   }
+
+   public void setRemoveKey(boolean removekey) {
+      this.removeKey = removekey;
+   }
+
 
 }
