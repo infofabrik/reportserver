@@ -57,7 +57,7 @@ class RemoteReportImporterHooker implements RemoteEntityImporterHook {
       this.datasourceServiceProvider =  datasourceServiceProvider
       this.configServiceProvider = configServiceProvider
       
-      config = configServiceProvider.get().getConfigFailsafe(RemoteEntityImporterService.CONFIG_FILE)
+      config = configServiceProvider.get().getConfig(RemoteEntityImporterService.CONFIG_FILE)
    }
 
    @Override
