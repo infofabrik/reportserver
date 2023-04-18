@@ -4,6 +4,7 @@ import com.google.inject.Scopes;
 
 import net.datenwerke.rs.core.service.guice.AbstractReportServerModule;
 import net.datenwerke.rs.remotersserver.service.remotersserver.entities.RemoteRsServer;
+import net.datenwerke.rs.remoteserver.service.remoteservermanager.vfs.RemoteServerManagerVFSModule;
 
 public class RemoteServerModule extends AbstractReportServerModule {
 
@@ -13,6 +14,8 @@ public class RemoteServerModule extends AbstractReportServerModule {
 
    @Override
    protected void configure() {
+      install(new RemoteServerManagerVFSModule());
+      
       bind(RemoteServerTreeService.class).to(RemoteServerTreeServiceImpl.class).in(Scopes.SINGLETON);
       
       requestStaticInjection(RemoteRsServer.class);
