@@ -7,6 +7,7 @@ enum RemoteEntityImports {
    DATASINKS('datasinks'),
    FILESERVER('fileserver'),
    DASHBOARDLIB('dashboardlib'),
+   REMOTESERVERS('remoteservers')
 
    private String manager
 
