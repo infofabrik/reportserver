@@ -59,7 +59,8 @@ class RemoteEntityImporterServiceImpl implements RemoteEntityImporterService {
          return results
       def importType = results[EXPORT_TYPE_PROPERTY]
 
-      def remoteUrl = "$restUrl/node-exporter$remoteEntityPath${(includeVariants?';includeVariants=true':'')}?user=$user&apikey=$apikey"
+      def encodedRemoteEntityPath = remoteEntityPath.replaceAll(' ', '%20')
+      def remoteUrl = "$restUrl/node-exporter$encodedRemoteEntityPath${(includeVariants?';includeVariants=true':'')}?user=$user&apikey=$apikey"
       def httpConnection = new URL(remoteUrl).openConnection()
       if (httpConnection.responseCode != httpConnection.HTTP_OK) {
          handleError(check, "Connection response code: ${httpConnection.responseCode}", results, IllegalStateException)
