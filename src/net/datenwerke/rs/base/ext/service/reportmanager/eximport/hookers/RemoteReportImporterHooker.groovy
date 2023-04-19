@@ -76,9 +76,9 @@ class RemoteReportImporterHooker implements RemoteEntityImporterHook {
       return doImportRemoteEntity(config, targetNode, true, previousCheckResults)
    }
    
-   private Map<String, String> getDatasourceNameMappings() {
-      def nameMappings = config.configurationsAt('mappings.datasources.name-mappings.name-mapping')
-      return nameMappings
+   private Map<String, String> getDatasourceKeyMappings() {
+      def keyMappings = config.configurationsAt('mappings.datasources.key-mappings.key-mapping')
+      return keyMappings
          .collectEntries{[it.getString('remote'), it.getString('local')]}
    }
    
@@ -87,7 +87,7 @@ class RemoteReportImporterHooker implements RemoteEntityImporterHook {
             .collect { RemoteEntityImportPrio.values().find { val -> val.prio == it } } 
             ?: [
                RemoteEntityImportPrio.MAPPING,
-               RemoteEntityImportPrio.SAME_NAME
+               RemoteEntityImportPrio.SAME_KEY
             ]
    }
    
@@ -138,11 +138,16 @@ class RemoteReportImporterHooker implements RemoteEntityImporterHook {
       /* match datasources */
       analyzerService.getExportedItemsFor(config.exportDataProvider, DatasourceManagerExporter).each {
          def nameProp = it.getPropertyByName('name')
-         if(nameProp?.type == String){
-            def remoteName = StringEscapeUtils.unescapeXml(nameProp.element.value)
-            def ds = matchToLocalDatasource(remoteName)
+         def remoteName = StringEscapeUtils.unescapeXml(nameProp.element.value)
+         def keyProp = it.getPropertyByName('key')
+         if (!keyProp) 
+            handleError(check, "Datasource '$remoteName' has no key.", results, IllegalArgumentException)
+         if(keyProp?.type == String){
+            def remoteKey = StringEscapeUtils.unescapeXml(keyProp.element.value)
+            def ds = matchToLocalDatasource(remoteKey)
             if (!ds)
-               handleError(check, "Datasource '$remoteName' could not be mapped.", results, IllegalArgumentException)
+               handleError(check, "Datasource '$remoteName' with key '$remoteKey' could not be mapped to a local datasource.", 
+                  results, IllegalArgumentException)
             else {
                def dsConfig = new TreeNodeImportItemConfig(it.id, ImportMode.REFERENCE, ds)
                config.addItemConfig dsConfig
@@ -157,20 +162,20 @@ class RemoteReportImporterHooker implements RemoteEntityImporterHook {
          return importServiceProvider.get().importData(config)
    }
    
-   def matchToLocalDatasource(remoteDatasourceName) {
+   def matchToLocalDatasource(remoteDatasourceKey) {
       def datasourceService = datasourceServiceProvider.get()
-      def datasourceNameMappings = getDatasourceNameMappings()
+      def datasourceKeyMappings = getDatasourceKeyMappings()
       def datasourcePrios = getDatasourcePrios()
 
       def localDatasource = null
       datasourcePrios.find {
          switch (it) {
             case RemoteEntityImportPrio.MAPPING:
-               if (datasourceNameMappings.containsKey(remoteDatasourceName))
-                  localDatasource = datasourceService.getDatasourceByName(datasourceNameMappings[remoteDatasourceName])
+               if (datasourceKeyMappings.containsKey(remoteDatasourceKey))
+                  localDatasource = datasourceService.getDatasourceByKey(datasourceKeyMappings[remoteDatasourceKey])
                break
-            case RemoteEntityImportPrio.SAME_NAME:
-               localDatasource = datasourceService.getDatasourceByName(remoteDatasourceName)
+            case RemoteEntityImportPrio.SAME_KEY:
+               localDatasource = datasourceService.getDatasourceByKey(remoteDatasourceKey)
                break
          }
          if (localDatasource)

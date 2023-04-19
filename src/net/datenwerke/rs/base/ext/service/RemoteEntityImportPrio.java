@@ -1,7 +1,7 @@
 package net.datenwerke.rs.base.ext.service;
 
 public enum RemoteEntityImportPrio {
-   MAPPING("mapping"), SAME_NAME("same-name");
+   MAPPING("mapping"), SAME_KEY("same-key");
    
    private String prio;
    
