@@ -16,7 +16,6 @@ import net.datenwerke.eximport.ImportService
 import net.datenwerke.eximport.im.ImportConfig
 import net.datenwerke.eximport.im.ImportMode
 import net.datenwerke.eximport.im.ImportResult
-import net.datenwerke.eximport.obj.ReferenceItemProperty
 import net.datenwerke.rs.base.ext.service.RemoteEntityImportPrio
 import net.datenwerke.rs.base.ext.service.RemoteEntityImporterService
 import net.datenwerke.rs.base.ext.service.RemoteEntityImports
@@ -27,6 +26,7 @@ import net.datenwerke.rs.configservice.service.configservice.ConfigService
 import net.datenwerke.rs.core.service.datasourcemanager.DatasourceService
 import net.datenwerke.rs.core.service.reportmanager.ReportService
 import net.datenwerke.rs.core.service.reportmanager.entities.AbstractReportManagerNode
+import net.datenwerke.rs.core.service.reportmanager.entities.ReportFolder
 import net.datenwerke.treedb.ext.service.eximport.TreeNodeImportItemConfig
 import net.datenwerke.treedb.ext.service.eximport.TreeNodeImporterConfig
 import net.datenwerke.treedb.service.treedb.AbstractNode
@@ -103,14 +103,17 @@ class RemoteReportImporterHooker implements RemoteEntityImporterHook {
       def treeConfig = new TreeNodeImporterConfig()
       config.addSpecificImporterConfigs treeConfig
 
-      def exportRootId = analyzerService.getRootId(config.exportDataProvider, ReportManagerExporter)
-      if(!exportRootId) {
+      def exportRoot = analyzerService.getRoot(config.exportDataProvider, ReportManagerExporter)
+      if(!exportRoot) {
          handleError(check, 'Could not find root', results, IllegalStateException)
          if (check)
             return results
       }
+      def exportRootType = exportRoot.type
+      if (exportRootType != ReportFolder) // in case we only exported one item
+         exportRoot = targetNode
 
-      importService.configureParents config, exportRootId, targetNode, ReportManagerExporter
+      importService.configureParents config, exportRoot.id as String, targetNode, ReportManagerExporter
 
       /* one more loop to check that keys and uuids do not exist in local RS */
       def reportService = reportServiceProvider.get()
@@ -141,7 +144,7 @@ class RemoteReportImporterHooker implements RemoteEntityImporterHook {
          def remoteName = StringEscapeUtils.unescapeXml(nameProp.element.value)
          def keyProp = it.getPropertyByName('key')
          if (!keyProp) 
-            handleError(check, "Datasource '$remoteName' has no key.", results, IllegalArgumentException)
+            handleError(check, "Remote datasource '$remoteName' has no key.", results, IllegalArgumentException)
          if(keyProp?.type == String){
             def remoteKey = StringEscapeUtils.unescapeXml(keyProp.element.value)
             def ds = matchToLocalDatasource(remoteKey)

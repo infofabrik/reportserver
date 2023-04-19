@@ -180,8 +180,11 @@ public class ImportServiceImpl implements ImportService {
 
             config.addItemConfig(itemConfig);
          } else {
-            /* add reference entry */
-            config.addItemConfig(new TreeNodeImportItemConfig(item.getId(), ImportMode.REFERENCE, topMostParentTarget));
+            if (!topMostParentId.equals(item.getId())) {
+               TreeNodeImportItemConfig itemConfig = new TreeNodeImportItemConfig(item.getId(), ImportMode.CREATE);
+               itemConfig.setParent(topMostParentTarget);
+               config.addItemConfig(itemConfig);
+            }
          }
       });
    }

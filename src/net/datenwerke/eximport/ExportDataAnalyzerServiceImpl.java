@@ -374,12 +374,11 @@ public class ExportDataAnalyzerServiceImpl implements ExportDataAnalyzerService 
    }
 
    @Override
-   public String getRootId(ExportDataProvider dataProvider, Class<? extends Exporter> exporter) throws ClassNotFoundException {
+   public ExportedItem getRoot(ExportDataProvider dataProvider, Class<? extends Exporter> exporter) throws ClassNotFoundException {
       /* loop over items to find root */
       return getExportedItemsFor(dataProvider, exporter)
          .stream()
          .filter(item -> null == item.getPropertyByName("parent"))
-         .map(ExportedItem::getId)
          .findAny()
          .orElse(null);
    }

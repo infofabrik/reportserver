@@ -250,6 +250,6 @@ public interface ExportDataAnalyzerService {
    EnclosedItemProperty getEnclosedPropertyFor(ExportDataProvider dataProvider, String id)
          throws ClassNotFoundException;
 
-   String getRootId(ExportDataProvider dataProvider, Class<? extends Exporter> exporter) throws ClassNotFoundException;
+   ExportedItem getRoot(ExportDataProvider dataProvider, Class<? extends Exporter> exporter) throws ClassNotFoundException;
 
 }

@@ -16,6 +16,7 @@ import net.datenwerke.eximport.im.ImportResult
 import net.datenwerke.rs.base.ext.service.RemoteEntityImports
 import net.datenwerke.rs.base.ext.service.hooks.RemoteEntityImporterHook
 import net.datenwerke.rs.fileserver.service.fileserver.entities.AbstractFileServerNode
+import net.datenwerke.rs.fileserver.service.fileserver.entities.FileServerFolder
 import net.datenwerke.rs.fileserver.service.fileserver.eximport.FileServerExporter
 import net.datenwerke.treedb.ext.service.eximport.TreeNodeImporterConfig
 import net.datenwerke.treedb.service.treedb.AbstractNode
@@ -64,14 +65,17 @@ class RemoteFileImporterHooker implements RemoteEntityImporterHook {
       def treeConfig = new TreeNodeImporterConfig()
       config.addSpecificImporterConfigs treeConfig
 
-      def exportRootId = analyzerService.getRootId(config.exportDataProvider, FileServerExporter)
-      if(!exportRootId) {
+      def exportRoot = analyzerService.getRoot(config.exportDataProvider, FileServerExporter)
+      if(!exportRoot) {
          handleError(check, 'Could not find root', results, IllegalStateException)
          if (check)
             return results
       }
+      def exportRootType = exportRoot.type
+      if (exportRootType != FileServerFolder) // in case we only exported one item
+         exportRoot = targetNode
 
-      importService.configureParents config, exportRootId, targetNode, FileServerExporter
+      importService.configureParents config, exportRoot.id as String, targetNode, FileServerExporter
 
       /* complete import */
       if (check)

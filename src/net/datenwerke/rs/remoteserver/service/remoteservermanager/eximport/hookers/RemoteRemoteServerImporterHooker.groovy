@@ -16,6 +16,7 @@ import net.datenwerke.eximport.im.ImportResult
 import net.datenwerke.rs.base.ext.service.RemoteEntityImports
 import net.datenwerke.rs.base.ext.service.hooks.RemoteEntityImporterHook
 import net.datenwerke.rs.remoteserver.service.remoteservermanager.entities.AbstractRemoteServerManagerNode
+import net.datenwerke.rs.remoteserver.service.remoteservermanager.entities.RemoteServerFolder
 import net.datenwerke.rs.remoteserver.service.remoteservermanager.eximport.RemoteServerManagerExporter
 import net.datenwerke.treedb.ext.service.eximport.TreeNodeImporterConfig
 import net.datenwerke.treedb.service.treedb.AbstractNode
@@ -64,14 +65,17 @@ class RemoteRemoteServerImporterHooker implements RemoteEntityImporterHook {
       def treeConfig = new TreeNodeImporterConfig()
       config.addSpecificImporterConfigs treeConfig
 
-      def exportRootId = analyzerService.getRootId(config.exportDataProvider, RemoteServerManagerExporter)
-      if(!exportRootId) {
+      def exportRoot = analyzerService.getRoot(config.exportDataProvider, RemoteServerManagerExporter)
+      if(!exportRoot) {
          handleError(check, 'Could not find root', results, IllegalStateException)
          if (check)
             return results
       }
+      def exportRootType = exportRoot.type
+      if (exportRootType != RemoteServerFolder) // in case we only exported one item
+         exportRoot = targetNode
 
-      importService.configureParents config, exportRootId, targetNode, RemoteServerManagerExporter
+      importService.configureParents config, exportRoot.id as String, targetNode, RemoteServerManagerExporter
 
       /* complete import */
       if (check)
