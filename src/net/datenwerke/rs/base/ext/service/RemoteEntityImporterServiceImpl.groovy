@@ -123,12 +123,6 @@ class RemoteEntityImporterServiceImpl implements RemoteEntityImporterService {
             return results
       }
 
-      if (targetNode.children) {
-         handleError(check, "Node is not empty: '$localTarget'", results, IllegalArgumentException)
-         if (check)
-            return results
-      }
-
       return exportType
    }
 
