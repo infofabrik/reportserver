@@ -14,6 +14,7 @@ import net.datenwerke.eximport.im.ImportResult
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService
 import net.datenwerke.rs.annotations.CommitFlushMode
 import net.datenwerke.rs.base.ext.service.hooks.RemoteEntityImporterHook
+import net.datenwerke.rs.remotersserver.service.remotersserver.entities.RemoteRsServer
 import net.datenwerke.rs.terminal.service.terminal.TerminalService
 
 class RemoteEntityImporterServiceImpl implements RemoteEntityImporterService {
@@ -39,28 +40,30 @@ class RemoteEntityImporterServiceImpl implements RemoteEntityImporterService {
       }
    
    @Override
-   public ImportResult importRemoteEntities(String restUrl, String user, String apikey, String remoteEntityPath, String localTarget,
+   public ImportResult importRemoteEntities(RemoteRsServer remoteRsServer, String remoteEntityPath, String localTarget,
          boolean includeVariants) {
-      return doImportRemoteEntities(restUrl, user, apikey, remoteEntityPath, localTarget, includeVariants, false, [:])
+      return doImportRemoteEntities(remoteRsServer, remoteEntityPath, localTarget, includeVariants, false, [:])
    }
    
    @Override
-   public Map<String, Object> checkImportRemoteEntities(String restUrl, String user, String apikey,
-         String remoteEntityPath, String localTarget, boolean includeVariants, Map<String, Object> errors) {
-      return doImportRemoteEntities(restUrl, user, apikey, remoteEntityPath, localTarget, includeVariants, true, errors)
+   public Map<String, Object> checkImportRemoteEntities(RemoteRsServer remoteRsServer, String remoteEntityPath,
+         String localTarget, boolean includeVariants, Map<String, Object> errors) {
+      return doImportRemoteEntities(remoteRsServer, remoteEntityPath, localTarget, includeVariants, true, errors)
    }
    
-   private doImportRemoteEntities(String restUrl, String user, String apikey, String remoteEntityPath, String localTarget,
+   private doImportRemoteEntities(RemoteRsServer remoteRsServer, String remoteEntityPath, String localTarget,
          boolean includeVariants, check, Map<String,Object> results) {
       checkPreconditions localTarget, remoteEntityPath, results, check
-
+      
+      def restUrl = remoteRsServer.url
+      def user = remoteRsServer.username
       def status = results[STATUS]
       if (status == STATUS_FAIL)
          return results
       def importType = results[EXPORT_TYPE_PROPERTY]
 
       def encodedRemoteEntityPath = remoteEntityPath.replaceAll(' ', '%20')
-      def remoteUrl = "$restUrl/node-exporter$encodedRemoteEntityPath${(includeVariants?';includeVariants=true':'')}?user=$user&apikey=$apikey"
+      def remoteUrl = "$restUrl/node-exporter$encodedRemoteEntityPath${(includeVariants?';includeVariants=true':'')}?user=$user&apikey=${remoteRsServer.apikey}"
       def httpConnection = new URL(remoteUrl).openConnection()
       if (httpConnection.responseCode != httpConnection.HTTP_OK) {
          handleError(check, "Connection response code: ${httpConnection.responseCode}", results, IllegalStateException)

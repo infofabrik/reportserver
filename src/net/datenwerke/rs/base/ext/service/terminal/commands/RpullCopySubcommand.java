@@ -21,6 +21,7 @@ import net.datenwerke.rs.base.ext.service.RemoteEntityImporterService;
 import net.datenwerke.rs.base.ext.service.RemoteEntityImporterServiceImpl;
 import net.datenwerke.rs.base.ext.service.locale.RsBaseExtMessages;
 import net.datenwerke.rs.base.service.reportengines.table.output.object.RSTableModel;
+import net.datenwerke.rs.remotersserver.service.remotersserver.entities.RemoteRsServer;
 import net.datenwerke.rs.terminal.service.terminal.TerminalService;
 import net.datenwerke.rs.terminal.service.terminal.TerminalSession;
 import net.datenwerke.rs.terminal.service.terminal.exceptions.TerminalException;
@@ -31,6 +32,7 @@ import net.datenwerke.rs.terminal.service.terminal.helpmessenger.annotations.Cli
 import net.datenwerke.rs.terminal.service.terminal.helpmessenger.annotations.NonOptArgument;
 import net.datenwerke.rs.terminal.service.terminal.obj.CommandResult;
 import net.datenwerke.rs.utils.misc.DateUtils;
+import net.datenwerke.security.service.security.rights.Read;
 
 public class RpullCopySubcommand implements RpullSubCommandHook {
    
@@ -80,18 +82,8 @@ public class RpullCopySubcommand implements RpullSubCommandHook {
          },
          nonOptArgs = {
                @NonOptArgument(
-                     name = "restUrl", 
-                     description = "commandRpullCopy_restUrl",
-                     mandatory = true
-               ),
-               @NonOptArgument(
-                     name = "user", 
-                     description = "commandRpullCopy_user",
-                     mandatory = true
-               ),
-               @NonOptArgument(
-                     name = "apikey", 
-                     description = "commandRpullCopy_apikey",
+                     name = "remoteServer", 
+                     description = "commandRpullCopy_remoteServer",
                      mandatory = true
                ),
                @NonOptArgument(
@@ -109,18 +101,19 @@ public class RpullCopySubcommand implements RpullSubCommandHook {
    @Override 
    public CommandResult execute(CommandParser parser, TerminalSession session) throws TerminalException {
       List<String> arguments = parser.getNonOptionArguments();
-      if (5 != arguments.size())
-         throw new IllegalArgumentException("Exactly five arguments expected");
+      if (3 != arguments.size())
+         throw new IllegalArgumentException("Exactly three arguments expected");
       
       final String argStr = "cv";
       final boolean check = parser.hasOption("c", argStr);
       final boolean includeVariants = parser.hasOption("v", argStr);
-      
+      final RemoteRsServer remoteRsServer = terminalServiceProvider.get()
+            .getSingleObjectOfTypeByQuery(RemoteRsServer.class, arguments.get(0), session, Read.class);
+
       final Map<String, Object> errors = new LinkedHashMap<>();
       if (check) {
          try {
-            return checkEntities(arguments.get(0), arguments.get(1), arguments.get(2), arguments.get(3),
-                  arguments.get(4), includeVariants, errors);
+            return checkEntities(remoteRsServer, arguments.get(1), arguments.get(2), includeVariants, errors);
          } catch (Exception e) {
             RemoteEntityImporterServiceImpl.handleError(true, ExceptionUtils.getRootCauseMessage(e), errors,
                   ExceptionUtils.getRootCause(e).getClass());
@@ -129,28 +122,27 @@ public class RpullCopySubcommand implements RpullSubCommandHook {
          }
       } else {
          try {
-            return importEntities(arguments.get(0), arguments.get(1), arguments.get(2), arguments.get(3),
-                  arguments.get(4), includeVariants);
+            return importEntities(remoteRsServer, arguments.get(1), arguments.get(2), includeVariants);
          } catch (Exception e) {
             throw new TerminalException(ExceptionUtils.getRootCauseMessage(e), e);
          }
       }
    }
    
-   private CommandResult checkEntities(String restUrl, String user, String apikey, String remoteEntityPath,
+   private CommandResult checkEntities(RemoteRsServer remoteRsServer, String remoteEntityPath,
          String localTarget, boolean includeVariants, Map<String, Object> errors) {
-      Map<String, Object> results = remoteEntityImporterServiceProvider.get().checkImportRemoteEntities(restUrl, user,
-            apikey, remoteEntityPath, localTarget, includeVariants, errors);
+      Map<String, Object> results = remoteEntityImporterServiceProvider.get().checkImportRemoteEntities(remoteRsServer,
+            remoteEntityPath, localTarget, includeVariants, errors);
       return terminalServiceProvider.get().convertSimpleMapToCommandResult(Arrays.asList("Test results"), "No errors found", results);
    }
    
    @CommitFlushMode
    @Transactional(rollbackOn = { Exception.class })
-   protected CommandResult importEntities(String restUrl, String user, String apikey, String remoteEntityPath,
+   protected CommandResult importEntities(RemoteRsServer remoteRsServer, String remoteEntityPath,
          String localTarget, boolean includeVariants) {
       final TerminalService terminalService = terminalServiceProvider.get();
       Instant start = Instant.now();
-      ImportResult result = remoteEntityImporterServiceProvider.get().importRemoteEntities(restUrl, user, apikey,
+      ImportResult result = remoteEntityImporterServiceProvider.get().importRemoteEntities(remoteRsServer,
             remoteEntityPath, localTarget, includeVariants);
       Instant end = Instant.now();
       CommandResult commandResult = new CommandResult();

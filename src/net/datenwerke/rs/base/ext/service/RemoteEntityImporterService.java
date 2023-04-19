@@ -3,18 +3,17 @@ package net.datenwerke.rs.base.ext.service;
 import java.util.Map;
 
 import net.datenwerke.eximport.im.ImportResult;
+import net.datenwerke.rs.remotersserver.service.remotersserver.entities.RemoteRsServer;
 
 public interface RemoteEntityImporterService {
 
    public static final String CONFIG_FILE = "main/rssync.cf";
-   
+
    /**
     * Note that restUrl, user and apikey will be removed in the near future. These
     * will be replaced by remoteServer entities.
     * 
-    * @param restUrl         the REST URL to the export.
-    * @param user            the user
-    * @param apikey          the apikey
+    * @param remoteRsServer  the remote RS server.
     * @param entityPath      path to the remote entity to be imported, e.g.
     *                        "/usermanager/ClassicModelCars"
     * @param target          path to the local directory to import the entity, e.g.
@@ -23,16 +22,14 @@ public interface RemoteEntityImporterService {
     *                        included. If false, only the base reports are
     *                        imported.
     */
-   ImportResult importRemoteEntities(String restUrl, String user, String apikey, String remoteEntityPath,
-         String localTarget, boolean includeVariants);
+   ImportResult importRemoteEntities(RemoteRsServer remoteRsServer, String remoteEntityPath, String localTarget,
+         boolean includeVariants);
 
    /**
     * Note that restUrl, user and apikey will be removed in the near future. These
     * will be replaced by remoteServer entities.
     * 
-    * @param restUrl         the REST URL to the export.
-    * @param user            the user
-    * @param apikey          the apikey
+    * @param remoteRsServer  the remote RS server.
     * @param entityPath      path to the remote entity to be imported, e.g.
     *                        "/usermanager/ClassicModelCars"
     * @param target          path to the local directory to import the entity, e.g.
@@ -43,7 +40,7 @@ public interface RemoteEntityImporterService {
     * @param errors          list of errors. Can be edited in the method to add new
     *                        errors if found.
     */
-   Map<String, Object> checkImportRemoteEntities(String restUrl, String user, String apikey, String remoteEntityPath,
+   Map<String, Object> checkImportRemoteEntities(RemoteRsServer remoteRsServer, String remoteEntityPath,
          String localTarget, boolean includeVariants, Map<String, Object> errors);
 
 }
