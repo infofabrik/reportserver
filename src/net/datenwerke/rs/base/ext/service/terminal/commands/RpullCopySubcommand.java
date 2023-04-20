@@ -115,7 +115,8 @@ public class RpullCopySubcommand implements RpullSubCommandHook {
          try {
             return checkEntities(remoteRsServer, arguments.get(1), arguments.get(2), includeVariants, errors);
          } catch (Exception e) {
-            RemoteEntityImporterServiceImpl.handleError(true, ExceptionUtils.getRootCauseMessage(e), errors,
+            RemoteEntityImporterServiceImpl.handleError(true,
+                  ExceptionUtils.getRootCauseMessage(e) + " " + ExceptionUtils.getStackTrace(e), errors,
                   ExceptionUtils.getRootCause(e).getClass());
             return terminalServiceProvider.get().convertSimpleMapToCommandResult(Arrays.asList("Test results"),
                   "No errors found", errors);

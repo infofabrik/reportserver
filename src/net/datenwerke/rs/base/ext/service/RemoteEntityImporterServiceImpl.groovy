@@ -63,6 +63,10 @@ class RemoteEntityImporterServiceImpl implements RemoteEntityImporterService {
       def importType = results[EXPORT_TYPE_PROPERTY]
 
       def encodedRemoteEntityPath = remoteEntityPath.replaceAll(' ', '%20')
+      remoteEntityPath = remoteEntityPath.trim()
+      if (remoteEntityPath.endsWith('/'))
+         remoteEntityPath = remoteEntityPath[0..remoteEntityPath.size()-2]
+      def requestedRemoteEntity = remoteEntityPath[remoteEntityPath.lastIndexOf('/')+1..remoteEntityPath.size()-1]
       def remoteUrl = "$restUrl/node-exporter$encodedRemoteEntityPath${(includeVariants?';includeVariants=true':'')}?user=$user&apikey=${remoteRsServer.apikey}"
       def httpConnection = new URL(remoteUrl).openConnection()
       if (httpConnection.responseCode != httpConnection.HTTP_OK) {
@@ -96,9 +100,11 @@ class RemoteEntityImporterServiceImpl implements RemoteEntityImporterService {
 
       if (check) {
          results[RemoteEntityImporterServiceImpl.STATUS] = RemoteEntityImporterServiceImpl.STATUS_OK
-         return importers[0].checkImportRemoteEntity(config, terminalServiceProvider.get().getObjectByQuery(localTarget), results)
+         return importers[0].checkImportRemoteEntity(config, terminalServiceProvider.get().getObjectByQuery(localTarget), 
+            results, requestedRemoteEntity)
       } else
-         return importers[0].importRemoteEntity(config, terminalServiceProvider.get().getObjectByQuery(localTarget))
+         return importers[0].importRemoteEntity(config, terminalServiceProvider.get().getObjectByQuery(localTarget), 
+            requestedRemoteEntity)
    }
    
    private checkPreconditions(String localTarget, String remoteEntityPath, results, check) {

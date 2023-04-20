@@ -12,8 +12,8 @@ public interface RemoteEntityImporterHook extends Hook {
 
    boolean consumes(RemoteEntityImports importType);
 
-   ImportResult importRemoteEntity(ImportConfig config, AbstractNode localTarget);
+   ImportResult importRemoteEntity(ImportConfig config, AbstractNode localTarget, String requestedRemoteEntity);
 
    Map<String, String> checkImportRemoteEntity(ImportConfig config, AbstractNode localTarget,
-         Map<String, String> previousCheckResults);
+         Map<String, String> previousCheckResults, String requestedRemoteEntity);
 }

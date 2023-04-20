@@ -43,13 +43,13 @@ class RemoteDatasinkImporterHooker implements RemoteEntityImporterHook {
    }
    
    @Override
-   public ImportResult importRemoteEntity(ImportConfig config, AbstractNode targetNode) {
+   public ImportResult importRemoteEntity(ImportConfig config, AbstractNode targetNode, String requestedRemoteEntity) {
       return doImportRemoteEntity(config, targetNode, false, [:])
    }
 
    @Override
    public Map<String, String> checkImportRemoteEntity(ImportConfig config, AbstractNode targetNode,
-         Map<String, String> previousCheckResults) {
+         Map<String, String> previousCheckResults, String requestedRemoteEntity) {
       return doImportRemoteEntity(config, targetNode, true, previousCheckResults)
    }
 

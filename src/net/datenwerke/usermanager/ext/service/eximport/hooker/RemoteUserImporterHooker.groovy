@@ -49,17 +49,18 @@ class RemoteUserImporterHooker implements RemoteEntityImporterHook {
    }
    
    @Override
-   public ImportResult importRemoteEntity(ImportConfig config, AbstractNode targetNode) {
-      return doImportRemoteEntity(config, targetNode, false, [:])
+   public ImportResult importRemoteEntity(ImportConfig config, AbstractNode targetNode, String requestedRemoteEntity) {
+      return doImportRemoteEntity(config, targetNode, false, [:], requestedRemoteEntity)
    }
 
    @Override
    public Map<String, String> checkImportRemoteEntity(ImportConfig config, AbstractNode targetNode,
-         Map<String, String> previousCheckResults) {
-      return doImportRemoteEntity(config, targetNode, true, previousCheckResults)
+         Map<String, String> previousCheckResults, String requestedRemoteEntity) {
+      return doImportRemoteEntity(config, targetNode, true, previousCheckResults, requestedRemoteEntity)
    }
 
-   private doImportRemoteEntity(ImportConfig config, AbstractNode targetNode, boolean check, Map<String, String> results) {
+   private doImportRemoteEntity(ImportConfig config, AbstractNode targetNode, 
+         boolean check, Map<String, String> results, String requestedRemoteEntity) {
       if (!(targetNode instanceof OrganisationalUnit)) {
          handleError(check, "Node is not an organizational unit: '$targetNode'", results, IllegalArgumentException)
          if (check)
@@ -81,26 +82,38 @@ class RemoteUserImporterHooker implements RemoteEntityImporterHook {
          exportRoot = targetNode
 
       /* one more loop to configure user import */
-      analyzerService.getExportedItemsFor(config.exportDataProvider, UserManagerExporter).each {
-         def parentProp = it.getPropertyByName('parent')
-         def usernameProp = it.getPropertyByName('username')
-
-         if(usernameProp && userManagerServiceProvider.get().getUserByName(usernameProp.element.value)) {
-            handleError(check, "Username '${usernameProp.element.value}' already exists", results, IllegalArgumentException)
-         } else {
-            if(parentProp){
-               def itemConfig = new TreeNodeImportItemConfig(it.id)
-
-               /* set parent */
-               if(parentProp instanceof ReferenceItemProperty && exportRoot.id as String == parentProp.referenceId)
-                  itemConfig.parent = targetNode
-
-               config.addItemConfig itemConfig
+      analyzerService.getExportedItemsFor(config.exportDataProvider, UserManagerExporter)
+         .findAll { // filter out elements that should not have been exported, e.g. root
+            def parentProp = it.getPropertyByName('parent')
+            if (parentProp)
+               return true
+            def usernameProp = it.getPropertyByName('username')
+            if (!usernameProp) //OUs, Groups
+               return true
+            if (usernameProp.element.value != requestedRemoteEntity) 
+               return false
+               
+            return true
+         }.each {
+            def parentProp = it.getPropertyByName('parent')
+            def usernameProp = it.getPropertyByName('username')
+            
+            if(usernameProp && userManagerServiceProvider.get().getUserByName(usernameProp.element.value)) {
+               handleError(check, "Username '${usernameProp.element.value}' already exists", results, IllegalArgumentException)
             } else {
-               /* add reference entry */
-               config.addItemConfig(new TreeNodeImportItemConfig(it.id, ImportMode.REFERENCE, targetNode))
+               if(parentProp){
+                  def itemConfig = new TreeNodeImportItemConfig(it.id)
+   
+                  /* set parent */
+                  if(parentProp instanceof ReferenceItemProperty && exportRoot.id as String == parentProp.referenceId)
+                     itemConfig.parent = targetNode
+   
+                  config.addItemConfig itemConfig
+               } else {
+                  /* add reference entry */
+                  config.addItemConfig(new TreeNodeImportItemConfig(it.id, ImportMode.REFERENCE, targetNode))
+               }
             }
-         }
       }
 
       /* complete import */
