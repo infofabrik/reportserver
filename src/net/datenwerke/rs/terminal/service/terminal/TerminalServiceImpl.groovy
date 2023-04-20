@@ -129,7 +129,8 @@ public class TerminalServiceImpl implements TerminalService {
          Class<? extends Right>... rights) throws ObjectResolverException {
       List<Object> resolvedDatasource = session.objectResolver.getObjects(query, rights)
       if (1 != resolvedDatasource.size())
-         throw new IllegalArgumentException("Query must be resolved to exactly one object. Query: '$query'")
+         throw new IllegalArgumentException(
+            "Query must be resolved to exactly one object. Found: ${resolvedDatasource.size()} objects. Query: '$query'")
       Object asObject = resolvedDatasource.iterator().next()
       if (!(type.isInstance(asObject)))
          throw new IllegalArgumentException(

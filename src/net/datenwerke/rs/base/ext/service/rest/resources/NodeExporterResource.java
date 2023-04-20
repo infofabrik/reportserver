@@ -106,8 +106,9 @@ public class NodeExporterResource extends RsRestResource {
             .findAny();
 
          if (!exportConfig.isPresent()) {
-            logger.error("no exporter found");
-            return Response.status(Status.INTERNAL_SERVER_ERROR).build();
+            String err = "no exporter found";
+            logger.error(err);
+            return Response.status(Status.INTERNAL_SERVER_ERROR.getStatusCode(), err).build();
          }
          final String exportXML = exportServiceProvider.get().export(exportConfig.get());
          final ExportedNodeDto exportDto = new ExportedNodeDto();
@@ -122,7 +123,7 @@ public class NodeExporterResource extends RsRestResource {
          return Response.ok().entity(exportDto).build();
       } catch (Exception e) {
          logger.error(ExceptionUtils.getRootCauseMessage(e), e);
-         return Response.status(Status.INTERNAL_SERVER_ERROR).build();
+         return Response.status(Status.INTERNAL_SERVER_ERROR.getStatusCode(), ExceptionUtils.getRootCauseMessage(e)).build();
       }
    }
    
