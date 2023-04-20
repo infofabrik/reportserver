@@ -53,5 +53,8 @@ public interface ImportService {
 
    void configureParents(ImportConfig config, String topMostParentId, AbstractNode<?> topMostParentTarget,
          Class<? extends Exporter> exporter) throws ClassNotFoundException;
+   
+   void configureParents(ExportedItem item, ImportConfig config, String topMostParentId, AbstractNode<?> topMostParentTarget,
+         Class<? extends Exporter> exporter) throws ClassNotFoundException;
 
 }

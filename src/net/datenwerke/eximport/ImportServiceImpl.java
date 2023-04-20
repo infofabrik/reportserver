@@ -25,6 +25,7 @@ import net.datenwerke.eximport.obj.ItemProperty;
 import net.datenwerke.eximport.obj.ReferenceItemProperty;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.annotations.CommitFlushMode;
+import net.datenwerke.rs.utils.exception.shared.LambdaExceptionUtil;
 import net.datenwerke.treedb.ext.service.eximport.TreeNodeImportItemConfig;
 import net.datenwerke.treedb.service.treedb.AbstractNode;
 
@@ -168,24 +169,30 @@ public class ImportServiceImpl implements ImportService {
    public void configureParents(ImportConfig config, String topMostParentId, AbstractNode<?> topMostParentTarget,
          Class<? extends Exporter> exporter) throws ClassNotFoundException {
       /* configure file import's parents */
-      dataAnalizer.getExportedItemsFor(config.getExportDataProvider(), exporter).forEach(item -> {
-         ItemProperty parentProp = item.getPropertyByName("parent");
-         if (null != parentProp) {
-            TreeNodeImportItemConfig itemConfig = new TreeNodeImportItemConfig(item.getId());
-            /* set parent */
-            ReferenceItemProperty referenceParentProp = (ReferenceItemProperty) parentProp;
-            if (parentProp instanceof ReferenceItemProperty
-                  && topMostParentId.equals(referenceParentProp.getReferenceId()))
-               itemConfig.setParent(topMostParentTarget);
+      dataAnalizer.getExportedItemsFor(config.getExportDataProvider(), exporter).forEach(LambdaExceptionUtil.rethrowConsumer(item -> {
+         configureParents(item, config, topMostParentId, topMostParentTarget, exporter);
+      }));
+   }
 
+   @Override
+   public void configureParents(ExportedItem item, ImportConfig config, String topMostParentId,
+         AbstractNode<?> topMostParentTarget, Class<? extends Exporter> exporter) throws ClassNotFoundException {
+      ItemProperty parentProp = item.getPropertyByName("parent");
+      if (null != parentProp) {
+         TreeNodeImportItemConfig itemConfig = new TreeNodeImportItemConfig(item.getId());
+         /* set parent */
+         ReferenceItemProperty referenceParentProp = (ReferenceItemProperty) parentProp;
+         if (parentProp instanceof ReferenceItemProperty
+               && topMostParentId.equals(referenceParentProp.getReferenceId()))
+            itemConfig.setParent(topMostParentTarget);
+
+         config.addItemConfig(itemConfig);
+      } else {
+         if (!topMostParentId.equals(item.getId())) {
+            TreeNodeImportItemConfig itemConfig = new TreeNodeImportItemConfig(item.getId(), ImportMode.CREATE);
+            itemConfig.setParent(topMostParentTarget);
             config.addItemConfig(itemConfig);
-         } else {
-            if (!topMostParentId.equals(item.getId())) {
-               TreeNodeImportItemConfig itemConfig = new TreeNodeImportItemConfig(item.getId(), ImportMode.CREATE);
-               itemConfig.setParent(topMostParentTarget);
-               config.addItemConfig(itemConfig);
-            }
          }
-      });
+      }
    }
 }

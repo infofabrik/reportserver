@@ -12,14 +12,11 @@ import com.google.inject.Provider
 import net.datenwerke.eximport.ExportDataAnalyzerServiceImpl
 import net.datenwerke.eximport.ImportService
 import net.datenwerke.eximport.im.ImportConfig
-import net.datenwerke.eximport.im.ImportMode
 import net.datenwerke.eximport.im.ImportResult
-import net.datenwerke.eximport.obj.ReferenceItemProperty
 import net.datenwerke.rs.base.ext.service.RemoteEntityImports
 import net.datenwerke.rs.base.ext.service.hooks.RemoteEntityImporterHook
 import net.datenwerke.security.service.usermanager.UserManagerService
 import net.datenwerke.security.service.usermanager.entities.OrganisationalUnit
-import net.datenwerke.treedb.ext.service.eximport.TreeNodeImportItemConfig
 import net.datenwerke.treedb.ext.service.eximport.TreeNodeImporterConfig
 import net.datenwerke.treedb.service.treedb.AbstractNode
 import net.datenwerke.usermanager.ext.service.eximport.UserManagerExporter
@@ -98,22 +95,10 @@ class RemoteUserImporterHooker implements RemoteEntityImporterHook {
             def parentProp = it.getPropertyByName('parent')
             def usernameProp = it.getPropertyByName('username')
             
-            if(usernameProp && userManagerServiceProvider.get().getUserByName(usernameProp.element.value)) {
+            if(usernameProp && userManagerServiceProvider.get().getUserByName(usernameProp.element.value)) 
                handleError(check, "Username '${usernameProp.element.value}' already exists", results, IllegalArgumentException)
-            } else {
-               if(parentProp){
-                  def itemConfig = new TreeNodeImportItemConfig(it.id)
-   
-                  /* set parent */
-                  if(parentProp instanceof ReferenceItemProperty && exportRoot.id as String == parentProp.referenceId)
-                     itemConfig.parent = targetNode
-   
-                  config.addItemConfig itemConfig
-               } else {
-                  /* add reference entry */
-                  config.addItemConfig(new TreeNodeImportItemConfig(it.id, ImportMode.REFERENCE, targetNode))
-               }
-            }
+            else 
+               importServiceProvider.get().configureParents it, config, exportRoot.id as String, targetNode, UserManagerExporter
       }
 
       /* complete import */
