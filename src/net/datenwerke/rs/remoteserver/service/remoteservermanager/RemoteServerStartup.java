@@ -9,7 +9,6 @@ import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.adminutils.service.systemconsole.generalinfo.hooks.GeneralInfoCategoryProviderHook;
 import net.datenwerke.rs.base.ext.service.hooks.ExportConfigHook;
 import net.datenwerke.rs.base.ext.service.hooks.RemoteEntityImporterHook;
-import net.datenwerke.rs.remotersserver.service.remotersserver.entities.RemoteRsServer;
 import net.datenwerke.rs.remoteserver.service.remoteservermanager.entities.RemoteServerFolder;
 import net.datenwerke.rs.remoteserver.service.remoteservermanager.eximport.hookers.RemoteRemoteServerImporterHooker;
 import net.datenwerke.rs.remoteserver.service.remoteservermanager.eximport.hookers.RemoteServerExportConfigHooker;
@@ -51,8 +50,6 @@ public class RemoteServerStartup {
       hookHandler.attachHooker(ConfigDoneHook.class, () -> {
          /* secure folder */
          securityServiceProvider.get().registerSecurityTarget(RemoteServerFolder.class);
-         /* secure object */
-         securityServiceProvider.get().registerSecurityTarget(RemoteRsServer.class);
       });
    }
 }

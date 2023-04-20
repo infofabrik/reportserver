@@ -1,4 +1,4 @@
-package net.datenwerke.rs.remotersserver.client.remotersserver.ui;
+package net.datenwerke.rs.remotersrestserver.client.remotersrestserver.ui;
 
 import com.sencha.gxt.widget.core.client.menu.Menu;
 import com.sencha.gxt.widget.core.client.menu.MenuItem;
@@ -12,15 +12,15 @@ import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCPassw
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCStringValidatorRegex;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.impl.SFFCTextAreaImpl;
 import net.datenwerke.gxtdto.client.locale.BaseMessages;
-import net.datenwerke.rs.remotersserver.client.remotersserver.dto.RemoteRsServerDto;
-import net.datenwerke.rs.remotersserver.client.remotersserver.dto.pa.RemoteRsServerDtoPA;
+import net.datenwerke.rs.remotersrestserver.client.remotersrestserver.dto.RemoteRsRestServerDto;
+import net.datenwerke.rs.remotersrestserver.client.remotersrestserver.dto.pa.RemoteRsRestServerDtoPA;
 import net.datenwerke.rs.remoteserver.client.remoteservermanager.locale.RemoteServerMessages;
 
 /**
  * 
  *
  */
-public class RemoteRsServerForm extends SimpleFormView {
+public class RemoteRsRestServerForm extends SimpleFormView {
 
    public void configureSimpleForm(SimpleForm form) {
       /* configure form */
@@ -31,12 +31,12 @@ public class RemoteRsServerForm extends SimpleFormView {
       form.setFieldWidth(600);
       
       /* name */
-      form.addField(String.class, RemoteRsServerDtoPA.INSTANCE.name(), BaseMessages.INSTANCE.name());
+      form.addField(String.class, RemoteRsRestServerDtoPA.INSTANCE.name(), BaseMessages.INSTANCE.name());
       
       form.setFieldWidth(500);
       
       /* key */
-      form.addField(String.class, RemoteRsServerDtoPA.INSTANCE.key(), BaseMessages.INSTANCE.key(),
+      form.addField(String.class, RemoteRsRestServerDtoPA.INSTANCE.key(), BaseMessages.INSTANCE.key(),
             new SFFCStringValidatorRegex(KeyValidator.KEY_REGEX, BaseMessages.INSTANCE.invalidKey()));
 
       form.endRow();
@@ -44,26 +44,26 @@ public class RemoteRsServerForm extends SimpleFormView {
       form.setFieldWidth(1);
       
       /* description */
-      form.addField(String.class, RemoteRsServerDtoPA.INSTANCE.description(), BaseMessages.INSTANCE.description(),
+      form.addField(String.class, RemoteRsRestServerDtoPA.INSTANCE.description(), BaseMessages.INSTANCE.description(),
             new SFFCTextAreaImpl());
 
       /* REST URL */
-      form.addField(String.class, RemoteRsServerDtoPA.INSTANCE.url(), BaseMessages.INSTANCE.restUrl());
+      form.addField(String.class, RemoteRsRestServerDtoPA.INSTANCE.url(), BaseMessages.INSTANCE.restUrl());
 
       form.setFieldWidth(250);
       form.beginFloatRow();
       
       /* username */
-      form.addField(String.class, RemoteRsServerDtoPA.INSTANCE.username(), BaseMessages.INSTANCE.username());
+      form.addField(String.class, RemoteRsRestServerDtoPA.INSTANCE.username(), BaseMessages.INSTANCE.username());
       
       form.setFieldWidth(850);
       
       /* api key */
-      String apikey = form.addField(String.class, RemoteRsServerDtoPA.INSTANCE.apikey(), 
+      String apikey = form.addField(String.class, RemoteRsRestServerDtoPA.INSTANCE.apikey(), 
          BaseMessages.INSTANCE.apiKey(), new SFFCPasswordField() {
             @Override
             public Boolean isPasswordSet() {
-               return ((RemoteRsServerDto) getSelectedNode()).isHasApikey();
+               return ((RemoteRsRestServerDto) getSelectedNode()).isHasApikey();
             }
       }); // $NON-NLS-1$
       form.endRow();
@@ -71,7 +71,7 @@ public class RemoteRsServerForm extends SimpleFormView {
       Menu clearPwMenu = new DwMenu();
       MenuItem clearApikeyItem = new DwMenuItem(BaseMessages.INSTANCE.clearApikey());
       clearPwMenu.add(clearApikeyItem);
-      clearApikeyItem.addSelectionHandler(event -> ((RemoteRsServerDto) getSelectedNode()).setApikey(null));
+      clearApikeyItem.addSelectionHandler(event -> ((RemoteRsRestServerDto) getSelectedNode()).setApikey(null));
       form.addFieldMenu(apikey, clearPwMenu);
       
    }

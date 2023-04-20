@@ -15,7 +15,6 @@ import net.datenwerke.gf.base.service.annotations.Indexed;
 import net.datenwerke.gxtdto.client.dtomanager.DtoView;
 import net.datenwerke.gxtdto.client.dtomanager.FolderDto;
 import net.datenwerke.gxtdto.client.locale.BaseMessages;
-import net.datenwerke.rs.remotersserver.service.remotersserver.entities.RemoteRsServer;
 import net.datenwerke.rs.remoteserver.service.remoteservermanager.locale.RemoteServerManagerMessages;
 import net.datenwerke.rs.utils.instancedescription.annotations.Description;
 import net.datenwerke.rs.utils.instancedescription.annotations.InstanceDescription;
@@ -31,7 +30,7 @@ import net.datenwerke.treedb.service.treedb.annotation.TreeDBAllowedChildren;
 @Table(name = "REMOTE_SERVER_FOLDER")
 @Audited
 @Indexed
-@TreeDBAllowedChildren({ RemoteServerFolder.class, RemoteRsServer.class })
+@TreeDBAllowedChildren({ RemoteServerFolder.class, RemoteServerDefinition.class })
 @GenerateDto(
       dtoPackage = "net.datenwerke.rs.remoteserver.client.remoteservermanager.dto", 
       dtoImplementInterfaces = FolderDto.class, 

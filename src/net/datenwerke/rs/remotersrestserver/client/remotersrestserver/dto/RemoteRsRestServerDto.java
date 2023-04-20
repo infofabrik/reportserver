@@ -1,4 +1,4 @@
-package net.datenwerke.rs.remotersserver.client.remotersserver.dto;
+package net.datenwerke.rs.remotersrestserver.client.remotersrestserver.dto;
 
 import com.google.gwt.core.client.GWT;
 import java.lang.Boolean;
@@ -13,19 +13,19 @@ import net.datenwerke.gxtdto.client.dtomanager.DtoView;
 import net.datenwerke.gxtdto.client.dtomanager.PropertyAccessor;
 import net.datenwerke.gxtdto.client.dtomanager.redoundo.ChangeTracker;
 import net.datenwerke.gxtdto.client.locale.BaseMessages;
-import net.datenwerke.rs.remotersserver.client.remotersserver.dto.pa.RemoteRsServerDtoPA;
-import net.datenwerke.rs.remotersserver.client.remotersserver.dto.posomap.RemoteRsServerDto2PosoMap;
-import net.datenwerke.rs.remotersserver.service.remotersserver.entities.RemoteRsServer;
+import net.datenwerke.rs.remotersrestserver.client.remotersrestserver.dto.pa.RemoteRsRestServerDtoPA;
+import net.datenwerke.rs.remotersrestserver.client.remotersrestserver.dto.posomap.RemoteRsRestServerDto2PosoMap;
+import net.datenwerke.rs.remotersrestserver.service.remotersrestserver.entities.RemoteRsRestServer;
 import net.datenwerke.rs.remoteserver.client.remoteservermanager.dto.RemoteServerDefinitionDto;
 import net.datenwerke.rs.theme.client.icon.BaseIcon;
 
 /**
- * Dto for {@link RemoteRsServer}
+ * Dto for {@link RemoteRsRestServer}
  *
  * This file was automatically created by DtoAnnotationProcessor, version 0.1
  */
 @GeneratedType("net.datenwerke.dtoservices.dtogenerator.DtoAnnotationProcessor")
-public class RemoteRsServerDto extends RemoteServerDefinitionDto {
+public class RemoteRsRestServerDto extends RemoteServerDefinitionDto {
 
 
 	private static final long serialVersionUID = 1;
@@ -34,16 +34,16 @@ public class RemoteRsServerDto extends RemoteServerDefinitionDto {
 	/* Fields */
 	private String apikey;
 	private  boolean apikey_m;
-	public static final String PROPERTY_APIKEY = "dpi-remotersserver-apikey";
+	public static final String PROPERTY_APIKEY = "dpi-remotersrestserver-apikey";
 
-	private transient static PropertyAccessor<RemoteRsServerDto, String> apikey_pa = new PropertyAccessor<RemoteRsServerDto, String>() {
+	private transient static PropertyAccessor<RemoteRsRestServerDto, String> apikey_pa = new PropertyAccessor<RemoteRsRestServerDto, String>() {
 		@Override
-		public void setValue(RemoteRsServerDto container, String object) {
+		public void setValue(RemoteRsRestServerDto container, String object) {
 			container.setApikey(object);
 		}
 
 		@Override
-		public String getValue(RemoteRsServerDto container) {
+		public String getValue(RemoteRsRestServerDto container) {
 			return container.getApikey();
 		}
 
@@ -58,28 +58,28 @@ public class RemoteRsServerDto extends RemoteServerDefinitionDto {
 		}
 
 		@Override
-		public void setModified(RemoteRsServerDto container, boolean modified) {
+		public void setModified(RemoteRsRestServerDto container, boolean modified) {
 			container.apikey_m = modified;
 		}
 
 		@Override
-		public boolean isModified(RemoteRsServerDto container) {
+		public boolean isModified(RemoteRsRestServerDto container) {
 			return container.isApikeyModified();
 		}
 	};
 
 	private String url;
 	private  boolean url_m;
-	public static final String PROPERTY_URL = "dpi-remotersserver-url";
+	public static final String PROPERTY_URL = "dpi-remotersrestserver-url";
 
-	private transient static PropertyAccessor<RemoteRsServerDto, String> url_pa = new PropertyAccessor<RemoteRsServerDto, String>() {
+	private transient static PropertyAccessor<RemoteRsRestServerDto, String> url_pa = new PropertyAccessor<RemoteRsRestServerDto, String>() {
 		@Override
-		public void setValue(RemoteRsServerDto container, String object) {
+		public void setValue(RemoteRsRestServerDto container, String object) {
 			container.setUrl(object);
 		}
 
 		@Override
-		public String getValue(RemoteRsServerDto container) {
+		public String getValue(RemoteRsRestServerDto container) {
 			return container.getUrl();
 		}
 
@@ -94,28 +94,28 @@ public class RemoteRsServerDto extends RemoteServerDefinitionDto {
 		}
 
 		@Override
-		public void setModified(RemoteRsServerDto container, boolean modified) {
+		public void setModified(RemoteRsRestServerDto container, boolean modified) {
 			container.url_m = modified;
 		}
 
 		@Override
-		public boolean isModified(RemoteRsServerDto container) {
+		public boolean isModified(RemoteRsRestServerDto container) {
 			return container.isUrlModified();
 		}
 	};
 
 	private String username;
 	private  boolean username_m;
-	public static final String PROPERTY_USERNAME = "dpi-remotersserver-username";
+	public static final String PROPERTY_USERNAME = "dpi-remotersrestserver-username";
 
-	private transient static PropertyAccessor<RemoteRsServerDto, String> username_pa = new PropertyAccessor<RemoteRsServerDto, String>() {
+	private transient static PropertyAccessor<RemoteRsRestServerDto, String> username_pa = new PropertyAccessor<RemoteRsRestServerDto, String>() {
 		@Override
-		public void setValue(RemoteRsServerDto container, String object) {
+		public void setValue(RemoteRsRestServerDto container, String object) {
 			container.setUsername(object);
 		}
 
 		@Override
-		public String getValue(RemoteRsServerDto container) {
+		public String getValue(RemoteRsRestServerDto container) {
 			return container.getUsername();
 		}
 
@@ -130,28 +130,28 @@ public class RemoteRsServerDto extends RemoteServerDefinitionDto {
 		}
 
 		@Override
-		public void setModified(RemoteRsServerDto container, boolean modified) {
+		public void setModified(RemoteRsRestServerDto container, boolean modified) {
 			container.username_m = modified;
 		}
 
 		@Override
-		public boolean isModified(RemoteRsServerDto container) {
+		public boolean isModified(RemoteRsRestServerDto container) {
 			return container.isUsernameModified();
 		}
 	};
 
 	private Boolean hasApikey;
 	private  boolean hasApikey_m;
-	public static final String PROPERTY_HAS_APIKEY = "dpi-remotersserver-hasapikey";
+	public static final String PROPERTY_HAS_APIKEY = "dpi-remotersrestserver-hasapikey";
 
-	private transient static PropertyAccessor<RemoteRsServerDto, Boolean> hasApikey_pa = new PropertyAccessor<RemoteRsServerDto, Boolean>() {
+	private transient static PropertyAccessor<RemoteRsRestServerDto, Boolean> hasApikey_pa = new PropertyAccessor<RemoteRsRestServerDto, Boolean>() {
 		@Override
-		public void setValue(RemoteRsServerDto container, Boolean object) {
+		public void setValue(RemoteRsRestServerDto container, Boolean object) {
 			container.setHasApikey(object);
 		}
 
 		@Override
-		public Boolean getValue(RemoteRsServerDto container) {
+		public Boolean getValue(RemoteRsRestServerDto container) {
 			return container.isHasApikey();
 		}
 
@@ -166,18 +166,18 @@ public class RemoteRsServerDto extends RemoteServerDefinitionDto {
 		}
 
 		@Override
-		public void setModified(RemoteRsServerDto container, boolean modified) {
+		public void setModified(RemoteRsRestServerDto container, boolean modified) {
 			container.hasApikey_m = modified;
 		}
 
 		@Override
-		public boolean isModified(RemoteRsServerDto container) {
+		public boolean isModified(RemoteRsRestServerDto container) {
 			return container.isHasApikeyModified();
 		}
 	};
 
 
-	public RemoteRsServerDto() {
+	public RemoteRsRestServerDto() {
 		super();
 	}
 
@@ -216,7 +216,7 @@ public class RemoteRsServerDto extends RemoteServerDefinitionDto {
 		/* set indicator */
 		this.apikey_m = true;
 
-		this.fireObjectChangedEvent(RemoteRsServerDtoPA.INSTANCE.apikey(), oldValue);
+		this.fireObjectChangedEvent(RemoteRsRestServerDtoPA.INSTANCE.apikey(), oldValue);
 	}
 
 
@@ -225,7 +225,7 @@ public class RemoteRsServerDto extends RemoteServerDefinitionDto {
 	}
 
 
-	public static PropertyAccessor<RemoteRsServerDto, String> getApikeyPropertyAccessor()  {
+	public static PropertyAccessor<RemoteRsRestServerDto, String> getApikeyPropertyAccessor()  {
 		return apikey_pa;
 	}
 
@@ -265,7 +265,7 @@ public class RemoteRsServerDto extends RemoteServerDefinitionDto {
 		/* set indicator */
 		this.url_m = true;
 
-		this.fireObjectChangedEvent(RemoteRsServerDtoPA.INSTANCE.url(), oldValue);
+		this.fireObjectChangedEvent(RemoteRsRestServerDtoPA.INSTANCE.url(), oldValue);
 	}
 
 
@@ -274,7 +274,7 @@ public class RemoteRsServerDto extends RemoteServerDefinitionDto {
 	}
 
 
-	public static PropertyAccessor<RemoteRsServerDto, String> getUrlPropertyAccessor()  {
+	public static PropertyAccessor<RemoteRsRestServerDto, String> getUrlPropertyAccessor()  {
 		return url_pa;
 	}
 
@@ -314,7 +314,7 @@ public class RemoteRsServerDto extends RemoteServerDefinitionDto {
 		/* set indicator */
 		this.username_m = true;
 
-		this.fireObjectChangedEvent(RemoteRsServerDtoPA.INSTANCE.username(), oldValue);
+		this.fireObjectChangedEvent(RemoteRsRestServerDtoPA.INSTANCE.username(), oldValue);
 	}
 
 
@@ -323,7 +323,7 @@ public class RemoteRsServerDto extends RemoteServerDefinitionDto {
 	}
 
 
-	public static PropertyAccessor<RemoteRsServerDto, String> getUsernamePropertyAccessor()  {
+	public static PropertyAccessor<RemoteRsRestServerDto, String> getUsernamePropertyAccessor()  {
 		return username_pa;
 	}
 
@@ -363,7 +363,7 @@ public class RemoteRsServerDto extends RemoteServerDefinitionDto {
 		/* set indicator */
 		this.hasApikey_m = true;
 
-		this.fireObjectChangedEvent(RemoteRsServerDtoPA.INSTANCE.hasApikey(), oldValue);
+		this.fireObjectChangedEvent(RemoteRsRestServerDtoPA.INSTANCE.hasApikey(), oldValue);
 	}
 
 
@@ -372,7 +372,7 @@ public class RemoteRsServerDto extends RemoteServerDefinitionDto {
 	}
 
 
-	public static PropertyAccessor<RemoteRsServerDto, Boolean> getHasApikeyPropertyAccessor()  {
+	public static PropertyAccessor<RemoteRsRestServerDto, Boolean> getHasApikeyPropertyAccessor()  {
 		return hasApikey_pa;
 	}
 
@@ -402,12 +402,12 @@ public class RemoteRsServerDto extends RemoteServerDefinitionDto {
 
 	@Override
 	public boolean equals(Object obj)  {
-		if(! (obj instanceof RemoteRsServerDto))
+		if(! (obj instanceof RemoteRsRestServerDto))
 			return false;
 
 		if(null == getId())
 			return super.equals(obj);
-		return getId().equals(((RemoteRsServerDto)obj).getId());
+		return getId().equals(((RemoteRsRestServerDto)obj).getId());
 	}
 
 	@Override
@@ -416,11 +416,11 @@ public class RemoteRsServerDto extends RemoteServerDefinitionDto {
 	}
 
 	public static Dto2PosoMapper newPosoMapper()  {
-		return new RemoteRsServerDto2PosoMap();
+		return new RemoteRsRestServerDto2PosoMap();
 	}
 
-	public RemoteRsServerDtoPA instantiatePropertyAccess()  {
-		return GWT.create(RemoteRsServerDtoPA.class);
+	public RemoteRsRestServerDtoPA instantiatePropertyAccess()  {
+		return GWT.create(RemoteRsRestServerDtoPA.class);
 	}
 
 	public void clearModified()  {

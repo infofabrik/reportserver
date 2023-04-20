@@ -5,7 +5,7 @@ import java.util.List;
 import com.google.inject.Inject;
 
 import net.datenwerke.gxtdto.client.dtomanager.callback.RsAsyncCallback;
-import net.datenwerke.rs.remotersserver.client.remotersserver.dto.RemoteRsServerDto;
+import net.datenwerke.rs.remotersrestserver.client.remotersrestserver.dto.RemoteRsRestServerDto;
 import net.datenwerke.rs.remoteserver.client.remoteservermanager.eximport.im.RemoteServerManagerImportDao;
 import net.datenwerke.rs.remoteserver.client.remoteservermanager.eximport.im.dto.RemoteServerManagerImportConfigDto;
 import net.datenwerke.rs.theme.client.icon.BaseIcon;
@@ -39,7 +39,7 @@ public class RemoteServerImporterItemsPanel extends ImporterItemsPanel<RemoteSer
    protected void configureTree() {
       super.configureTree();
       tree.setIconProvider(model -> {
-         if (RemoteRsServerDto.class.getName().equals(model.getType()))
+         if (RemoteRsRestServerDto.class.getName().equals(model.getType()))
             return BaseIcon.LAPTOP.toImageResource();
          return BaseIcon.FOLDER_O.toImageResource();
       });

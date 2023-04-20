@@ -15,9 +15,7 @@ import net.datenwerke.gf.client.treedb.UITree;
 import net.datenwerke.gxtdto.client.objectinformation.hooks.ObjectInfoKeyInfoProvider;
 import net.datenwerke.gxtdto.client.waitonevent.WaitOnEventUIService;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
-import net.datenwerke.rs.remotersserver.client.remotersserver.hookers.RemoteServerConfigProviderHooker;
 import net.datenwerke.rs.remoteserver.client.remoteservermanager.hookers.MainPanelViewProviderHooker;
-import net.datenwerke.rs.remoteserver.client.remoteservermanager.hooks.RemoteServerDefinitionConfigProviderHook;
 import net.datenwerke.rs.remoteserver.client.remoteservermanager.objectinfo.RemoteServerFolderObjectInfo;
 import net.datenwerke.rs.remoteserver.client.remoteservermanager.objectinfo.RemoteServerObjectInfo;
 import net.datenwerke.rs.remoteserver.client.remoteservermanager.provider.annotations.RemoteServerManagerAdminViewTree;
@@ -33,24 +31,24 @@ import net.datenwerke.security.client.security.hooks.GenericTargetProviderHook;
 public class RemoteServerUIStartup {
 
    @Inject
-   public RemoteServerUIStartup(final HookHandlerService hookHandler,
+   public RemoteServerUIStartup(
+         final HookHandlerService hookHandler,
          final WaitOnEventUIService waitOnEventService,
-         RemoteServerManagerViewSecurityTargetDomainHooker securityTargetDomain,
-         MainPanelViewProviderHooker mainPanelViewProvider, 
+         final RemoteServerManagerViewSecurityTargetDomainHooker securityTargetDomain,
+         final MainPanelViewProviderHooker mainPanelViewProvider, 
          final Provider<RemoteServerAdminModule> adminModuleProvider,
-         final Provider<RemoteServerConfigProviderHooker> remoteServerConfigProviderHooker,
          final SecurityUIService securityService,
          final RemoteServerManagerTreeConfigurationHooker treeConfigurator,
          final RemoteServerObjectInfo remoteServerObjectInfo,
          final RemoteServerFolderObjectInfo remoteServerFolderObjectInfo,
-         HistoryUiService historyService, 
-         @RemoteServerManagerAdminViewTree Provider<UITree> remoteserverManagerTree,
-         EventBus eventBus, Provider<RemoteServerManagerPanel> remoteserverManagerAdminPanel) {
+         final HistoryUiService historyService, 
+         final @RemoteServerManagerAdminViewTree Provider<UITree> remoteserverManagerTree,
+         final EventBus eventBus, 
+         final Provider<RemoteServerManagerPanel> remoteserverManagerAdminPanel
+         ) {
 
       /* config tree */
       hookHandler.attachHooker(TreeConfiguratorHook.class, treeConfigurator);
-      hookHandler.attachHooker(RemoteServerDefinitionConfigProviderHook.class, remoteServerConfigProviderHooker.get());
-
       
       /* attach security target domains */
       hookHandler.attachHooker(GenericTargetProviderHook.class,

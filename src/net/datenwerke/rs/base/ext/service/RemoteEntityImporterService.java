@@ -3,7 +3,7 @@ package net.datenwerke.rs.base.ext.service;
 import java.util.Map;
 
 import net.datenwerke.eximport.im.ImportResult;
-import net.datenwerke.rs.remotersserver.service.remotersserver.entities.RemoteRsServer;
+import net.datenwerke.rs.remotersrestserver.service.remotersrestserver.entities.RemoteRsRestServer;
 
 public interface RemoteEntityImporterService {
 
@@ -22,7 +22,7 @@ public interface RemoteEntityImporterService {
     *                        included. If false, only the base reports are
     *                        imported.
     */
-   ImportResult importRemoteEntities(RemoteRsServer remoteRsServer, String remoteEntityPath, String localTarget,
+   ImportResult importRemoteEntities(RemoteRsRestServer remoteRsServer, String remoteEntityPath, String localTarget,
          boolean includeVariants);
 
    /**
@@ -40,7 +40,7 @@ public interface RemoteEntityImporterService {
     * @param errors          list of errors. Can be edited in the method to add new
     *                        errors if found.
     */
-   Map<String, Object> checkImportRemoteEntities(RemoteRsServer remoteRsServer, String remoteEntityPath,
+   Map<String, Object> checkImportRemoteEntities(RemoteRsRestServer remoteRsServer, String remoteEntityPath,
          String localTarget, boolean includeVariants, Map<String, Object> errors);
 
 }

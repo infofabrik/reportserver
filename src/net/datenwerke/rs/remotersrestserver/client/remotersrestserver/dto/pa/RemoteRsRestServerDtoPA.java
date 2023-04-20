@@ -1,4 +1,4 @@
-package net.datenwerke.rs.remotersserver.client.remotersserver.dto.pa;
+package net.datenwerke.rs.remotersrestserver.client.remotersrestserver.dto.pa;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.editor.client.Editor.Path;
@@ -9,25 +9,25 @@ import java.lang.Boolean;
 import java.lang.String;
 import net.datenwerke.dtoservices.dtogenerator.annotations.CorrespondingPoso;
 import net.datenwerke.dtoservices.dtogenerator.annotations.GeneratedType;
-import net.datenwerke.rs.remotersserver.client.remotersserver.dto.RemoteRsServerDto;
+import net.datenwerke.rs.remotersrestserver.client.remotersrestserver.dto.RemoteRsRestServerDto;
 import net.datenwerke.rs.remoteserver.client.remoteservermanager.dto.pa.RemoteServerDefinitionDtoPA;
 
 /**
  * This file was automatically created by DtoAnnotationProcessor, version 0.1
  */
 @GeneratedType("net.datenwerke.dtoservices.dtogenerator.DtoAnnotationProcessor")
-@CorrespondingPoso(net.datenwerke.rs.remotersserver.service.remotersserver.entities.RemoteRsServer.class)
-public interface RemoteRsServerDtoPA extends RemoteServerDefinitionDtoPA {
+@CorrespondingPoso(net.datenwerke.rs.remotersrestserver.service.remotersrestserver.entities.RemoteRsRestServer.class)
+public interface RemoteRsRestServerDtoPA extends RemoteServerDefinitionDtoPA {
 
 
-	public static final RemoteRsServerDtoPA INSTANCE = GWT.create(RemoteRsServerDtoPA.class);
+	public static final RemoteRsRestServerDtoPA INSTANCE = GWT.create(RemoteRsRestServerDtoPA.class);
 
 
 	/* Properties */
-	public ValueProvider<RemoteRsServerDto,String> apikey();
-	public ValueProvider<RemoteRsServerDto,String> url();
-	public ValueProvider<RemoteRsServerDto,String> username();
-	public ValueProvider<RemoteRsServerDto,Boolean> hasApikey();
+	public ValueProvider<RemoteRsRestServerDto,String> apikey();
+	public ValueProvider<RemoteRsRestServerDto,String> url();
+	public ValueProvider<RemoteRsRestServerDto,String> username();
+	public ValueProvider<RemoteRsRestServerDto,Boolean> hasApikey();
 
 
 }

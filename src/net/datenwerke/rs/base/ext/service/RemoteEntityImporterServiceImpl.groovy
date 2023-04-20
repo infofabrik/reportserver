@@ -14,7 +14,7 @@ import net.datenwerke.eximport.im.ImportResult
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService
 import net.datenwerke.rs.annotations.CommitFlushMode
 import net.datenwerke.rs.base.ext.service.hooks.RemoteEntityImporterHook
-import net.datenwerke.rs.remotersserver.service.remotersserver.entities.RemoteRsServer
+import net.datenwerke.rs.remotersrestserver.service.remotersrestserver.entities.RemoteRsRestServer
 import net.datenwerke.rs.terminal.service.terminal.TerminalService
 
 class RemoteEntityImporterServiceImpl implements RemoteEntityImporterService {
@@ -40,18 +40,18 @@ class RemoteEntityImporterServiceImpl implements RemoteEntityImporterService {
       }
    
    @Override
-   public ImportResult importRemoteEntities(RemoteRsServer remoteRsServer, String remoteEntityPath, String localTarget,
+   public ImportResult importRemoteEntities(RemoteRsRestServer remoteRsServer, String remoteEntityPath, String localTarget,
          boolean includeVariants) {
       return doImportRemoteEntities(remoteRsServer, remoteEntityPath, localTarget, includeVariants, false, [:])
    }
    
    @Override
-   public Map<String, Object> checkImportRemoteEntities(RemoteRsServer remoteRsServer, String remoteEntityPath,
+   public Map<String, Object> checkImportRemoteEntities(RemoteRsRestServer remoteRsServer, String remoteEntityPath,
          String localTarget, boolean includeVariants, Map<String, Object> errors) {
       return doImportRemoteEntities(remoteRsServer, remoteEntityPath, localTarget, includeVariants, true, errors)
    }
    
-   private doImportRemoteEntities(RemoteRsServer remoteRsServer, String remoteEntityPath, String localTarget,
+   private doImportRemoteEntities(RemoteRsRestServer remoteRsServer, String remoteEntityPath, String localTarget,
          boolean includeVariants, check, Map<String,Object> results) {
       checkPreconditions localTarget, remoteEntityPath, results, check
       

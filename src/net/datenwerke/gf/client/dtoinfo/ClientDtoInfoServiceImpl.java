@@ -187,7 +187,7 @@ import net.datenwerke.rs.jxlsreport.client.jxlsreport.dto.JxlsReportVariantDto;
 import net.datenwerke.rs.localfsdatasink.client.localfsdatasink.dto.LocalFileSystemDatasinkDto;
 import net.datenwerke.rs.onedrive.client.onedrive.dto.OneDriveDatasinkDto;
 import net.datenwerke.rs.printer.client.printer.dto.PrinterDatasinkDto;
-import net.datenwerke.rs.remotersserver.client.remotersserver.dto.RemoteRsServerDto;
+import net.datenwerke.rs.remotersrestserver.client.remotersrestserver.dto.RemoteRsRestServerDto;
 import net.datenwerke.rs.remoteserver.client.remoteservermanager.dto.AbstractRemoteServerManagerNodeDto;
 import net.datenwerke.rs.remoteserver.client.remoteservermanager.dto.RemoteServerContainerDto;
 import net.datenwerke.rs.remoteserver.client.remoteservermanager.dto.RemoteServerDefinitionDto;
@@ -559,8 +559,8 @@ public class ClientDtoInfoServiceImpl implements DtoInformationService, DtoMainI
 			return ((net.datenwerke.rs.onedrive.client.onedrive.dto.OneDriveDatasinkDto) dto).getId();
 		if(dto instanceof net.datenwerke.rs.printer.client.printer.dto.PrinterDatasinkDto)
 			return ((net.datenwerke.rs.printer.client.printer.dto.PrinterDatasinkDto) dto).getId();
-		if(dto instanceof net.datenwerke.rs.remotersserver.client.remotersserver.dto.RemoteRsServerDto)
-			return ((net.datenwerke.rs.remotersserver.client.remotersserver.dto.RemoteRsServerDto) dto).getId();
+		if(dto instanceof net.datenwerke.rs.remotersrestserver.client.remotersrestserver.dto.RemoteRsRestServerDto)
+			return ((net.datenwerke.rs.remotersrestserver.client.remotersrestserver.dto.RemoteRsRestServerDto) dto).getId();
 		if(dto instanceof net.datenwerke.rs.remoteserver.client.remoteservermanager.dto.AbstractRemoteServerManagerNodeDto)
 			return ((net.datenwerke.rs.remoteserver.client.remoteservermanager.dto.AbstractRemoteServerManagerNodeDto) dto).getId();
 		if(dto instanceof net.datenwerke.rs.remoteserver.client.remoteservermanager.dto.RemoteServerContainerDto)
@@ -1019,8 +1019,8 @@ public class ClientDtoInfoServiceImpl implements DtoInformationService, DtoMainI
 			return (X) new net.datenwerke.rs.onedrive.client.onedrive.dto.OneDriveDatasinkDto();
 		if(net.datenwerke.rs.printer.client.printer.dto.PrinterDatasinkDto.class.equals(dtoClass))
 			return (X) new net.datenwerke.rs.printer.client.printer.dto.PrinterDatasinkDto();
-		if(net.datenwerke.rs.remotersserver.client.remotersserver.dto.RemoteRsServerDto.class.equals(dtoClass))
-			return (X) new net.datenwerke.rs.remotersserver.client.remotersserver.dto.RemoteRsServerDto();
+		if(net.datenwerke.rs.remotersrestserver.client.remotersrestserver.dto.RemoteRsRestServerDto.class.equals(dtoClass))
+			return (X) new net.datenwerke.rs.remotersrestserver.client.remotersrestserver.dto.RemoteRsRestServerDto();
 		if(net.datenwerke.rs.remoteserver.client.remoteservermanager.dto.RemoteServerContainerDto.class.equals(dtoClass))
 			return (X) new net.datenwerke.rs.remoteserver.client.remoteservermanager.dto.RemoteServerContainerDto();
 		if(net.datenwerke.rs.remoteserver.client.remoteservermanager.dto.RemoteServerFolderDto.class.equals(dtoClass))
@@ -1537,8 +1537,8 @@ public class ClientDtoInfoServiceImpl implements DtoInformationService, DtoMainI
 			return (X) new net.datenwerke.rs.onedrive.client.onedrive.dto.OneDriveDatasinkDto();
 		if("net.datenwerke.rs.printer.client.printer.dto.PrinterDatasinkDto".equals(dtoClassName))
 			return (X) new net.datenwerke.rs.printer.client.printer.dto.PrinterDatasinkDto();
-		if("net.datenwerke.rs.remotersserver.client.remotersserver.dto.RemoteRsServerDto".equals(dtoClassName))
-			return (X) new net.datenwerke.rs.remotersserver.client.remotersserver.dto.RemoteRsServerDto();
+		if("net.datenwerke.rs.remotersrestserver.client.remotersrestserver.dto.RemoteRsRestServerDto".equals(dtoClassName))
+			return (X) new net.datenwerke.rs.remotersrestserver.client.remotersrestserver.dto.RemoteRsRestServerDto();
 		if("net.datenwerke.rs.remoteserver.client.remoteservermanager.dto.RemoteServerContainerDto".equals(dtoClassName))
 			return (X) new net.datenwerke.rs.remoteserver.client.remoteservermanager.dto.RemoteServerContainerDto();
 		if("net.datenwerke.rs.remoteserver.client.remoteservermanager.dto.RemoteServerFolderDto".equals(dtoClassName))
@@ -2305,8 +2305,8 @@ public class ClientDtoInfoServiceImpl implements DtoInformationService, DtoMainI
 			return net.datenwerke.rs.onedrive.client.onedrive.dto.posomap.OneDriveDatasinkDto2PosoMap.class;
 		if(net.datenwerke.rs.printer.client.printer.dto.PrinterDatasinkDto.class.equals(dtoClass))
 			return net.datenwerke.rs.printer.client.printer.dto.posomap.PrinterDatasinkDto2PosoMap.class;
-		if(net.datenwerke.rs.remotersserver.client.remotersserver.dto.RemoteRsServerDto.class.equals(dtoClass))
-			return net.datenwerke.rs.remotersserver.client.remotersserver.dto.posomap.RemoteRsServerDto2PosoMap.class;
+		if(net.datenwerke.rs.remotersrestserver.client.remotersrestserver.dto.RemoteRsRestServerDto.class.equals(dtoClass))
+			return net.datenwerke.rs.remotersrestserver.client.remotersrestserver.dto.posomap.RemoteRsRestServerDto2PosoMap.class;
 		if(net.datenwerke.rs.remoteserver.client.remoteservermanager.dto.AbstractRemoteServerManagerNodeDto.class.equals(dtoClass))
 			return net.datenwerke.rs.remoteserver.client.remoteservermanager.dto.posomap.AbstractRemoteServerManagerNodeDto2PosoMap.class;
 		if(net.datenwerke.rs.remoteserver.client.remoteservermanager.dto.RemoteServerContainerDto.class.equals(dtoClass))
@@ -2873,7 +2873,7 @@ public class ClientDtoInfoServiceImpl implements DtoInformationService, DtoMainI
 			return true;
 		if(dto instanceof net.datenwerke.rs.printer.client.printer.dto.PrinterDatasinkDto)
 			return true;
-		if(dto instanceof net.datenwerke.rs.remotersserver.client.remotersserver.dto.RemoteRsServerDto)
+		if(dto instanceof net.datenwerke.rs.remotersrestserver.client.remotersrestserver.dto.RemoteRsRestServerDto)
 			return true;
 		if(dto instanceof net.datenwerke.rs.remoteserver.client.remoteservermanager.dto.AbstractRemoteServerManagerNodeDto)
 			return true;
@@ -3581,7 +3581,7 @@ public class ClientDtoInfoServiceImpl implements DtoInformationService, DtoMainI
 			return true;
 		if(net.datenwerke.rs.printer.client.printer.dto.PrinterDatasinkDto.class.equals(dtoType))
 			return true;
-		if(net.datenwerke.rs.remotersserver.client.remotersserver.dto.RemoteRsServerDto.class.equals(dtoType))
+		if(net.datenwerke.rs.remotersrestserver.client.remotersrestserver.dto.RemoteRsRestServerDto.class.equals(dtoType))
 			return true;
 		if(net.datenwerke.rs.remoteserver.client.remoteservermanager.dto.AbstractRemoteServerManagerNodeDto.class.equals(dtoType))
 			return true;
@@ -4493,7 +4493,7 @@ public class ClientDtoInfoServiceImpl implements DtoInformationService, DtoMainI
 			return true;
 		if("net.datenwerke.rs.printer.client.printer.dto.PrinterDatasinkDto".equals(dtoClassName))
 			return true;
-		if("net.datenwerke.rs.remotersserver.client.remotersserver.dto.RemoteRsServerDto".equals(dtoClassName))
+		if("net.datenwerke.rs.remotersrestserver.client.remotersrestserver.dto.RemoteRsRestServerDto".equals(dtoClassName))
 			return true;
 		if("net.datenwerke.rs.remoteserver.client.remoteservermanager.dto.AbstractRemoteServerManagerNodeDto".equals(dtoClassName))
 			return true;

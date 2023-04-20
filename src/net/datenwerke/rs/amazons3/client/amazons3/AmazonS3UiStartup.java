@@ -28,14 +28,18 @@ public class AmazonS3UiStartup {
    private static final int PRIO = HookHandlerService.PRIORITY_LOW + 55;
 
    @Inject
-   public AmazonS3UiStartup(final Provider<ExportToAmazonS3Hooker> exportToAmazonS3Hooker,
-         final Provider<FileExportToAmazonS3Hooker> fileExportToDatasinkHooker, final HookHandlerService hookHandler,
-         final WaitOnEventUIService waitOnEventService, final AmazonS3Dao dao,
+   public AmazonS3UiStartup(
+         final Provider<ExportToAmazonS3Hooker> exportToAmazonS3Hooker,
+         final Provider<FileExportToAmazonS3Hooker> fileExportToDatasinkHooker, 
+         final HookHandlerService hookHandler,
+         final WaitOnEventUIService waitOnEventService, 
+         final AmazonS3Dao dao,
          final Provider<AmazonS3DatasinkConfigProviderHooker> amazonS3TreeConfiguratorProvider,
          final AmazonS3DatasinkTesterToolbarConfigurator amazonS3TestToolbarConfigurator,
          final Provider<AmazonS3ExportSnippetProvider> amazonS3ExportSnippetProvider,
          final AmazonS3UiService amazonS3UiService,
-         final Provider<AmazonS3SendToFormConfiguratorHooker> sendToConfigHookProvider) {
+         final Provider<AmazonS3SendToFormConfiguratorHooker> sendToConfigHookProvider
+         ) {
       /* send to form configurator */
       hookHandler.attachHooker(DatasinkSendToFormConfiguratorHook.class, sendToConfigHookProvider.get());
 

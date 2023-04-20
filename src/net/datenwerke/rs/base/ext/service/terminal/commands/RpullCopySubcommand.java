@@ -21,7 +21,7 @@ import net.datenwerke.rs.base.ext.service.RemoteEntityImporterService;
 import net.datenwerke.rs.base.ext.service.RemoteEntityImporterServiceImpl;
 import net.datenwerke.rs.base.ext.service.locale.RsBaseExtMessages;
 import net.datenwerke.rs.base.service.reportengines.table.output.object.RSTableModel;
-import net.datenwerke.rs.remotersserver.service.remotersserver.entities.RemoteRsServer;
+import net.datenwerke.rs.remotersrestserver.service.remotersrestserver.entities.RemoteRsRestServer;
 import net.datenwerke.rs.terminal.service.terminal.TerminalService;
 import net.datenwerke.rs.terminal.service.terminal.TerminalSession;
 import net.datenwerke.rs.terminal.service.terminal.exceptions.TerminalException;
@@ -107,8 +107,8 @@ public class RpullCopySubcommand implements RpullSubCommandHook {
       final String argStr = "cv";
       final boolean check = parser.hasOption("c", argStr);
       final boolean includeVariants = parser.hasOption("v", argStr);
-      final RemoteRsServer remoteRsServer = terminalServiceProvider.get()
-            .getSingleObjectOfTypeByQuery(RemoteRsServer.class, arguments.get(0), session, Read.class);
+      final RemoteRsRestServer remoteRsServer = terminalServiceProvider.get()
+            .getSingleObjectOfTypeByQuery(RemoteRsRestServer.class, arguments.get(0), session, Read.class);
 
       final Map<String, Object> errors = new LinkedHashMap<>();
       if (check) {
@@ -129,7 +129,7 @@ public class RpullCopySubcommand implements RpullSubCommandHook {
       }
    }
    
-   private CommandResult checkEntities(RemoteRsServer remoteRsServer, String remoteEntityPath,
+   private CommandResult checkEntities(RemoteRsRestServer remoteRsServer, String remoteEntityPath,
          String localTarget, boolean includeVariants, Map<String, Object> errors) {
       Map<String, Object> results = remoteEntityImporterServiceProvider.get().checkImportRemoteEntities(remoteRsServer,
             remoteEntityPath, localTarget, includeVariants, errors);
@@ -138,7 +138,7 @@ public class RpullCopySubcommand implements RpullSubCommandHook {
    
    @CommitFlushMode
    @Transactional(rollbackOn = { Exception.class })
-   protected CommandResult importEntities(RemoteRsServer remoteRsServer, String remoteEntityPath,
+   protected CommandResult importEntities(RemoteRsRestServer remoteRsServer, String remoteEntityPath,
          String localTarget, boolean includeVariants) {
       final TerminalService terminalService = terminalServiceProvider.get();
       Instant start = Instant.now();

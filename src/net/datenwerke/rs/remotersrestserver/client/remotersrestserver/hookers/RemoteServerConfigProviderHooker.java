@@ -1,4 +1,4 @@
-package net.datenwerke.rs.remotersserver.client.remotersserver.hookers;
+package net.datenwerke.rs.remotersrestserver.client.remotersrestserver.hookers;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -8,9 +8,9 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 
 import net.datenwerke.gf.client.managerhelper.mainpanel.MainPanelView;
-import net.datenwerke.rs.remotersserver.client.remotersserver.dto.RemoteRsServerDto;
-import net.datenwerke.rs.remotersserver.client.remotersserver.ui.RemoteRsServerForm;
-import net.datenwerke.rs.remoteserver.client.remoteservermanager.RemoteServerUIModule;
+import net.datenwerke.rs.remotersrestserver.client.remotersrestserver.RemoteRsRestServerUIModule;
+import net.datenwerke.rs.remotersrestserver.client.remotersrestserver.dto.RemoteRsRestServerDto;
+import net.datenwerke.rs.remotersrestserver.client.remotersrestserver.ui.RemoteRsRestServerForm;
 import net.datenwerke.rs.remoteserver.client.remoteservermanager.dto.AbstractRemoteServerManagerNodeDto;
 import net.datenwerke.rs.remoteserver.client.remoteservermanager.dto.RemoteServerDefinitionDto;
 import net.datenwerke.rs.remoteserver.client.remoteservermanager.hooks.RemoteServerDefinitionConfigProviderHook;
@@ -18,10 +18,10 @@ import net.datenwerke.rs.remoteserver.client.remoteservermanager.locale.RemoteSe
 
 public class RemoteServerConfigProviderHooker implements RemoteServerDefinitionConfigProviderHook {
 
-   private final Provider<RemoteRsServerForm> formProvider;
+   private final Provider<RemoteRsRestServerForm> formProvider;
 
    @Inject
-   public RemoteServerConfigProviderHooker(Provider<RemoteRsServerForm> formProvider) {
+   public RemoteServerConfigProviderHooker(Provider<RemoteRsRestServerForm> formProvider) {
 
       /* store objects */
       this.formProvider = formProvider;
@@ -39,7 +39,7 @@ public class RemoteServerConfigProviderHooker implements RemoteServerDefinitionC
 
    @Override
    public Class<? extends AbstractRemoteServerManagerNodeDto> getRemoteServerClass() {
-      return RemoteServerUIModule.TYPE;
+      return RemoteRsRestServerUIModule.TYPE;
    }
 
    @Override
@@ -49,12 +49,12 @@ public class RemoteServerConfigProviderHooker implements RemoteServerDefinitionC
 
    @Override
    public AbstractRemoteServerManagerNodeDto instantiateRemoteServer() {
-      return new RemoteRsServerDto();
+      return new RemoteRsRestServerDto();
    }
 
    @Override
    public ImageResource getRemoteServerIcon() {
-      return RemoteServerUIModule.ICON.toImageResource();
+      return RemoteRsRestServerUIModule.ICON.toImageResource();
    }
 
    @Override

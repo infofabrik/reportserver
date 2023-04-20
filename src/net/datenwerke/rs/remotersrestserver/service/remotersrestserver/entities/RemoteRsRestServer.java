@@ -1,4 +1,4 @@
-package net.datenwerke.rs.remotersserver.service.remotersserver.entities;
+package net.datenwerke.rs.remotersrestserver.service.remotersrestserver.entities;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,7 +15,7 @@ import net.datenwerke.dtoservices.dtogenerator.annotations.ExposeToClient;
 import net.datenwerke.dtoservices.dtogenerator.annotations.GenerateDto;
 import net.datenwerke.gf.base.service.annotations.Field;
 import net.datenwerke.gf.base.service.annotations.Indexed;
-import net.datenwerke.rs.remotersserver.service.remotersserver.entities.dtogen.RemoteRsServer2DtoPostProcessor;
+import net.datenwerke.rs.remotersrestserver.service.remotersrestserver.entities.dtogen.RemoteRsRestServer2DtoPostProcessor;
 import net.datenwerke.rs.remoteserver.service.remoteservermanager.entities.RemoteServerDefinition;
 import net.datenwerke.rs.remoteserver.service.remoteservermanager.locale.RemoteServerManagerMessages;
 import net.datenwerke.rs.utils.instancedescription.annotations.InstanceDescription;
@@ -28,11 +28,11 @@ import net.datenwerke.security.service.crypto.pbe.encrypt.EncryptionService;
  */
 
 @Entity
-@Table(name = "REMOTE_RS_SERVER")
+@Table(name = "REMOTE_RS_REST_SERVER")
 @Audited
 @GenerateDto(
-      dtoPackage = "net.datenwerke.rs.remotersserver.client.remotersserver.dto", 
-      poso2DtoPostProcessors = RemoteRsServer2DtoPostProcessor.class, 
+      dtoPackage = "net.datenwerke.rs.remotersrestserver.client.remotersrestserver.dto", 
+      poso2DtoPostProcessors = RemoteRsRestServer2DtoPostProcessor.class, 
       additionalFields = {
             @AdditionalField(
                   name = "hasApikey", 
@@ -47,7 +47,7 @@ import net.datenwerke.security.service.crypto.pbe.encrypt.EncryptionService;
       icon = "laptop"
       )
 @Indexed
-public class RemoteRsServer extends RemoteServerDefinition {
+public class RemoteRsRestServer extends RemoteServerDefinition {
 
    /**
     * 

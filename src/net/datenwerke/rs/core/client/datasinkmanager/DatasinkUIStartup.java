@@ -44,7 +44,8 @@ public class DatasinkUIStartup {
 
          DatasinkManagerViewSecurityTargetDomainHooker securityTargetDomain,
 
-         MainPanelViewProviderHooker mainPanelViewProvider, final Provider<DatasinkAdminModule> adminModuleProvider,
+         MainPanelViewProviderHooker mainPanelViewProvider, 
+         final Provider<DatasinkAdminModule> adminModuleProvider,
          final SecurityUIService securityService,
 
          final DatasinkManagerTreeConfigurationHooker treeConfigurator,
