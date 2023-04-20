@@ -4,6 +4,7 @@ import static net.datenwerke.rs.base.ext.service.RemoteEntityImporterServiceImpl
 
 import javax.inject.Inject
 
+import org.apache.commons.text.StringEscapeUtils
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
@@ -16,6 +17,7 @@ import net.datenwerke.eximport.im.ImportResult
 import net.datenwerke.rs.base.ext.service.RemoteEntityImports
 import net.datenwerke.rs.base.ext.service.datasourcemanager.eximport.DatasourceManagerExporter
 import net.datenwerke.rs.base.ext.service.hooks.RemoteEntityImporterHook
+import net.datenwerke.rs.core.service.datasourcemanager.DatasourceService
 import net.datenwerke.rs.core.service.datasourcemanager.entities.AbstractDatasourceManagerNode
 import net.datenwerke.rs.core.service.datasourcemanager.entities.DatasourceFolder
 import net.datenwerke.treedb.ext.service.eximport.TreeNodeImporterConfig
@@ -25,16 +27,19 @@ class RemoteDatasourceImporterHooker implements RemoteEntityImporterHook {
 
    private final Provider<ExportDataAnalyzerServiceImpl> analyzerServiceProvider
    private final Provider<ImportService> importServiceProvider
+   private final Provider<DatasourceService> datasourceServiceProvider
    
    private final Logger logger = LoggerFactory.getLogger(getClass().name)
    
    @Inject
    public RemoteDatasourceImporterHooker(
       Provider<ExportDataAnalyzerServiceImpl> analyzerServiceProvider,
-      Provider<ImportService> importServiceProvider
+      Provider<ImportService> importServiceProvider,
+      Provider<DatasourceService> datasourceServiceProvider
       ) {
       this.analyzerServiceProvider = analyzerServiceProvider
       this.importServiceProvider = importServiceProvider
+      this.datasourceServiceProvider = datasourceServiceProvider
    }
    
    @Override
@@ -76,6 +81,31 @@ class RemoteDatasourceImporterHooker implements RemoteEntityImporterHook {
          exportRoot = targetNode
 
       importService.configureParents config, exportRoot.id as String, targetNode, DatasourceManagerExporter
+      
+      /* one more loop to check that keys do not exist in local RS */
+      def datasourceService = datasourceServiceProvider.get()
+      analyzerService.getExportedItemsFor(config.exportDataProvider, DatasourceManagerExporter).each {
+         def keyProp = it.getPropertyByName('key')
+         if(keyProp){
+            def key = StringEscapeUtils.unescapeXml(keyProp.element.value)
+            def existingDatasource = datasourceService.getDatasourceByKey(key)
+            if(existingDatasource){
+               handleError(check,
+                  "A datasource with the key '$key' already exists in the local system: '$existingDatasource'",
+                     results, IllegalStateException)
+            }
+         } else {
+            def nameProp = it.getPropertyByName('name')
+            if (!nameProp)
+               handleError(check,
+                  "The remote datasource has no name. ID: ${analyzerService.getItemId(it.element)}", results, IllegalStateException)
+            def remoteName = StringEscapeUtils.unescapeXml(nameProp?.element?.value)
+            def type = analyzerService.getItemTypeAsClass(it.element)
+            if (type != DatasourceFolder)
+               handleError(check,
+                  "The remote datasource with name '$remoteName' has no key.", results, IllegalStateException)
+         }
+      }
 
       /* complete import */
       if (check)

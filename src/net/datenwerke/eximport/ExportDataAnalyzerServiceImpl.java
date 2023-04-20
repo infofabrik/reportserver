@@ -330,7 +330,6 @@ public class ExportDataAnalyzerServiceImpl implements ExportDataAnalyzerService 
    @Override
    public ExportedItem getExportedItemById(ExportDataProvider dataProvider, String id) throws ClassNotFoundException {
       Node node = dataProvider.getElementById(id);
-      ;
       if (null != node)
          return getExportedItemFor((Element) node, dataProvider);
       return null;

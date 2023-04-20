@@ -124,8 +124,19 @@ class RemoteReportImporterHooker implements RemoteEntityImporterHook {
             def existingReport = reportService.getReportByKey(key)
             if(existingReport){
                handleError(check, 
-                  "A report with the key '$key' already exists in the system: '$existingReport'", results, IllegalStateException)
+                  "A report with the key '$key' already exists in the local system: '$existingReport'", 
+                     results, IllegalStateException)
             }
+         } else {
+            def nameProp = it.getPropertyByName('name')
+            if (!nameProp)
+               handleError(check,
+                  "The remote report has no name. ID: ${analyzerService.getItemId(it.element)}", results, IllegalStateException)
+            def remoteName = StringEscapeUtils.unescapeXml(nameProp.element.value)
+            def type = analyzerService.getItemTypeAsClass(it.element)
+            if (type != ReportFolder)
+               handleError(check,
+                  "The remote report with name '$remoteName' has no key.", results, IllegalStateException)
          }
          def uuidProp = it.getPropertyByName('uuid')
          if(uuidProp){
@@ -133,7 +144,8 @@ class RemoteReportImporterHooker implements RemoteEntityImporterHook {
             def existingReport = reportService.getReportByUUID(uuid)
             if(existingReport) {
                handleError(check,
-                  "A report with the UUID '$uuid' already exists in the system: '$existingReport'", results, IllegalStateException)
+                  "A report with the UUID '$uuid' already exists in the local system: '$existingReport'", 
+                     results, IllegalStateException)
             }
          }
       }
@@ -141,10 +153,13 @@ class RemoteReportImporterHooker implements RemoteEntityImporterHook {
       /* match datasources */
       analyzerService.getExportedItemsFor(config.exportDataProvider, DatasourceManagerExporter).each {
          def nameProp = it.getPropertyByName('name')
-         def remoteName = StringEscapeUtils.unescapeXml(nameProp.element.value)
+         if (!nameProp)
+            handleError(check,
+               "The remote datasource has no name. ID: ${analyzerService.getItemId(it.element)}", results, IllegalStateException)
+         def remoteName = StringEscapeUtils.unescapeXml(nameProp?.element?.value)
          def keyProp = it.getPropertyByName('key')
          if (!keyProp) 
-            handleError(check, "Remote datasource '$remoteName' has no key.", results, IllegalArgumentException)
+            handleError(check, "Remote datasource '$remoteName' has no key.", results, IllegalStateException)
          if(keyProp?.type == String){
             def remoteKey = StringEscapeUtils.unescapeXml(keyProp.element.value)
             def ds = matchToLocalDatasource(remoteKey)
