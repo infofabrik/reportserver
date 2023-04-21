@@ -31,7 +31,7 @@ public class ApiKeyHelper {
       AbstractUserManagerNode umn = userManagerProvider.get().getUserByName(username);
       if (umn instanceof HibernateProxy)
          umn = (AbstractUserManagerNode) ((HibernateProxy) umn).getHibernateLazyInitializer().getImplementation();
-      if (!(umn instanceof User))
+      if (null != umn && !(umn instanceof User))
          throw new IllegalArgumentException("Specified username does not point to user");
 
       User user = (User) umn;
