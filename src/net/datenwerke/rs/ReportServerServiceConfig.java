@@ -178,6 +178,7 @@ import net.datenwerke.rs.passwordpolicy.service.activateuser.ActivateUserModule;
 import net.datenwerke.rs.printer.server.printer.PrinterRpcServiceImpl;
 import net.datenwerke.rs.printer.service.printer.PrinterModule;
 import net.datenwerke.rs.remoteaccess.service.RemoteAccessModule;
+import net.datenwerke.rs.remotersrestserver.server.remotersrestserver.RemoteRsRestServerRpcServiceImpl;
 import net.datenwerke.rs.remotersrestserver.service.remotersrestserver.RemoteRsRestServerModule;
 import net.datenwerke.rs.remoteserver.server.remoteservermanager.RemoteServerManagerExportRpcServiceImpl;
 import net.datenwerke.rs.remoteserver.server.remoteservermanager.RemoteServerManagerImportRpcServiceImpl;
@@ -458,7 +459,9 @@ public class ReportServerServiceConfig extends DwGwtFrameworkBase {
             serve(BASE_URL + "scriptdatasink").with(ScriptDatasinkRpcServiceImpl.class);
             serve(BASE_URL + "localfilesystem").with(LocalFileSystemRpcServiceImpl.class);
             serve(BASE_URL + "email").with(EmailDatasinkRpcServiceImpl.class);
-
+            
+            serve(BASE_URL + "remote_rs_rest_server").with(RemoteRsRestServerRpcServiceImpl.class);
+            
             serve(BASE_URL + "history").with(HistoryRpcServiceImpl.class); //$NON-NLS-1$
             serve(BASE_URL + "homepage").with(HomepageRpcServiceImpl.class); //$NON-NLS-1$
 
