@@ -110,13 +110,19 @@ public class RpullCopySubcommand implements RpullSubCommandHook {
       final RemoteRsRestServer remoteRsServer = terminalServiceProvider.get()
             .getSingleObjectOfTypeByQuery(RemoteRsRestServer.class, arguments.get(0), session, Read.class);
 
+      if (null == remoteRsServer.getUrl())
+         throw new TerminalException("Remote RS REST server has no REST URL");
+      
+      if (! remoteRsServer.getUrl().trim().startsWith("http://") && ! remoteRsServer.getUrl().trim().startsWith("https://"))
+         throw new TerminalException("URL contains no protocol: '" + remoteRsServer.getUrl() + "'");
+      
       final Map<String, Object> errors = new LinkedHashMap<>();
       if (check) {
          try {
             return checkEntities(remoteRsServer, arguments.get(1), arguments.get(2), includeVariants, errors);
          } catch (Exception e) {
             RemoteEntityImporterServiceImpl.handleError(true,
-                  ExceptionUtils.getRootCauseMessage(e) + " " + ExceptionUtils.getStackTrace(e), errors,
+                  ExceptionUtils.getRootCauseMessage(e), errors,
                   ExceptionUtils.getRootCause(e).getClass());
             return terminalServiceProvider.get().convertSimpleMapToCommandResult(Arrays.asList("Test results"),
                   "No errors found", errors);

@@ -61,6 +61,12 @@ class RemoteEntityImporterServiceImpl implements RemoteEntityImporterService {
       if (status == STATUS_FAIL)
          return results
       def importType = results[EXPORT_TYPE_PROPERTY]
+      
+      if (!restUrl)
+         handleError(check, "Remote RS REST server has no REST URL", results, IllegalArgumentException)
+         
+      if (!restUrl.trim().startsWith('http://') && !restUrl.trim().startsWith('https://'))
+         handleError(check, "URL contains no protocol:  '$restUrl'", results, IllegalArgumentException)
 
       def encodedRemoteEntityPath = remoteEntityPath.replaceAll(' ', '%20')
       remoteEntityPath = remoteEntityPath.trim()
@@ -69,7 +75,7 @@ class RemoteEntityImporterServiceImpl implements RemoteEntityImporterService {
       def requestedRemoteEntity = remoteEntityPath[remoteEntityPath.lastIndexOf('/')+1..remoteEntityPath.size()-1]
       def remoteUrl = "$restUrl/node-exporter$encodedRemoteEntityPath${(includeVariants?';includeVariants=true':'')}?user=$user&apikey=${remoteRsServer.apikey}"
       def httpConnection = new URL(remoteUrl).openConnection()
-      if (httpConnection.responseCode != httpConnection.HTTP_OK) {
+      if (httpConnection.responseCode != HttpURLConnection.HTTP_OK) {
          handleError(check, "Connection response code: ${httpConnection.responseCode}", results, IllegalStateException)
          if (check)
             return results

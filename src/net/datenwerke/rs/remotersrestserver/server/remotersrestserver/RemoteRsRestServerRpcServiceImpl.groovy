@@ -41,9 +41,16 @@ public class RemoteRsRestServerRpcServiceImpl extends SecuredRemoteServiceServle
          
       try {
          RemoteRsRestServer remoteServer = dtoService.loadPoso(remoteServerDto)
-         def restUrl = new URL("${remoteServer.url}/test?user=${remoteServer.username}&apikey=${remoteServer.apikey}")
+         def protocol = ''
+         if (!remoteServer.url)
+            throw new ServerCallFailedException("Remote RS REST server has no REST URL")
+            
+         if (!remoteServer.url.trim().startsWith('http://') && !remoteServer.url.trim().startsWith('https://'))
+            throw new ServerCallFailedException("URL contains no protocol:  '$remoteServer.url'")
+            
+         def restUrl = new URL("${remoteServer.url.trim()}/test?user=${remoteServer.username}&apikey=${remoteServer.apikey}")
          def conn = restUrl.openConnection()
-         if (conn.responseCode != 200)
+         if (conn.responseCode != HttpURLConnection.HTTP_OK)
             throw new ServerCallFailedException("Server returned response code $conn.responseCode")
             
          def msg = new JsonSlurper().parseText(conn.inputStream.text)[TEST_RS_MESSAGE]
