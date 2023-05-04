@@ -52,6 +52,7 @@ import net.datenwerke.rs.fileserver.service.fileserver.entities.FileServerFile;
 import net.datenwerke.rs.fileserver.service.fileserver.entities.FileServerFolder;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 import net.datenwerke.rs.utils.exception.ExceptionService;
+import net.datenwerke.rs.utils.misc.DateUtils;
 import net.datenwerke.rs.utils.zip.ZipUtilsService;
 import net.datenwerke.rs.utils.zip.ZipUtilsService.FileFilter;
 import net.datenwerke.security.client.usermanager.dto.ie.StrippedDownUser;
@@ -198,7 +199,8 @@ public class EmailDatasinkRpcServiceImpl extends SecuredRemoteServiceServlet imp
       securityService.assertRights(emailDatasink, Read.class, Execute.class);
 
       try {
-         String emailText = "ReportServer Email Datasink Test";
+         String emailText = "ReportServer " + emailDatasink.getDatasinkService().getDatasinkPropertyName()
+               + " Datasink Test " + DateUtils.formatCurrentDate();
          datasinkServiceProvider.get().testDatasink(emailDatasink, new DatasinkEmailConfig() {
 
             @Override
