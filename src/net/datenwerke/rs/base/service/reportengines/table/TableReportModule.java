@@ -2,9 +2,14 @@ package net.datenwerke.rs.base.service.reportengines.table;
 
 import com.google.inject.Singleton;
 import com.google.inject.multibindings.Multibinder;
+import com.google.inject.servlet.ServletScopes;
 
 import net.datenwerke.rs.base.service.reportengines.table.columnfilter.FilterService;
 import net.datenwerke.rs.base.service.reportengines.table.columnfilter.FilterServiceImpl;
+import net.datenwerke.rs.base.service.reportengines.table.dot.DotService;
+import net.datenwerke.rs.base.service.reportengines.table.dot.DotServiceImpl;
+import net.datenwerke.rs.base.service.reportengines.table.dot.http.HttpExportService;
+import net.datenwerke.rs.base.service.reportengines.table.dot.http.HttpExportServiceImpl;
 import net.datenwerke.rs.base.service.reportengines.table.entities.Column;
 import net.datenwerke.rs.base.service.reportengines.table.entities.filters.Filter;
 import net.datenwerke.rs.base.service.reportengines.table.entities.format.ColumnFormatDate;
@@ -35,6 +40,10 @@ public class TableReportModule extends AbstractReportServerModule {
 
       bind(FilterService.class).to(FilterServiceImpl.class);
       bind(ExporterHelper.class).to(ExporterHelperImpl.class);
+      
+      /* bind dot services */
+      bind(HttpExportService.class).to(HttpExportServiceImpl.class).in(ServletScopes.SESSION);
+      bind(DotService.class).to(DotServiceImpl.class);
 
       /* bind startup */
       bind(TableReportStartup.class).asEagerSingleton();

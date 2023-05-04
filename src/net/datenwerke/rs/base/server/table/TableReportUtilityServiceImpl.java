@@ -40,6 +40,7 @@ import net.datenwerke.rs.base.service.datasources.definitions.DatabaseDatasource
 import net.datenwerke.rs.base.service.datasources.definitions.DatabaseDatasourceConfig;
 import net.datenwerke.rs.base.service.reportengines.table.SimpleDataSupplier;
 import net.datenwerke.rs.base.service.reportengines.table.TableReportUtils;
+import net.datenwerke.rs.base.service.reportengines.table.dot.DotService;
 import net.datenwerke.rs.base.service.reportengines.table.entities.Column;
 import net.datenwerke.rs.base.service.reportengines.table.entities.Order;
 import net.datenwerke.rs.base.service.reportengines.table.entities.TableReport;
@@ -90,12 +91,13 @@ public class TableReportUtilityServiceImpl extends SecuredRemoteServiceServlet i
    private final ReportDtoService reportDtoService;
    private final I18nToolsService i18nToolsService;
    private final ReportService reportService;
+   private final Provider<DotService> dotServiceProvider;
 
    @Inject
    public TableReportUtilityServiceImpl(SimpleDataSupplier simpleDataSupplyer, DtoService dtoService,
          ReportDtoService reportDtoService, Provider<AuthenticatorService> authenticatorServiceProvider,
          TableReportUtils tableReportUtils, ParameterSetFactory parameterSetFactory, SecurityService securityService,
-         I18nToolsService i18nToolsService, ReportService reportService) {
+         I18nToolsService i18nToolsService, ReportService reportService, Provider<DotService> dotServiceProvider) {
 
       this.simpleDataSupplyer = simpleDataSupplyer;
       this.dtoService = dtoService;
@@ -106,6 +108,7 @@ public class TableReportUtilityServiceImpl extends SecuredRemoteServiceServlet i
       this.securityService = securityService;
       this.i18nToolsService = i18nToolsService;
       this.reportService = reportService;
+      this.dotServiceProvider = dotServiceProvider;
    }
 
    private ParameterSet getParameterSet(Report report) {
@@ -400,6 +403,15 @@ public class TableReportUtilityServiceImpl extends SecuredRemoteServiceServlet i
       } catch (ReportExecutorException e) {
          throw new ServerCallFailedException(e);
       }
+   }
+
+   @SecurityChecked(argumentVerification = {
+         @ArgumentVerification(name = "report", isDto = true, verify = @RightsVerification(rights = { Read.class,
+               Execute.class })) })
+   @Override
+   public String exportToDot(String token, @Named("report") TableReportDto reportDto) {
+      User user = authenticatorServiceProvider.get().getCurrentUser();
+      return dotServiceProvider.get().createDotFile(user, reportDto, token);
    }
 
 }

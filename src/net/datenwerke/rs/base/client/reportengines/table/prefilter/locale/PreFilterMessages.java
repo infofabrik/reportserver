@@ -43,4 +43,5 @@ public interface PreFilterMessages extends Messages {
 
    String toggleAndOrBtnLabel();
 
+   String exportToDOTBtnLabel();
 }

@@ -42,5 +42,7 @@ public interface TableReportUtilityService extends RemoteService {
 
    PagingLoadResult<ListStringBaseModel> loadData(ReportDto report, DatasourceContainerDto containerDto,
          PagingLoadConfig loadConfig, String query) throws ServerCallFailedException, NonFatalException;
+   
+   public String exportToDot(String token, TableReportDto report) throws ServerCallFailedException;
 
 }

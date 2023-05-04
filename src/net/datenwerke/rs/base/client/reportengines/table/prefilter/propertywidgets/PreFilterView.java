@@ -11,6 +11,7 @@ import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
+import com.google.gwt.user.client.ui.Label;
 import com.google.inject.Inject;
 import com.sencha.gxt.cell.core.client.ButtonCell.ButtonArrowAlign;
 import com.sencha.gxt.core.client.IdentityValueProvider;
@@ -34,6 +35,7 @@ import com.sencha.gxt.dnd.core.client.TreeGridDropTarget;
 import com.sencha.gxt.widget.core.client.Component;
 import com.sencha.gxt.widget.core.client.Dialog.PredefinedButton;
 import com.sencha.gxt.widget.core.client.box.ConfirmMessageBox;
+import com.sencha.gxt.widget.core.client.container.MarginData;
 import com.sencha.gxt.widget.core.client.event.BeforeShowContextMenuEvent;
 import com.sencha.gxt.widget.core.client.event.BeforeShowContextMenuEvent.BeforeShowContextMenuHandler;
 import com.sencha.gxt.widget.core.client.event.CellDoubleClickEvent;
@@ -47,6 +49,9 @@ import com.sencha.gxt.widget.core.client.grid.ColumnConfig;
 import com.sencha.gxt.widget.core.client.grid.ColumnModel;
 import com.sencha.gxt.widget.core.client.grid.editing.GridEditing;
 import com.sencha.gxt.widget.core.client.grid.editing.GridInlineEditing;
+import com.sencha.gxt.widget.core.client.info.DefaultInfoConfig;
+import com.sencha.gxt.widget.core.client.info.Info;
+import com.sencha.gxt.widget.core.client.info.InfoConfig;
 import com.sencha.gxt.widget.core.client.menu.Item;
 import com.sencha.gxt.widget.core.client.menu.Menu;
 import com.sencha.gxt.widget.core.client.menu.MenuItem;
@@ -57,6 +62,9 @@ import com.sencha.gxt.widget.core.client.tree.Tree.TreeNode;
 import com.sencha.gxt.widget.core.client.treegrid.TreeGrid;
 
 import net.datenwerke.gf.base.client.dtogenerator.RsDto;
+import net.datenwerke.gf.client.uiutils.ClientDownloadHelper;
+import net.datenwerke.gxtdto.client.baseex.widget.DwContentPanel;
+import net.datenwerke.gxtdto.client.baseex.widget.DwWindow;
 import net.datenwerke.gxtdto.client.baseex.widget.btn.DwSplitButton;
 import net.datenwerke.gxtdto.client.baseex.widget.btn.DwTextButton;
 import net.datenwerke.gxtdto.client.baseex.widget.grid.DwTreeGrid;
@@ -70,14 +78,20 @@ import net.datenwerke.gxtdto.client.clipboard.ClipboardItem;
 import net.datenwerke.gxtdto.client.clipboard.ClipboardUiService;
 import net.datenwerke.gxtdto.client.clipboard.processor.ClipboardCopyProcessor;
 import net.datenwerke.gxtdto.client.clipboard.processor.ClipboardDtoPasteProcessor;
+import net.datenwerke.gxtdto.client.dialog.error.DetailErrorDialog;
 import net.datenwerke.gxtdto.client.dtomanager.Dto;
+import net.datenwerke.gxtdto.client.dtomanager.callback.RsAsyncCallback;
 import net.datenwerke.gxtdto.client.eventbus.events.ObjectChangedEvent;
 import net.datenwerke.gxtdto.client.eventbus.handlers.ObjectChangedEventHandler;
+import net.datenwerke.gxtdto.client.forms.simpleform.SimpleForm;
+import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCStringNoHtmlDecode;
+import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCTextArea;
 import net.datenwerke.gxtdto.client.locale.BaseMessages;
 import net.datenwerke.gxtdto.client.utilityservices.toolbar.DwToolBar;
 import net.datenwerke.gxtdto.client.utilityservices.toolbar.ToolbarService;
 import net.datenwerke.gxtdto.client.utils.modelkeyprovider.DtoIdModelKeyProvider;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
+import net.datenwerke.rs.base.client.reportengines.table.TableReportUtilityDao;
 import net.datenwerke.rs.base.client.reportengines.table.dto.BlockTypeDto;
 import net.datenwerke.rs.base.client.reportengines.table.dto.FilterBlockDto;
 import net.datenwerke.rs.base.client.reportengines.table.dto.FilterSpecDto;
@@ -89,12 +103,15 @@ import net.datenwerke.rs.base.client.reportengines.table.prefilter.hooks.PreFilt
 import net.datenwerke.rs.base.client.reportengines.table.prefilter.locale.PreFilterMessages;
 import net.datenwerke.rs.core.client.contexthelp.ContextHelpUiService;
 import net.datenwerke.rs.core.client.contexthelp.dto.ContextHelpInfo;
+import net.datenwerke.rs.core.client.reportexecutor.ReportExecutorUIService;
 import net.datenwerke.rs.core.client.reportexecutor.ui.ReportExecutorMainPanelView;
+import net.datenwerke.rs.eximport.client.eximport.locale.ExImportMessages;
 import net.datenwerke.rs.theme.client.icon.BaseIcon;
 
 public class PreFilterView extends ReportExecutorMainPanelView {
 
    public static final String VIEW_ID = "prefilter";
+   private static final String DOWNLOAD_URL = "exportToDot";
 
    public interface InstantiatePreFilterCallback {
       void filterInstantiated(FilterSpecDto filter);
@@ -110,6 +127,8 @@ public class PreFilterView extends ReportExecutorMainPanelView {
    private final HookHandlerService hookHandler;
    private final ToolbarService toolbarService;
    private final ContextHelpUiService contextHelpService;
+   private final ReportExecutorUIService reportExecutorService;
+   private final TableReportUtilityDao tableReportUtilityDao;
 
    private List<PreFilterConfiguratorHook> preFilterConfigs;
 
@@ -126,13 +145,16 @@ public class PreFilterView extends ReportExecutorMainPanelView {
 
    @Inject
    public PreFilterView(ClipboardUiService clipboardService, HookHandlerService hookHandler,
-         ContextHelpUiService contextHelpService, ToolbarService toolbarService) {
+         ContextHelpUiService contextHelpService, ToolbarService toolbarService,
+         ReportExecutorUIService reportExecutorService, TableReportUtilityDao tableReportUtilityDao) {
 
       /* store objects */
       this.clipboardService = clipboardService;
       this.hookHandler = hookHandler;
       this.contextHelpService = contextHelpService;
       this.toolbarService = toolbarService;
+      this.reportExecutorService = reportExecutorService;
+      this.tableReportUtilityDao = tableReportUtilityDao;
    }
 
    @Override
@@ -626,6 +648,27 @@ public class PreFilterView extends ReportExecutorMainPanelView {
       });
       toolbar.add(toggleAndOrButton);
 
+      /* add export to DOT Button */
+      DwTextButton exportToDotButton = toolbarService
+            .createSmallButtonLeft(PreFilterMessages.INSTANCE.exportToDOTBtnLabel(), BaseIcon.FILE);
+
+      exportToDotButton.addSelectHandler(event -> {
+         tableReportUtilityDao.exportToDot(reportExecutorService.createExecuteReportToken(report), report,
+            new RsAsyncCallback<String>() {
+               @Override
+               public void onSuccess(String result) {
+                  displayExportToDotResult(result);
+               }
+      
+               @Override
+               public void onFailure(Throwable caught) {
+                  new DetailErrorDialog(caught).show();
+               }
+            });
+         
+      });
+      toolbar.add(exportToDotButton);
+
       toolbar.add(new SeparatorToolItem());
 
       /* remove */
@@ -681,7 +724,95 @@ public class PreFilterView extends ReportExecutorMainPanelView {
 
       toggleAndOr(root);
    }
+   
+   protected void startProgress() {
+      try {
+         InfoConfig infoConfig = new DefaultInfoConfig(ExImportMessages.INSTANCE.quickExportProgressTitle(),
+               ExImportMessages.INSTANCE.exportWait());
+         infoConfig.setWidth(350);
+         infoConfig.setDisplay(3500);
+         Info.display(infoConfig);
+      } catch (Exception e) {
+      }
 
+   }
+   
+   protected void displayResult(String result) {
+      startProgress();
+      
+      final DwWindow window = new DwWindow();
+      window.setSize(640, 480);
+
+      SimpleForm form = SimpleForm.getInlineLabelessInstance();
+      window.add(form);
+
+      String key = form.addField(String.class, new SFFCTextArea() {
+
+         @Override
+         public int getWidth() {
+            return 580;
+         }
+
+         @Override
+         public int getHeight() {
+            return 400;
+         }
+      }, new SFFCStringNoHtmlDecode() {
+      });
+      form.setValue(key, result);
+
+      form.loadFields();
+
+      DwTextButton closeBtn = new DwTextButton(BaseMessages.INSTANCE.close());
+      closeBtn.addSelectHandler(event -> window.hide());
+      window.addButton(closeBtn);
+
+      window.show();
+   }
+   
+   protected void displayExportToDotResult(String result) {
+      startProgress();
+      
+      final DwWindow window = new DwWindow();
+      window.setModal(true);
+      window.setClosable(false);
+      window.setTitle(ExImportMessages.INSTANCE.exportSuccededTitle());
+      window.setHeaderIcon(BaseIcon.EXPORT);
+
+      DwContentPanel wrapper = DwContentPanel.newInlineInstance();
+      wrapper.add(new Label(ExImportMessages.INSTANCE.exportSuccededMessage()), new MarginData(5));
+      window.add(wrapper);
+
+      DwTextButton displayBtn = new DwTextButton(ExImportMessages.INSTANCE.quickExportDisplayDirectLabel());
+      displayBtn.addSelectHandler(new SelectHandler() {
+         @Override
+         public void onSelect(SelectEvent event) {
+            window.hide();
+            startProgress();
+            displayResult(result);
+         }
+      });
+      window.addButton(displayBtn);
+
+      DwTextButton downloadBtn = new DwTextButton(ExImportMessages.INSTANCE.quickExportDownloadLabel());
+      downloadBtn.addSelectHandler(new SelectHandler() {
+
+         @Override
+         public void onSelect(SelectEvent event) {
+            window.hide();
+            downloadResult();
+         }
+      });
+      window.addButton(downloadBtn);
+
+      window.show();
+   }
+   
+   protected void downloadResult() {
+      String url = GWT.getModuleBaseURL() + DOWNLOAD_URL;
+      ClientDownloadHelper.triggerDownload(url);
+   }
+   
    protected void toggleAndOr(FilterBlockDtoDec block) {
       switch (block.getBlockType()) {
       case OR:

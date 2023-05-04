@@ -19,6 +19,7 @@ import net.datenwerke.dbpool.config.ConnectionPoolConfig;
 import net.datenwerke.rs.base.service.datasources.definitions.DatabaseDatasource;
 import net.datenwerke.rs.configservice.service.configservice.ConfigService;
 import net.datenwerke.rs.core.service.datasourcemanager.DatasourceService;
+import net.datenwerke.rs.installation.InstallBaseDataTask;
 
 @Singleton
 public class TempTableServiceImpl implements TempTableService {
@@ -87,9 +88,13 @@ public class TempTableServiceImpl implements TempTableService {
 
    @Override
    public DatabaseDatasource getInternalDbDatasource() {
-      String dsName = configService.getConfigFailsafe(InternalDbModule.CONFIG_FILE)
-            .getString(TempTableService.PROPERTY_KEY_DEFAULT_DATASOURCE, "ReportServer Data Source");
-      return ((DatabaseDatasource) datasourceService.getDatasourceByName(dsName));
+      String dsName = configService.getConfigFailsafe(InternalDbModule.CONFIG_FILE).getString(
+            TempTableService.PROPERTY_KEY_DEFAULT_DATASOURCE, InstallBaseDataTask.REPORTSERVER_DATA_SOURCE_KEY);
+      DatabaseDatasource ds = ((DatabaseDatasource) datasourceService.getDatasourceByKey(dsName));
+      if (null == ds)
+         return ((DatabaseDatasource) datasourceService.getDatasourceByName(dsName));
+      else
+         return ds;
    }
 
 }

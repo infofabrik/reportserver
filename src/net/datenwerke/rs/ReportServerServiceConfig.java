@@ -76,6 +76,7 @@ import net.datenwerke.rs.base.server.helpers.tempfile.TempFileServlet;
 import net.datenwerke.rs.base.server.jasper.JRXMLDownloadServlet;
 import net.datenwerke.rs.base.server.jasper.JasperReportRpcServiceImpl;
 import net.datenwerke.rs.base.server.parameters.DatasourceParameterRPCServiceImpl;
+import net.datenwerke.rs.base.server.table.DotDownloadServlet;
 import net.datenwerke.rs.base.server.table.TableReportUtilityServiceImpl;
 import net.datenwerke.rs.base.service.RsBaseModule;
 import net.datenwerke.rs.base.service.dbhelper.DBHelperModule;
@@ -466,6 +467,7 @@ public class ReportServerServiceConfig extends DwGwtFrameworkBase {
             serve(BASE_URL + "homepage").with(HomepageRpcServiceImpl.class); //$NON-NLS-1$
 
             serve(BASE_URL + "quickExportDownload").with(QuickExportDownloadServlet.class); //$NON-NLS-1$
+            serve(BASE_URL + "exportToDot").with(DotDownloadServlet.class); //$NON-NLS-1$
 
             serve(BASE_URL + "globalconstants").with(GlobalConstantsRpcServiceImpl.class); //$NON-NLS-1$
             serve(BASE_URL + "importrpc").with(ImportRpcServiceImpl.class);
