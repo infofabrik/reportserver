@@ -40,7 +40,7 @@ import net.datenwerke.rs.base.service.datasources.definitions.DatabaseDatasource
 import net.datenwerke.rs.base.service.datasources.definitions.DatabaseDatasourceConfig;
 import net.datenwerke.rs.base.service.reportengines.table.SimpleDataSupplier;
 import net.datenwerke.rs.base.service.reportengines.table.TableReportUtils;
-import net.datenwerke.rs.base.service.reportengines.table.dot.DotService;
+import net.datenwerke.rs.base.service.reportengines.table.dot.PrefilterDotService;
 import net.datenwerke.rs.base.service.reportengines.table.entities.Column;
 import net.datenwerke.rs.base.service.reportengines.table.entities.Order;
 import net.datenwerke.rs.base.service.reportengines.table.entities.TableReport;
@@ -91,13 +91,21 @@ public class TableReportUtilityServiceImpl extends SecuredRemoteServiceServlet i
    private final ReportDtoService reportDtoService;
    private final I18nToolsService i18nToolsService;
    private final ReportService reportService;
-   private final Provider<DotService> dotServiceProvider;
+   private final Provider<PrefilterDotService> prefilterDotServiceProvider;
 
    @Inject
-   public TableReportUtilityServiceImpl(SimpleDataSupplier simpleDataSupplyer, DtoService dtoService,
-         ReportDtoService reportDtoService, Provider<AuthenticatorService> authenticatorServiceProvider,
-         TableReportUtils tableReportUtils, ParameterSetFactory parameterSetFactory, SecurityService securityService,
-         I18nToolsService i18nToolsService, ReportService reportService, Provider<DotService> dotServiceProvider) {
+   public TableReportUtilityServiceImpl(
+         SimpleDataSupplier simpleDataSupplyer, 
+         DtoService dtoService,
+         ReportDtoService reportDtoService, 
+         Provider<AuthenticatorService> authenticatorServiceProvider,
+         TableReportUtils tableReportUtils, 
+         ParameterSetFactory parameterSetFactory, 
+         SecurityService securityService,
+         I18nToolsService i18nToolsService, 
+         ReportService reportService, 
+         Provider<PrefilterDotService> prefilterDotServiceProvider
+         ) {
 
       this.simpleDataSupplyer = simpleDataSupplyer;
       this.dtoService = dtoService;
@@ -108,7 +116,7 @@ public class TableReportUtilityServiceImpl extends SecuredRemoteServiceServlet i
       this.securityService = securityService;
       this.i18nToolsService = i18nToolsService;
       this.reportService = reportService;
-      this.dotServiceProvider = dotServiceProvider;
+      this.prefilterDotServiceProvider = prefilterDotServiceProvider;
    }
 
    private ParameterSet getParameterSet(Report report) {
@@ -411,7 +419,7 @@ public class TableReportUtilityServiceImpl extends SecuredRemoteServiceServlet i
    @Override
    public String exportToDot(String token, @Named("report") TableReportDto reportDto) {
       User user = authenticatorServiceProvider.get().getCurrentUser();
-      return dotServiceProvider.get().createDotFile(user, reportDto, token);
+      return prefilterDotServiceProvider.get().createDotFile(user, reportDto, token);
    }
 
 }

@@ -16,7 +16,7 @@ import net.datenwerke.rs.base.service.reportengines.table.entities.filters.Block
 import net.datenwerke.rs.core.service.reportmanager.ReportDtoService;
 import net.datenwerke.security.service.usermanager.entities.User;
 
-public class DotServiceImpl implements DotService {
+public class PrefilterDotServiceImpl implements PrefilterDotService {
 
    private final Provider<HttpExportService> httpExportServiceProvider;
    private final ReportDtoService reportDtoService;
@@ -26,7 +26,7 @@ public class DotServiceImpl implements DotService {
    private int currentOperatorNumber = 0;
 
    @Inject
-   public DotServiceImpl(
+   public PrefilterDotServiceImpl(
          Provider<HttpExportService> httpExportServiceProvider,
          ReportDtoService reportDtoService, 
          Provider<FilterService> filterServiceProvider

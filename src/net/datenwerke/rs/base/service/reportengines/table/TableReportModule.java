@@ -6,8 +6,8 @@ import com.google.inject.servlet.ServletScopes;
 
 import net.datenwerke.rs.base.service.reportengines.table.columnfilter.FilterService;
 import net.datenwerke.rs.base.service.reportengines.table.columnfilter.FilterServiceImpl;
-import net.datenwerke.rs.base.service.reportengines.table.dot.DotService;
-import net.datenwerke.rs.base.service.reportengines.table.dot.DotServiceImpl;
+import net.datenwerke.rs.base.service.reportengines.table.dot.PrefilterDotService;
+import net.datenwerke.rs.base.service.reportengines.table.dot.PrefilterDotServiceImpl;
 import net.datenwerke.rs.base.service.reportengines.table.dot.http.HttpExportService;
 import net.datenwerke.rs.base.service.reportengines.table.dot.http.HttpExportServiceImpl;
 import net.datenwerke.rs.base.service.reportengines.table.entities.Column;
@@ -43,7 +43,7 @@ public class TableReportModule extends AbstractReportServerModule {
       
       /* bind dot services */
       bind(HttpExportService.class).to(HttpExportServiceImpl.class).in(ServletScopes.SESSION);
-      bind(DotService.class).to(DotServiceImpl.class);
+      bind(PrefilterDotService.class).to(PrefilterDotServiceImpl.class);
 
       /* bind startup */
       bind(TableReportStartup.class).asEagerSingleton();
