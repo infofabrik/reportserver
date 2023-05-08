@@ -2,6 +2,7 @@ package net.datenwerke.rs.amazons3.service.amazons3;
 
 import static net.datenwerke.rs.core.service.datasinkmanager.DatasinkModule.PROPERTY_DEFAULT_DATASINK_ID;
 import static net.datenwerke.rs.core.service.datasinkmanager.DatasinkModule.PROPERTY_DEFAULT_DATASINK_NAME;
+import static net.datenwerke.rs.core.service.datasinkmanager.DatasinkModule.PROPERTY_DEFAULT_DATASINK_KEY;
 import static net.datenwerke.rs.core.service.datasinkmanager.DatasinkModule.PROPERTY_DEFAULT_DISABLED;
 import static net.datenwerke.rs.core.service.datasinkmanager.DatasinkModule.PROPERTY_DEFAULT_SCHEDULING_ENABLED;
 
@@ -22,6 +23,8 @@ public class AmazonS3Module extends AbstractModule {
          + PROPERTY_DEFAULT_DATASINK_ID;
    public static final String PROPERTY_DEFAULT_AMAZONS3_DATASINK_NAME = PROPERTY_DATASINK + "."
          + PROPERTY_DEFAULT_DATASINK_NAME;
+   public static final String PROPERTY_DEFAULT_AMAZONS3_DATASINK_KEY = PROPERTY_DATASINK + "."
+         + PROPERTY_DEFAULT_DATASINK_KEY;
    public static final String PROPERTY_AMAZONS3_DISABLED = PROPERTY_DATASINK + PROPERTY_DEFAULT_DISABLED;
    public static final String PROPERTY_AMAZONS3_SCHEDULING_ENABLED = PROPERTY_DATASINK
          + PROPERTY_DEFAULT_SCHEDULING_ENABLED;
@@ -38,7 +41,7 @@ public class AmazonS3Module extends AbstractModule {
    @DefaultAmazonS3Datasink
    public Optional<AmazonS3Datasink> provideDefaultDatasink(DatasinkTreeService datasinkService) {
       return datasinkService.getDefaultDatasink(AmazonS3Datasink.class, PROPERTY_DEFAULT_AMAZONS3_DATASINK_ID,
-            PROPERTY_DEFAULT_AMAZONS3_DATASINK_NAME);
+            PROPERTY_DEFAULT_AMAZONS3_DATASINK_NAME, PROPERTY_DEFAULT_AMAZONS3_DATASINK_KEY);
    }
 
 }

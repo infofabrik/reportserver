@@ -1,6 +1,7 @@
 package net.datenwerke.rs.scp.service.scp;
 
 import static net.datenwerke.rs.core.service.datasinkmanager.DatasinkModule.PROPERTY_DEFAULT_DATASINK_ID;
+import static net.datenwerke.rs.core.service.datasinkmanager.DatasinkModule.PROPERTY_DEFAULT_DATASINK_KEY;
 import static net.datenwerke.rs.core.service.datasinkmanager.DatasinkModule.PROPERTY_DEFAULT_DATASINK_NAME;
 import static net.datenwerke.rs.core.service.datasinkmanager.DatasinkModule.PROPERTY_DEFAULT_DISABLED;
 import static net.datenwerke.rs.core.service.datasinkmanager.DatasinkModule.PROPERTY_DEFAULT_SCHEDULING_ENABLED;
@@ -21,6 +22,8 @@ public class ScpModule extends AbstractModule {
    public static final String PROPERTY_DEFAULT_SCP_DATASINK_ID = PROPERTY_DATASINK + "." + PROPERTY_DEFAULT_DATASINK_ID;
    public static final String PROPERTY_DEFAULT_SCP_DATASINK_NAME = PROPERTY_DATASINK + "."
          + PROPERTY_DEFAULT_DATASINK_NAME;
+   public static final String PROPERTY_DEFAULT_SCP_DATASINK_KEY = PROPERTY_DATASINK + "."
+         + PROPERTY_DEFAULT_DATASINK_KEY;
    public static final String PROPERTY_SCP_DISABLED = PROPERTY_DATASINK + PROPERTY_DEFAULT_DISABLED;
    public static final String PROPERTY_SCP_SCHEDULING_ENABLED = PROPERTY_DATASINK + PROPERTY_DEFAULT_SCHEDULING_ENABLED;
 
@@ -36,7 +39,7 @@ public class ScpModule extends AbstractModule {
    @DefaultScpDatasink
    public Optional<ScpDatasink> provideDefaultDatasink(DatasinkTreeService datasinkService) {
       return datasinkService.getDefaultDatasink(ScpDatasink.class, PROPERTY_DEFAULT_SCP_DATASINK_ID,
-            PROPERTY_DEFAULT_SCP_DATASINK_NAME);
+            PROPERTY_DEFAULT_SCP_DATASINK_NAME, PROPERTY_DEFAULT_SCP_DATASINK_KEY);
    }
 
 }

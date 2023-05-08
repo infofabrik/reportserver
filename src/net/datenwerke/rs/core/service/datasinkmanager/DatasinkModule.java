@@ -19,6 +19,7 @@ public class DatasinkModule extends AbstractReportServerModule {
    public static final String CONFIG_FILE = "datasinks/datasinks.cf";
    public static final String PROPERTY_DEFAULT_DATASINK_ID = "defaultDatasinkId";
    public static final String PROPERTY_DEFAULT_DATASINK_NAME = "defaultDatasinkName";
+   public static final String PROPERTY_DEFAULT_DATASINK_KEY = "defaultDatasinkKey";
    public static final String PROPERTY_DEFAULT_DISABLED = "[@disabled]";
    public static final String PROPERTY_DEFAULT_SCHEDULING_ENABLED = "[@supportsScheduling]";
 

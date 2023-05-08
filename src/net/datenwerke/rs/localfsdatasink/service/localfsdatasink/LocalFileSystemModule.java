@@ -1,6 +1,7 @@
 package net.datenwerke.rs.localfsdatasink.service.localfsdatasink;
 
 import static net.datenwerke.rs.core.service.datasinkmanager.DatasinkModule.PROPERTY_DEFAULT_DATASINK_ID;
+import static net.datenwerke.rs.core.service.datasinkmanager.DatasinkModule.PROPERTY_DEFAULT_DATASINK_KEY;
 import static net.datenwerke.rs.core.service.datasinkmanager.DatasinkModule.PROPERTY_DEFAULT_DATASINK_NAME;
 import static net.datenwerke.rs.core.service.datasinkmanager.DatasinkModule.PROPERTY_DEFAULT_DISABLED;
 import static net.datenwerke.rs.core.service.datasinkmanager.DatasinkModule.PROPERTY_DEFAULT_SCHEDULING_ENABLED;
@@ -22,6 +23,8 @@ public class LocalFileSystemModule extends AbstractModule {
          + PROPERTY_DEFAULT_DATASINK_ID;
    public static final String PROPERTY_DEFAULT_LOCAL_FILESYSTEM_DATASINK_NAME = PROPERTY_DATASINK + "."
          + PROPERTY_DEFAULT_DATASINK_NAME;
+   public static final String PROPERTY_DEFAULT_LOCAL_FILESYSTEM_DATASINK_KEY = PROPERTY_DATASINK + "."
+         + PROPERTY_DEFAULT_DATASINK_KEY;
    public static final String PROPERTY_LOCAL_FILESYSTEM_DISABLED = PROPERTY_DATASINK + PROPERTY_DEFAULT_DISABLED;
    public static final String PROPERTY_LOCAL_FILESYSTEM_SCHEDULING_ENABLED = PROPERTY_DATASINK
          + PROPERTY_DEFAULT_SCHEDULING_ENABLED;
@@ -38,7 +41,8 @@ public class LocalFileSystemModule extends AbstractModule {
    @DefaultLocalFileSystemDatasink
    public Optional<LocalFileSystemDatasink> provideDefaultDatasink(DatasinkTreeService datasinkService) {
       return datasinkService.getDefaultDatasink(LocalFileSystemDatasink.class,
-            PROPERTY_DEFAULT_LOCAL_FILESYSTEM_DATASINK_ID, PROPERTY_DEFAULT_LOCAL_FILESYSTEM_DATASINK_NAME);
+            PROPERTY_DEFAULT_LOCAL_FILESYSTEM_DATASINK_ID, PROPERTY_DEFAULT_LOCAL_FILESYSTEM_DATASINK_NAME,
+            PROPERTY_DEFAULT_LOCAL_FILESYSTEM_DATASINK_KEY);
    }
 
 }

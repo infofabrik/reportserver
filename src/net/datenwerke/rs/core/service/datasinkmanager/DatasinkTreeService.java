@@ -22,7 +22,7 @@ public interface DatasinkTreeService extends TreeDBManager<AbstractDatasinkManag
    DatasinkContainer merge(DatasinkContainer container);
 
    <T extends DatasinkDefinition> Optional<T> getDefaultDatasink(Class<T> type, String defaultDatasinkIdProperty,
-         String defaultDatasinkNameProperty);
+         String defaultDatasinkNameProperty, String defaultDatasinkKeyProperty);
 
    long getDatasinkIdFromKey(String key);
    

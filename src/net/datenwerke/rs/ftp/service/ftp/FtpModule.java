@@ -1,6 +1,7 @@
 package net.datenwerke.rs.ftp.service.ftp;
 
 import static net.datenwerke.rs.core.service.datasinkmanager.DatasinkModule.PROPERTY_DEFAULT_DATASINK_ID;
+import static net.datenwerke.rs.core.service.datasinkmanager.DatasinkModule.PROPERTY_DEFAULT_DATASINK_KEY;
 import static net.datenwerke.rs.core.service.datasinkmanager.DatasinkModule.PROPERTY_DEFAULT_DATASINK_NAME;
 import static net.datenwerke.rs.core.service.datasinkmanager.DatasinkModule.PROPERTY_DEFAULT_DISABLED;
 import static net.datenwerke.rs.core.service.datasinkmanager.DatasinkModule.PROPERTY_DEFAULT_SCHEDULING_ENABLED;
@@ -27,6 +28,8 @@ public class FtpModule extends AbstractModule {
          + PROPERTY_DEFAULT_DATASINK_ID;
    public static final String PROPERTY_DEFAULT_FTP_DATASINK_NAME = PROPERTY_FTP_DATASINK + "."
          + PROPERTY_DEFAULT_DATASINK_NAME;
+   public static final String PROPERTY_DEFAULT_FTP_DATASINK_KEY = PROPERTY_FTP_DATASINK + "."
+         + PROPERTY_DEFAULT_DATASINK_KEY;
    public static final String PROPERTY_FTP_DISABLED = PROPERTY_FTP_DATASINK + PROPERTY_DEFAULT_DISABLED;
    public static final String PROPERTY_FTP_SCHEDULING_ENABLED = PROPERTY_FTP_DATASINK
          + PROPERTY_DEFAULT_SCHEDULING_ENABLED;
@@ -37,6 +40,8 @@ public class FtpModule extends AbstractModule {
          + PROPERTY_DEFAULT_DATASINK_ID;
    public static final String PROPERTY_DEFAULT_SFTP_DATASINK_NAME = PROPERTY_SFTP_DATASINK + "."
          + PROPERTY_DEFAULT_DATASINK_NAME;
+   public static final String PROPERTY_DEFAULT_SFTP_DATASINK_KEY = PROPERTY_SFTP_DATASINK + "."
+         + PROPERTY_DEFAULT_DATASINK_KEY;
    public static final String PROPERTY_SFTP_DISABLED = PROPERTY_SFTP_DATASINK + PROPERTY_DEFAULT_DISABLED;
    public static final String PROPERTY_SFTP_SCHEDULING_ENABLED = PROPERTY_SFTP_DATASINK
          + PROPERTY_DEFAULT_SCHEDULING_ENABLED;
@@ -47,6 +52,8 @@ public class FtpModule extends AbstractModule {
          + PROPERTY_DEFAULT_DATASINK_ID;
    public static final String PROPERTY_DEFAULT_FTPS_DATASINK_NAME = PROPERTY_FTPS_DATASINK + "."
          + PROPERTY_DEFAULT_DATASINK_NAME;
+   public static final String PROPERTY_DEFAULT_FTPS_DATASINK_KEY = PROPERTY_FTPS_DATASINK + "."
+         + PROPERTY_DEFAULT_DATASINK_KEY;
    public static final String PROPERTY_FTPS_DISABLED = PROPERTY_FTPS_DATASINK + PROPERTY_DEFAULT_DISABLED;
    public static final String PROPERTY_FTPS_SCHEDULING_ENABLED = PROPERTY_FTPS_DATASINK
          + PROPERTY_DEFAULT_SCHEDULING_ENABLED;
@@ -70,7 +77,7 @@ public class FtpModule extends AbstractModule {
    @DefaultFtpDatasink
    public Optional<FtpDatasink> provideDefaultFtpDatasink(DatasinkTreeService datasinkService) {
       return datasinkService.getDefaultDatasink(FtpDatasink.class, PROPERTY_DEFAULT_FTP_DATASINK_ID,
-            PROPERTY_DEFAULT_FTP_DATASINK_NAME);
+            PROPERTY_DEFAULT_FTP_DATASINK_NAME, PROPERTY_DEFAULT_FTP_DATASINK_KEY);
    }
 
    @Provides
@@ -78,7 +85,7 @@ public class FtpModule extends AbstractModule {
    @DefaultSftpDatasink
    public Optional<SftpDatasink> provideDefaultSftpDatasink(DatasinkTreeService datasinkService) {
       return datasinkService.getDefaultDatasink(SftpDatasink.class, PROPERTY_DEFAULT_SFTP_DATASINK_ID,
-            PROPERTY_DEFAULT_SFTP_DATASINK_NAME);
+            PROPERTY_DEFAULT_SFTP_DATASINK_NAME, PROPERTY_DEFAULT_SFTP_DATASINK_KEY);
    }
 
    @Provides
@@ -86,7 +93,7 @@ public class FtpModule extends AbstractModule {
    @DefaultFtpsDatasink
    public Optional<FtpsDatasink> provideDefaultFtpsDatasink(DatasinkTreeService datasinkService) {
       return datasinkService.getDefaultDatasink(FtpsDatasink.class, PROPERTY_DEFAULT_FTPS_DATASINK_ID,
-            PROPERTY_DEFAULT_FTPS_DATASINK_NAME);
+            PROPERTY_DEFAULT_FTPS_DATASINK_NAME, PROPERTY_DEFAULT_FTPS_DATASINK_KEY);
    }
 
 }

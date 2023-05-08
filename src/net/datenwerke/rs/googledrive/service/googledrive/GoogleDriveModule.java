@@ -1,6 +1,7 @@
 package net.datenwerke.rs.googledrive.service.googledrive;
 
 import static net.datenwerke.rs.core.service.datasinkmanager.DatasinkModule.PROPERTY_DEFAULT_DATASINK_ID;
+import static net.datenwerke.rs.core.service.datasinkmanager.DatasinkModule.PROPERTY_DEFAULT_DATASINK_KEY;
 import static net.datenwerke.rs.core.service.datasinkmanager.DatasinkModule.PROPERTY_DEFAULT_DATASINK_NAME;
 import static net.datenwerke.rs.core.service.datasinkmanager.DatasinkModule.PROPERTY_DEFAULT_DISABLED;
 import static net.datenwerke.rs.core.service.datasinkmanager.DatasinkModule.PROPERTY_DEFAULT_SCHEDULING_ENABLED;
@@ -22,6 +23,8 @@ public class GoogleDriveModule extends AbstractModule {
          + PROPERTY_DEFAULT_DATASINK_ID;
    public static final String PROPERTY_DEFAULT_GOOGLEDRIVE_DATASINK_NAME = PROPERTY_DATASINK + "."
          + PROPERTY_DEFAULT_DATASINK_NAME;
+   public static final String PROPERTY_DEFAULT_GOOGLEDRIVE_DATASINK_KEY = PROPERTY_DATASINK + "."
+         + PROPERTY_DEFAULT_DATASINK_KEY;
    public static final String PROPERTY_GOOGLEDRIVE_DISABLED = PROPERTY_DATASINK + PROPERTY_DEFAULT_DISABLED;
    public static final String PROPERTY_GOOGLEDRIVE_SCHEDULING_ENABLED = PROPERTY_DATASINK
          + PROPERTY_DEFAULT_SCHEDULING_ENABLED;
@@ -38,7 +41,7 @@ public class GoogleDriveModule extends AbstractModule {
    @DefaultGoogleDriveDatasink
    public Optional<GoogleDriveDatasink> provideDefaultDatasink(DatasinkTreeService datasinkService) {
       return datasinkService.getDefaultDatasink(GoogleDriveDatasink.class, PROPERTY_DEFAULT_GOOGLEDRIVE_DATASINK_ID,
-            PROPERTY_DEFAULT_GOOGLEDRIVE_DATASINK_NAME);
+            PROPERTY_DEFAULT_GOOGLEDRIVE_DATASINK_NAME, PROPERTY_DEFAULT_GOOGLEDRIVE_DATASINK_KEY);
    }
 
 }

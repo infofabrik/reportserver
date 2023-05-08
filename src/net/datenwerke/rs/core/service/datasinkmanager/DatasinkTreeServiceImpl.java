@@ -100,20 +100,21 @@ public class DatasinkTreeServiceImpl extends SecuredTreeDBManagerImpl<AbstractDa
 
    @Override
    public <T extends DatasinkDefinition> Optional<T> getDefaultDatasink(Class<T> type, String defaultDatasinkIdProperty,
-         String defaultDatasinkNameProperty) {
+         String defaultDatasinkNameProperty, String defaultDatasinkKeyProperty) {
       final ConfigService configService = configServiceProvider.get();
 
       Configuration config = configService.getConfigFailsafe(DatasinkModule.CONFIG_FILE);
 
       DatasinkDefinition datasink = null;
-      if (config.containsKey(defaultDatasinkIdProperty)) {
+      if (config.containsKey(defaultDatasinkKeyProperty)) {
+         String key = config.getString(defaultDatasinkKeyProperty);
+         datasink = getDatasinkByKey(key);
+      } else if (config.containsKey(defaultDatasinkIdProperty)) {
          Long id = config.getLong(defaultDatasinkIdProperty);
          datasink = getDatasinkById(id);
-      } else {
-         if (config.containsKey(defaultDatasinkNameProperty)) {
-            String name = config.getString(defaultDatasinkNameProperty);
-            datasink = getDatasinkByName(name);
-         }
+      } else if (config.containsKey(defaultDatasinkNameProperty)) {
+         String name = config.getString(defaultDatasinkNameProperty);
+         datasink = getDatasinkByName(name);
       }
       if (null != datasink && type.isInstance(datasink))
          return Optional.of((T) datasink);
