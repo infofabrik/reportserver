@@ -1,7 +1,5 @@
 package net.datenwerke.rs.dot.service.dot.rest.resources;
 
-import java.io.IOException;
-import java.io.OutputStream;
 import java.util.Date;
 
 import javax.inject.Inject;
@@ -11,10 +9,8 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
-import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
-import javax.ws.rs.core.StreamingOutput;
 
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.glassfish.jersey.media.multipart.ContentDisposition;
@@ -73,14 +69,9 @@ public class DotRendererResource extends RsRestResource {
          ContentDisposition contentDisposition = ContentDisposition.type("inline").fileName("graph.svg")
                .creationDate(new Date()).build();
 
-         return Response.status(Status.OK).type("image/svg+xml").entity(new StreamingOutput() {
-            @Override
-            public void write(OutputStream output) throws IOException, WebApplicationException {
-               byte[] imageBytes = dotServiceProvider.get().render(Format.SVG, dot, width).toByteArray();
-               output.write(imageBytes);
-               output.flush();
-            }
-         }).header("Content-Disposition", contentDisposition).build();
+         final String imageString = dotServiceProvider.get().render(Format.SVG, dot, width);
+         return Response.status(Status.OK).type("image/svg+xml").entity(imageString)
+               .header("Content-Disposition", contentDisposition).build();
       } catch (Exception e) {
          logger.error(ExceptionUtils.getRootCauseMessage(e), e);
          return Response.status(Status.INTERNAL_SERVER_ERROR.getStatusCode(), ExceptionUtils.getRootCauseMessage(e))
