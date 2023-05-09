@@ -17,8 +17,8 @@ import org.glassfish.jersey.media.multipart.ContentDisposition;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import guru.nidi.graphviz.engine.Format;
 import net.datenwerke.rs.dot.service.dot.DotService;
+import net.datenwerke.rs.dot.service.dot.TextFormat;
 import net.datenwerke.rs.fileserver.service.fileserver.entities.FileServerFile;
 import net.datenwerke.rs.rest.resources.RsRestResource;
 import net.datenwerke.rs.rest.service.rest.annotations.RestAuthentication;
@@ -69,8 +69,8 @@ public class DotRendererResource extends RsRestResource {
          ContentDisposition contentDisposition = ContentDisposition.type("inline").fileName("graph.svg")
                .creationDate(new Date()).build();
 
-         final String imageString = dotServiceProvider.get().render(Format.SVG, dot, width);
-         return Response.status(Status.OK).type("image/svg+xml").entity(imageString)
+         String imageStr = dotServiceProvider.get().render(TextFormat.SVG, dot, width);
+         return Response.status(Status.OK).type("image/svg+xml").entity(imageStr)
                .header("Content-Disposition", contentDisposition).build();
       } catch (Exception e) {
          logger.error(ExceptionUtils.getRootCauseMessage(e), e);
