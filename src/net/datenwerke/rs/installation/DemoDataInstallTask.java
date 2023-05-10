@@ -29,6 +29,7 @@ public class DemoDataInstallTask implements DbInstallationTask {
 
    private static final String DEMO_DATASOURCES_FOLDER_NAME = "sample data";
    private static final String DEMO_DATA_SOURCE_NAME = "Demo Data";
+   private static final String DEMO_DATA_SOURCE_KEY = "DEMO_DATA";
 
    private DatasourceService datasourceService;
    private DBHelperService dbHelperService;
@@ -97,6 +98,7 @@ public class DemoDataInstallTask implements DbInstallationTask {
       demoDataSource.setDatabaseDescriptor(dbHelperName);
       demoDataSource.setUrl(url);
       demoDataSource.setName(DEMO_DATA_SOURCE_NAME);
+      demoDataSource.setKey(DEMO_DATA_SOURCE_KEY);
       demoDataSource.setUsername(username);
       demoDataSource.setPassword(password);
       folder.addChild(demoDataSource);

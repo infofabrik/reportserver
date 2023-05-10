@@ -23,6 +23,7 @@ public class DatasourceModule extends AbstractReportServerModule {
    public static final String CONFIG_FILE = "datasources/datasources.cf";
    public static final String PROPERTY_DEFAULT_DATASOURCE_ID = "datasource.defaultDatasource";
    public static final String PROPERTY_DEFAULT_DATASOURCE_NAME = "datasource.defaultDatasourceName";
+   public static final String PROPERTY_DEFAULT_DATASOURCE_KEY = "datasource.defaultDatasourceKey";
 
    @Override
    protected void configure() {
@@ -58,13 +59,23 @@ public class DatasourceModule extends AbstractReportServerModule {
          DatasourceService dsService) {
       String id = config.getString(DatasourceModule.PROPERTY_DEFAULT_DATASOURCE_ID);
       if (null == id) {
-         String name = config.getString(DatasourceModule.PROPERTY_DEFAULT_DATASOURCE_NAME);
-         if (null != name) {
+         String key = config.getString(DatasourceModule.PROPERTY_DEFAULT_DATASOURCE_KEY);
+         if (null != key) {
             try {
-               DatasourceDefinition ds = dsService.getDatasourceByName(name);
+               DatasourceDefinition ds = dsService.getDatasourceByKey(key);
                if (null != ds)
                   id = String.valueOf(ds.getId());
             } catch (Exception e) {
+            }
+         } else {
+            String name = config.getString(DatasourceModule.PROPERTY_DEFAULT_DATASOURCE_NAME);
+            if (null != name) {
+               try {
+                  DatasourceDefinition ds = dsService.getDatasourceByName(name);
+                  if (null != ds)
+                     id = String.valueOf(ds.getId());
+               } catch (Exception e) {
+               }
             }
          }
       }
