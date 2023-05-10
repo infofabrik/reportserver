@@ -13,6 +13,7 @@ import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.user.client.ui.Label;
 import com.google.inject.Inject;
+import com.google.inject.Provider;
 import com.sencha.gxt.cell.core.client.ButtonCell.ButtonArrowAlign;
 import com.sencha.gxt.core.client.IdentityValueProvider;
 import com.sencha.gxt.core.client.Style.SelectionMode;
@@ -40,10 +41,6 @@ import com.sencha.gxt.widget.core.client.event.BeforeShowContextMenuEvent;
 import com.sencha.gxt.widget.core.client.event.BeforeShowContextMenuEvent.BeforeShowContextMenuHandler;
 import com.sencha.gxt.widget.core.client.event.CellDoubleClickEvent;
 import com.sencha.gxt.widget.core.client.event.CellDoubleClickEvent.CellDoubleClickHandler;
-import com.sencha.gxt.widget.core.client.event.DialogHideEvent;
-import com.sencha.gxt.widget.core.client.event.DialogHideEvent.DialogHideHandler;
-import com.sencha.gxt.widget.core.client.event.SelectEvent;
-import com.sencha.gxt.widget.core.client.event.SelectEvent.SelectHandler;
 import com.sencha.gxt.widget.core.client.form.TextField;
 import com.sencha.gxt.widget.core.client.grid.ColumnConfig;
 import com.sencha.gxt.widget.core.client.grid.ColumnModel;
@@ -87,6 +84,7 @@ import net.datenwerke.gxtdto.client.forms.simpleform.SimpleForm;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCStringNoHtmlDecode;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCTextArea;
 import net.datenwerke.gxtdto.client.locale.BaseMessages;
+import net.datenwerke.gxtdto.client.utilityservices.UtilsUIService;
 import net.datenwerke.gxtdto.client.utilityservices.toolbar.DwToolBar;
 import net.datenwerke.gxtdto.client.utilityservices.toolbar.ToolbarService;
 import net.datenwerke.gxtdto.client.utils.modelkeyprovider.DtoIdModelKeyProvider;
@@ -129,6 +127,7 @@ public class PreFilterView extends ReportExecutorMainPanelView {
    private final ContextHelpUiService contextHelpService;
    private final ReportExecutorUIService reportExecutorService;
    private final TableReportUtilityDao tableReportUtilityDao;
+   private final Provider<UtilsUIService> utilsUIServiceProvider;
 
    private List<PreFilterConfiguratorHook> preFilterConfigs;
 
@@ -144,9 +143,15 @@ public class PreFilterView extends ReportExecutorMainPanelView {
    private boolean initialized;
 
    @Inject
-   public PreFilterView(ClipboardUiService clipboardService, HookHandlerService hookHandler,
-         ContextHelpUiService contextHelpService, ToolbarService toolbarService,
-         ReportExecutorUIService reportExecutorService, TableReportUtilityDao tableReportUtilityDao) {
+   public PreFilterView(
+         ClipboardUiService clipboardService, 
+         HookHandlerService hookHandler,
+         ContextHelpUiService contextHelpService, 
+         ToolbarService toolbarService,
+         ReportExecutorUIService reportExecutorService, 
+         TableReportUtilityDao tableReportUtilityDao,
+         Provider<UtilsUIService> utilsUIServiceProvider
+         ) {
 
       /* store objects */
       this.clipboardService = clipboardService;
@@ -155,6 +160,7 @@ public class PreFilterView extends ReportExecutorMainPanelView {
       this.toolbarService = toolbarService;
       this.reportExecutorService = reportExecutorService;
       this.tableReportUtilityDao = tableReportUtilityDao;
+      this.utilsUIServiceProvider = utilsUIServiceProvider;
    }
 
    @Override
@@ -604,13 +610,7 @@ public class PreFilterView extends ReportExecutorMainPanelView {
       /* add block */
       DwTextButton addBlockButton = toolbarService.createSmallButtonLeft(messages.addBlockLabel(),
             BaseIcon.PLUS_SQUARE);
-      addBlockButton.addSelectHandler(new SelectHandler() {
-
-         @Override
-         public void onSelect(SelectEvent event) {
-            addBlock();
-         }
-      });
+      addBlockButton.addSelectHandler(event -> addBlock());
       toolbar.add(addBlockButton);
 
       /* add filter */
@@ -619,87 +619,97 @@ public class PreFilterView extends ReportExecutorMainPanelView {
       toolbar.add(addFilterButton);
 
       /* create filter menu */
-      Menu filterMenu = new DwMenu();
+      final Menu filterMenu = new DwMenu();
       addFilterButton.setMenu(filterMenu);
       addFilterButton.setArrowAlign(ButtonArrowAlign.RIGHT);
 
-      for (final PreFilterConfiguratorHook filterConfig : preFilterConfigs) {
-         MenuItem item = new DwMenuItem(filterConfig.getHeadline(), filterConfig.getIcon());
-         filterMenu.add(item);
+      preFilterConfigs
+         .forEach(filterConfig -> {
+            MenuItem item = new DwMenuItem(filterConfig.getHeadline(), filterConfig.getIcon());
+            filterMenu.add(item);
 
-         item.addSelectionHandler(new SelectionHandler<Item>() {
-
-            @Override
-            public void onSelection(SelectionEvent<Item> event) {
-               addFilter(filterConfig);
-            }
+            item.addSelectionHandler(event -> addFilter(filterConfig));
          });
-      }
 
       toolbar.add(new SeparatorToolItem());
 
       DwSplitButton toggleAndOrButton = new DwSplitButton(PreFilterMessages.INSTANCE.toggleAndOrBtnLabel());
       toggleAndOrButton.setIcon(BaseIcon.TOGGLE_ON);
-      toggleAndOrButton.addSelectHandler(new SelectHandler() {
-         @Override
-         public void onSelect(SelectEvent event) {
-            toggleAndOr();
-         }
-      });
+      toggleAndOrButton.addSelectHandler(event -> toggleAndOr());
       toolbar.add(toggleAndOrButton);
 
       /* add export to DOT Button */
-      DwTextButton exportToDotButton = toolbarService
-            .createSmallButtonLeft(PreFilterMessages.INSTANCE.exportToDOTBtnLabel(), BaseIcon.FILE);
-
-      exportToDotButton.addSelectHandler(event -> {
-         tableReportUtilityDao.exportToDot(reportExecutorService.createExecuteReportToken(report), report,
-            new RsAsyncCallback<String>() {
-               @Override
-               public void onSuccess(String result) {
-                  displayExportToDotResult(result);
-               }
+      DwTextButton prefilterExportButton = toolbarService
+            .createSmallButtonLeft(PreFilterMessages.INSTANCE.export(), BaseIcon.EXPORT);
       
-               @Override
-               public void onFailure(Throwable caught) {
-                  new DetailErrorDialog(caught).show();
-               }
-            });
-         
+      /* create filter menu */
+      Menu exportMenu = new DwMenu();
+      prefilterExportButton.setMenu(exportMenu);
+      prefilterExportButton.setArrowAlign(ButtonArrowAlign.RIGHT);
+      
+      // export to dot
+      MenuItem itemDotExport = new DwMenuItem("DOT", BaseIcon.CODE);
+      exportMenu.add(itemDotExport);
+      itemDotExport.addSelectionHandler(event -> {
+         tableReportUtilityDao.exportToDot(reportExecutorService.createExecuteReportToken(report), report,
+             new RsAsyncCallback<String>() {
+                @Override
+                public void onSuccess(String result) {
+                   displayExportToDotResult(result);
+                }
+       
+                @Override
+                public void onFailure(Throwable caught) {
+                   new DetailErrorDialog(caught).show();
+                }
+             });
       });
-      toolbar.add(exportToDotButton);
+      
+      // export to SVG
+      MenuItem itemSvgExport = new DwMenuItem("SVG", BaseIcon.SITEMAP);
+      exportMenu.add(itemSvgExport);
+      itemSvgExport.addSelectionHandler(event -> {
+         startProgress();
+         mainPanel.mask(BaseMessages.INSTANCE.loadingMsg());
+         tableReportUtilityDao.exportToSvg(reportExecutorService.createExecuteReportToken(report), report,
+               new RsAsyncCallback<String>() {
+                  @Override
+                  public void onSuccess(String result) {
+                     mainPanel.unmask();
+                     utilsUIServiceProvider.get().showHtmlPopupWindows(PreFilterMessages.INSTANCE.preFilterHeading(),
+                           result, true);
+                  }
+         
+                  @Override
+                  public void onFailure(Throwable caught) {
+                     mainPanel.unmask();
+                     new DetailErrorDialog(caught).show();
+                  }
+               });
+      });
+
+      toolbar.add(prefilterExportButton);
 
       toolbar.add(new SeparatorToolItem());
 
       /* remove */
       DwSplitButton deleteColumnButton = new DwSplitButton(BaseMessages.INSTANCE.remove());
       deleteColumnButton.setIcon(BaseIcon.DELETE);
-      deleteColumnButton.addSelectHandler(new SelectHandler() {
-         @Override
-         public void onSelect(SelectEvent event) {
-            removeSelected();
-         }
-      });
+      deleteColumnButton.addSelectHandler(event -> removeSelected());
       Menu deleteMenu = new DwMenu();
       deleteColumnButton.setMenu(deleteMenu);
       toolbar.add(deleteColumnButton);
 
       MenuItem deleteAllColumnsItem = new DwMenuItem(BaseMessages.INSTANCE.removeAll(), BaseIcon.DELETE);
       deleteMenu.add(deleteAllColumnsItem);
-      deleteAllColumnsItem.addSelectionHandler(new SelectionHandler<Item>() {
-         @Override
-         public void onSelection(SelectionEvent<Item> event) {
-            ConfirmMessageBox cmb = new DwConfirmMessageBox(messages.removeAllConfirmHeading(),
-                  messages.removeAllConfirmText());
-            cmb.addDialogHideHandler(new DialogHideHandler() {
-               @Override
-               public void onDialogHide(DialogHideEvent event) {
-                  if (event.getHideButton() == PredefinedButton.YES)
-                     removeAll();
-               }
-            });
-            cmb.show();
-         }
+      deleteAllColumnsItem.addSelectionHandler(selectionEvent -> {
+         final ConfirmMessageBox cmb = new DwConfirmMessageBox(messages.removeAllConfirmHeading(),
+               messages.removeAllConfirmText());
+         cmb.addDialogHideHandler(dialogHideEvent -> {
+            if (dialogHideEvent.getHideButton() == PredefinedButton.YES)
+               removeAll();
+         });
+         cmb.show();
       });
 
       toolbar.add(new FillToolItem());
@@ -784,24 +794,17 @@ public class PreFilterView extends ReportExecutorMainPanelView {
       window.add(wrapper);
 
       DwTextButton displayBtn = new DwTextButton(ExImportMessages.INSTANCE.quickExportDisplayDirectLabel());
-      displayBtn.addSelectHandler(new SelectHandler() {
-         @Override
-         public void onSelect(SelectEvent event) {
-            window.hide();
-            startProgress();
-            displayResult(result);
-         }
+      displayBtn.addSelectHandler(event -> {
+         window.hide();
+         startProgress();
+         displayResult(result);
       });
       window.addButton(displayBtn);
 
       DwTextButton downloadBtn = new DwTextButton(ExImportMessages.INSTANCE.quickExportDownloadLabel());
-      downloadBtn.addSelectHandler(new SelectHandler() {
-
-         @Override
-         public void onSelect(SelectEvent event) {
-            window.hide();
-            downloadResult();
-         }
+      downloadBtn.addSelectHandler(event -> {
+         window.hide();
+         downloadResult();
       });
       window.addButton(downloadBtn);
 
@@ -823,8 +826,8 @@ public class PreFilterView extends ReportExecutorMainPanelView {
          break;
       }
       store.update(block);
-      for (FilterBlockDto child : block.getChildBlocks())
-         toggleAndOr((FilterBlockDtoDec) child);
+      block.getChildBlocks()
+         .forEach(child -> toggleAndOr((FilterBlockDtoDec) child));
    }
 
    protected void removeSelected() {
@@ -838,13 +841,9 @@ public class PreFilterView extends ReportExecutorMainPanelView {
       if (store.hasChildren(item)) {
          ConfirmMessageBox cmb = new DwConfirmMessageBox(messages.removeSelectedConfirmHeading(),
                messages.removeSelectedConfirmText());
-         cmb.addDialogHideHandler(new DialogHideHandler() {
-
-            @Override
-            public void onDialogHide(DialogHideEvent event) {
-               if (event.getHideButton() == PredefinedButton.YES)
-                  doRemove(item);
-            }
+         cmb.addDialogHideHandler(event -> {
+            if (event.getHideButton() == PredefinedButton.YES)
+               doRemove(item);
          });
          cmb.show();
       } else

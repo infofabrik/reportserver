@@ -41,5 +41,7 @@ public interface TableReportUtilityServiceAsync {
          AsyncCallback<PagingLoadResult<ListStringBaseModel>> transformAndKeepCallback);
 
    void exportToDot(String token, TableReportDto report, AsyncCallback<String> callback);
+   
+   void exportToSvg(String token, TableReportDto report, AsyncCallback<String> callback);
 
 }

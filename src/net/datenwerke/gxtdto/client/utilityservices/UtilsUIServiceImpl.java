@@ -2,16 +2,12 @@ package net.datenwerke.gxtdto.client.utilityservices;
 
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.dom.client.IFrameElement;
-import com.google.gwt.event.dom.client.LoadEvent;
-import com.google.gwt.event.dom.client.LoadHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Frame;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
-import com.sencha.gxt.widget.core.client.event.SelectEvent;
-import com.sencha.gxt.widget.core.client.event.SelectEvent.SelectHandler;
 
 import net.datenwerke.gf.client.dispatcher.DispatcherService;
 import net.datenwerke.gxtdto.client.baseex.widget.btn.DwTextButton;
@@ -83,21 +79,18 @@ public class UtilsUIServiceImpl implements UtilsUIService {
          throw new IllegalArgumentException("download url was null");
 
       Frame downloadFrame = Frame.wrap(Document.get().getElementById(GWT_DOWNLOAD_FRAME));
-      iframeLoadHandler = downloadFrame.addLoadHandler(new LoadHandler() {
-         @Override
-         public void onLoad(LoadEvent event) {
-            iframeLoadHandler.removeHandler();
-            String content = getIFrameContent(GWT_DOWNLOAD_FRAME);
-            String title = getIFrameTitle(GWT_DOWNLOAD_FRAME);
-            showHtmlPopupWindows(title, content);
-         }
+      iframeLoadHandler = downloadFrame.addLoadHandler(event -> {
+         iframeLoadHandler.removeHandler();
+         String content = getIFrameContent(GWT_DOWNLOAD_FRAME);
+         String title = getIFrameTitle(GWT_DOWNLOAD_FRAME);
+         showHtmlPopupWindows(title, content, false);
       });
 
       downloadFrame.setUrl(url);
-
    }
 
-   public void showHtmlPopupWindows(final String title, final String html) {
+   @Override
+   public void showHtmlPopupWindows(final String title, final String html, final boolean maximize) {
       SimpleDialogWindow popup = new SimpleDialogWindow() {
 
          @Override
@@ -111,18 +104,13 @@ public class UtilsUIServiceImpl implements UtilsUIService {
             setWidget(asIframe(html));
 
             DwTextButton okButton = new DwTextButton(BaseMessages.INSTANCE.ok());
-            okButton.addSelectHandler(new SelectHandler() {
-               @Override
-               public void onSelect(SelectEvent event) {
-                  hide();
-               }
-            });
-
+            okButton.addSelectHandler(event -> hide());
             addButton(okButton);
          }
       };
-
       popup.show();
+      if (maximize)
+         popup.maximize();
    }
 
    private native String getIFrameContent(String name) /*-{

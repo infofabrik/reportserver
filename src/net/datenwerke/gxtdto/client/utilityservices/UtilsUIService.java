@@ -19,5 +19,7 @@ public interface UtilsUIService {
    Widget asIframe(String html);
 
    String guessUserTimezone();
+   
+   void showHtmlPopupWindows(final String title, final String html, final boolean maximize);
 
 }

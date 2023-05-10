@@ -42,6 +42,7 @@ public interface PreFilterMessages extends Messages {
    String infoTextColumnToPrefilter();
 
    String toggleAndOrBtnLabel();
+   
+   String export();
 
-   String exportToDOTBtnLabel();
 }

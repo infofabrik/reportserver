@@ -1,6 +1,7 @@
 
 package net.datenwerke.rs.base.server.table;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -59,6 +60,8 @@ import net.datenwerke.rs.core.service.reportmanager.entities.reports.ReportMetad
 import net.datenwerke.rs.core.service.reportmanager.exceptions.ReportExecutorException;
 import net.datenwerke.rs.core.service.reportmanager.parameters.ParameterSet;
 import net.datenwerke.rs.core.service.reportmanager.parameters.ParameterSetFactory;
+import net.datenwerke.rs.dot.service.dot.DotService;
+import net.datenwerke.rs.dot.service.dot.TextFormat;
 import net.datenwerke.security.server.SecuredRemoteServiceServlet;
 import net.datenwerke.security.service.authenticator.AuthenticatorService;
 import net.datenwerke.security.service.security.SecurityService;
@@ -92,6 +95,7 @@ public class TableReportUtilityServiceImpl extends SecuredRemoteServiceServlet i
    private final I18nToolsService i18nToolsService;
    private final ReportService reportService;
    private final Provider<PrefilterDotService> prefilterDotServiceProvider;
+   private final Provider<DotService> dotServiceProvider;
 
    @Inject
    public TableReportUtilityServiceImpl(
@@ -104,7 +108,8 @@ public class TableReportUtilityServiceImpl extends SecuredRemoteServiceServlet i
          SecurityService securityService,
          I18nToolsService i18nToolsService, 
          ReportService reportService, 
-         Provider<PrefilterDotService> prefilterDotServiceProvider
+         Provider<PrefilterDotService> prefilterDotServiceProvider,
+         Provider<DotService> dotServiceProvider
          ) {
 
       this.simpleDataSupplyer = simpleDataSupplyer;
@@ -117,6 +122,7 @@ public class TableReportUtilityServiceImpl extends SecuredRemoteServiceServlet i
       this.i18nToolsService = i18nToolsService;
       this.reportService = reportService;
       this.prefilterDotServiceProvider = prefilterDotServiceProvider;
+      this.dotServiceProvider = dotServiceProvider;
    }
 
    private ParameterSet getParameterSet(Report report) {
@@ -420,6 +426,20 @@ public class TableReportUtilityServiceImpl extends SecuredRemoteServiceServlet i
    public String exportToDot(String token, @Named("report") TableReportDto reportDto) {
       User user = authenticatorServiceProvider.get().getCurrentUser();
       return prefilterDotServiceProvider.get().createDotFile(user, reportDto, token);
+   }
+
+   @SecurityChecked(argumentVerification = {
+         @ArgumentVerification(name = "report", isDto = true, verify = @RightsVerification(rights = { Read.class,
+               Execute.class })) })
+   @Override
+   public String exportToSvg(String token, @Named("report") TableReportDto reportDto) throws ServerCallFailedException {
+      User user = authenticatorServiceProvider.get().getCurrentUser();
+      String dot = prefilterDotServiceProvider.get().createDotFile(user, reportDto, token);
+      try {
+         return dotServiceProvider.get().render(TextFormat.SVG, dot, 1200);
+      } catch (IOException e) {
+         throw new ServerCallFailedException(e);
+      }
    }
 
 }
