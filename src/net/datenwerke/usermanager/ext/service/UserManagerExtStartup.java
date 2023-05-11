@@ -7,6 +7,7 @@ import net.datenwerke.eximport.hooks.ExporterProviderHook;
 import net.datenwerke.eximport.hooks.ImporterProviderHook;
 import net.datenwerke.gf.service.history.hooks.HistoryUrlBuilderHook;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
+import net.datenwerke.rs.adminutils.service.systemconsole.generalinfo.hooks.GeneralInfoCategoryProviderHook;
 import net.datenwerke.rs.base.ext.service.hooks.ExportConfigHook;
 import net.datenwerke.rs.base.ext.service.hooks.RemoteEntityImporterHook;
 import net.datenwerke.rs.eximport.service.eximport.hooks.ExportAllHook;
@@ -15,6 +16,7 @@ import net.datenwerke.rs.eximport.service.eximport.im.http.hooks.HttpImportConfi
 import net.datenwerke.rs.terminal.service.terminal.hooks.TerminalCommandHook;
 import net.datenwerke.rs.utils.localization.hooks.LocaleChangedNotificationHook;
 import net.datenwerke.security.service.usermanager.hooks.GroupModSubCommandHook;
+import net.datenwerke.security.service.usermanager.hooks.UsageStatisticsUserEntryProviderHook;
 import net.datenwerke.usermanager.ext.service.eximport.HttpUserManagerImportConfigurationHooker;
 import net.datenwerke.usermanager.ext.service.eximport.UserManagerExporter;
 import net.datenwerke.usermanager.ext.service.eximport.UserManagerImporter;
@@ -24,6 +26,13 @@ import net.datenwerke.usermanager.ext.service.eximport.hooker.RemoteUserImporter
 import net.datenwerke.usermanager.ext.service.eximport.hooker.UserExportConfigHooker;
 import net.datenwerke.usermanager.ext.service.history.UserManagerHistoryUrlBuilderHooker;
 import net.datenwerke.usermanager.ext.service.hookers.UpdateUserLocalHooker;
+import net.datenwerke.usermanager.ext.service.hookers.UsageStatisticsActiveUsersProviderHooker;
+import net.datenwerke.usermanager.ext.service.hookers.UsageStatisticsExpiredUsersProviderHooker;
+import net.datenwerke.usermanager.ext.service.hookers.UsageStatisticsInhibitedUsersProviderHooker;
+import net.datenwerke.usermanager.ext.service.hookers.UsageStatisticsTotalGroupsProviderHooker;
+import net.datenwerke.usermanager.ext.service.hookers.UsageStatisticsTotalOrganizationalUnitsProviderHooker;
+import net.datenwerke.usermanager.ext.service.hookers.UsageStatisticsTotalUsersProviderHooker;
+import net.datenwerke.usermanager.ext.service.hookers.UserCategoryProviderHooker;
 import net.datenwerke.usermanager.ext.service.hooks.UserModSubCommandHook;
 import net.datenwerke.usermanager.ext.service.terminal.commands.AddMembersSubCommand;
 import net.datenwerke.usermanager.ext.service.terminal.commands.GroupModCommand;
@@ -54,7 +63,15 @@ public class UserManagerExtStartup {
          
          Provider<UserExportConfigHooker> userExportConfigHooker,
          
-         Provider<RemoteUserImporterHooker> remoteUserImporterHooker
+         Provider<RemoteUserImporterHooker> remoteUserImporterHooker,
+         
+         final Provider<UsageStatisticsTotalUsersProviderHooker> usageStatsTotalUsersProvider,
+         final Provider<UsageStatisticsTotalOrganizationalUnitsProviderHooker> usageStatsTotalOusProvider,
+         final Provider<UsageStatisticsTotalGroupsProviderHooker> usageStatsTotalGroupsProvider,
+         final Provider<UsageStatisticsActiveUsersProviderHooker> usageStatsActiveUsersProvider,
+         final Provider<UsageStatisticsInhibitedUsersProviderHooker> usageStatsInhibitedUsersProvider,
+         final Provider<UsageStatisticsExpiredUsersProviderHooker> usageStatsExpiredUsersProvider,
+         final Provider<UserCategoryProviderHooker> usageStatistics
          ) {
 
       hookHandler.attachHooker(ExporterProviderHook.class, new ExporterProviderHook(exporterProvider));
@@ -76,5 +93,20 @@ public class UserManagerExtStartup {
       hookHandler.attachHooker(ExportConfigHook.class, userExportConfigHooker);
       
       hookHandler.attachHooker(RemoteEntityImporterHook.class, remoteUserImporterHooker);
+      
+      hookHandler.attachHooker(UsageStatisticsUserEntryProviderHook.class, usageStatsTotalUsersProvider,
+            HookHandlerService.PRIORITY_LOW);
+      hookHandler.attachHooker(UsageStatisticsUserEntryProviderHook.class, usageStatsTotalOusProvider,
+            HookHandlerService.PRIORITY_LOW + 5);
+      hookHandler.attachHooker(UsageStatisticsUserEntryProviderHook.class, usageStatsTotalGroupsProvider,
+            HookHandlerService.PRIORITY_LOW + 10);
+      hookHandler.attachHooker(UsageStatisticsUserEntryProviderHook.class, usageStatsActiveUsersProvider,
+            HookHandlerService.PRIORITY_LOW + 15);
+      hookHandler.attachHooker(UsageStatisticsUserEntryProviderHook.class, usageStatsInhibitedUsersProvider,
+            HookHandlerService.PRIORITY_LOW + 20);
+      hookHandler.attachHooker(UsageStatisticsUserEntryProviderHook.class, usageStatsExpiredUsersProvider,
+            HookHandlerService.PRIORITY_LOW + 25);
+      hookHandler.attachHooker(GeneralInfoCategoryProviderHook.class, usageStatistics,
+            HookHandlerService.PRIORITY_LOW + 55);
    }
 }

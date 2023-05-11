@@ -14,6 +14,8 @@ import javax.persistence.Version;
 import org.hibernate.annotations.Type;
 import org.hibernate.envers.Audited;
 
+import com.google.common.base.MoreObjects;
+
 import net.datenwerke.dtoservices.dtogenerator.annotations.ExposeToClient;
 import net.datenwerke.dtoservices.dtogenerator.annotations.GenerateDto;
 
@@ -115,6 +117,15 @@ public class UserProperty implements Serializable {
 
    public void setValue(Long l) {
       setValue(String.valueOf(l));
+   }
+   
+   @Override
+   public String toString() {
+      return MoreObjects.toStringHelper(getClass())
+            .add("ID", id)
+            .add("key", key)
+            .add("value", value)
+            .toString();
    }
 
 }

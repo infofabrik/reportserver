@@ -5,6 +5,7 @@ import static net.datenwerke.rs.utils.exception.shared.LambdaExceptionUtil.rethr
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -422,4 +423,27 @@ public class UserManagerServiceImpl extends SecuredTreeDBManagerImpl<AbstractUse
       }
    }
 
+   @Override
+   public long getNumberOfActiveUsers() {
+      long totalUsers = ((Number) entityManagerProvider.get()
+            .createQuery("SELECT COUNT(u) FROM User u")
+            .getSingleResult()).longValue();
+      return totalUsers - getNumberOfInhibitedUsers() - getNumberOfExpiredUsers();
+   }
+
+   @Override
+   public long getNumberOfInhibitedUsers() {
+      return ((Number) entityManagerProvider.get()
+            .createQuery("SELECT COUNT(p) FROM UserProperty p WHERE p.key = 'accountInhibited' and p.value = 'true'")
+            .getSingleResult()).longValue();
+   }
+
+   @Override
+   public long getNumberOfExpiredUsers() {
+      return ((Number) entityManagerProvider.get()
+            .createQuery("SELECT COUNT(p) FROM UserProperty p WHERE p.key = 'accountExpirationDate' and cast(p.value as long) < " + Long.toString(new Date().getTime()))
+            .getSingleResult()).longValue();
+   }
+
+   
 }

@@ -185,5 +185,17 @@ public interface UserManagerService extends TreeDBManager<AbstractUserManagerNod
     * @param user the user to fetch indirect groups from
     */
    Collection<Group> getIndirectGroups(User user);
+   
+   /**
+    * Returns the number of active users in the system, that is, not inhibited and
+    * not with accounts not expired.
+    * 
+    * @return
+    */
+   long getNumberOfActiveUsers();
+   
+   long getNumberOfInhibitedUsers();
+   
+   long getNumberOfExpiredUsers();
 
 }

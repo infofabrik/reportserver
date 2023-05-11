@@ -6,11 +6,11 @@ import javax.inject.Inject;
 
 import org.apache.commons.lang3.tuple.ImmutablePair;
 
-import net.datenwerke.rs.remoteserver.service.remoteservermanager.hooks.RemoteServerEntryProviderHook;
 import net.datenwerke.rs.tabletemplate.client.engines.jxls.JXlsTemplateUiModule;
+import net.datenwerke.rs.tabletemplate.service.tabletemplate.hooks.UsageStatisticsTemplateEntryProviderHook;
 import net.datenwerke.rs.usagestatistics.service.usagestatistics.UsageStatisticsService;
 
-public class UsageStatisticsJxlsTemplateProviderHooker implements RemoteServerEntryProviderHook {
+public class UsageStatisticsJxlsTemplateProviderHooker implements UsageStatisticsTemplateEntryProviderHook {
 
    private final UsageStatisticsService usageStatisticsService;
    

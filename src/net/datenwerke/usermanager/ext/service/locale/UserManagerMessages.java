@@ -40,5 +40,19 @@ public interface UserManagerMessages extends Messages {
    String indirect();
    
    String direct();
+   
+   String totalNumberOfUsers();
+
+   String totalNumberOfOus();
+   
+   String totalNumberOfGroups();
+
+   String activeUsers();
+
+   String inhibitedUsers();
+
+   String expiredUsers();
+   
+   String users();
 
 }
