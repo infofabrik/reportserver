@@ -20,7 +20,6 @@ import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.core.service.reportmanager.ReportService;
 import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
 import net.datenwerke.rs.usagestatistics.service.usagestatistics.hooks.UsageStatisticsEntryProviderHook;
-import net.datenwerke.treedb.service.treedb.AbstractNode;
 
 public class UsageStatisticsServiceImpl implements UsageStatisticsService {
 
@@ -64,14 +63,14 @@ public class UsageStatisticsServiceImpl implements UsageStatisticsService {
    }
 
    @Override
-   public long getNodeCount(Class<? extends AbstractNode<?>> nodeClazz) {
+   public long getNodeCount(Class<?> nodeClazz) {
       return ((Number) entityManagerProvider.get().createQuery("SELECT COUNT(n) FROM " + nodeClazz.getSimpleName() + " n")
             .getSingleResult()).longValue();
    }
 
    @Override
    public Map<ImmutablePair<String, String>, Object> provideNodeCountValueEntry(String key, String msg,
-         Class<? extends AbstractNode<?>> clazz) {
+         Class<?> clazz) {
       return Stream.of(new SimpleEntry<>(ImmutablePair.of(key, msg), getNodeCount(clazz)))
             .collect(toMap(Entry::getKey, Entry::getValue, (val1, val2) -> val2, LinkedHashMap::new));
    }
