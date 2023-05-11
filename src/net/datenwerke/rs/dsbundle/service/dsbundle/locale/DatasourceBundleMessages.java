@@ -14,4 +14,6 @@ public interface DatasourceBundleMessages extends Messages {
 
    String exceptionNoKeysConfigured();
 
+   String databaseBundles();
+
 }

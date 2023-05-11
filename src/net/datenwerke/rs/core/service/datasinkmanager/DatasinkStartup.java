@@ -37,7 +37,7 @@ public class DatasinkStartup {
          final Provider<WriteIntoDatasinkOperator> writeIntoDatasinkOperator,
          
          final Provider<DatasinkCategoryProviderHooker> usageStatistics,
-         final Provider<UsageStatisticsTotalDatasinksProviderHooker> usageStatsTotalDatasinksProvider         
+         final Provider<UsageStatisticsTotalDatasinksProviderHooker> usageStatsTotalDatasinksProvider
          ) {
 
       eventBus.attachObjectEventHandler(ForceRemoveEntityEvent.class, DatasinkDefinition.class,

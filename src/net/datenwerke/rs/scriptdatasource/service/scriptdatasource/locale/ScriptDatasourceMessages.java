@@ -10,4 +10,6 @@ public interface ScriptDatasourceMessages extends Messages {
 
    String scriptDatasourceTypeName();
 
+   String scriptDatasources();
+
 }

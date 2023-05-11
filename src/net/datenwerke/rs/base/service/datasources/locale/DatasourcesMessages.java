@@ -104,4 +104,8 @@ public interface DatasourcesMessages extends Messages {
    String path();
 
    String jdbcProperties();
+
+   String relationalDatasources();
+
+   String csvLists();
 }

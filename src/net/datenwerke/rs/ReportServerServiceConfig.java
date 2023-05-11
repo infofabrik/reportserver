@@ -128,6 +128,7 @@ import net.datenwerke.rs.demo.DemoDataModule;
 import net.datenwerke.rs.dot.service.dot.DotModule;
 import net.datenwerke.rs.dropbox.server.dropbox.DropboxRpcServiceImpl;
 import net.datenwerke.rs.dropbox.service.dropbox.DropboxModule;
+import net.datenwerke.rs.dsbundle.service.dsbundle.DatasourceBundleModule;
 import net.datenwerke.rs.emaildatasink.server.emaildatasink.EmailDatasinkRpcServiceImpl;
 import net.datenwerke.rs.emaildatasink.service.emaildatasink.EmailDatasinkModule;
 import net.datenwerke.rs.enterprise.server.CommunityEnterpriseCheckRpcServiceImpl;
@@ -204,6 +205,7 @@ import net.datenwerke.rs.scp.server.scp.ScpRpcServiceImpl;
 import net.datenwerke.rs.scp.service.scp.ScpModule;
 import net.datenwerke.rs.scriptdatasink.server.scriptdatasink.ScriptDatasinkRpcServiceImpl;
 import net.datenwerke.rs.scriptdatasink.service.scriptdatasink.ScriptDatasinkModule;
+import net.datenwerke.rs.scriptdatasource.service.scriptdatasource.ScriptDatasourceModule;
 import net.datenwerke.rs.scriptreport.service.scriptreport.ScriptReportModule;
 import net.datenwerke.rs.search.server.search.SearchRpcServiceImpl;
 import net.datenwerke.rs.search.service.search.SearchModule;
@@ -712,6 +714,9 @@ public class ReportServerServiceConfig extends DwGwtFrameworkBase {
             new PrinterModule(),
             new TableDatasinkModule(),
             new ScriptDatasinkModule(),
+            new ScriptDatasourceModule(),
+            
+            new DatasourceBundleModule(),
             
             new DotModule(),
             

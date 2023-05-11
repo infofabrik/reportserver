@@ -8,6 +8,7 @@ import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.base.service.hooks.UsageStatisticsReportEntryProviderHook;
 import net.datenwerke.rs.core.server.reportexport.hooks.ReportExportViaSessionHook;
 import net.datenwerke.rs.core.service.datasourcemanager.hooks.DatasourceProviderHook;
+import net.datenwerke.rs.core.service.datasourcemanager.hooks.UsageStatisticsDatasourceEntryProviderHook;
 import net.datenwerke.rs.core.service.reportmanager.hooks.ReportEngineProviderHook;
 import net.datenwerke.rs.core.service.reportmanager.hooks.ReportTypeProviderHook;
 import net.datenwerke.rs.core.service.reportmanager.hooks.VariantCreatorHook;
@@ -17,6 +18,7 @@ import net.datenwerke.rs.saiku.service.hooker.ReportExportViaSessionHooker;
 import net.datenwerke.rs.saiku.service.hooker.SaikuClientConfigExposerHooker;
 import net.datenwerke.rs.saiku.service.hooker.SaikuJuelParameterAdapter;
 import net.datenwerke.rs.saiku.service.hooker.SaikuReportTypeProviderHooker;
+import net.datenwerke.rs.saiku.service.hooker.UsageStatisticsMondrianDatasourcesProviderHooker;
 import net.datenwerke.rs.saiku.service.hooker.UsageStatisticsSaikuProviderHooker;
 import net.datenwerke.rs.saiku.service.hooker.VariantCreatedAdjustSaikuQueryHooker;
 import net.datenwerke.rs.saiku.service.hooker.VariantStoreHooker;
@@ -43,7 +45,9 @@ public class SaikuStartup {
 
          final SaikuJuelParameterAdapter juelParameterAdapter,
          
-         final Provider<UsageStatisticsSaikuProviderHooker> usageStatsSaikuProvider
+         final Provider<UsageStatisticsSaikuProviderHooker> usageStatsSaikuProvider,
+         
+         final Provider<UsageStatisticsMondrianDatasourcesProviderHooker> usageStatsMondrianDatasourceProvider
          ) {
 
       hookHandler.attachHooker(ReportEngineProviderHook.class, saikuReportEngineProviderHooker);
@@ -64,6 +68,9 @@ public class SaikuStartup {
       
       hookHandler.attachHooker(UsageStatisticsReportEntryProviderHook.class, usageStatsSaikuProvider,
             HookHandlerService.PRIORITY_LOW + 30);
+      
+      hookHandler.attachHooker(UsageStatisticsDatasourceEntryProviderHook.class, usageStatsMondrianDatasourceProvider,
+            HookHandlerService.PRIORITY_LOW + 15);
    }
 }
 

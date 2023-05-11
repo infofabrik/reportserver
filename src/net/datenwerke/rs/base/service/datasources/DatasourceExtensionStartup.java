@@ -9,6 +9,8 @@ import net.datenwerke.rs.base.service.datasources.definitions.CsvDatasource;
 import net.datenwerke.rs.base.service.datasources.eventhandler.HandleCsvDatasourceMergeEvents;
 import net.datenwerke.rs.base.service.datasources.hooker.BaseDatasourceProviderHooker;
 import net.datenwerke.rs.base.service.datasources.hooker.StandardConnectionHook;
+import net.datenwerke.rs.base.service.datasources.hooker.UsageStatisticsCsvDatasourceProviderHooker;
+import net.datenwerke.rs.base.service.datasources.hooker.UsageStatisticsRelationalDatasourceProviderHooker;
 import net.datenwerke.rs.base.service.datasources.statementmanager.db.MonetDbStatementCancler;
 import net.datenwerke.rs.base.service.datasources.statementmanager.hooks.StatementCancellationHook;
 import net.datenwerke.rs.base.service.datasources.table.hookers.QueryCommentAdderHooker;
@@ -35,6 +37,7 @@ import net.datenwerke.rs.base.service.datasources.transformers.database.Database
 import net.datenwerke.rs.base.service.datasources.transformers.database.Database2JdbcDatasourceTransformer;
 import net.datenwerke.rs.base.service.datasources.transformers.database.Database2TableTransformer;
 import net.datenwerke.rs.core.service.datasourcemanager.hooks.DatasourceProviderHook;
+import net.datenwerke.rs.core.service.datasourcemanager.hooks.UsageStatisticsDatasourceEntryProviderHook;
 import net.datenwerke.rs.terminal.service.terminal.basecommands.CopySubCommandHook;
 import net.datenwerke.rs.terminal.service.terminal.hooks.TerminalCommandHook;
 import net.datenwerke.rs.utils.eventbus.EventBus;
@@ -74,8 +77,10 @@ public class DatasourceExtensionStartup {
          Provider<TableExistsCommand> tableExistsCommandProvider,
          Provider<ColumnsExistCommand> columnsExistCommandProvider,
          Provider<ColumnsMetadataCommand> columnsMetadataCommandProvider,
-         Provider<DatasourceMetadataCommand> datasourceMetadataCommandProvider
+         Provider<DatasourceMetadataCommand> datasourceMetadataCommandProvider,
          
+         final Provider<UsageStatisticsRelationalDatasourceProviderHooker> usageStatsRelationalDatasourceProvider,
+         final Provider<UsageStatisticsCsvDatasourceProviderHooker> usageStatsCsvDatasourceProvider
          ) {
 
       hookHandler.attachHooker(DatasourceProviderHook.class, databaseProvider);
@@ -110,5 +115,10 @@ public class DatasourceExtensionStartup {
       hookHandler.attachHooker(TerminalCommandHook.class, datasourceMetadataCommandProvider);
 
       hookHandler.attachHooker(StatementCancellationHook.class, monetDbCancler);
+      
+      hookHandler.attachHooker(UsageStatisticsDatasourceEntryProviderHook.class, usageStatsRelationalDatasourceProvider,
+            HookHandlerService.PRIORITY_LOW + 10);
+      hookHandler.attachHooker(UsageStatisticsDatasourceEntryProviderHook.class, usageStatsCsvDatasourceProvider,
+            HookHandlerService.PRIORITY_LOW + 15);
    }
 }

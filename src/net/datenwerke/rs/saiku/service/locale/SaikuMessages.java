@@ -19,4 +19,6 @@ public interface SaikuMessages extends Messages {
    
    String saikuReportVariants();
 
+   String mondrianDatasources();
+
 }
