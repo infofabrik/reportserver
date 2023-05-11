@@ -436,7 +436,7 @@ public class TableReportUtilityServiceImpl extends SecuredRemoteServiceServlet i
       User user = authenticatorServiceProvider.get().getCurrentUser();
       String dot = prefilterDotServiceProvider.get().createDotFile(user, reportDto, token);
       try {
-         return dotServiceProvider.get().render(TextFormat.SVG, dot, 1200);
+         return dotServiceProvider.get().render(TextFormat.SVG, dot, 1500);
       } catch (IOException e) {
          throw new ServerCallFailedException(e);
       }

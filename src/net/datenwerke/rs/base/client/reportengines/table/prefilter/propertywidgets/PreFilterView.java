@@ -651,6 +651,7 @@ public class PreFilterView extends ReportExecutorMainPanelView {
       MenuItem itemDotExport = new DwMenuItem("DOT", BaseIcon.CODE);
       exportMenu.add(itemDotExport);
       itemDotExport.addSelectionHandler(event -> {
+         startProgress();
          tableReportUtilityDao.exportToDot(reportExecutorService.createExecuteReportToken(report), report,
              new RsAsyncCallback<String>() {
                 @Override
@@ -748,8 +749,6 @@ public class PreFilterView extends ReportExecutorMainPanelView {
    }
    
    protected void displayResult(String result) {
-      startProgress();
-      
       final DwWindow window = new DwWindow();
       window.setSize(640, 480);
 
@@ -781,8 +780,6 @@ public class PreFilterView extends ReportExecutorMainPanelView {
    }
    
    protected void displayExportToDotResult(String result) {
-      startProgress();
-      
       final DwWindow window = new DwWindow();
       window.setModal(true);
       window.setClosable(false);
