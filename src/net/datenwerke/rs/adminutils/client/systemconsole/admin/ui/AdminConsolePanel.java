@@ -20,6 +20,7 @@ import net.datenwerke.rs.adminutils.client.suuser.locale.SuMessages;
 import net.datenwerke.rs.adminutils.client.suuser.security.SuGenericTargetIdentifier;
 import net.datenwerke.rs.adminutils.client.systemconsole.locale.SystemConsoleMessages;
 import net.datenwerke.rs.adminutils.client.systemconsole.security.SystemConsoleGenericTargetIdentifier;
+import net.datenwerke.rs.search.client.search.SearchUiService;
 import net.datenwerke.rs.terminal.client.terminal.TerminalUIModule;
 import net.datenwerke.rs.terminal.client.terminal.TerminalUIService;
 import net.datenwerke.rs.terminal.client.terminal.security.TerminalGenericTargetIdentifier;
@@ -42,19 +43,22 @@ public class AdminConsolePanel extends DwContentPanel {
    private final Provider<SuUserUiService> suUserUiServiceProvider;
    private final Provider<SecurityUIService> securityServiceProvider;
    private final Provider<UtilsUIService> utilsUIServiceProvider;
+   private final Provider<SearchUiService> searchUiServiceProvider;
 
    @Inject
    public AdminConsolePanel(
          Provider<TerminalUIService> terminalUIServiceProvider,
          Provider<SuUserUiService> suUserUiServiceProvider,
          Provider<SecurityUIService> securityServiceProvider,
-         Provider<UtilsUIService> utilsUIServiceProvider
+         Provider<UtilsUIService> utilsUIServiceProvider,
+         Provider<SearchUiService> searchUiServiceProvider
          ) {
 
       this.terminalUIServiceProvider = terminalUIServiceProvider;     
       this.suUserUiServiceProvider = suUserUiServiceProvider;   
       this.securityServiceProvider = securityServiceProvider;
       this.utilsUIServiceProvider = utilsUIServiceProvider;
+      this.searchUiServiceProvider = searchUiServiceProvider;
 
       initializeUI();
    }
@@ -102,6 +106,12 @@ public class AdminConsolePanel extends DwContentPanel {
          changeUserBtn.addSelectHandler(event -> suUserUiServiceProvider.get().openSuWindow());
          form.addButton(changeUserBtn);
       }
+      
+      /* global search button */
+      DwTextButton searchBtn = new DwTextButton(SystemConsoleMessages.INSTANCE.globalSearch());
+      searchBtn.setIcon(BaseIcon.SEARCH);
+      searchBtn.addSelectHandler(event -> searchUiServiceProvider.get().displaySearchModule());
+      form.addButton(searchBtn);
       
       form.getButtonBar().setPack(BoxLayoutPack.START);
       buttonsLayout.add(form, new HorizontalLayoutData(1000, 20, new Margins(10)));      

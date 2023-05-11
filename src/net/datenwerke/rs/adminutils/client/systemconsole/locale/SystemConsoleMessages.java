@@ -75,4 +75,6 @@ public interface SystemConsoleMessages extends Messages {
 
    public String openTerminalInNewWindow();
 
+   public String globalSearch();
+
 }
