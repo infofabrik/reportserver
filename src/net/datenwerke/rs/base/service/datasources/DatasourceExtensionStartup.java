@@ -5,12 +5,16 @@ import com.google.inject.Provider;
 
 import net.datenwerke.dbpool.hooks.DbPoolConnectionHook;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
+import net.datenwerke.rs.adminutils.service.systemconsole.generalinfo.hooks.GeneralInfoCategoryProviderHook;
 import net.datenwerke.rs.base.service.datasources.definitions.CsvDatasource;
 import net.datenwerke.rs.base.service.datasources.eventhandler.HandleCsvDatasourceMergeEvents;
 import net.datenwerke.rs.base.service.datasources.hooker.BaseDatasourceProviderHooker;
+import net.datenwerke.rs.base.service.datasources.hooker.DatabaseDatasourceCategoryProviderHooker;
 import net.datenwerke.rs.base.service.datasources.hooker.StandardConnectionHook;
+import net.datenwerke.rs.base.service.datasources.hooker.UsageStatisticsAllRelationalDatabasesProviderHooker;
 import net.datenwerke.rs.base.service.datasources.hooker.UsageStatisticsCsvDatasourceProviderHooker;
 import net.datenwerke.rs.base.service.datasources.hooker.UsageStatisticsRelationalDatasourceProviderHooker;
+import net.datenwerke.rs.base.service.datasources.hooks.UsageStatisticsDatabaseDatasourceEntryProviderHook;
 import net.datenwerke.rs.base.service.datasources.statementmanager.db.MonetDbStatementCancler;
 import net.datenwerke.rs.base.service.datasources.statementmanager.hooks.StatementCancellationHook;
 import net.datenwerke.rs.base.service.datasources.table.hookers.QueryCommentAdderHooker;
@@ -80,7 +84,9 @@ public class DatasourceExtensionStartup {
          Provider<DatasourceMetadataCommand> datasourceMetadataCommandProvider,
          
          final Provider<UsageStatisticsRelationalDatasourceProviderHooker> usageStatsRelationalDatasourceProvider,
-         final Provider<UsageStatisticsCsvDatasourceProviderHooker> usageStatsCsvDatasourceProvider
+         final Provider<UsageStatisticsCsvDatasourceProviderHooker> usageStatsCsvDatasourceProvider,
+         final Provider<DatabaseDatasourceCategoryProviderHooker> usageStatistics,
+         final Provider<UsageStatisticsAllRelationalDatabasesProviderHooker> allDatabasesStatistics
          ) {
 
       hookHandler.attachHooker(DatasourceProviderHook.class, databaseProvider);
@@ -120,5 +126,10 @@ public class DatasourceExtensionStartup {
             HookHandlerService.PRIORITY_LOW + 10);
       hookHandler.attachHooker(UsageStatisticsDatasourceEntryProviderHook.class, usageStatsCsvDatasourceProvider,
             HookHandlerService.PRIORITY_LOW + 15);
+      
+      hookHandler.attachHooker(GeneralInfoCategoryProviderHook.class, usageStatistics,
+            HookHandlerService.PRIORITY_LOW + 57);
+      hookHandler.attachHooker(UsageStatisticsDatabaseDatasourceEntryProviderHook.class, allDatabasesStatistics,
+            HookHandlerService.PRIORITY_LOW);
    }
 }

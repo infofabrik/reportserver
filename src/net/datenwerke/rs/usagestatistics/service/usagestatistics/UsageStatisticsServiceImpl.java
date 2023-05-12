@@ -17,6 +17,7 @@ import org.apache.commons.lang3.tuple.ImmutablePair;
 import com.google.inject.Provider;
 
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
+import net.datenwerke.rs.base.service.dbhelper.DatabaseHelper;
 import net.datenwerke.rs.core.service.reportmanager.ReportService;
 import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
 import net.datenwerke.rs.usagestatistics.service.usagestatistics.hooks.UsageStatisticsEntryProviderHook;
@@ -109,5 +110,13 @@ public class UsageStatisticsServiceImpl implements UsageStatisticsService {
       return Stream
             .of(new SimpleEntry<>(ImmutablePair.of(key, msg), templateCount))
             .collect(toMap(Entry::getKey, Entry::getValue, (val1, val2) -> val2, LinkedHashMap::new));
+   }
+
+   @Override
+   public long getDatasourceUsageCount(DatabaseHelper helper) {
+      return ((Number) entityManagerProvider.get()
+            .createQuery("SELECT COUNT(d) FROM DatabaseDatasource d WHERE d.databaseDescriptor = :databaseDescriptor")
+            .setParameter("databaseDescriptor", helper.getDescriptor())
+            .getSingleResult()).longValue();
    }
 }

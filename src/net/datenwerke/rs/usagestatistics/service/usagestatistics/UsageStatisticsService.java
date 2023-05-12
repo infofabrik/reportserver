@@ -4,6 +4,7 @@ import java.util.Map;
 
 import org.apache.commons.lang3.tuple.ImmutablePair;
 
+import net.datenwerke.rs.base.service.dbhelper.DatabaseHelper;
 import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
 import net.datenwerke.rs.usagestatistics.service.usagestatistics.hooks.UsageStatisticsEntryProviderHook;
 
@@ -30,5 +31,7 @@ public interface UsageStatisticsService {
    
    Map<ImmutablePair<String, String>, Object> provideTableTemplateCountValueEntry(String key, String msg,
          String type);
+   
+   long getDatasourceUsageCount(DatabaseHelper helper);
 
 }

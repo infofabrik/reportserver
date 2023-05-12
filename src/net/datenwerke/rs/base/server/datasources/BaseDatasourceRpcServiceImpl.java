@@ -49,8 +49,8 @@ public class BaseDatasourceRpcServiceImpl extends SecuredRemoteServiceServlet im
     */
    private static final long serialVersionUID = -1991463672346224996L;
 
-   final private DtoService dtoService;
-   final private DBHelperService dbHelperService;
+   private final DtoService dtoService;
+   private final DBHelperService dbHelperService;
    private final SimpleDataSupplier simpleDataSupplyer;
    private final EntityClonerService entityCloner;
    private final SecurityService securityService;
