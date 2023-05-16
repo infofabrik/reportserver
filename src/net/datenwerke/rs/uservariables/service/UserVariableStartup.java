@@ -6,6 +6,7 @@ import com.google.inject.Provider;
 import net.datenwerke.eximport.hooks.ExporterProviderHook;
 import net.datenwerke.eximport.hooks.ImporterProviderHook;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
+import net.datenwerke.rs.adminutils.service.systemconsole.generalinfo.hooks.GeneralInfoCategoryProviderHook;
 import net.datenwerke.rs.core.service.reportmanager.hooks.ParameterProviderHook;
 import net.datenwerke.rs.eximport.service.eximport.hooks.ExportAllHook;
 import net.datenwerke.rs.eximport.service.eximport.hooks.ImportAllHook;
@@ -19,6 +20,10 @@ import net.datenwerke.rs.uservariables.service.uservariables.eximport.UserVariab
 import net.datenwerke.rs.uservariables.service.uservariables.eximport.hookers.ExportAllUserVariablesHooker;
 import net.datenwerke.rs.uservariables.service.uservariables.eximport.hookers.ImportAllUserVariablesHooker;
 import net.datenwerke.rs.uservariables.service.uservariables.hookers.BaseUserVariableProvider;
+import net.datenwerke.rs.uservariables.service.uservariables.hookers.UsageStatisticsUserVariableDefinitionProviderHooker;
+import net.datenwerke.rs.uservariables.service.uservariables.hookers.UsageStatisticsUserVariableInstanceProviderHooker;
+import net.datenwerke.rs.uservariables.service.uservariables.hookers.UserVariableCategoryProviderHooker;
+import net.datenwerke.rs.uservariables.service.uservariables.hooks.UserVariableEntryProviderHook;
 import net.datenwerke.rs.uservariables.service.uservariables.hooks.UserVariableProviderHook;
 import net.datenwerke.rs.utils.eventbus.EventBus;
 import net.datenwerke.security.service.eventlogger.jpa.ForceRemoveEntityEvent;
@@ -28,9 +33,11 @@ import net.datenwerke.security.service.usermanager.entities.AbstractUserManagerN
 public class UserVariableStartup {
 
    @Inject
-   public UserVariableStartup(HookHandlerService hookHandler, EventBus eventBus,
+   public UserVariableStartup(HookHandlerService hookHandler, 
+         EventBus eventBus,
 
-         Provider<UserVariableExporter> exporterProvider, Provider<UserVariableImporter> importerProvider,
+         Provider<UserVariableExporter> exporterProvider, 
+         Provider<UserVariableImporter> importerProvider,
          Provider<ExportAllUserVariablesHooker> exportAllUserVars,
          Provider<ImportAllUserVariablesHooker> importAllUserVars,
 
@@ -38,10 +45,14 @@ public class UserVariableStartup {
 
          Provider<UserVariableParameterProviderHooker> parameterProvider,
 
-         HandleUserVarRemoveEvents handleRemove, HandleUserVarForceRemoveEvents handleForceRemove,
+         HandleUserVarRemoveEvents handleRemove, 
+         HandleUserVarForceRemoveEvents handleForceRemove,
 
-         HandleUserNodeRemoveEvents handleFolkRemove
-
+         HandleUserNodeRemoveEvents handleFolkRemove,
+         
+         final Provider<UserVariableCategoryProviderHooker> usageStatistics,
+         final Provider<UsageStatisticsUserVariableDefinitionProviderHooker> usageStatsDefinitionProvider,
+         final Provider<UsageStatisticsUserVariableInstanceProviderHooker> usageStatsInstanceProvider
    ) {
 
       eventBus.attachObjectEventHandler(RemoveEntityEvent.class, UserVariableDefinition.class, handleRemove);
@@ -58,5 +69,12 @@ public class UserVariableStartup {
       hookHandler.attachHooker(UserVariableProviderHook.class, baseVariableProvider);
 
       hookHandler.attachHooker(ParameterProviderHook.class, parameterProvider);
+      
+      hookHandler.attachHooker(UserVariableEntryProviderHook.class, usageStatsDefinitionProvider,
+            HookHandlerService.PRIORITY_LOW);
+      hookHandler.attachHooker(UserVariableEntryProviderHook.class, usageStatsInstanceProvider,
+            HookHandlerService.PRIORITY_LOW + 10);
+      hookHandler.attachHooker(GeneralInfoCategoryProviderHook.class, usageStatistics,
+            HookHandlerService.PRIORITY_LOW + 90);
    }
 }
