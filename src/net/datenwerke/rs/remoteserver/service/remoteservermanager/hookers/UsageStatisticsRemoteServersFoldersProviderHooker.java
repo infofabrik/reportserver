@@ -1,4 +1,4 @@
-package net.datenwerke.rs.core.service.datasourcemanager.hookers;
+package net.datenwerke.rs.remoteserver.service.remoteservermanager.hookers;
 
 import java.util.Map;
 
@@ -6,19 +6,19 @@ import javax.inject.Inject;
 
 import org.apache.commons.lang3.tuple.ImmutablePair;
 
-import net.datenwerke.rs.core.service.datasourcemanager.entities.DatasourceFolder;
-import net.datenwerke.rs.core.service.datasourcemanager.hooks.UsageStatisticsDatasourceEntryProviderHook;
 import net.datenwerke.rs.core.service.locale.CoreMessages;
+import net.datenwerke.rs.remoteserver.service.remoteservermanager.entities.RemoteServerFolder;
+import net.datenwerke.rs.remoteserver.service.remoteservermanager.hooks.RemoteServerEntryProviderHook;
 import net.datenwerke.rs.usagestatistics.service.usagestatistics.UsageStatisticsService;
 
-public class UsageStatisticsDatasourceFoldersProviderHooker implements UsageStatisticsDatasourceEntryProviderHook {
+public class UsageStatisticsRemoteServersFoldersProviderHooker implements RemoteServerEntryProviderHook {
 
    private final UsageStatisticsService usageStatisticsService;
    
-   private final static String TYPE = "TOTAL_DATASOURCE_FOLDERS";
+   private final static String TYPE = "TOTAL_REMOTE_SERVERS_FOLDERS";
    
    @Inject
-   public UsageStatisticsDatasourceFoldersProviderHooker(
+   public UsageStatisticsRemoteServersFoldersProviderHooker(
          UsageStatisticsService usageStatisticsService
          ) {
       this.usageStatisticsService = usageStatisticsService;
@@ -27,7 +27,7 @@ public class UsageStatisticsDatasourceFoldersProviderHooker implements UsageStat
    @Override
    public Map<ImmutablePair<String, String>, Object> provideEntry() {
       return usageStatisticsService.provideNodeCountValueEntry(TYPE,
-            CoreMessages.INSTANCE.folders(), DatasourceFolder.class);
+            CoreMessages.INSTANCE.folders(), RemoteServerFolder.class);
    }
 
 }

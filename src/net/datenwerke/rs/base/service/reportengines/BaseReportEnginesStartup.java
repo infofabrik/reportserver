@@ -10,9 +10,10 @@ import net.datenwerke.rs.base.service.reportengines.hookers.AdjustBaseReportForE
 import net.datenwerke.rs.base.service.reportengines.hookers.BaseReportEngineProviderHooker;
 import net.datenwerke.rs.base.service.reportengines.hookers.BaseReportTypeProviderHooker;
 import net.datenwerke.rs.base.service.reportengines.hookers.ConfigureBaseReportViaRequestHooker;
+import net.datenwerke.rs.base.service.reportengines.hookers.ReportCategoryProviderHooker;
 import net.datenwerke.rs.base.service.reportengines.hookers.UsageStatisticsDynaListProviderHooker;
 import net.datenwerke.rs.base.service.reportengines.hookers.UsageStatisticsJasperProviderHooker;
-import net.datenwerke.rs.base.service.reportengines.hookers.ReportCategoryProviderHooker;
+import net.datenwerke.rs.base.service.reportengines.hookers.UsageStatisticsReportFoldersProviderHooker;
 import net.datenwerke.rs.base.service.reportengines.hookers.UsageStatisticsTotalReportProviderHooker;
 import net.datenwerke.rs.core.service.reportmanager.hooks.AdjustReportForExecutionHook;
 import net.datenwerke.rs.core.service.reportmanager.hooks.ConfigureReportViaHistoryLocationHook;
@@ -32,6 +33,7 @@ public class BaseReportEnginesStartup {
          final Provider<BaseReportTypeProviderHooker> reportTypeProvider,
          
          final Provider<UsageStatisticsTotalReportProviderHooker> usageStatsTotalReportProvider,
+         final Provider<UsageStatisticsReportFoldersProviderHooker> usageStatsFolderProvider,
          final Provider<UsageStatisticsDynaListProviderHooker> usageStatsDynaListProvider,
          final Provider<UsageStatisticsJasperProviderHooker> usageStatsJasperProvider,
          
@@ -49,6 +51,8 @@ public class BaseReportEnginesStartup {
       
       hookHandler.attachHooker(UsageStatisticsReportEntryProviderHook.class, usageStatsTotalReportProvider,
             HookHandlerService.PRIORITY_LOW);
+      hookHandler.attachHooker(UsageStatisticsReportEntryProviderHook.class, usageStatsFolderProvider,
+            HookHandlerService.PRIORITY_LOW + 3);
       hookHandler.attachHooker(UsageStatisticsReportEntryProviderHook.class, usageStatsDynaListProvider,
             HookHandlerService.PRIORITY_LOW + 5);
       hookHandler.attachHooker(UsageStatisticsReportEntryProviderHook.class, usageStatsJasperProvider,

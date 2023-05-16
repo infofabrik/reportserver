@@ -18,5 +18,4 @@ public interface DatasourceManagerMessages extends Messages {
 
    String totalNumberOfDatasources();
    
-   String folders();
 }

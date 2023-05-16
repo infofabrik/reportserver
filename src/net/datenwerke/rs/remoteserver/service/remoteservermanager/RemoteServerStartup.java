@@ -14,6 +14,7 @@ import net.datenwerke.rs.remoteserver.service.remoteservermanager.eximport.hooke
 import net.datenwerke.rs.remoteserver.service.remoteservermanager.eximport.hookers.RemoteServerExportConfigHooker;
 import net.datenwerke.rs.remoteserver.service.remoteservermanager.history.RemoteServerManagerHistoryUrlBuilderHooker;
 import net.datenwerke.rs.remoteserver.service.remoteservermanager.hookers.RemoteServerCategoryProviderHooker;
+import net.datenwerke.rs.remoteserver.service.remoteservermanager.hookers.UsageStatisticsRemoteServersFoldersProviderHooker;
 import net.datenwerke.rs.remoteserver.service.remoteservermanager.hookers.UsageStatisticsTotalRemoteServersProviderHooker;
 import net.datenwerke.rs.remoteserver.service.remoteservermanager.hooks.RemoteServerEntryProviderHook;
 import net.datenwerke.rs.utils.eventbus.EventBus;
@@ -30,7 +31,8 @@ public class RemoteServerStartup {
          final Provider<UsageStatisticsTotalRemoteServersProviderHooker> usageStatsTotalRemoteServerProvider,
          final Provider<RemoteServerCategoryProviderHooker> usageStatistics,
          final Provider<RemoteServerExportConfigHooker> remoteServerExportConfigHookerProvider,
-         final Provider<RemoteRemoteServerImporterHooker> remoteRemoteServerImporterHooker
+         final Provider<RemoteRemoteServerImporterHooker> remoteRemoteServerImporterHooker,
+         final Provider<UsageStatisticsRemoteServersFoldersProviderHooker> usageStatsFolderProvider
          ) {
 
       /* history */
@@ -38,6 +40,8 @@ public class RemoteServerStartup {
       
       hookHandler.attachHooker(RemoteServerEntryProviderHook.class, usageStatsTotalRemoteServerProvider,
             HookHandlerService.PRIORITY_LOW);
+      hookHandler.attachHooker(RemoteServerEntryProviderHook.class, usageStatsFolderProvider,
+            HookHandlerService.PRIORITY_LOW + 3);
       
       hookHandler.attachHooker(GeneralInfoCategoryProviderHook.class, usageStatistics,
             HookHandlerService.PRIORITY_LOW + 70);

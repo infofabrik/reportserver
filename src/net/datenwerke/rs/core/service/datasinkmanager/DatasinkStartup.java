@@ -15,6 +15,7 @@ import net.datenwerke.rs.core.service.datasinkmanager.entities.DatasinkFolder;
 import net.datenwerke.rs.core.service.datasinkmanager.eventhandlers.HandleDatasinkForceRemoveEventHandler;
 import net.datenwerke.rs.core.service.datasinkmanager.history.DatasinkManagerHistoryUrlBuilderHooker;
 import net.datenwerke.rs.core.service.datasinkmanager.hookers.DatasinkCategoryProviderHooker;
+import net.datenwerke.rs.core.service.datasinkmanager.hookers.UsageStatisticsDatasinkFoldersProviderHooker;
 import net.datenwerke.rs.core.service.datasinkmanager.hookers.UsageStatisticsTotalDatasinksProviderHooker;
 import net.datenwerke.rs.core.service.datasinkmanager.hooks.UsageStatisticsDatasinkEntryProviderHook;
 import net.datenwerke.rs.core.service.datasinkmanager.terminal.operators.WriteIntoDatasinkOperator;
@@ -37,7 +38,8 @@ public class DatasinkStartup {
          final Provider<WriteIntoDatasinkOperator> writeIntoDatasinkOperator,
          
          final Provider<DatasinkCategoryProviderHooker> usageStatistics,
-         final Provider<UsageStatisticsTotalDatasinksProviderHooker> usageStatsTotalDatasinksProvider
+         final Provider<UsageStatisticsTotalDatasinksProviderHooker> usageStatsTotalDatasinksProvider,
+         final Provider<UsageStatisticsDatasinkFoldersProviderHooker> usageStatsFolderProvider
          ) {
 
       eventBus.attachObjectEventHandler(ForceRemoveEntityEvent.class, DatasinkDefinition.class,
@@ -47,6 +49,8 @@ public class DatasinkStartup {
       
       hookHandler.attachHooker(UsageStatisticsDatasinkEntryProviderHook.class, usageStatsTotalDatasinksProvider,
             HookHandlerService.PRIORITY_MEDIUM);
+      hookHandler.attachHooker(UsageStatisticsDatasinkEntryProviderHook.class, usageStatsFolderProvider,
+            HookHandlerService.PRIORITY_MEDIUM + 3);
 
       /* history */
       hookHandler.attachHooker(HistoryUrlBuilderHook.class, datasinkManagerUrlBuilder);
