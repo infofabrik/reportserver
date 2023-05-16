@@ -13,6 +13,7 @@ import net.datenwerke.eximport.hooks.ImporterProviderHook;
 import net.datenwerke.gf.service.history.hooks.HistoryUrlBuilderHook;
 import net.datenwerke.gf.service.upload.hooks.FileUploadHandlerHook;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
+import net.datenwerke.rs.adminutils.service.systemconsole.generalinfo.hooks.GeneralInfoCategoryProviderHook;
 import net.datenwerke.rs.base.ext.service.hooks.ExportConfigHook;
 import net.datenwerke.rs.base.ext.service.hooks.RemoteEntityImporterHook;
 import net.datenwerke.rs.eximport.service.eximport.hooks.ExportAllHook;
@@ -27,8 +28,13 @@ import net.datenwerke.rs.fileserver.service.fileserver.eximport.hookers.ExportAl
 import net.datenwerke.rs.fileserver.service.fileserver.eximport.hookers.FileServerExportConfigHooker;
 import net.datenwerke.rs.fileserver.service.fileserver.eximport.hookers.ImportAllFilesHooker;
 import net.datenwerke.rs.fileserver.service.fileserver.eximport.hookers.RemoteFileImporterHooker;
+import net.datenwerke.rs.fileserver.service.fileserver.hookers.FileServerCategoryProviderHooker;
 import net.datenwerke.rs.fileserver.service.fileserver.hookers.FileServerFileUploadHooker;
 import net.datenwerke.rs.fileserver.service.fileserver.hookers.FileServerHistoryUrlBuilderHooker;
+import net.datenwerke.rs.fileserver.service.fileserver.hookers.UsageStatisticsDetailedFilesProviderHooker;
+import net.datenwerke.rs.fileserver.service.fileserver.hookers.UsageStatisticsFileServerFoldersProviderHooker;
+import net.datenwerke.rs.fileserver.service.fileserver.hookers.UsageStatisticsTotalFilesProviderHooker;
+import net.datenwerke.rs.fileserver.service.fileserver.hooks.FileServerEntryProviderHook;
 import net.datenwerke.rs.fileserver.service.fileserver.rsfs.RsfsUrlStreamHandler;
 import net.datenwerke.rs.fileserver.service.fileserver.terminal.commands.CreateTextFileCommand;
 import net.datenwerke.rs.fileserver.service.fileserver.terminal.commands.DirModCommand;
@@ -85,7 +91,12 @@ public class FileServerStartup {
          
          Provider<FileServerExportConfigHooker> fileServerExportConfigHooker,
          
-         Provider<RemoteFileImporterHooker> remoteFileImporterHooker
+         Provider<RemoteFileImporterHooker> remoteFileImporterHooker,
+         
+         final Provider<FileServerCategoryProviderHooker> usageStatistics,
+         final Provider<UsageStatisticsTotalFilesProviderHooker> usageStatsTotalFilesProvider,
+         final Provider<UsageStatisticsFileServerFoldersProviderHooker> usageStatsFolderProvider,
+         final Provider<UsageStatisticsDetailedFilesProviderHooker> usageStatsDetailedFilesProvider
          ) {
 
       hookHandler.attachHooker(ExporterProviderHook.class, new ExporterProviderHook(exporterProvider));
@@ -118,6 +129,16 @@ public class FileServerStartup {
       hookHandler.attachHooker(ExportConfigHook.class, fileServerExportConfigHooker);
       
       hookHandler.attachHooker(RemoteEntityImporterHook.class, remoteFileImporterHooker);
+      
+      hookHandler.attachHooker(FileServerEntryProviderHook.class, usageStatsTotalFilesProvider,
+            HookHandlerService.PRIORITY_LOW);
+      hookHandler.attachHooker(FileServerEntryProviderHook.class, usageStatsFolderProvider,
+            HookHandlerService.PRIORITY_LOW + 3);
+      hookHandler.attachHooker(FileServerEntryProviderHook.class, usageStatsDetailedFilesProvider,
+            HookHandlerService.PRIORITY_LOW + 5);
+      
+      hookHandler.attachHooker(GeneralInfoCategoryProviderHook.class, usageStatistics,
+            HookHandlerService.PRIORITY_LOW + 68);
 
       registerSecurityTargets(securityService);
 

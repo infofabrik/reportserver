@@ -1,9 +1,13 @@
 package net.datenwerke.rs.fileserver.service.fileserver.locale;
 
+import net.datenwerke.rs.utils.localization.LocalizationServiceImpl;
 import net.datenwerke.rs.utils.localization.Messages;
 
 public interface FileserverMessages extends Messages {
 
+   public final static FileserverMessages INSTANCE = LocalizationServiceImpl
+         .getMessages(FileserverMessages.class);
+   
    String fileTypeName();
 
    String folderTypeName();
@@ -35,6 +39,14 @@ public interface FileserverMessages extends Messages {
    String commandCreateTextFile_description();
    
    String commandCreateTextFile_file();
+   
+   String usageStatistics();
+   
+   String noFileEnding();
+   
+   String emptyName();
+
+   String totalFiles();
    
    
 }
