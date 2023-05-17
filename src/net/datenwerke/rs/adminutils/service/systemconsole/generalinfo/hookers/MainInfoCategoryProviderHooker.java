@@ -2,6 +2,7 @@ package net.datenwerke.rs.adminutils.service.systemconsole.generalinfo.hookers;
 
 import static net.datenwerke.rs.adminutils.client.systemconsole.generalinfo.Memory.MAX_FORMATTED;
 
+import java.awt.GraphicsEnvironment;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -26,6 +27,7 @@ public class MainInfoCategoryProviderHooker implements GeneralInfoCategoryProvid
    private static final String CATALINA_HOME = "CATALINA_HOME";
    private static final String CATALINA_BASE = "CATALINA_BASE";
    private static final String LOG_FILES_DIRECTORY = "LOG_FILES_DIRECTORY";
+   private static final String HEADLESS = "HEADLESS";
    private static final String MAX_MEMORY = "MAX_MEMORY";
    private static final String CONFIG_DIR = "CONFIG_DIR";
    private static final String GROOVY_VERSION = "GROOVY_VERSION";
@@ -70,6 +72,8 @@ public class MainInfoCategoryProviderHooker implements GeneralInfoCategoryProvid
       props.put(ImmutablePair.of(CATALINA_BASE, "Catalina base"), generalInfoService.getCatalinaBase());
       props.put(ImmutablePair.of(LOG_FILES_DIRECTORY, GeneralInfoMessages.INSTANCE.logsDirectory()),
             generalInfoService.getLogFilesDirectory(true));
+      props.put(ImmutablePair.of(HEADLESS, "Headless"),
+            generalInfoService.isHeadless());
       props.put(ImmutablePair.of(MAX_MEMORY, GeneralInfoMessages.INSTANCE.maxMemoryLabel()),
             generalInfoService.getMemoryValues().get(MAX_FORMATTED));
       props.put(ImmutablePair.of(CONFIG_DIR, GeneralInfoMessages.INSTANCE.configDirLabel()),

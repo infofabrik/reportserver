@@ -14,6 +14,7 @@ import static net.datenwerke.rs.adminutils.client.systemconsole.generalinfo.Memo
 import static net.datenwerke.rs.adminutils.client.systemconsole.generalinfo.Memory.USED_IN_MB;
 import static net.datenwerke.rs.utils.file.RsFileUtils.byteCountToDisplaySize;
 
+import java.awt.GraphicsEnvironment;
 import java.lang.management.ManagementFactory;
 import java.lang.management.RuntimeMXBean;
 import java.nio.file.Path;
@@ -349,6 +350,11 @@ public class GeneralInfoServiceImpl implements GeneralInfoService {
    @Override
    public String getNow() {
       return DateUtils.formatCurrentDate();
+   }
+
+   @Override
+   public boolean isHeadless() {
+      return GraphicsEnvironment.isHeadless();
    }
 
 }
