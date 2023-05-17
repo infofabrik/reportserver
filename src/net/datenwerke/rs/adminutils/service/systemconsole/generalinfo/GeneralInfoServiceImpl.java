@@ -20,8 +20,10 @@ import java.lang.management.RuntimeMXBean;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.ZoneId;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -355,6 +357,11 @@ public class GeneralInfoServiceImpl implements GeneralInfoService {
    @Override
    public boolean isHeadless() {
       return GraphicsEnvironment.isHeadless();
+   }
+
+   @Override
+   public List<String> getAvailableFonts() {
+      return Arrays.asList(GraphicsEnvironment.getLocalGraphicsEnvironment().getAvailableFontFamilyNames());
    }
 
 }

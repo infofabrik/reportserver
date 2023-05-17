@@ -1,5 +1,6 @@
 package net.datenwerke.rs.adminutils.service.systemconsole.generalinfo;
 
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.tuple.ImmutablePair;
@@ -67,5 +68,7 @@ public interface GeneralInfoService {
    String getNow();
    
    boolean isHeadless();
+
+   List<String> getAvailableFonts();
 
 }

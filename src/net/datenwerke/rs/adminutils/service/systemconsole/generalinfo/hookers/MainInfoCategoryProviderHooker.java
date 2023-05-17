@@ -2,7 +2,6 @@ package net.datenwerke.rs.adminutils.service.systemconsole.generalinfo.hookers;
 
 import static net.datenwerke.rs.adminutils.client.systemconsole.generalinfo.Memory.MAX_FORMATTED;
 
-import java.awt.GraphicsEnvironment;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -47,6 +46,7 @@ public class MainInfoCategoryProviderHooker implements GeneralInfoCategoryProvid
    private static final String REQUEST_SERVER_PORT = "REQUEST_SERVER_PORT";
    private static final String REQUEST_CONTEXT_PATH = "REQUEST_CONTEXT_PATH";
    private static final String REQUEST_PROTOCOL = "REQUEST_PROTOCOL";
+   private static final String FONTS = "FONTS";
    private static final String MAIN = "MAIN";
    
    @Inject
@@ -109,6 +109,8 @@ public class MainInfoCategoryProviderHooker implements GeneralInfoCategoryProvid
             generalInfoService.getContextPath());
       props.put(ImmutablePair.of(REQUEST_PROTOCOL, GeneralInfoMessages.INSTANCE.protocol()),
             generalInfoService.getProtocol());
+      props.put(ImmutablePair.of(FONTS, GeneralInfoMessages.INSTANCE.fonts()),
+            generalInfoService.getAvailableFonts());
 
       return Collections.singletonMap(ImmutablePair.of(MAIN, GeneralInfoMessages.INSTANCE.mainInfo()), props);
    }

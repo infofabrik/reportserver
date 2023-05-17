@@ -51,4 +51,6 @@ public interface GeneralInfoMessages extends Messages {
 
    String restUrl();
 
+   String fonts();
+
 }
