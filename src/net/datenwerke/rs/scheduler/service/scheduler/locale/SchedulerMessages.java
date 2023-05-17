@@ -47,4 +47,14 @@ public interface SchedulerMessages extends Messages {
    
    String commandScheduler_sub_replaceUser_newUser();
 
+   String schedulerStatistics();
+
+   String activeReportJobs();
+
+   String inactiveReportJobs();
+
+   String activeScriptJobs();
+
+   String inactiveScriptJobs();
+
 }

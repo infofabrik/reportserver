@@ -12,6 +12,7 @@ import com.google.inject.Provider;
 import net.datenwerke.gf.service.lateinit.LateInitHook;
 import net.datenwerke.gf.service.lifecycle.hooks.ContextHook;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
+import net.datenwerke.rs.adminutils.service.systemconsole.generalinfo.hooks.GeneralInfoCategoryProviderHook;
 import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
 import net.datenwerke.rs.scheduler.service.scheduler.annotations.SchedulerModuleStartupDelay;
 import net.datenwerke.rs.scheduler.service.scheduler.eventhandler.HandleReportForceRemoveEventHandler;
@@ -20,8 +21,11 @@ import net.datenwerke.rs.scheduler.service.scheduler.eventhandler.HandleUserForc
 import net.datenwerke.rs.scheduler.service.scheduler.eventhandler.HandleUserRemoveEventHandler;
 import net.datenwerke.rs.scheduler.service.scheduler.hookers.ScheduleSendToActionHooker;
 import net.datenwerke.rs.scheduler.service.scheduler.hookers.ScheduleViaEmailHooker;
+import net.datenwerke.rs.scheduler.service.scheduler.hookers.SchedulerCategoryProviderHooker;
 import net.datenwerke.rs.scheduler.service.scheduler.hookers.SchedulerShutdownHooker;
+import net.datenwerke.rs.scheduler.service.scheduler.hookers.UsageStatisticsSchedulerProviderHooker;
 import net.datenwerke.rs.scheduler.service.scheduler.hooks.ScheduleConfigProviderHook;
+import net.datenwerke.rs.scheduler.service.scheduler.hooks.SchedulerEntryProviderHook;
 import net.datenwerke.rs.scheduler.service.scheduler.terminal.commands.SchedulerCommand;
 import net.datenwerke.rs.scheduler.service.scheduler.terminal.commands.SchedulerDaemonSubCommand;
 import net.datenwerke.rs.scheduler.service.scheduler.terminal.commands.SchedulerListFireTimesSubCommand;
@@ -68,7 +72,12 @@ public class RsSchedulerStartup {
 
          @SchedulerModuleStartupDelay final Long startupDelay,
 
-         final Injector injector, final SchedulerService schedulerService) {
+         final Injector injector, 
+         final SchedulerService schedulerService,
+         
+         final Provider<SchedulerCategoryProviderHooker> usageStatistics,
+         final Provider<UsageStatisticsSchedulerProviderHooker> usageStatsSchedulerProvider
+         ) {
 
       eventBus.attachObjectEventHandler(RemoveEntityEvent.class, User.class, handleUserRemoveEventHandler);
       eventBus.attachObjectEventHandler(ForceRemoveEntityEvent.class, User.class, handleUserForceRemoveEventHandler);
@@ -117,5 +126,10 @@ public class RsSchedulerStartup {
       sStarter.setDaemon(true);
 
       hookHandler.attachHooker(LateInitHook.class, () -> sStarter.start(), HookHandlerService.PRIORITY_LOWER);
+      
+      hookHandler.attachHooker(GeneralInfoCategoryProviderHook.class, usageStatistics,
+            HookHandlerService.PRIORITY_LOW + 100);
+      hookHandler.attachHooker(SchedulerEntryProviderHook.class, usageStatsSchedulerProvider,
+            HookHandlerService.PRIORITY_LOW);
    }
 }
