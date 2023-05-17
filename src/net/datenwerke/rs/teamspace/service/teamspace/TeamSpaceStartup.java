@@ -7,6 +7,7 @@ import net.datenwerke.eximport.hooks.ExporterProviderHook;
 import net.datenwerke.eximport.hooks.ImporterProviderHook;
 import net.datenwerke.gf.service.upload.hooks.FileUploadHandlerHook;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
+import net.datenwerke.rs.adminutils.service.systemconsole.generalinfo.hooks.GeneralInfoCategoryProviderHook;
 import net.datenwerke.rs.eximport.service.eximport.hooks.ExportAllHook;
 import net.datenwerke.rs.eximport.service.eximport.hooks.ImportAllHook;
 import net.datenwerke.rs.teamspace.service.teamspace.eventhandler.UserNodeForceRemoveEventHandler;
@@ -16,7 +17,10 @@ import net.datenwerke.rs.teamspace.service.teamspace.eximport.TeamSpaceImporter;
 import net.datenwerke.rs.teamspace.service.teamspace.eximport.hookers.ExportAllTeamspacesHooker;
 import net.datenwerke.rs.teamspace.service.teamspace.eximport.hookers.ImportAllTeamspacesHooker;
 import net.datenwerke.rs.teamspace.service.teamspace.genrights.TeamSpaceSecurityTarget;
-import net.datenwerke.rs.teamspace.service.teamspace.hooks.FileIntoTeamSpaceUploadHooker;
+import net.datenwerke.rs.teamspace.service.teamspace.hookers.FileIntoTeamSpaceUploadHooker;
+import net.datenwerke.rs.teamspace.service.teamspace.hookers.TeamSpaceCategoryProviderHooker;
+import net.datenwerke.rs.teamspace.service.teamspace.hookers.UsageStatisticsTotalTeamSpacesProviderHooker;
+import net.datenwerke.rs.teamspace.service.teamspace.hooks.TeamSpaceEntryProviderHook;
 import net.datenwerke.rs.teamspace.service.teamspace.hooks.TeamspaceModSubCommandHook;
 import net.datenwerke.rs.teamspace.service.teamspace.security.TeamSpaceSecuree;
 import net.datenwerke.rs.teamspace.service.teamspace.terminal.commands.AddMembersSubCommand;
@@ -53,7 +57,10 @@ public class TeamSpaceStartup {
          Provider<AddMembersSubCommand> addMembersToTeamspaceProvider,
          Provider<SetRoleSubCommand> setRoleInTeamspaceProvider,
          final Provider<TeamSpaceService> teamSpaceServiceProvider,
-         Provider<FileIntoTeamSpaceUploadHooker> fileIntoTeamSpaceUploadHooker
+         Provider<FileIntoTeamSpaceUploadHooker> fileIntoTeamSpaceUploadHooker,
+         
+         final Provider<TeamSpaceCategoryProviderHooker> usageStatistics,
+         final Provider<UsageStatisticsTotalTeamSpacesProviderHooker> usageStatsTeamspaceProvider
          ) {
       
       hookHandler.attachHooker(FileUploadHandlerHook.class, fileIntoTeamSpaceUploadHooker);
@@ -72,6 +79,11 @@ public class TeamSpaceStartup {
       hookHandler.attachHooker(ImporterProviderHook.class, new ImporterProviderHook(importerProvider));
       hookHandler.attachHooker(ExportAllHook.class, exportAllTeamspaces);
       hookHandler.attachHooker(ImportAllHook.class, importAllTeamspaces);
+      
+      hookHandler.attachHooker(TeamSpaceEntryProviderHook.class, usageStatsTeamspaceProvider,
+            HookHandlerService.PRIORITY_LOW);
+      hookHandler.attachHooker(GeneralInfoCategoryProviderHook.class, usageStatistics,
+            HookHandlerService.PRIORITY_LOW + 110);
 
       registerSecurityTargets(securityService);
 

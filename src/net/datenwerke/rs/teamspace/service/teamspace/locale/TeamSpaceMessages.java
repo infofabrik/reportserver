@@ -1,9 +1,13 @@
 package net.datenwerke.rs.teamspace.service.teamspace.locale;
 
+import net.datenwerke.rs.utils.localization.LocalizationServiceImpl;
 import net.datenwerke.rs.utils.localization.Messages;
 
 public interface TeamSpaceMessages extends Messages {
 
+   public final static TeamSpaceMessages INSTANCE = LocalizationServiceImpl
+         .getMessages(TeamSpaceMessages.class);
+   
    String teamSpaceSecureeName();
 
    String rightTeamSpaceAdminAbbreviation();
@@ -27,4 +31,8 @@ public interface TeamSpaceMessages extends Messages {
    String commandTeamspacemod_sub_setrole_arg2();
 
    String commandTeamspacemod_sub_setrole_arg3();
+
+   String teamSpaceStatistics();
+
+   String totalTeamSpaces();
 }

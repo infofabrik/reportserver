@@ -1,4 +1,4 @@
-package net.datenwerke.rs.teamspace.service.teamspace.hooks;
+package net.datenwerke.rs.teamspace.service.teamspace.hookers;
 
 import java.util.Map;
 
