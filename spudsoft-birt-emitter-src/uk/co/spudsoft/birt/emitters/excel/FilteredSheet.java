@@ -29,6 +29,8 @@ import org.apache.poi.ss.usermodel.Drawing;
 import org.apache.poi.ss.usermodel.Footer;
 import org.apache.poi.ss.usermodel.Header;
 import org.apache.poi.ss.usermodel.Hyperlink;
+import org.apache.poi.ss.usermodel.PageMargin;
+import org.apache.poi.ss.usermodel.PaneType;
 import org.apache.poi.ss.usermodel.PrintSetup;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -700,5 +702,20 @@ public class FilteredSheet implements Sheet {
     public void validateMergedRegions() {
         sheet.validateMergedRegions();
     }
+
+   @Override
+   public void createSplitPane(int arg0, int arg1, int arg2, int arg3, PaneType arg4) {
+      sheet.createSplitPane(arg0, arg1, arg2, arg3, arg4);
+   }
+
+   @Override
+   public double getMargin(PageMargin arg0) {
+      return sheet.getMargin(arg0);
+   }
+
+   @Override
+   public void setMargin(PageMargin arg0, double arg1) {
+      sheet.setMargin(arg0, arg1);
+   }
 
 }
