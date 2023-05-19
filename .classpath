@@ -66,7 +66,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/velocity-engine-core-2.3.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/c3p0-0.9.5.5.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/mchange-commons-java-0.2.20.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/commons-io-2.11.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/requestfactory-server-2.8.2.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/classmate-1.5.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/dom4j-2.1.3.jar"/>
@@ -98,7 +97,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/h2-2.1.214.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/eigenbase-xom-1.3.5.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/aopalliance-repackaged-2.6.1.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/commons-configuration2-2.8.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/guice-bridge-2.6.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/hk2-api-2.6.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/hk2-locator-2.6.1.jar"/>
@@ -140,8 +138,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jersey-hk2-2.37.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jersey-media-json-jackson-2.37.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jersey-server-2.37.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/log4j-api-2.19.0.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/log4j-core-2.19.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/org.w3c.css.sac-1.3.1.v200903091627.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/org.w3c.dom.smil-1.0.1.v200903091627.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/pdfbox-2.0.27.jar"/>
@@ -177,9 +173,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/guice-assistedinject-5.1.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/guice-persist-5.1.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/guice-servlet-5.1.0.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/sshd-common-2.9.2.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/sshd-core-2.9.2.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/sshd-sftp-2.9.2.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/byte-buddy-1.12.19.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/fop-2.8.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/fop-core-2.8.jar"/>
@@ -201,18 +194,12 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/xercesImpl-2.12.2.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/xmlbeans-5.1.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/rs-schemaupdate-1.3.24.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/lucene-analysis-common-9.5.0.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/lucene-core-9.5.0.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/lucene-queries-9.5.0.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/lucene-queryparser-9.5.0.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/lucene-sandbox-9.5.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/commons-fileupload-1.5.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/hibernate-c3p0-5.6.15.Final.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/hibernate-core-5.6.15.Final.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/hibernate-entitymanager-5.6.15.Final.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/hibernate-envers-5.6.15.Final.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/commons-compress-1.23.0.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/liquibase-core-4.20.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/checker-qual-3.31.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jcifs-2.1.34.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/postgresql-42.6.0.jar"/>
@@ -248,5 +235,18 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/openpdf-1.3.30.jaspersoft.2.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/picocli-4.7.3.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/viz.js-graphviz-java-2.1.3.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/commons-configuration2-2.9.0.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/commons-io-2.12.0.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/liquibase-core-4.22.0.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/log4j-api-2.20.0.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/log4j-core-2.20.0.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/lucene-analysis-common-9.6.0.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/lucene-core-9.6.0.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/lucene-queries-9.6.0.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/lucene-queryparser-9.6.0.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/lucene-sandbox-9.6.0.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/sshd-common-2.10.0.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/sshd-core-2.10.0.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/sshd-sftp-2.10.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
