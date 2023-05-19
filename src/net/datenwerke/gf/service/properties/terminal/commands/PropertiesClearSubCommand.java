@@ -6,7 +6,7 @@ import com.google.inject.Provider;
 import net.datenwerke.gf.service.properties.PropertiesService;
 import net.datenwerke.gf.service.properties.entities.Property;
 import net.datenwerke.gf.service.properties.locale.PropertiesMessages;
-import net.datenwerke.rs.scripting.service.scripting.terminal.hooks.ScheduleScriptSubCommandHook;
+import net.datenwerke.gf.service.properties.terminal.hooks.PropertiesSubCommandHook;
 import net.datenwerke.rs.terminal.service.terminal.TerminalSession;
 import net.datenwerke.rs.terminal.service.terminal.exceptions.TerminalException;
 import net.datenwerke.rs.terminal.service.terminal.helpers.AutocompleteHelper;
@@ -14,7 +14,7 @@ import net.datenwerke.rs.terminal.service.terminal.helpers.CommandParser;
 import net.datenwerke.rs.terminal.service.terminal.helpmessenger.annotations.CliHelpMessage;
 import net.datenwerke.rs.terminal.service.terminal.obj.CommandResult;
 
-public class PropertiesClearSubCommand implements ScheduleScriptSubCommandHook {
+public class PropertiesClearSubCommand implements PropertiesSubCommandHook {
 
    public static final String BASE_COMMAND = "clear";
 
