@@ -2,6 +2,8 @@ package net.datenwerke.gxtdto.client.utilityservices;
 
 import com.google.gwt.user.client.ui.Widget;
 
+import net.datenwerke.rs.theme.client.icon.BaseIcon;
+
 public interface UtilsUIService {
 
    public void redirect(String url);
@@ -20,6 +22,7 @@ public interface UtilsUIService {
 
    String guessUserTimezone();
    
-   void showHtmlPopupWindows(final String title, final String html, final boolean maximize);
+   void showHtmlPopupWindows(final String title, final String html, final boolean maximize, BaseIcon icon,
+         boolean collapsible, boolean titleCollapse, boolean maximizable, boolean resizable);
 
 }

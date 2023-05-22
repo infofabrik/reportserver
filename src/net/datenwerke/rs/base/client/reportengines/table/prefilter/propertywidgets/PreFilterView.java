@@ -678,7 +678,7 @@ public class PreFilterView extends ReportExecutorMainPanelView {
                   public void onSuccess(String result) {
                      mainPanel.unmask();
                      utilsUIServiceProvider.get().showHtmlPopupWindows(PreFilterMessages.INSTANCE.preFilterHeading(),
-                           result, true);
+                           result, true, BaseIcon.SITEMAP, false, false, true, true);
                   }
          
                   @Override

@@ -13,6 +13,7 @@ import net.datenwerke.gf.client.dispatcher.DispatcherService;
 import net.datenwerke.gxtdto.client.baseex.widget.btn.DwTextButton;
 import net.datenwerke.gxtdto.client.baseex.widget.window.SimpleDialogWindow;
 import net.datenwerke.gxtdto.client.locale.BaseMessages;
+import net.datenwerke.rs.theme.client.icon.BaseIcon;
 
 public class UtilsUIServiceImpl implements UtilsUIService {
 
@@ -83,23 +84,30 @@ public class UtilsUIServiceImpl implements UtilsUIService {
          iframeLoadHandler.removeHandler();
          String content = getIFrameContent(GWT_DOWNLOAD_FRAME);
          String title = getIFrameTitle(GWT_DOWNLOAD_FRAME);
-         showHtmlPopupWindows(title, content, false);
+         showHtmlPopupWindows(title, content, false, null, false, false, false, false);
       });
 
       downloadFrame.setUrl(url);
    }
 
    @Override
-   public void showHtmlPopupWindows(final String title, final String html, final boolean maximize) {
+   public void showHtmlPopupWindows(final String title, final String html, final boolean maximize, BaseIcon icon,
+         boolean collapsible, boolean titleCollapse, boolean maximizable, boolean resizable) {
       SimpleDialogWindow popup = new SimpleDialogWindow() {
 
          @Override
          protected void initializeUi() {
-
             /* create window */
             setWidth(700);
             setHeading(title);
             setHeight(550);
+            
+            if (null != icon)
+               setHeaderIcon(icon);
+            setCollapsible(collapsible);
+            setTitleCollapse(titleCollapse);
+            setMaximizable(maximizable);
+            setResizable(resizable);
 
             setWidget(asIframe(html));
 
