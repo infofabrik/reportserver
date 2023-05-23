@@ -3,6 +3,7 @@ package net.datenwerke.rs.utils.reflection;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.lang.reflect.TypeVariable;
@@ -348,5 +349,19 @@ public class ReflectionServiceImpl implements ReflectionService {
          return type.getAnnotation(annotationClass);
 
       return getAnnotationRecursive(annotationClass, type.getSuperclass());
+   }
+
+   @Override
+   public Method getMethod(Class<?> clazz, String name, Class<?>... args) {
+      try {
+         return clazz.getMethod(name, args);
+      } catch (NoSuchMethodException | SecurityException e) {
+         return null;
+      }
+   }
+
+   @Override
+   public boolean isAbstract(Method method) {
+      return Modifier.isAbstract(method.getModifiers());
    }
 }

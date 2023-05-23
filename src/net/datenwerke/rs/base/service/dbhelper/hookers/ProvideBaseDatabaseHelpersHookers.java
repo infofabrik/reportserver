@@ -26,6 +26,7 @@ import net.datenwerke.rs.base.service.dbhelper.db.SybaseJConnect;
 import net.datenwerke.rs.base.service.dbhelper.db.Vertica;
 import net.datenwerke.rs.base.service.dbhelper.db.YugabyteDB;
 import net.datenwerke.rs.base.service.dbhelper.db.athena.Athena;
+import net.datenwerke.rs.base.service.dbhelper.db.db2.Db2i;
 import net.datenwerke.rs.base.service.dbhelper.db.db2.Db2z;
 import net.datenwerke.rs.base.service.dbhelper.db.derby.Derby;
 import net.datenwerke.rs.base.service.dbhelper.db.informix.Informix;
@@ -40,7 +41,7 @@ public class ProvideBaseDatabaseHelpersHookers implements DatabaseHelperProvider
 
    @Inject
    public ProvideBaseDatabaseHelpersHookers(
-         Db2z db2, 
+         Db2z db2z, 
          H2 h2, 
          Firebird firebird, 
          MariaDB mariaDb, 
@@ -64,10 +65,11 @@ public class ProvideBaseDatabaseHelpersHookers implements DatabaseHelperProvider
          Incorta incorta,
          CrateDB crateDb,
          Athena athena,
-         Derby derby
+         Derby derby,
+         Db2i db2i
          ) {
 
-      helpers.add(db2);
+      helpers.add(db2z);
       helpers.add(h2);
       helpers.add(mssql);
       helpers.add(mysql);
@@ -92,6 +94,7 @@ public class ProvideBaseDatabaseHelpersHookers implements DatabaseHelperProvider
       helpers.add(crateDb);
       helpers.add(athena);
       helpers.add(derby);
+      helpers.add(db2i);
    }
 
    @Override

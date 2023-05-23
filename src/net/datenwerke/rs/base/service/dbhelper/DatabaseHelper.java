@@ -542,5 +542,9 @@ abstract public class DatabaseHelper {
    public boolean canChangeReadOnlyFlagAfterConnectionCreation() {
       return true;
    }
+   
+   public String createDummyQuery() {
+      return "select 1";
+   }
 
 }

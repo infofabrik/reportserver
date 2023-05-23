@@ -68,5 +68,9 @@ public interface ReflectionService {
    Set<Field> getAllFields(Class<?> clazz);
 
    Object getFieldValueNoSecurity(Field f, Object o);
+   
+   Method getMethod(Class<?> clazz, String name, Class<?>...args);
+   
+   boolean isAbstract(Method method);
 
 }
