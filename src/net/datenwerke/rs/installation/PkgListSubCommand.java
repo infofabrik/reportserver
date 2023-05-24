@@ -31,7 +31,10 @@ public class PkgListSubCommand implements SubCommand {
    @Override
    public CommandResult execute(CommandParser parser, TerminalSession session) throws TerminalException {
       final CommandResult cr = new CommandResult();
-      packageScriptHelper.get().listPackages().stream().map(File::getName).forEach(n -> cr.addResultLine());
+      packageScriptHelper.get().listPackages()
+         .stream()
+         .map(File::getName)
+         .forEach(cr::addResultLine);
 
       return cr;
    }
