@@ -1,14 +1,17 @@
-package net.datenwerke.rs.installation;
+package net.datenwerke.rs.pkg.service.pkg.terminal.commands;
 
 import java.io.File;
 
 import javax.inject.Inject;
 import javax.inject.Provider;
 
+import net.datenwerke.rs.pkg.service.pkg.PackagedScriptHelperService;
+import net.datenwerke.rs.pkg.service.pkg.locale.PkgMessages;
 import net.datenwerke.rs.terminal.service.terminal.TerminalSession;
 import net.datenwerke.rs.terminal.service.terminal.exceptions.TerminalException;
 import net.datenwerke.rs.terminal.service.terminal.helpers.AutocompleteHelper;
 import net.datenwerke.rs.terminal.service.terminal.helpers.CommandParser;
+import net.datenwerke.rs.terminal.service.terminal.helpmessenger.annotations.CliHelpMessage;
 import net.datenwerke.rs.terminal.service.terminal.hooks.SubCommand;
 import net.datenwerke.rs.terminal.service.terminal.obj.CommandResult;
 
@@ -16,10 +19,10 @@ public class PkgListSubCommand implements SubCommand {
 
    private static final String BASE_COMMAND = "list";
 
-   private Provider<PackagedScriptHelper> packageScriptHelper;
+   private Provider<PackagedScriptHelperService> packageScriptHelper;
 
    @Inject
-   public PkgListSubCommand(Provider<PackagedScriptHelper> packageScriptHelper) {
+   public PkgListSubCommand(Provider<PackagedScriptHelperService> packageScriptHelper) {
       this.packageScriptHelper = packageScriptHelper;
    }
 
@@ -29,6 +32,11 @@ public class PkgListSubCommand implements SubCommand {
    }
 
    @Override
+   @CliHelpMessage(
+         messageClass = PkgMessages.class, 
+         name = BASE_COMMAND, 
+         description = "pkg_sub_list_description"
+   )
    public CommandResult execute(CommandParser parser, TerminalSession session) throws TerminalException {
       final CommandResult cr = new CommandResult();
       packageScriptHelper.get().listPackages()

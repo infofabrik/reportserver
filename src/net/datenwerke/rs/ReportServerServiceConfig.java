@@ -178,6 +178,7 @@ import net.datenwerke.rs.passwordpolicy.server.ActivateUserRpcServiceImpl;
 import net.datenwerke.rs.passwordpolicy.server.LostPasswordRpcServiceImpl;
 import net.datenwerke.rs.passwordpolicy.service.PasswordPolicyModule;
 import net.datenwerke.rs.passwordpolicy.service.activateuser.ActivateUserModule;
+import net.datenwerke.rs.pkg.service.pkg.PkgModule;
 import net.datenwerke.rs.printer.server.printer.PrinterRpcServiceImpl;
 import net.datenwerke.rs.printer.service.printer.PrinterModule;
 import net.datenwerke.rs.remoteaccess.service.RemoteAccessModule;
@@ -728,6 +729,7 @@ public class ReportServerServiceConfig extends DwGwtFrameworkBase {
 
             new DwEventLoggerModule(),
 
+            new PkgModule(),
             new ReportServerInstallationModule(),
 
             new ManPageModule(), 
