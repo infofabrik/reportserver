@@ -1,5 +1,7 @@
 package net.datenwerke.rs.pkg.service.pkg.terminal.commands;
 
+import static java.util.stream.Collectors.toList;
+
 import java.io.File;
 
 import javax.inject.Inject;
@@ -7,6 +9,7 @@ import javax.inject.Provider;
 
 import net.datenwerke.rs.pkg.service.pkg.PackagedScriptHelperService;
 import net.datenwerke.rs.pkg.service.pkg.locale.PkgMessages;
+import net.datenwerke.rs.terminal.service.terminal.TerminalService;
 import net.datenwerke.rs.terminal.service.terminal.TerminalSession;
 import net.datenwerke.rs.terminal.service.terminal.exceptions.TerminalException;
 import net.datenwerke.rs.terminal.service.terminal.helpers.AutocompleteHelper;
@@ -19,11 +22,16 @@ public class PkgListSubCommand implements SubCommand {
 
    private static final String BASE_COMMAND = "list";
 
-   private Provider<PackagedScriptHelperService> packageScriptHelper;
+   private Provider<PackagedScriptHelperService> packageScriptHelperProvider;
+   private Provider<TerminalService> terminalServiceProvider;
 
    @Inject
-   public PkgListSubCommand(Provider<PackagedScriptHelperService> packageScriptHelper) {
-      this.packageScriptHelper = packageScriptHelper;
+   public PkgListSubCommand(
+         Provider<PackagedScriptHelperService> packageScriptHelperProvider,
+         Provider<TerminalService> terminalServiceProvider
+         ) {
+      this.packageScriptHelperProvider = packageScriptHelperProvider;
+      this.terminalServiceProvider = terminalServiceProvider;
    }
 
    @Override
@@ -38,13 +46,12 @@ public class PkgListSubCommand implements SubCommand {
          description = "pkg_sub_list_description"
    )
    public CommandResult execute(CommandParser parser, TerminalSession session) throws TerminalException {
-      final CommandResult cr = new CommandResult();
-      packageScriptHelper.get().listPackages()
-         .stream()
-         .map(File::getName)
-         .forEach(cr::addResultLine);
-
-      return cr;
+      return terminalServiceProvider.get().convertSimpleListToCommandResult("Available packages",
+         packageScriptHelperProvider.get().listPackages()
+            .stream()
+            .map(File::getName)
+            .sorted()
+            .collect(toList()));
    }
 
    @Override
