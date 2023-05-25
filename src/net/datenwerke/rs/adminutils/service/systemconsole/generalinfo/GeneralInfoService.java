@@ -33,7 +33,7 @@ public interface GeneralInfoService {
 
    String getUserAgent();
 
-   String getUserHome();
+   String getUserHome(boolean appendFileCheck);
 
    String getRsVersion();
 

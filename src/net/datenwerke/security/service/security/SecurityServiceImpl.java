@@ -885,7 +885,7 @@ public class SecurityServiceImpl implements SecurityService {
    @Override
    public String getKnownHostsFile(boolean appendFileCheck) {
       Path knownHostsFile = Paths.get(configServiceProvider.get().getConfigFailsafe("security/misc.cf")
-            .getString("knownHosts", generalInfoServiceProvider.get().getUserHome() + "/.ssh/known_hosts"));
+            .getString("knownHosts", generalInfoServiceProvider.get().getUserHome(false) + "/.ssh/known_hosts"));
       if (appendFileCheck)
          return RsFileUtils.appendFileCheck(knownHostsFile);
 
