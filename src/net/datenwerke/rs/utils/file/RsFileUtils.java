@@ -101,5 +101,12 @@ public class RsFileUtils extends FileUtils {
       
       return sb.toString();
    }
+   
+   public static boolean checkReadable(Path path) {
+      return Files.exists(path)  && Files.isReadable(path);
+   }
+   public static boolean checkWritable(Path path) {
+      return Files.exists(path)  && Files.isWritable(path);
+   }
 
 }
