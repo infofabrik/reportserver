@@ -7,6 +7,8 @@ public class DotModule extends AbstractModule {
    @Override
    protected void configure() {
       bind(DotService.class).to(DotServiceImpl.class);
+      
+      bind(DotStartup.class).asEagerSingleton();
    }
 
 }

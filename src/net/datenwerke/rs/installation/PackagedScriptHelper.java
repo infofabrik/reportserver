@@ -1,4 +1,4 @@
-package net.datenwerke.rs.pkg.service.pkg;
+package net.datenwerke.rs.installation;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -53,7 +53,7 @@ import net.datenwerke.rs.terminal.service.terminal.vfs.exceptions.VFSException;
 import net.datenwerke.rs.utils.zip.ZipExtractionConfig;
 import net.datenwerke.rs.utils.zip.ZipUtilsService;
 
-public class PackagedScriptHelperServiceImpl implements PackagedScriptHelperService {
+public class PackagedScriptHelper {
 
    private final Logger logger = LoggerFactory.getLogger(getClass().getName());
 
@@ -72,17 +72,11 @@ public class PackagedScriptHelperServiceImpl implements PackagedScriptHelperServ
    private BasepathZipExtractConfigFactory zipExtractConfigFactory;
 
    @Inject
-   public PackagedScriptHelperServiceImpl(
-         Provider<ReportDocGroovyHelper> groovyHelperProvider, 
-         LicenseService licenseService,
-         TerminalService terminalService, 
-         SimpleScriptingService scriptingService, 
-         FileServerService fileServerService,
-         BasepathZipExtractConfigFactory zipExtractConfigFactory, 
-         ZipUtilsService zipUtilsService,
+   public PackagedScriptHelper(Provider<ReportDocGroovyHelper> groovyHelperProvider, LicenseService licenseService,
+         TerminalService terminalService, SimpleScriptingService scriptingService, FileServerService fileServerService,
+         BasepathZipExtractConfigFactory zipExtractConfigFactory, ZipUtilsService zipUtilsService,
 
-         Provider<ServletContext> servletContext
-         ) {
+         Provider<ServletContext> servletContext) {
 
       this.groovyHelperProvider = groovyHelperProvider;
       this.licenseService = licenseService;
@@ -94,19 +88,17 @@ public class PackagedScriptHelperServiceImpl implements PackagedScriptHelperServ
       this.servletContext = servletContext;
    }
 
-   private CompiledScript compile(String script) throws IOException, ScriptException {
+   protected CompiledScript compile(String script) throws IOException, ScriptException {
       ScriptEngineManager manager = new ScriptEngineManager();
       ScriptEngine groovy = manager.getEngineByName(GROOVY);
       Compilable compGroovy = (Compilable) groovy;
       return compGroovy.compile(script);
    }
 
-   @Override
    public File getPackageDirectory() {
       return new File(servletContext.get().getRealPath(""), PKG_DIR);
    }
 
-   @Override
    public FileServerFolder extractPackageTemporarily(InputStream is) throws FileNotFoundException, IOException {
       FileServerFolder targetDir = new FileServerFolder(UUID.randomUUID().toString());
       try {
@@ -122,7 +114,6 @@ public class PackagedScriptHelperServiceImpl implements PackagedScriptHelperServ
       }
    }
 
-   @Override
    public FileServerFolder getFileServerTempDir() {
       FileServerFolder tmpDir = (FileServerFolder) fileServerService.getNodeByPath("/tmp", false);
       if (null == tmpDir) {
@@ -136,17 +127,14 @@ public class PackagedScriptHelperServiceImpl implements PackagedScriptHelperServ
       return tmpDir;
    }
 
-   @Override
    public String executePackage(FileServerFolder targetDir) {
       return executePackage(targetDir, "");
    }
 
-   @Override
    public String executePackage(FileServerFolder targetDir, String scriptOptions) {
       return executePackage(targetDir, scriptOptions, true, true, Optional.empty());
    }
 
-   @Override
    public String executePackage(FileServerFolder targetDir, String scriptOptions, boolean executeRunScriptCommands,
          boolean executeCopyFilesCommands, Optional<String> copyFilesCustomDstPathPrefix) {
       final FileServerFile configFile = targetDir.getChildrenOfType(FileServerFile.class).stream()
@@ -254,13 +242,11 @@ public class PackagedScriptHelperServiceImpl implements PackagedScriptHelperServ
       }
    }
 
-   @Override
    public List<File> listPackages() {
       return Arrays.asList(getPackageDirectory()
             .listFiles((dir, name) -> name.toLowerCase().endsWith(".zip") && validateZip(new File(dir, name), false)));
    }
 
-   @Override
    public boolean validateZip(InputStream is, final boolean requireAutorun) {
       final List<ZipEntry> entries = new ArrayList<ZipEntry>();
       try {
@@ -300,7 +286,6 @@ public class PackagedScriptHelperServiceImpl implements PackagedScriptHelperServ
       return entries.size() > 0;
    }
 
-   @Override
    public boolean validateZip(File f, final boolean requireAutorun) {
       try {
          return validateZip(new FileInputStream(f), requireAutorun);

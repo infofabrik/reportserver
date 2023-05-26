@@ -178,7 +178,6 @@ import net.datenwerke.rs.passwordpolicy.server.ActivateUserRpcServiceImpl;
 import net.datenwerke.rs.passwordpolicy.server.LostPasswordRpcServiceImpl;
 import net.datenwerke.rs.passwordpolicy.service.PasswordPolicyModule;
 import net.datenwerke.rs.passwordpolicy.service.activateuser.ActivateUserModule;
-import net.datenwerke.rs.pkg.service.pkg.PkgModule;
 import net.datenwerke.rs.printer.server.printer.PrinterRpcServiceImpl;
 import net.datenwerke.rs.printer.service.printer.PrinterModule;
 import net.datenwerke.rs.remoteaccess.service.RemoteAccessModule;
@@ -261,7 +260,7 @@ public class ReportServerServiceConfig extends DwGwtFrameworkBase {
 
    private final Logger logger = LoggerFactory.getLogger(getClass().getName());
 
-   public static final String CODE_VERSION = "2023-05-23-14-01-11";
+   public static final String CODE_VERSION = "2023-05-26-13-10-32";
 
    public static final String ENTERPRISE_MODULE_LOCATION = "net.datenwerke.rsenterprise.main.service.RsEnterpriseModule";
    private static final String ENTERPRISE_MODULE_LOAD_MODULE_METHOD = "getEnterpriseModules";
@@ -729,7 +728,6 @@ public class ReportServerServiceConfig extends DwGwtFrameworkBase {
 
             new DwEventLoggerModule(),
 
-            new PkgModule(),
             new ReportServerInstallationModule(),
 
             new ManPageModule(), 

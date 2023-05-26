@@ -1,16 +1,13 @@
-package net.datenwerke.rs.pkg.service.pkg.terminal.commands;
+package net.datenwerke.rs.installation;
 
+import java.util.Arrays;
 import java.util.List;
 
 import javax.inject.Inject;
 
-import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
-import net.datenwerke.rs.pkg.service.pkg.hooks.PkgSubCommandHook;
-import net.datenwerke.rs.pkg.service.pkg.locale.PkgMessages;
 import net.datenwerke.rs.terminal.service.terminal.TerminalSession;
 import net.datenwerke.rs.terminal.service.terminal.exceptions.TerminalException;
 import net.datenwerke.rs.terminal.service.terminal.helpers.CommandParser;
-import net.datenwerke.rs.terminal.service.terminal.helpmessenger.annotations.CliHelpMessage;
 import net.datenwerke.rs.terminal.service.terminal.hooks.SubCommand;
 import net.datenwerke.rs.terminal.service.terminal.hooks.SubCommandContainerImpl;
 import net.datenwerke.rs.terminal.service.terminal.obj.CommandResult;
@@ -18,13 +15,13 @@ import net.datenwerke.rs.terminal.service.terminal.obj.CommandResult;
 public class PkgCommand extends SubCommandContainerImpl {
 
    private static final String BASE_COMMAND = "pkg";
-   private final HookHandlerService hookHandler;
+   private PkgInstallSubCommand installSubCommand;
+   private PkgListSubCommand listSubCommand;
 
    @Inject
-   public PkgCommand(
-         HookHandlerService hookHandler
-         ) {
-      this.hookHandler = hookHandler;
+   public PkgCommand(PkgInstallSubCommand installSubCommand, PkgListSubCommand listSubCommand) {
+      this.installSubCommand = installSubCommand;
+      this.listSubCommand = listSubCommand;
    }
 
    @Override
@@ -33,11 +30,6 @@ public class PkgCommand extends SubCommandContainerImpl {
    }
 
    @Override
-   @CliHelpMessage(
-         messageClass = PkgMessages.class, 
-         name = BASE_COMMAND, 
-         description = "pkg_description"
-   )
    public CommandResult execute(CommandParser parser, TerminalSession session) throws TerminalException {
       return super.execute(parser, session);
    }
@@ -49,7 +41,7 @@ public class PkgCommand extends SubCommandContainerImpl {
 
    @Override
    public List<SubCommand> getSubCommands() {
-      return hookHandler.getHookers(PkgSubCommandHook.class);
+      return (List) Arrays.asList(installSubCommand, listSubCommand);
    }
 
 }

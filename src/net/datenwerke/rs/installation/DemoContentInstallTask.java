@@ -18,19 +18,18 @@ import org.slf4j.LoggerFactory;
 import net.datenwerke.rs.configservice.service.configservice.ConfigDirService;
 import net.datenwerke.rs.fileserver.service.fileserver.FileServerService;
 import net.datenwerke.rs.fileserver.service.fileserver.entities.FileServerFolder;
-import net.datenwerke.rs.pkg.service.pkg.PackagedScriptHelperService;
 
 public class DemoContentInstallTask implements DbInstallationTask {
 
    private final Logger logger = LoggerFactory.getLogger(getClass().getName());
 
-   private Provider<PackagedScriptHelperService> packagedScriptHelper;
+   private Provider<PackagedScriptHelper> packagedScriptHelper;
    private FileServerService fileServerService;
    private Provider<ConfigDirService> configDirServiceProvider;
 
    @Inject
    public DemoContentInstallTask(
-         Provider<PackagedScriptHelperService> packagedScriptHelper,
+         Provider<PackagedScriptHelper> packagedScriptHelper,
          FileServerService fileServerService, 
          Provider<ConfigDirService> configDirServiceProvider
          ) {
@@ -52,7 +51,7 @@ public class DemoContentInstallTask implements DbInstallationTask {
                IOUtils.closeQuietly(reader);
 
                if (Boolean.valueOf(props.getProperty("democontent.install", "false"))) {
-                  PackagedScriptHelperService helper = packagedScriptHelper.get();
+                  PackagedScriptHelper helper = packagedScriptHelper.get();
                   Optional<File> demobuilderFile = helper.listPackages()
                         .stream()
                         .filter(f -> f.getName().startsWith("demobuilder-"))

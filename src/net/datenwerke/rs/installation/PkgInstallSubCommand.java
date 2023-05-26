@@ -1,4 +1,4 @@
-package net.datenwerke.rs.pkg.service.pkg.terminal.commands;
+package net.datenwerke.rs.installation;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -11,15 +11,10 @@ import javax.inject.Provider;
 import net.datenwerke.rs.fileserver.service.fileserver.FileServerService;
 import net.datenwerke.rs.fileserver.service.fileserver.entities.FileServerFile;
 import net.datenwerke.rs.fileserver.service.fileserver.entities.FileServerFolder;
-import net.datenwerke.rs.pkg.service.pkg.PackagedScriptHelperService;
-import net.datenwerke.rs.pkg.service.pkg.locale.PkgMessages;
 import net.datenwerke.rs.terminal.service.terminal.TerminalSession;
 import net.datenwerke.rs.terminal.service.terminal.exceptions.TerminalException;
 import net.datenwerke.rs.terminal.service.terminal.helpers.AutocompleteHelper;
 import net.datenwerke.rs.terminal.service.terminal.helpers.CommandParser;
-import net.datenwerke.rs.terminal.service.terminal.helpmessenger.annotations.Argument;
-import net.datenwerke.rs.terminal.service.terminal.helpmessenger.annotations.CliHelpMessage;
-import net.datenwerke.rs.terminal.service.terminal.helpmessenger.annotations.NonOptArgument;
 import net.datenwerke.rs.terminal.service.terminal.hooks.SubCommand;
 import net.datenwerke.rs.terminal.service.terminal.obj.CommandResult;
 import net.datenwerke.security.service.security.rights.Read;
@@ -27,11 +22,11 @@ import net.datenwerke.security.service.security.rights.Read;
 public class PkgInstallSubCommand implements SubCommand {
 
    private static final String BASE_COMMAND = "install";
-   private Provider<PackagedScriptHelperService> packageScriptHelper;
+   private Provider<PackagedScriptHelper> packageScriptHelper;
    private FileServerService fileServerService;
 
    @Inject
-   public PkgInstallSubCommand(Provider<PackagedScriptHelperService> packageScriptHelper,
+   public PkgInstallSubCommand(Provider<PackagedScriptHelper> packageScriptHelper,
          FileServerService fileServerService) {
       this.packageScriptHelper = packageScriptHelper;
       this.fileServerService = fileServerService;
@@ -44,30 +39,9 @@ public class PkgInstallSubCommand implements SubCommand {
    }
 
    @Override
-   @CliHelpMessage(
-         messageClass = PkgMessages.class, 
-         name = BASE_COMMAND, 
-         description = "pkg_sub_install_description",
-         args = {
-               @Argument(
-                     flag = "d", 
-                     hasValue = false, 
-                     valueName = "local file system", 
-                     description = "commandPkg_sub_install_flagD", 
-                     mandatory = false
-               )
-         },
-         nonOptArgs = { 
-               @NonOptArgument(
-                     name = "packageName",
-                     mandatory = true,
-                     description = "commandPkg_sub_install_packageName"
-               )
-         }
-   )
    public CommandResult execute(CommandParser parser, TerminalSession session) throws TerminalException {
       String packageName = parser.getNonOptionArguments().get(0);
-      PackagedScriptHelperService packagedScriptHelper = packageScriptHelper.get();
+      PackagedScriptHelper packagedScriptHelper = packageScriptHelper.get();
       if (parser.hasOption("d")) {
          File packageFile = new File(packagedScriptHelper.getPackageDirectory(), packageName);
          if (!packageFile.exists()) {

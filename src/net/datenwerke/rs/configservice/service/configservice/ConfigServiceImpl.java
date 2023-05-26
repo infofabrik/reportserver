@@ -33,7 +33,7 @@ import net.datenwerke.rs.fileserver.service.fileserver.FileServerService;
 import net.datenwerke.rs.fileserver.service.fileserver.entities.AbstractFileServerNode;
 import net.datenwerke.rs.fileserver.service.fileserver.entities.FileServerFile;
 import net.datenwerke.rs.fileserver.service.fileserver.entities.FileServerFolder;
-import net.datenwerke.rs.pkg.service.pkg.PackagedScriptHelperService;
+import net.datenwerke.rs.installation.PackagedScriptHelper;
 import net.datenwerke.rs.terminal.service.terminal.TerminalService;
 import net.datenwerke.rs.terminal.service.terminal.objresolver.exceptions.ObjectResolverException;
 import net.datenwerke.rs.utils.config.ConfigFileNotFoundException;
@@ -48,14 +48,14 @@ public class ConfigServiceImpl implements ConfigService {
    private final FileServerService fileService;
    private final TerminalService terminalService;
    private final HookHandlerService hookHandler;
-   private final Provider<PackagedScriptHelperService> packagedScriptHelperProvider;
+   private final Provider<PackagedScriptHelper> packagedScriptHelperProvider;
 
    @Inject
    public ConfigServiceImpl(
          FileServerService fileService, 
          TerminalService terminalService,
          HookHandlerService hookHandler, 
-         Provider<PackagedScriptHelperService> packagedScriptHelperProvider
+         Provider<PackagedScriptHelper> packagedScriptHelperProvider
          ) {
 
       /* store objects */
@@ -221,7 +221,7 @@ public class ConfigServiceImpl implements ConfigService {
        * exists and if does not exist previously, we delete it
        */
       boolean tmpFolderDidExist = (null == fileService.getNodeByPath("/tmp", false)) ? false : true;
-      PackagedScriptHelperService helper = packagedScriptHelperProvider.get();
+      PackagedScriptHelper helper = packagedScriptHelperProvider.get();
       File pkgDir = helper.getPackageDirectory();
 
       if (null == targetDir) {

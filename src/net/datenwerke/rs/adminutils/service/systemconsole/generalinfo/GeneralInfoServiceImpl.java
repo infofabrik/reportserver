@@ -345,13 +345,8 @@ public class GeneralInfoServiceImpl implements GeneralInfoService {
    }
    
    @Override
-   public String getUserHome(boolean appendFileCheck) {
-      String userHome = readSystemProperty("user.home");
-      if (appendFileCheck) {
-         Path userHomeDir = Paths.get(userHome);
-         return RsFileUtils.appendFileCheck(userHomeDir);
-      }
-      return userHome;
+   public String getUserHome() {
+      return readSystemProperty("user.home");
    }
 
    @Override

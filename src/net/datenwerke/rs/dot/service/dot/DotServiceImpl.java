@@ -76,7 +76,7 @@ public class DotServiceImpl implements DotService {
    
    private void renderPreconditions() {
       // V8 writes a file in user.home, so it must be readable and writable
-      String userHome = generalInfoServiceProvider.get().getUserHome(false);
+      String userHome = generalInfoServiceProvider.get().getUserHome();
       Path userHomePath = Paths.get(userHome);
       if (! RsFileUtils.checkReadable(userHomePath))
          throw new IllegalArgumentException("'" + userHome + "' is not readable!");

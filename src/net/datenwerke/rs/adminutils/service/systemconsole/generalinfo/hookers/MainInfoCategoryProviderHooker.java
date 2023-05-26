@@ -22,7 +22,6 @@ public class MainInfoCategoryProviderHooker implements GeneralInfoCategoryProvid
    private static final String JAVA_VERSION = "JAVA_VERSION";
    private static final String JAVA_HOME = "JAVA_HOME";
    private static final String JVM_ARGS = "JVM_ARGS";
-   private static final String USER_HOME = "USER_HOME";
    private static final String APPLICATION_SERVER = "APPLICATION_SERVER";
    private static final String CATALINA_HOME = "CATALINA_HOME";
    private static final String CATALINA_BASE = "CATALINA_BASE";
@@ -67,7 +66,6 @@ public class MainInfoCategoryProviderHooker implements GeneralInfoCategoryProvid
             generalInfoService.getJavaVersion());
       props.put(ImmutablePair.of(JAVA_HOME, "Java home"), generalInfoService.getJavaHome());
       props.put(ImmutablePair.of(JVM_ARGS, "JVM args"), generalInfoService.getVmArguments());
-      props.put(ImmutablePair.of(USER_HOME, "User home"), generalInfoService.getUserHome(true));
       props.put(ImmutablePair.of(APPLICATION_SERVER, GeneralInfoMessages.INSTANCE.applicationServerLabel()),
             generalInfoService.getApplicationServer());
       props.put(ImmutablePair.of(CATALINA_HOME, "Catalina home"), generalInfoService.getCatalinaHome());
