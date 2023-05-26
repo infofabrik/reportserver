@@ -2,11 +2,11 @@ package net.datenwerke.rs.fileserver.client.fileserver.ui.forms;
 
 import java.util.List;
 
+import javax.inject.Provider;
+
 import com.google.inject.Inject;
 import com.sencha.gxt.widget.core.client.Dialog.PredefinedButton;
 import com.sencha.gxt.widget.core.client.box.MessageBox;
-import com.sencha.gxt.widget.core.client.event.DialogHideEvent;
-import com.sencha.gxt.widget.core.client.event.DialogHideEvent.DialogHideHandler;
 
 import net.datenwerke.gf.client.managerhelper.mainpanel.SimpleFormView;
 import net.datenwerke.gf.client.upload.dto.FileToUpload;
@@ -23,6 +23,8 @@ import net.datenwerke.rs.fileserver.client.fileserver.dto.FileServerFileDto;
 import net.datenwerke.rs.fileserver.client.fileserver.dto.FileServerFolderDto;
 import net.datenwerke.rs.fileserver.client.fileserver.dto.pa.FileServerFolderDtoPA;
 import net.datenwerke.rs.fileserver.client.fileserver.locale.FileServerMessages;
+import net.datenwerke.rs.pkg.client.pkg.PkgDao;
+import net.datenwerke.rs.pkg.client.pkg.locale.PkgMessages;
 
 /**
  * 
@@ -31,10 +33,15 @@ import net.datenwerke.rs.fileserver.client.fileserver.locale.FileServerMessages;
 public class FolderForm extends SimpleFormView {
 
    private final FileServerDao fileServerDao;
+   private final Provider<PkgDao> pkgDaoProvider;
 
    @Inject
-   public FolderForm(FileServerDao fileServerDao) {
+   public FolderForm(
+         FileServerDao fileServerDao,
+         Provider<PkgDao> pkgDaoProvider
+         ) {
       this.fileServerDao = fileServerDao;
+      this.pkgDaoProvider = pkgDaoProvider;
    }
 
    @Override
@@ -60,20 +67,31 @@ public class FolderForm extends SimpleFormView {
                      MessageBox mb = new DwMessageBox(FileServerMessages.INSTANCE.zipUploadedTitle(),
                            FileServerMessages.INSTANCE.zipUploadedMsg());
                      mb.setPredefinedButtons(PredefinedButton.NO, PredefinedButton.YES);
-                     mb.addDialogHideHandler(new DialogHideHandler() {
-                        @Override
-                        public void onDialogHide(DialogHideEvent event) {
-                           switch (event.getHideButton()) {
-                           case YES:
-                              uploadAndExtract(files.get(0));
-                              break;
-                           default:
-                              upload(files);
-                           }
+                     mb.addDialogHideHandler(event -> {
+                        switch (event.getHideButton()) {
+                        case YES:
+                           uploadAndExtract(files.get(0));
+                           break;
+                        default:
+                           upload(files);
                         }
                      });
                      mb.show();
-                  } else
+                  } else if (null != name && name.endsWith(".rsp")) {
+                     MessageBox mb = new DwMessageBox(PkgMessages.INSTANCE.rspUploadedTitle(),
+                           PkgMessages.INSTANCE.rspUploadedMsg());
+                     mb.setPredefinedButtons(PredefinedButton.NO, PredefinedButton.YES);
+                     mb.addDialogHideHandler(event -> {
+                        switch (event.getHideButton()) {
+                        case YES:
+                           uploadAndExecute(files.get(0));
+                           break;
+                        default:
+                           upload(files);
+                        }
+                     });
+                     mb.show();
+                  } else 
                      upload(files);
                } else
                   upload(files);
@@ -113,7 +131,30 @@ public class FolderForm extends SimpleFormView {
                         super.onFailure(caught);
                         unmask();
                      }
-                  });
+                
+            });
+         }
+         
+         private void uploadAndExecute(FileToUpload fileToUpload) {
+            mask(PkgMessages.INSTANCE.executingRspMsg());
+            pkgDaoProvider.get().uploadAndExecute((FileServerFolderDto) getSelectedNode(), fileToUpload,
+                  new RsAsyncCallback<String>() {
+                     @Override
+                     public void onSuccess(String result) {
+                        super.onSuccess(result);
+                        unmask();
+                        MessageBox mb = new DwMessageBox(PkgMessages.INSTANCE.rspExecution(),
+                              PkgMessages.INSTANCE.rspExecutionResult() + ": " + result);
+                        mb.show();
+                     }
+
+                     @Override
+                     public void onFailure(Throwable caught) {
+                        super.onFailure(caught);
+                        unmask();
+                     }
+                
+            });
          }
       });
    }

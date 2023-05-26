@@ -3,10 +3,12 @@ package net.datenwerke.rs.fileserver.service.fileserver;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.commons.codec.binary.Base64;
 import org.hibernate.proxy.HibernateProxy;
 
 import com.google.inject.Inject;
 
+import net.datenwerke.gf.client.upload.dto.FileToUpload;
 import net.datenwerke.rs.fileserver.service.fileserver.entities.AbstractFileServerNode;
 import net.datenwerke.rs.fileserver.service.fileserver.entities.AbstractFileServerNode__;
 import net.datenwerke.rs.fileserver.service.fileserver.entities.FileServerFile;
@@ -16,6 +18,7 @@ import net.datenwerke.rs.terminal.service.terminal.TerminalService;
 import net.datenwerke.rs.terminal.service.terminal.objresolver.exceptions.ObjectResolverException;
 import net.datenwerke.rs.terminal.service.terminal.vfs.VFSLocation;
 import net.datenwerke.rs.terminal.service.terminal.vfs.helper.PathHelper;
+import net.datenwerke.rs.utils.misc.MimeUtils;
 import net.datenwerke.rs.utils.simplequery.PredicateType;
 import net.datenwerke.rs.utils.simplequery.annotations.QueryByAttribute;
 import net.datenwerke.rs.utils.simplequery.annotations.QueryById;
@@ -33,6 +36,9 @@ public class FileServerServiceImpl extends SecuredTreeDBManagerImpl<AbstractFile
 
    @Inject
    private SecurityService securityService;
+   
+   @Inject
+   private MimeUtils mimeUtils;
 
    @Override
    @QueryByAttribute(where = AbstractFileServerNode__.parent, type = PredicateType.IS_NULL)
@@ -220,6 +226,27 @@ public class FileServerServiceImpl extends SecuredTreeDBManagerImpl<AbstractFile
    @Override
    public FileServerFile createFileAtLocation(String locationPath, boolean checkRights) {
       return (FileServerFile) doCreateNodeAtLocation(locationPath, checkRights, false);
+   }
+
+   @Override
+   public FileServerFile getFileFromUploadFile(FileToUpload uFile) {
+      int b64idx = uFile.getB64Data().indexOf("base64,");
+
+      String strData = uFile.getB64Data().substring(b64idx + 7);
+      String mimeType = (b64idx < 6) ? "" : uFile.getB64Data().substring(5, b64idx - 1);
+
+      if (null == mimeType || mimeType.isEmpty() || "application/octet-stream".equals(mimeType)) {
+         mimeType = mimeUtils.getMimeTypeByExtension(uFile.getName());
+      }
+
+      byte[] data = Base64.decodeBase64(strData.getBytes());
+
+      FileServerFile file = new FileServerFile();
+      file.setName(uFile.getName());
+      file.setContentType(mimeType);
+      file.setData(data);
+
+      return file;
    }
 
 

@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 
 import net.datenwerke.rs.fileserver.service.fileserver.FileServerService;
 import net.datenwerke.rs.fileserver.service.fileserver.entities.FileServerFolder;
+import net.datenwerke.rs.pkg.service.pkg.PackagedScriptHelperService;
 
 public class ExecutePackagedScriptsTask implements DbInstallationTask {
 
@@ -21,11 +22,11 @@ public class ExecutePackagedScriptsTask implements DbInstallationTask {
 
    private FileServerService fileServerService;
 
-   private Provider<PackagedScriptHelper> packagedScriptHelper;
+   private Provider<PackagedScriptHelperService> packagedScriptHelper;
 
    @Inject
    public ExecutePackagedScriptsTask(FileServerService fileServerService,
-         Provider<PackagedScriptHelper> packagedScriptHelper) {
+         Provider<PackagedScriptHelperService> packagedScriptHelper) {
 
       this.fileServerService = fileServerService;
       this.packagedScriptHelper = packagedScriptHelper;
@@ -38,7 +39,7 @@ public class ExecutePackagedScriptsTask implements DbInstallationTask {
 
    @Override
    public void executeOnFirstRun() {
-      PackagedScriptHelper helper = packagedScriptHelper.get();
+      PackagedScriptHelperService helper = packagedScriptHelper.get();
       File pkgDir = helper.getPackageDirectory();
 
       logger.info("Executing package scripts from: " + pkgDir.getAbsolutePath());

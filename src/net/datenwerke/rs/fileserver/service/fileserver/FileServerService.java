@@ -1,5 +1,6 @@
 package net.datenwerke.rs.fileserver.service.fileserver;
 
+import net.datenwerke.gf.client.upload.dto.FileToUpload;
 import net.datenwerke.rs.fileserver.service.fileserver.entities.AbstractFileServerNode;
 import net.datenwerke.rs.fileserver.service.fileserver.entities.FileServerFile;
 import net.datenwerke.rs.fileserver.service.fileserver.entities.FileServerFolder;
@@ -47,5 +48,7 @@ public interface FileServerService extends TreeDBManager<AbstractFileServerNode>
    AbstractFileServerNode getNodeByPath(String path);
 
    AbstractFileServerNode getNodeByPath(String path, boolean checkRights);
+   
+   FileServerFile getFileFromUploadFile(FileToUpload uFile);
    
 }

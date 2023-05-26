@@ -99,6 +99,7 @@
 	<source path="rs/dsbundle/shared"/>
 	<source path="rs/reportdoc/client"/>
 	<source path="rs/enterprise/client"/>
+	<source path="rs/pkg/client"/>
 	<source path="rs/eximport/client"/>
 	<source path="rs/eximport/shared"/>
 	<source path="rs/fileserver/client"/>

@@ -4,15 +4,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.codec.binary.Base64;
-
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.Singleton;
 import com.google.inject.name.Named;
 import com.google.inject.persist.Transactional;
 
-import net.datenwerke.eximport.ExportService;
 import net.datenwerke.gf.client.upload.dto.FileToUpload;
 import net.datenwerke.gxtdto.client.servercommunication.exceptions.ServerCallFailedException;
 import net.datenwerke.gxtdto.server.dtomanager.DtoService;
@@ -32,7 +29,6 @@ import net.datenwerke.rs.fileserver.service.fileserver.entities.FileServerFolder
 import net.datenwerke.rs.fileserver.service.fileserver.eximport.FileServerExporter;
 import net.datenwerke.rs.fileserver.service.fileserver.terminal.commands.unzip.BasepathZipExtractConfigFactory;
 import net.datenwerke.rs.utils.entitycloner.EntityClonerService;
-import net.datenwerke.rs.utils.misc.MimeUtils;
 import net.datenwerke.rs.utils.zip.ZipExtractionConfig;
 import net.datenwerke.rs.utils.zip.ZipUtilsService;
 import net.datenwerke.security.server.TreeDBManagerTreeHandler;
@@ -61,9 +57,7 @@ public class FileServerRpcServiceImpl extends TreeDBManagerTreeHandler<AbstractF
    private static final long serialVersionUID = -8869851090677352067L;
 
    private final FileServerService fileService;
-   private final ExportService exportService;
    private final Provider<HttpExportService> httpExportServiceProvider;
-   private final MimeUtils mimeUtils;
    private final BasepathZipExtractConfigFactory extractConfigFactory;
    private final Provider<ZipUtilsService> zipUtilsServiceProvider;
    private final Provider<TreeNodeExportHelperService> exportHelper;
@@ -74,9 +68,7 @@ public class FileServerRpcServiceImpl extends TreeDBManagerTreeHandler<AbstractF
          FileServerService fileService,
          SecurityService securityService, 
          EntityClonerService entityClonerService, 
-         ExportService exportService,
          Provider<HttpExportService> httpExportServiceProvider, 
-         MimeUtils mimeUtils,
          BasepathZipExtractConfigFactory extractConfigFactory, 
          Provider<ZipUtilsService> zipUtilsServiceProvider,
          Provider<TreeNodeExportHelperService> exportHelper
@@ -86,9 +78,7 @@ public class FileServerRpcServiceImpl extends TreeDBManagerTreeHandler<AbstractF
 
       /* store objects */
       this.fileService = fileService;
-      this.exportService = exportService;
       this.httpExportServiceProvider = httpExportServiceProvider;
-      this.mimeUtils = mimeUtils;
       this.extractConfigFactory = extractConfigFactory;
       this.zipUtilsServiceProvider = zipUtilsServiceProvider;
       this.exportHelper = exportHelper;
@@ -151,7 +141,7 @@ public class FileServerRpcServiceImpl extends TreeDBManagerTreeHandler<AbstractF
       FileServerFolder folder = (FileServerFolder) dtoService.loadPoso(folderDto);
 
       for (FileToUpload uFile : files) {
-         FileServerFile file = getFileFromUploadFile(uFile);
+         FileServerFile file = fileService.getFileFromUploadFile(uFile);
          folder.addChild(file);
 
          fileService.persist(file);
@@ -175,7 +165,7 @@ public class FileServerRpcServiceImpl extends TreeDBManagerTreeHandler<AbstractF
       FileServerFolder folder = (FileServerFolder) dtoService.loadPoso(folderDto);
 
       if (null != fileToUpload) {
-         FileServerFile archive = getFileFromUploadFile(fileToUpload);
+         FileServerFile archive = fileService.getFileFromUploadFile(fileToUpload);
 
          /* create folder to extract into */
          FileServerFolder base = new FileServerFolder();
@@ -202,26 +192,6 @@ public class FileServerRpcServiceImpl extends TreeDBManagerTreeHandler<AbstractF
       fileService.merge(folder);
 
       return dtoFiles;
-   }
-
-   protected FileServerFile getFileFromUploadFile(FileToUpload uFile) {
-      int b64idx = uFile.getB64Data().indexOf("base64,");
-
-      String strData = uFile.getB64Data().substring(b64idx + 7);
-      String mimeType = (b64idx < 6) ? "" : uFile.getB64Data().substring(5, b64idx - 1);
-
-      if (null == mimeType || mimeType.isEmpty() || "application/octet-stream".equals(mimeType)) {
-         mimeType = mimeUtils.getMimeTypeByExtension(uFile.getName());
-      }
-
-      byte[] data = Base64.decodeBase64(strData.getBytes());
-
-      FileServerFile file = new FileServerFile();
-      file.setName(uFile.getName());
-      file.setContentType(mimeType);
-      file.setData(data);
-
-      return file;
    }
 
    @Override
