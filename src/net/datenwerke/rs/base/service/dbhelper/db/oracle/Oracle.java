@@ -148,4 +148,9 @@ public class Oracle extends DatabaseHelper {
    public String getDescription() {
       return DB_DESCRIPTION;
    }
+   
+   @Override
+   public String createDummyQuery() {
+      return "SELECT * FROM DUAL";
+   }
 }
