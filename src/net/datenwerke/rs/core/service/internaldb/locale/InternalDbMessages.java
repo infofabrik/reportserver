@@ -23,8 +23,6 @@ public interface InternalDbMessages extends Messages {
 
    String internalDbUsername();
 
-   String schemaVersion();
-
    String internalDatasourceName();
 
    String internalDatasourceId();

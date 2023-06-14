@@ -43,7 +43,7 @@ public class HttpTreeImportServiceImpl implements HttpTreeImportService {
    @Override
    public List<ImportTreeModel> loadTreeDto(Class<? extends Exporter> exporterType) {
       /* get items for exporter */
-      List<ExportedItem> items = new ArrayList<ExportedItem>();
+      List<ExportedItem> items = new ArrayList<>();
       try {
          items.addAll(analizerService.getExportedItemsFor(httpImportService.get().getCurrentConfig().getImportData(),
                exporterType));
@@ -52,7 +52,7 @@ public class HttpTreeImportServiceImpl implements HttpTreeImportService {
       }
 
       /* prepare return list */
-      Map<String, ImportTreeModel> lookupMap = new HashMap<String, ImportTreeModel>();
+      Map<String, ImportTreeModel> lookupMap = new HashMap<>();
 
       for (ExportedItem item : items) {
          ImportTreeModel model = new ImportTreeModel();
@@ -77,7 +77,7 @@ public class HttpTreeImportServiceImpl implements HttpTreeImportService {
       }
 
       /* build tree */
-      List<ImportTreeModel> tree = new ArrayList<ImportTreeModel>();
+      List<ImportTreeModel> tree = new ArrayList<>();
 
       /* get roots and build tree */
       for (ImportTreeModel model : lookupMap.values()) {

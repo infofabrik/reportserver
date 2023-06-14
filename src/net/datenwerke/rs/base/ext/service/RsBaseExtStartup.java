@@ -11,19 +11,6 @@ import net.datenwerke.rs.base.ext.service.dashboardmanager.eximport.DashboardMan
 import net.datenwerke.rs.base.ext.service.dashboardmanager.eximport.HttpDashboardManagerImportConfigurationHooker;
 import net.datenwerke.rs.base.ext.service.dashboardmanager.eximport.hookers.DashboardManagerExportConfigHooker;
 import net.datenwerke.rs.base.ext.service.dashboardmanager.eximport.hookers.RemoteDashboardImporterHooker;
-import net.datenwerke.rs.base.ext.service.datasinkmanager.eximport.DatasinkManagerExporter;
-import net.datenwerke.rs.base.ext.service.datasinkmanager.eximport.DatasinkManagerImporter;
-import net.datenwerke.rs.base.ext.service.datasinkmanager.eximport.HttpDatasinkManagerImportConfigurationHooker;
-import net.datenwerke.rs.base.ext.service.datasinkmanager.eximport.hookers.DatasinkExportConfigHooker;
-import net.datenwerke.rs.base.ext.service.datasinkmanager.eximport.hookers.ExportAllDatasinksHooker;
-import net.datenwerke.rs.base.ext.service.datasinkmanager.eximport.hookers.RemoteDatasinkImporterHooker;
-import net.datenwerke.rs.base.ext.service.datasourcemanager.eximport.DatasourceManagerExporter;
-import net.datenwerke.rs.base.ext.service.datasourcemanager.eximport.DatasourceManagerImporter;
-import net.datenwerke.rs.base.ext.service.datasourcemanager.eximport.HttpDatasourceManagerImportConfigurationHooker;
-import net.datenwerke.rs.base.ext.service.datasourcemanager.eximport.hookers.DatasourceExportConfigHooker;
-import net.datenwerke.rs.base.ext.service.datasourcemanager.eximport.hookers.ExportAllDatasourcesHooker;
-import net.datenwerke.rs.base.ext.service.datasourcemanager.eximport.hookers.ImportAllDatasourcesHooker;
-import net.datenwerke.rs.base.ext.service.datasourcemanager.eximport.hookers.RemoteDatasourceImporterHooker;
 import net.datenwerke.rs.base.ext.service.hooks.ExportConfigHook;
 import net.datenwerke.rs.base.ext.service.hooks.RemoteEntityImporterHook;
 import net.datenwerke.rs.base.ext.service.reportmanager.eximport.HttpReportManagerImportConfigurationHooker;
@@ -50,9 +37,6 @@ import net.datenwerke.rs.base.ext.service.terminal.commands.RpullSubCommandHook;
 import net.datenwerke.rs.eximport.service.eximport.hooks.ExportAllHook;
 import net.datenwerke.rs.eximport.service.eximport.hooks.ImportAllHook;
 import net.datenwerke.rs.eximport.service.eximport.im.http.hooks.HttpImportConfigurationProviderHook;
-import net.datenwerke.rs.remoteserver.service.remoteservermanager.eximport.HttpRemoteServerManagerImportConfigurationHooker;
-import net.datenwerke.rs.remoteserver.service.remoteservermanager.eximport.RemoteServerManagerExporter;
-import net.datenwerke.rs.remoteserver.service.remoteservermanager.eximport.RemoteServerManagerImporter;
 import net.datenwerke.rs.terminal.service.terminal.hooks.TerminalCommandHook;
 
 public class RsBaseExtStartup {
@@ -64,10 +48,6 @@ public class RsBaseExtStartup {
          Provider<DashboardManagerImporter> dashboardImporterProvider,
          Provider<HttpDashboardManagerImportConfigurationHooker> dashboardHttpImportConfigHookerProvider,
 
-         Provider<DatasourceManagerExporter> datasourceExporterProvider,
-         Provider<DatasourceManagerImporter> datasourceImporterProvider,
-         Provider<HttpDatasourceManagerImportConfigurationHooker> datasourceHttpImportConfigHookerProvider,
-
          Provider<ReportManagerExporter> exporterProvider, 
          Provider<ReportManagerImporter> importerProvider,
          Provider<HttpReportManagerImportConfigurationHooker> httpImportConfigHookerProvider,
@@ -75,19 +55,6 @@ public class RsBaseExtStartup {
 
          Provider<GenericRightsExporter> genericRightsExporterProvider,
          Provider<GenericRightsImporter> genericRIghtsImporterProvider,
-
-         Provider<ExportAllDatasourcesHooker> exportAllDatasources,
-         Provider<ImportAllDatasourcesHooker> importAllDatasources,
-
-         Provider<DatasinkManagerExporter> datasinkManagerExporter,
-         Provider<DatasinkManagerImporter> datasinkImporterProvider,
-         Provider<HttpDatasinkManagerImportConfigurationHooker> datasinkHttpImportConfigHookerProvider,
-         
-         Provider<RemoteServerManagerExporter> remoteServerManagerExporter,
-         Provider<RemoteServerManagerImporter> remoteServerImporterProvider,
-         Provider<HttpRemoteServerManagerImportConfigurationHooker> remoteServerHttpImportConfigHookerProvider,
-
-         Provider<ExportAllDatasinksHooker> exportAllDatasinks,
 
          Provider<ExportAllReportsHooker> exportAllReports, 
          Provider<ImportAllReportsHooker> importAllReports,
@@ -102,13 +69,9 @@ public class RsBaseExtStartup {
          Provider<ListPropertyCommand> listPropertyCommand,
          
          Provider<ReportExportConfigHooker> reportExportConfigHooker,
-         Provider<DatasourceExportConfigHooker> datasourceExportConfigHooker,
-         Provider<DatasinkExportConfigHooker> datasinkExportConfigHooker,
          Provider<DashboardManagerExportConfigHooker> dashboardManagerExportConfigHooker,
          
          Provider<RemoteReportImporterHooker> remoteReportImporterHooker,
-         Provider<RemoteDatasourceImporterHooker> remoteDatasourceImporterHooker,
-         Provider<RemoteDatasinkImporterHooker> remoteDatasinkImporterHooker,
          Provider<RemoteDashboardImporterHooker> remoteDashboardImporterHooker,
          
          Provider<RpullCommand> rpullCommand,
@@ -121,10 +84,6 @@ public class RsBaseExtStartup {
       hookHandler.attachHooker(ImporterProviderHook.class, new ImporterProviderHook(dashboardImporterProvider));
       hookHandler.attachHooker(HttpImportConfigurationProviderHook.class, dashboardHttpImportConfigHookerProvider);
 
-      hookHandler.attachHooker(ExporterProviderHook.class, new ExporterProviderHook(datasourceExporterProvider));
-      hookHandler.attachHooker(ImporterProviderHook.class, new ImporterProviderHook(datasourceImporterProvider));
-      hookHandler.attachHooker(HttpImportConfigurationProviderHook.class, datasourceHttpImportConfigHookerProvider);
-
       hookHandler.attachHooker(ExporterProviderHook.class, new ExporterProviderHook(exporterProvider));
       hookHandler.attachHooker(ImporterProviderHook.class, new ImporterProviderHook(importerProvider));
       hookHandler.attachHooker(HttpImportConfigurationProviderHook.class, httpImportConfigHookerProvider);
@@ -133,21 +92,8 @@ public class RsBaseExtStartup {
       hookHandler.attachHooker(ExporterProviderHook.class, new ExporterProviderHook(genericRightsExporterProvider));
       hookHandler.attachHooker(ImporterProviderHook.class, new ImporterProviderHook(genericRIghtsImporterProvider));
 
-      hookHandler.attachHooker(ExporterProviderHook.class, new ExporterProviderHook(datasinkManagerExporter));
-      hookHandler.attachHooker(ImporterProviderHook.class, new ImporterProviderHook(datasinkImporterProvider));
-      hookHandler.attachHooker(HttpImportConfigurationProviderHook.class, datasinkHttpImportConfigHookerProvider);
-      
-      hookHandler.attachHooker(ExporterProviderHook.class, new ExporterProviderHook(remoteServerManagerExporter));
-      hookHandler.attachHooker(ImporterProviderHook.class, new ImporterProviderHook(remoteServerImporterProvider));
-      hookHandler.attachHooker(HttpImportConfigurationProviderHook.class, remoteServerHttpImportConfigHookerProvider);
-
       hookHandler.attachHooker(ExportAllHook.class, exportAllReports);
       hookHandler.attachHooker(ImportAllHook.class, importAllReports);
-
-      hookHandler.attachHooker(ExportAllHook.class, exportAllDatasources);
-      hookHandler.attachHooker(ImportAllHook.class, importAllDatasources);
-
-      hookHandler.attachHooker(ExportAllHook.class, exportAllDatasinks);
 
       hookHandler.attachHooker(ExportAllHook.class, exportAllGenericRights);
       hookHandler.attachHooker(ImportAllHook.class, importAllGenericRights);
@@ -160,13 +106,9 @@ public class RsBaseExtStartup {
       hookHandler.attachHooker(ReportModSubCommandHook.class, listPropertyCommand);
       
       hookHandler.attachHooker(ExportConfigHook.class, reportExportConfigHooker);
-      hookHandler.attachHooker(ExportConfigHook.class, datasourceExportConfigHooker);
-      hookHandler.attachHooker(ExportConfigHook.class, datasinkExportConfigHooker);
       hookHandler.attachHooker(ExportConfigHook.class, dashboardManagerExportConfigHooker);
       
       hookHandler.attachHooker(RemoteEntityImporterHook.class, remoteReportImporterHooker);
-      hookHandler.attachHooker(RemoteEntityImporterHook.class, remoteDatasourceImporterHooker);
-      hookHandler.attachHooker(RemoteEntityImporterHook.class, remoteDatasinkImporterHooker);
       hookHandler.attachHooker(RemoteEntityImporterHook.class, remoteDashboardImporterHooker);
       
       hookHandler.attachHooker(TerminalCommandHook.class, rpullCommand);

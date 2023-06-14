@@ -41,11 +41,28 @@ import net.datenwerke.security.service.usermanager.locale.UserManagerMessages;
 @Table(name = "USER")
 @Audited
 @Indexed
-@InstanceDescription(msgLocation = UserManagerMessages.class, objNameKey = "userTypeName",
-
-      title = "${lastname}, ${firstname}", fields = { "firstname", "lastname" }, icon = "user")
-@GenerateDto(dtoPackage = "net.datenwerke.security.client.usermanager.dto", createDecorator = true, poso2DtoPostProcessors = User2DtoPostProcessor.class, displayTitle = "getLastname() + \", \" + getFirstname()", typeDescriptionMsg = net.datenwerke.security.client.locale.UserManagerMessages.class, typeDescriptionKey = "user", icon = "user", additionalFields = {
-      @AdditionalField(name = "hasPassword", type = Boolean.class), })
+@InstanceDescription(
+      msgLocation = UserManagerMessages.class, 
+      objNameKey = "userTypeName",
+      title = "${lastname}, ${firstname}", 
+      fields = { "firstname", "lastname" }, 
+      icon = "user"
+)
+@GenerateDto(
+      dtoPackage = "net.datenwerke.security.client.usermanager.dto", 
+      createDecorator = true, 
+      poso2DtoPostProcessors = User2DtoPostProcessor.class, 
+      displayTitle = "getLastname() + \", \" + getFirstname()", 
+      typeDescriptionMsg = net.datenwerke.security.client.locale.UserManagerMessages.class, 
+      typeDescriptionKey = "user", 
+      icon = "user", 
+      additionalFields = {
+            @AdditionalField(
+                  name = "hasPassword", 
+                  type = Boolean.class
+            ) 
+      }
+)
 public class User extends AbstractUserManagerNode {
 
    /**

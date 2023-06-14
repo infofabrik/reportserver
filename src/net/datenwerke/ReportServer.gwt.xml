@@ -139,6 +139,7 @@
 	<source path="rs/emaildatasink/client"/>
 	<source path="rs/remoteserver/client"/>
 	<source path="rs/remotersrestserver/client"/>
+	<source path="rs/transport/client"/>
 	<source path="rs/scheduler/client"/>
 	<source path="rs/scheduler/shared"/>
 	<source path="rs/scripting/client"/>

@@ -15,6 +15,8 @@ import net.datenwerke.gf.client.treedb.UITree;
 import net.datenwerke.gxtdto.client.objectinformation.hooks.ObjectInfoKeyInfoProvider;
 import net.datenwerke.gxtdto.client.waitonevent.WaitOnEventUIService;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
+import net.datenwerke.rs.eximport.client.eximport.im.hooks.ImporterConfiguratorHook;
+import net.datenwerke.rs.remoteserver.client.remoteservermanager.eximport.im.hookers.RemoteServerManagerUIImporterHooker;
 import net.datenwerke.rs.remoteserver.client.remoteservermanager.hookers.MainPanelViewProviderHooker;
 import net.datenwerke.rs.remoteserver.client.remoteservermanager.objectinfo.RemoteServerFolderObjectInfo;
 import net.datenwerke.rs.remoteserver.client.remoteservermanager.objectinfo.RemoteServerObjectInfo;
@@ -44,7 +46,8 @@ public class RemoteServerUIStartup {
          final HistoryUiService historyService, 
          final @RemoteServerManagerAdminViewTree Provider<UITree> remoteserverManagerTree,
          final EventBus eventBus, 
-         final Provider<RemoteServerManagerPanel> remoteserverManagerAdminPanel
+         final Provider<RemoteServerManagerPanel> remoteServerManagerAdminPanel,
+         final RemoteServerManagerUIImporterHooker remoteServerImporterHooker
          ) {
 
       /* config tree */
@@ -61,7 +64,8 @@ public class RemoteServerUIStartup {
       /* object info */
       hookHandler.attachHooker(ObjectInfoKeyInfoProvider.class, remoteServerObjectInfo);
       hookHandler.attachHooker(ObjectInfoKeyInfoProvider.class, remoteServerFolderObjectInfo);
-            
+      
+      hookHandler.attachHooker(ImporterConfiguratorHook.class, remoteServerImporterHooker);
             
       /* test if user has rights to see remote server manager admin view */
       waitOnEventService.callbackOnEvent(AdministrationUIService.REPORTSERVER_EVENT_HAS_ADMIN_RIGHTS, ticket -> {
@@ -76,7 +80,7 @@ public class RemoteServerUIStartup {
 
       /* configureHistory */
       historyService.addHistoryCallback(RemoteServerUIModule.REMOTE_SERVER_FAV_HISTORY_TOKEN, new TreeDBHistoryCallback(
-            remoteserverManagerTree, eventBus, remoteserverManagerAdminPanel, AdministrationUIModule.ADMIN_PANEL_ID));
+            remoteserverManagerTree, eventBus, remoteServerManagerAdminPanel, AdministrationUIModule.ADMIN_PANEL_ID));
    }
 
 }

@@ -199,4 +199,8 @@ public interface BaseMessages extends Messages {
 
    String clearApikey();
    
+   String reportServerVersion();
+
+   String schemaVersion();
+   
 }

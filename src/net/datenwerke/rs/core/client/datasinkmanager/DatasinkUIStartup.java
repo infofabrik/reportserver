@@ -16,6 +16,7 @@ import net.datenwerke.gxtdto.client.forms.simpleform.hooks.FormFieldProviderHook
 import net.datenwerke.gxtdto.client.objectinformation.hooks.ObjectInfoKeyInfoProvider;
 import net.datenwerke.gxtdto.client.waitonevent.WaitOnEventUIService;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
+import net.datenwerke.rs.base.ext.client.datasinkmanager.eximport.im.hookers.DatasinkManagerUIImporterHooker;
 import net.datenwerke.rs.core.client.datasinkmanager.helper.forms.simpleform.DatasinkSelectionFieldProvider;
 import net.datenwerke.rs.core.client.datasinkmanager.hookers.MainPanelViewProviderHooker;
 import net.datenwerke.rs.core.client.datasinkmanager.objectinfo.DatasinkFolderObjectInfo;
@@ -25,6 +26,7 @@ import net.datenwerke.rs.core.client.datasinkmanager.provider.treehooker.Datasin
 import net.datenwerke.rs.core.client.datasinkmanager.security.DatasinkManagerGenericTargetIdentifier;
 import net.datenwerke.rs.core.client.datasinkmanager.security.DatasinkManagerViewSecurityTargetDomainHooker;
 import net.datenwerke.rs.core.client.datasinkmanager.ui.DatasinkManagerPanel;
+import net.datenwerke.rs.eximport.client.eximport.im.hooks.ImporterConfiguratorHook;
 import net.datenwerke.security.client.security.SecurityUIService;
 import net.datenwerke.security.client.security.dto.ReadDto;
 import net.datenwerke.security.client.security.hooks.GenericSecurityViewDomainHook;
@@ -38,13 +40,13 @@ public class DatasinkUIStartup {
 
    @Inject
    public DatasinkUIStartup(final HookHandlerService hookHandler,
-         Provider<DatasinkSelectionFieldProvider> datasinkSimpleFormProvider,
+         final Provider<DatasinkSelectionFieldProvider> datasinkSimpleFormProvider,
 
          final WaitOnEventUIService waitOnEventService, final DatasinkUIService datasinkService,
 
-         DatasinkManagerViewSecurityTargetDomainHooker securityTargetDomain,
+         final DatasinkManagerViewSecurityTargetDomainHooker securityTargetDomain,
 
-         MainPanelViewProviderHooker mainPanelViewProvider, 
+         final MainPanelViewProviderHooker mainPanelViewProvider, 
          final Provider<DatasinkAdminModule> adminModuleProvider,
          final SecurityUIService securityService,
 
@@ -53,8 +55,13 @@ public class DatasinkUIStartup {
          final DatasinkObjectInfo datasinkObjectInfo,
          final DatasinkFolderObjectInfo datasinkFolderObjectInfo,
 
-         HistoryUiService historyService, @DatasinkManagerAdminViewTree Provider<UITree> datasinkManagerTree,
-         EventBus eventBus, Provider<DatasinkManagerPanel> datasinkManagerAdminPanel) {
+         final HistoryUiService historyService, 
+         final @DatasinkManagerAdminViewTree Provider<UITree> datasinkManagerTree,
+         final EventBus eventBus, 
+         final Provider<DatasinkManagerPanel> datasinkManagerAdminPanel,
+         
+         final DatasinkManagerUIImporterHooker datasinkImporterHooker
+         ) {
 
       /* config tree */
       hookHandler.attachHooker(TreeConfiguratorHook.class, treeConfigurator);
@@ -73,6 +80,8 @@ public class DatasinkUIStartup {
       /* object info */
       hookHandler.attachHooker(ObjectInfoKeyInfoProvider.class, datasinkObjectInfo);
       hookHandler.attachHooker(ObjectInfoKeyInfoProvider.class, datasinkFolderObjectInfo);
+      
+      hookHandler.attachHooker(ImporterConfiguratorHook.class, datasinkImporterHooker);
       
       /* test if user has rights to see datasource manager admin view */
       waitOnEventService.callbackOnEvent(AdministrationUIService.REPORTSERVER_EVENT_HAS_ADMIN_RIGHTS, ticket -> {

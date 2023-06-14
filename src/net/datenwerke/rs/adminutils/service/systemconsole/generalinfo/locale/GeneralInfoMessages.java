@@ -9,8 +9,6 @@ public interface GeneralInfoMessages extends Messages {
 
    String mainInfo();
 
-   String versionLabel();
-
    String javaVersionLabel();
 
    String applicationServerLabel();

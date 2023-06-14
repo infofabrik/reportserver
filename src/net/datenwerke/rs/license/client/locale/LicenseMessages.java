@@ -5,40 +5,40 @@ import com.google.gwt.i18n.client.Messages;
 
 public interface LicenseMessages extends Messages {
 
-   public final LicenseMessages INSTANCE = GWT.create(LicenseMessages.class);
+   final LicenseMessages INSTANCE = GWT.create(LicenseMessages.class);
 
-   public String viewNavigationTitle();
+   String viewNavigationTitle();
 
-   public String dialogTitle();
+   String dialogTitle();
 
-   public String installationDateLabel();
+   String installationDateLabel();
 
-   public String serverIdLabel();
+   String serverIdLabel();
 
-   public String informationPanelHeader();
+   String informationPanelHeader();
 
-   public String currentLicenseLabel();
+   String currentLicenseLabel();
 
-   public String licenseExpirationDate();
+   String licenseExpirationDate();
 
-   public String noExpirationDateMsg();
+   String noExpirationDateMsg();
 
-   public String purchaseEnterpriseLabel();
+   String purchaseEnterpriseLabel();
 
-   public String purchaseEnterpriseText();
+   String purchaseEnterpriseText();
 
-   public String updateLicenseInfoBtnLabel();
+   String updateLicenseInfoBtnLabel();
 
-   public String updateLicenseInfoFieldLabel();
+   String updateLicenseInfoFieldLabel();
 
-   public String licenseeLabel();
+   String licenseeLabel();
 
-   public String licenseExpiredLabel();
+   String licenseExpiredLabel();
 
-   public String upgradesAvailableUntilLabel();
+   String upgradesAvailableUntilLabel();
 
-   public String versionLabel();
+   String versionLabel();
 
-   public String permissionModuleDescription();
+   String permissionModuleDescription();
 
 }

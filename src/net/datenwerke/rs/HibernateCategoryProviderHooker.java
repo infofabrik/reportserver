@@ -13,6 +13,7 @@ import org.apache.commons.lang3.tuple.ImmutablePair;
 
 import com.google.inject.Provider;
 
+import net.datenwerke.gxtdto.client.locale.BaseMessages;
 import net.datenwerke.rs.adminutils.service.systemconsole.generalinfo.hooks.GeneralInfoCategoryProviderHook;
 import net.datenwerke.rs.base.service.datasources.DatasourceHelperService;
 import net.datenwerke.rs.core.service.internaldb.locale.InternalDbMessages;
@@ -88,10 +89,10 @@ public class HibernateCategoryProviderHooker implements GeneralInfoCategoryProvi
    
    private void setSchemaVersion(Map<ImmutablePair<String, String>, Object> props) {
       try {
-         props.put(ImmutablePair.of(SCHEMA_VERSION, InternalDbMessages.INSTANCE.schemaVersion()),
+         props.put(ImmutablePair.of(SCHEMA_VERSION, BaseMessages.INSTANCE.schemaVersion()),
                envServiceProvider.get().getSchemaVersion());
       } catch (SQLException e) {
-         props.put(ImmutablePair.of(SCHEMA_VERSION, InternalDbMessages.INSTANCE.schemaVersion()),
+         props.put(ImmutablePair.of(SCHEMA_VERSION, BaseMessages.INSTANCE.schemaVersion()),
                "Unknown (" + ExceptionUtils.getRootCauseMessage(e) + ")");
       }
    }

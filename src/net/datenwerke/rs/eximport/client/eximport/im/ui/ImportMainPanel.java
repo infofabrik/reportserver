@@ -357,9 +357,10 @@ public class ImportMainPanel extends DwContentPanel {
             new BasicObjectModelKeyProvider<NavigationModelData<ImporterConfiguratorHook>>());
 
       /* add modules */
-      for (ImporterConfiguratorHook importer : importers)
+      for (ImporterConfiguratorHook importer : importers) {
          store.add(new NavigationModelData<ImporterConfiguratorHook>(importer.getImporterName(),
                importer.getImporterIcon(), importer));
+      }
 
       /* build tree */
       final Tree<NavigationModelData<ImporterConfiguratorHook>, String> tree = navPanelHelper

@@ -17,6 +17,7 @@ import net.datenwerke.gxtdto.client.objectinformation.hooks.ObjectInfoAdditional
 import net.datenwerke.gxtdto.client.objectinformation.hooks.ObjectInfoKeyInfoProvider;
 import net.datenwerke.gxtdto.client.waitonevent.WaitOnEventUIService;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
+import net.datenwerke.rs.base.ext.client.datasourcemanager.eximport.im.hookers.DatasourceManagerUIImporterHooker;
 import net.datenwerke.rs.core.client.datasourcemanager.helper.forms.simpleform.DatasourceSelectionFieldProvider;
 import net.datenwerke.rs.core.client.datasourcemanager.helper.forms.simpleform.DatasourceSimpleFormProvider;
 import net.datenwerke.rs.core.client.datasourcemanager.hookers.MainPanelViewProviderHooker;
@@ -28,6 +29,7 @@ import net.datenwerke.rs.core.client.datasourcemanager.provider.treehooker.Datas
 import net.datenwerke.rs.core.client.datasourcemanager.security.DatasourceManagerGenericTargetIdentifier;
 import net.datenwerke.rs.core.client.datasourcemanager.security.DatasourceManagerViewSecurityTargetDomainHooker;
 import net.datenwerke.rs.core.client.datasourcemanager.ui.DatasourceManagerPanel;
+import net.datenwerke.rs.eximport.client.eximport.im.hooks.ImporterConfiguratorHook;
 import net.datenwerke.security.client.security.SecurityUIService;
 import net.datenwerke.security.client.security.dto.ReadDto;
 import net.datenwerke.security.client.security.hooks.GenericSecurityViewDomainHook;
@@ -40,15 +42,18 @@ import net.datenwerke.security.client.security.hooks.GenericTargetProviderHook;
 public class DatasourceUIStartup {
 
    @Inject
-   public DatasourceUIStartup(final HookHandlerService hookHandler,
-         Provider<DatasourceSimpleFormProvider> datasourceSimpleFormProvider,
-         Provider<DatasourceSelectionFieldProvider> datasourceSelectionFieldProvider,
+   public DatasourceUIStartup(
+         final HookHandlerService hookHandler,
+         final Provider<DatasourceSimpleFormProvider> datasourceSimpleFormProvider,
+         final Provider<DatasourceSelectionFieldProvider> datasourceSelectionFieldProvider,
 
-         final WaitOnEventUIService waitOnEventService, final DatasourceUIService datasourceService,
+         final WaitOnEventUIService waitOnEventService, 
+         final DatasourceUIService datasourceService,
 
-         DatasourceManagerViewSecurityTargetDomainHooker securityTargetDomain,
+         final DatasourceManagerViewSecurityTargetDomainHooker securityTargetDomain,
 
-         MainPanelViewProviderHooker mainPanelViewProvider, final Provider<DatasourceAdminModule> adminModuleProvider,
+         final MainPanelViewProviderHooker mainPanelViewProvider, 
+         final Provider<DatasourceAdminModule> adminModuleProvider,
          final SecurityUIService securityService,
 
          final DatasourceManagerTreeConfigurationHooker treeConfigurator,
@@ -57,8 +62,13 @@ public class DatasourceUIStartup {
          final DatabaseDatasourceAdditionalObjectInfo datasourceAdditionalObjectInfo,
          final DatasourceFolderObjectInfo datasourceFolderObjectInfo,
 
-         HistoryUiService historyService, @DatasourceManagerAdminViewTree Provider<UITree> datasourceManagerTree,
-         EventBus eventBus, Provider<DatasourceManagerPanel> datasourceManagerAdminPanel) {
+         final HistoryUiService historyService, 
+         final @DatasourceManagerAdminViewTree Provider<UITree> datasourceManagerTree,
+         final EventBus eventBus, 
+         final Provider<DatasourceManagerPanel> datasourceManagerAdminPanel,
+         
+         final DatasourceManagerUIImporterHooker datasourceImporterHooker
+         ) {
 
       /* config tree */
       hookHandler.attachHooker(TreeConfiguratorHook.class, treeConfigurator);
@@ -79,6 +89,8 @@ public class DatasourceUIStartup {
       hookHandler.attachHooker(ObjectInfoKeyInfoProvider.class, datasourceObjectInfo);
       hookHandler.attachHooker(ObjectInfoAdditionalInfoProvider.class, datasourceAdditionalObjectInfo);
       hookHandler.attachHooker(ObjectInfoKeyInfoProvider.class, datasourceFolderObjectInfo);
+      
+      hookHandler.attachHooker(ImporterConfiguratorHook.class, datasourceImporterHooker);
       
       /* test if user has rights to see datasource manager admin view */
       waitOnEventService.callbackOnEvent(AdministrationUIService.REPORTSERVER_EVENT_HAS_ADMIN_RIGHTS, ticket -> {

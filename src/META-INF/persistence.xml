@@ -13,6 +13,7 @@
           <class>net.datenwerke.rs.base.service.parameters.blatext.BlatextParameterDefinition</class>
           <class>net.datenwerke.scheduler.service.scheduler.triggers.complex.config.YearlyAtDateConfig</class>
           <class>net.datenwerke.rs.base.service.reportengines.table.entities.format.ColumnFormatNumber</class>
+          <class>net.datenwerke.rs.transport.service.transport.entities.TransportFolder</class>
           <class>net.datenwerke.rs.dropbox.service.dropbox.action.ScheduleAsDropboxFileAction</class>
           <class>net.datenwerke.scheduler.service.scheduler.triggers.complex.config.MonthlyNthDayConfig</class>
           <class>net.datenwerke.rs.base.service.reportengines.table.entities.ColumnReference</class>
@@ -45,6 +46,7 @@
           <class>net.datenwerke.rs.scheduler.service.scheduler.mail.MailReportAction</class>
           <class>net.datenwerke.rs.dashboard.service.dashboard.entities.DashboardNode</class>
           <class>net.datenwerke.scheduler.service.scheduler.triggers.complex.config.DailyConfig</class>
+          <class>net.datenwerke.rs.transport.service.transport.entities.Transport</class>
           <class>net.datenwerke.rs.base.service.reportengines.table.entities.AdditionalColumnSpec</class>
           <class>net.datenwerke.scheduler.service.scheduler.triggers.complex.YearlyAtDateTrigger</class>
           <class>net.datenwerke.rs.base.service.reportengines.table.entities.format.ColumnFormatText</class>
@@ -59,6 +61,7 @@
           <class>net.datenwerke.security.service.security.entities.GenericSecurityTargetEntity</class>
           <class>net.datenwerke.rs.googledrive.service.googledrive.action.ScheduleAsGoogleDriveFileAction</class>
           <class>net.datenwerke.scheduler.service.scheduler.triggers.complex.MonthlyNthDayMthMonthTrigger</class>
+          <class>net.datenwerke.rs.transport.service.transport.entities.AbstractTransportManagerNode</class>
           <class>net.datenwerke.rs.birt.service.reportengine.entities.BirtReportFile</class>
           <class>net.datenwerke.rs.scripting.service.jobs.ScriptExecuteJob</class>
           <class>net.datenwerke.rs.dashboard.service.dashboard.dagets.FavoriteListEntry</class>

@@ -302,6 +302,8 @@ public class DtoServiceImpl implements DtoMainService, DtoService {
 		dtoGeneratorByPosoLookup.put(net.datenwerke.rs.terminal.service.terminal.obj.DisplayMode.class, injector.getInstance(net.datenwerke.rs.terminal.service.terminal.obj.dtogen.DisplayMode2DtoGenerator.class));
 		dtoGeneratorByPosoLookup.put(net.datenwerke.rs.terminal.service.terminal.obj.InteractiveResultModifier.class, injector.getInstance(net.datenwerke.rs.terminal.service.terminal.obj.dtogen.InteractiveResultModifier2DtoGenerator.class));
 		dtoGeneratorByPosoLookup.put(net.datenwerke.rs.terminal.service.terminal.obj.PressKeyResultModifier.class, injector.getInstance(net.datenwerke.rs.terminal.service.terminal.obj.dtogen.PressKeyResultModifier2DtoGenerator.class));
+		dtoGeneratorByPosoLookup.put(net.datenwerke.rs.transport.service.transport.entities.Transport.class, injector.getInstance(net.datenwerke.rs.transport.service.transport.entities.dtogen.Transport2DtoGenerator.class));
+		dtoGeneratorByPosoLookup.put(net.datenwerke.rs.transport.service.transport.entities.TransportFolder.class, injector.getInstance(net.datenwerke.rs.transport.service.transport.entities.dtogen.TransportFolder2DtoGenerator.class));
 		dtoGeneratorByPosoLookup.put(net.datenwerke.rs.tsreportarea.service.tsreportarea.entities.TsDiskFileReference.class, injector.getInstance(net.datenwerke.rs.tsreportarea.service.tsreportarea.entities.dtogen.TsDiskFileReference2DtoGenerator.class));
 		dtoGeneratorByPosoLookup.put(net.datenwerke.rs.tsreportarea.service.tsreportarea.entities.TsDiskFolder.class, injector.getInstance(net.datenwerke.rs.tsreportarea.service.tsreportarea.entities.dtogen.TsDiskFolder2DtoGenerator.class));
 		dtoGeneratorByPosoLookup.put(net.datenwerke.rs.tsreportarea.service.tsreportarea.entities.TsDiskReportReference.class, injector.getInstance(net.datenwerke.rs.tsreportarea.service.tsreportarea.entities.dtogen.TsDiskReportReference2DtoGenerator.class));
@@ -552,6 +554,8 @@ public class DtoServiceImpl implements DtoMainService, DtoService {
 		dto2PosoGeneratorLookup.put(net.datenwerke.rs.terminal.client.terminal.dto.DisplayModeDto.class, injector.getInstance(net.datenwerke.rs.terminal.service.terminal.obj.dtogen.Dto2DisplayModeGenerator.class));
 		dto2PosoGeneratorLookup.put(net.datenwerke.rs.terminal.client.terminal.dto.InteractiveResultModifierDto.class, injector.getInstance(net.datenwerke.rs.terminal.service.terminal.obj.dtogen.Dto2InteractiveResultModifierGenerator.class));
 		dto2PosoGeneratorLookup.put(net.datenwerke.rs.terminal.client.terminal.dto.PressKeyResultModifierDto.class, injector.getInstance(net.datenwerke.rs.terminal.service.terminal.obj.dtogen.Dto2PressKeyResultModifierGenerator.class));
+		dto2PosoGeneratorLookup.put(net.datenwerke.rs.transport.client.transport.dto.TransportDto.class, injector.getInstance(net.datenwerke.rs.transport.service.transport.entities.dtogen.Dto2TransportGenerator.class));
+		dto2PosoGeneratorLookup.put(net.datenwerke.rs.transport.client.transport.dto.TransportFolderDto.class, injector.getInstance(net.datenwerke.rs.transport.service.transport.entities.dtogen.Dto2TransportFolderGenerator.class));
 		dto2PosoGeneratorLookup.put(net.datenwerke.rs.tsreportarea.client.tsreportarea.dto.TsDiskFileReferenceDto.class, injector.getInstance(net.datenwerke.rs.tsreportarea.service.tsreportarea.entities.dtogen.Dto2TsDiskFileReferenceGenerator.class));
 		dto2PosoGeneratorLookup.put(net.datenwerke.rs.tsreportarea.client.tsreportarea.dto.TsDiskFolderDto.class, injector.getInstance(net.datenwerke.rs.tsreportarea.service.tsreportarea.entities.dtogen.Dto2TsDiskFolderGenerator.class));
 		dto2PosoGeneratorLookup.put(net.datenwerke.rs.tsreportarea.client.tsreportarea.dto.TsDiskReportReferenceDto.class, injector.getInstance(net.datenwerke.rs.tsreportarea.service.tsreportarea.entities.dtogen.Dto2TsDiskReportReferenceGenerator.class));
@@ -984,6 +988,10 @@ public class DtoServiceImpl implements DtoMainService, DtoService {
 		dtoClassLookup.add(net.datenwerke.rs.terminal.client.terminal.dto.DisplayModeDto.class);
 		dtoClassLookup.add(net.datenwerke.rs.terminal.client.terminal.dto.InteractiveResultModifierDto.class);
 		dtoClassLookup.add(net.datenwerke.rs.terminal.client.terminal.dto.PressKeyResultModifierDto.class);
+		dtoClassLookup.add(net.datenwerke.rs.transport.client.transport.dto.AbstractTransportManagerNodeDto.class);
+		dtoClassLookup.add(net.datenwerke.rs.transport.client.transport.dto.TransportDto.class);
+		dtoClassLookup.add(net.datenwerke.rs.transport.client.transport.dto.decorator.TransportDtoDec.class);
+		dtoClassLookup.add(net.datenwerke.rs.transport.client.transport.dto.TransportFolderDto.class);
 		dtoClassLookup.add(net.datenwerke.rs.tsreportarea.client.tsreportarea.dto.AbstractTsDiskNodeDto.class);
 		dtoClassLookup.add(net.datenwerke.rs.tsreportarea.client.tsreportarea.dto.decorator.AbstractTsDiskNodeDtoDec.class);
 		dtoClassLookup.add(net.datenwerke.rs.tsreportarea.client.tsreportarea.dto.TsDiskFileReferenceDto.class);
@@ -1329,6 +1337,9 @@ public class DtoServiceImpl implements DtoMainService, DtoService {
 		posoClassLookup.add(net.datenwerke.rs.terminal.service.terminal.obj.DisplayMode.class);
 		posoClassLookup.add(net.datenwerke.rs.terminal.service.terminal.obj.InteractiveResultModifier.class);
 		posoClassLookup.add(net.datenwerke.rs.terminal.service.terminal.obj.PressKeyResultModifier.class);
+		posoClassLookup.add(net.datenwerke.rs.transport.service.transport.entities.AbstractTransportManagerNode.class);
+		posoClassLookup.add(net.datenwerke.rs.transport.service.transport.entities.Transport.class);
+		posoClassLookup.add(net.datenwerke.rs.transport.service.transport.entities.TransportFolder.class);
 		posoClassLookup.add(net.datenwerke.rs.tsreportarea.service.tsreportarea.entities.AbstractTsDiskNode.class);
 		posoClassLookup.add(net.datenwerke.rs.tsreportarea.service.tsreportarea.entities.TsDiskFileReference.class);
 		posoClassLookup.add(net.datenwerke.rs.tsreportarea.service.tsreportarea.entities.TsDiskFolder.class);

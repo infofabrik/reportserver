@@ -59,14 +59,14 @@ public class RemoteServerManagerTreeConfigurationHooker implements TreeConfigura
       /* Specific remote servers */
       for (RemoteServerDefinitionConfigProviderHook config : hookHandler
             .getHookers(RemoteServerDefinitionConfigProviderHook.class)) {
-         Menu dsMenu = menuProvider.createOrGetMenuFor(config.getRemoteServerClass());
+         Menu remoteServerMenu = menuProvider.createOrGetMenuFor(config.getRemoteServerClass());
          insertItem = generateInsertMenu();
          insertItem.disable();
-         dsMenu.add(insertItem);
-         dsMenu.add(new DuplicateMenuItem(treeHandler));
-         dsMenu.add(new DeleteMenuItem(treeHandler));
-         dsMenu.add(new SeparatorMenuItem());
-         dsMenu.add(new InfoMenuItem());
+         remoteServerMenu.add(insertItem);
+         remoteServerMenu.add(new DuplicateMenuItem(treeHandler));
+         remoteServerMenu.add(new DeleteMenuItem(treeHandler));
+         remoteServerMenu.add(new SeparatorMenuItem());
+         remoteServerMenu.add(new InfoMenuItem());
       }
    }
 

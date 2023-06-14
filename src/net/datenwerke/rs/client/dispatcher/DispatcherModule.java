@@ -89,6 +89,7 @@ import net.datenwerke.rs.tabletemplate.client.engines.TableTemplateEngineUiModul
 import net.datenwerke.rs.tabletemplate.client.tabletemplate.TableTemplateUIModule;
 import net.datenwerke.rs.teamspace.client.teamspace.TeamSpaceUIModule;
 import net.datenwerke.rs.terminal.client.terminal.TerminalUIModule;
+import net.datenwerke.rs.transport.client.transport.TransportUIModule;
 import net.datenwerke.rs.tsreportarea.client.tsreportarea.TsDiskUIModule;
 import net.datenwerke.rs.userprofile.client.userprofile.UserProfileUIModule;
 import net.datenwerke.rs.uservariables.client.uservariables.UserVariablesUIModule;
@@ -124,6 +125,7 @@ public class DispatcherModule extends AbstractGinModule {
       install(new DatasourceUIModule());
       install(new SystemConsoleUiModule());
       install(new RemoteServerUIModule());
+      install(new TransportUIModule());
       install(new RemoteRsRestServerUIModule());
       install(new DatasinkUIModule());
       install(new FtpUiModule());

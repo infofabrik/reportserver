@@ -3,13 +3,19 @@ package net.datenwerke.rs.remoteserver.service.remoteservermanager;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
+import net.datenwerke.eximport.hooks.ExporterProviderHook;
+import net.datenwerke.eximport.hooks.ImporterProviderHook;
 import net.datenwerke.gf.service.history.hooks.HistoryUrlBuilderHook;
 import net.datenwerke.gf.service.lifecycle.hooks.ConfigDoneHook;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.adminutils.service.systemconsole.generalinfo.hooks.GeneralInfoCategoryProviderHook;
 import net.datenwerke.rs.base.ext.service.hooks.ExportConfigHook;
 import net.datenwerke.rs.base.ext.service.hooks.RemoteEntityImporterHook;
+import net.datenwerke.rs.eximport.service.eximport.im.http.hooks.HttpImportConfigurationProviderHook;
 import net.datenwerke.rs.remoteserver.service.remoteservermanager.entities.RemoteServerFolder;
+import net.datenwerke.rs.remoteserver.service.remoteservermanager.eximport.HttpRemoteServerManagerImportConfigurationHooker;
+import net.datenwerke.rs.remoteserver.service.remoteservermanager.eximport.RemoteServerManagerExporter;
+import net.datenwerke.rs.remoteserver.service.remoteservermanager.eximport.RemoteServerManagerImporter;
 import net.datenwerke.rs.remoteserver.service.remoteservermanager.eximport.hookers.RemoteRemoteServerImporterHooker;
 import net.datenwerke.rs.remoteserver.service.remoteservermanager.eximport.hookers.RemoteServerExportConfigHooker;
 import net.datenwerke.rs.remoteserver.service.remoteservermanager.history.RemoteServerManagerHistoryUrlBuilderHooker;
@@ -32,7 +38,10 @@ public class RemoteServerStartup {
          final Provider<RemoteServerCategoryProviderHooker> usageStatistics,
          final Provider<RemoteServerExportConfigHooker> remoteServerExportConfigHookerProvider,
          final Provider<RemoteRemoteServerImporterHooker> remoteRemoteServerImporterHooker,
-         final Provider<UsageStatisticsRemoteServersFoldersProviderHooker> usageStatsFolderProvider
+         final Provider<UsageStatisticsRemoteServersFoldersProviderHooker> usageStatsFolderProvider,
+         final Provider<RemoteServerManagerExporter> remoteServerManagerExporter,
+         final Provider<RemoteServerManagerImporter> remoteServerImporterProvider,
+         final Provider<HttpRemoteServerManagerImportConfigurationHooker> remoteServerHttpImportConfigHookerProvider
          ) {
 
       /* history */
@@ -49,6 +58,10 @@ public class RemoteServerStartup {
       hookHandler.attachHooker(ExportConfigHook.class, remoteServerExportConfigHookerProvider);
       
       hookHandler.attachHooker(RemoteEntityImporterHook.class, remoteRemoteServerImporterHooker);
+      
+      hookHandler.attachHooker(ExporterProviderHook.class, new ExporterProviderHook(remoteServerManagerExporter));
+      hookHandler.attachHooker(ImporterProviderHook.class, new ImporterProviderHook(remoteServerImporterProvider));
+      hookHandler.attachHooker(HttpImportConfigurationProviderHook.class, remoteServerHttpImportConfigHookerProvider);
       
       /* register security targets */
       hookHandler.attachHooker(ConfigDoneHook.class, () -> {

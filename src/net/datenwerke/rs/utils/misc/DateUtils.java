@@ -140,4 +140,14 @@ public class DateUtils {
       return format(toZonedDateTime(date));
    }
    
+   public static String formatLocal(ZonedDateTime zonedDateTime) {
+      final DateTimeFormatter format = DateTimeFormatter.ISO_LOCAL_DATE_TIME
+            .withLocale(LocalizationServiceImpl.getLocale());
+      return zonedDateTime.format(format);
+   }
+   
+   public static String formatLocal(Date date) {
+      return formatLocal(toZonedDateTime(date));
+   }
+   
 }

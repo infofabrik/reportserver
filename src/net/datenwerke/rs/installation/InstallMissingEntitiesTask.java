@@ -15,23 +15,28 @@ import net.datenwerke.rs.ftp.service.ftp.action.ScheduleAsFtpFileAction;
 import net.datenwerke.rs.ftp.service.ftp.definitions.FtpDatasink;
 import net.datenwerke.rs.remoteserver.service.remoteservermanager.RemoteServerTreeService;
 import net.datenwerke.rs.remoteserver.service.remoteservermanager.entities.RemoteServerFolder;
+import net.datenwerke.rs.transport.service.transport.TransportTreeService;
+import net.datenwerke.rs.transport.service.transport.entities.TransportFolder;
 
 public class InstallMissingEntitiesTask implements DbInstallationTask {
 
    private final DatasinkTreeService datasinkService;
    private final RemoteServerTreeService remoteServerService;
+   private final TransportTreeService transportService;
    private final Provider<EntityManager> emp;
 
    @Inject
    public InstallMissingEntitiesTask(
          DatasinkTreeService datasinkService, 
          RemoteServerTreeService remoteServerService,
+         TransportTreeService transportService,
          Provider<EntityManager> emp
          ) {
 
       /* store objects */
       this.datasinkService = datasinkService;
       this.remoteServerService = remoteServerService;
+      this.transportService = transportService;
       this.emp = emp;
    }
 
@@ -54,6 +59,11 @@ public class InstallMissingEntitiesTask implements DbInstallationTask {
          RemoteServerFolder remoteRoot = new RemoteServerFolder();
          remoteRoot.setName(PrepareDbForReportServer.REPORTSERVER_ROOT_REMOTE_SERVER);
          remoteServerService.persist(remoteRoot);
+      }
+      if (transportService.getRoots().isEmpty()) {
+         TransportFolder tRoot = new TransportFolder();
+         tRoot.setName(PrepareDbForReportServer.REPORTSERVER_ROOT_TRANSPORTS);
+         transportService.persist(tRoot);
       }
    }
 

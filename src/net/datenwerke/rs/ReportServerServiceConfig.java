@@ -218,6 +218,10 @@ import net.datenwerke.rs.teamspace.server.teamspace.TeamSpaceRpcServiceImpl;
 import net.datenwerke.rs.teamspace.service.teamspace.TeamSpaceModule;
 import net.datenwerke.rs.terminal.server.terminal.TerminalRpcServiceImpl;
 import net.datenwerke.rs.terminal.service.terminal.TerminalModule;
+import net.datenwerke.rs.transport.server.transport.TransportManagerExportRpcServiceImpl;
+import net.datenwerke.rs.transport.server.transport.TransportManagerImportRpcServiceImpl;
+import net.datenwerke.rs.transport.server.transport.TransportManagerTreeHandlerRpcServiceImpl;
+import net.datenwerke.rs.transport.service.transport.TransportModule;
 import net.datenwerke.rs.tsreportarea.server.tsreportarea.TsDiskRpcServiceImpl;
 import net.datenwerke.rs.tsreportarea.service.tsreportarea.TsDiskModule;
 import net.datenwerke.rs.usagestatistics.service.usagestatistics.UsageStatisticsModule;
@@ -406,7 +410,12 @@ public class ReportServerServiceConfig extends DwGwtFrameworkBase {
             serve(BASE_URL + "remoteservers_tree").with(RemoteServerManagerTreeHandlerRpcServiceImpl.class); //$NON-NLS-1$
             serve(BASE_URL + "remoteservers_import").with(RemoteServerManagerImportRpcServiceImpl.class); //$NON-NLS-1$
             serve(BASE_URL + "remoteservermanager_export").with(RemoteServerManagerExportRpcServiceImpl.class); //$NON-NLS-1$
-
+            
+            serve(BASE_URL + "transports").with(TransportManagerTreeHandlerRpcServiceImpl.class); //$NON-NLS-1$
+            serve(BASE_URL + "transports_tree").with(TransportManagerTreeHandlerRpcServiceImpl.class); //$NON-NLS-1$
+            serve(BASE_URL + "transports_import").with(TransportManagerImportRpcServiceImpl.class); //$NON-NLS-1$
+            serve(BASE_URL + "transportmanager_export").with(TransportManagerExportRpcServiceImpl.class); //$NON-NLS-1$
+            
             serve(BASE_URL + "datasources").with(DatasourceManagerTreeHandlerRpcServiceImpl.class); //$NON-NLS-1$
             serve(BASE_URL + "datasources_tree").with(DatasourceManagerTreeHandlerRpcServiceImpl.class); //$NON-NLS-1$
             serve(BASE_URL + "datasources_import").with(DatasourceManagerImportRpcServiceImpl.class); //$NON-NLS-1$
@@ -727,6 +736,8 @@ public class ReportServerServiceConfig extends DwGwtFrameworkBase {
             new ScpModule(),
             
             new RestModule(),
+            
+            new TransportModule(),
 
             new ReportServerPUModule(),
 
