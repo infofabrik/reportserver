@@ -203,4 +203,6 @@ public interface BaseMessages extends Messages {
 
    String schemaVersion();
    
+   String tools();
+   
 }

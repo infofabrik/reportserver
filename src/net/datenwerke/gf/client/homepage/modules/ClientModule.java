@@ -5,19 +5,19 @@ import com.google.gwt.user.client.ui.Widget;
 
 public interface ClientModule {
 
-   public String getModuleName();
+   String getModuleName();
 
-   public ImageResource getIcon();
+   ImageResource getIcon();
 
-   public Widget getMainWidget();
+   Widget getMainWidget();
 
-   public String getToolTip();
+   String getToolTip();
 
    /**
-    * Tells the module, that it was selected.
+    * Tells the module that it was selected.
     */
-   public void selected();
+   void selected();
 
-   public boolean isRecyclable();
+   boolean isRecyclable();
 
 }

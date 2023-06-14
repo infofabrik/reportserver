@@ -1901,3 +1901,15 @@ body.rs-documentation {
 	list-style: circle inside;
 	margin: 5px;	
 }
+
+.rs-tools-menu-panel-btn {
+	background: none repeat scroll 0 0 none /*col:header.text.right*/
+		!important;
+	color: #FFFFFF !important;
+}
+
+.rs-btn.rs-tools-menu-panel-btn div {
+  	color: #FFFFFF !important; /*col:header.text.right*/
+  	font-size: 8pt;
+  	border: 0px !important;
+} 

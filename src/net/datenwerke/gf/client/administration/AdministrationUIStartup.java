@@ -63,7 +63,7 @@ public class AdministrationUIStartup {
 
                      /* attach hooker */
                      hookHandler.attachHooker(ClientMainModuleProviderHook.class, providerHook,
-                           HookHandlerService.PRIORITY_LOW);
+                           HookHandlerService.PRIORITY_LOW - 1);
                   } else {
                      hookHandler.detachHooker(ClientMainModuleProviderHook.class, providerHook);
 

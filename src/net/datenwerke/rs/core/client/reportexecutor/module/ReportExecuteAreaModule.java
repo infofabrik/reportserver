@@ -70,4 +70,5 @@ public class ReportExecuteAreaModule extends ClientTempModuleImpl {
    public boolean isRecyclable() {
       return true;
    }
+
 }

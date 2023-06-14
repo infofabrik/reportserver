@@ -61,4 +61,5 @@ public class SearchAreaModule extends ClientTempModuleImpl {
    public boolean isRecyclable() {
       return false;
    }
+
 }

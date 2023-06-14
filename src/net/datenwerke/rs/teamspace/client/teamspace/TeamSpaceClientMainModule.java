@@ -54,4 +54,5 @@ public class TeamSpaceClientMainModule extends ClientMainModuleImpl {
    public boolean isRecyclable() {
       return true;
    }
+
 }

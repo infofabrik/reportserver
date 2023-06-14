@@ -131,12 +131,7 @@ public class ModuleManagerModuleSelector implements ClientModuleSelector, Parent
 
          main.add(wrapper, new BoxLayoutData(new Margins(0, 15, 0, 0)));
 
-         text.addDomHandler(new ClickHandler() {
-            @Override
-            public void onClick(ClickEvent event) {
-               selectModule(module);
-            }
-         }, ClickEvent.getType());
+         text.addDomHandler(event -> selectModule(module), ClickEvent.getType());
 
          if (bFirst) {
             bFirst = false;
