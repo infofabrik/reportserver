@@ -13,4 +13,6 @@ public interface TransportManagerMessages extends Messages {
    String commandTransportCreate_target();
    
    String commandTransportCreate_description();
+   
+   String transportDesc();
 }

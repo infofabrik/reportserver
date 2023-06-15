@@ -9,6 +9,7 @@ import net.datenwerke.gf.service.history.hooks.HistoryUrlBuilderHook;
 import net.datenwerke.gf.service.lifecycle.hooks.ConfigDoneHook;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.base.ext.service.hooks.ExportConfigHook;
+import net.datenwerke.rs.base.ext.service.hooks.RemoteEntityImporterHook;
 import net.datenwerke.rs.eximport.service.eximport.im.http.hooks.HttpImportConfigurationProviderHook;
 import net.datenwerke.rs.terminal.service.terminal.hooks.TerminalCommandHook;
 import net.datenwerke.rs.transport.service.transport.entities.Transport;
@@ -16,6 +17,7 @@ import net.datenwerke.rs.transport.service.transport.entities.TransportFolder;
 import net.datenwerke.rs.transport.service.transport.eximport.HttpTransportManagerImportConfigurationHooker;
 import net.datenwerke.rs.transport.service.transport.eximport.TransportManagerExporter;
 import net.datenwerke.rs.transport.service.transport.eximport.TransportManagerImporter;
+import net.datenwerke.rs.transport.service.transport.eximport.hookers.RemoteTransportImporterHooker;
 import net.datenwerke.rs.transport.service.transport.eximport.hookers.TransportExportConfigHooker;
 import net.datenwerke.rs.transport.service.transport.history.TransportManagerHistoryUrlBuilderHooker;
 import net.datenwerke.rs.transport.service.transport.terminal.commands.TransportCommand;
@@ -35,7 +37,8 @@ public class TransportStartup {
          final Provider<TransportExportConfigHooker> exportConfigHookerProvider,
          final Provider<TransportManagerExporter> transportManagerExporter,
          final Provider<TransportManagerImporter> transportImporterProvider,
-         final Provider<HttpTransportManagerImportConfigurationHooker> transportHttpImportConfigHookerProvider
+         final Provider<HttpTransportManagerImportConfigurationHooker> transportHttpImportConfigHookerProvider,
+         final Provider<RemoteTransportImporterHooker> remoteTransportImporterHooker
    ) {
 
       hookHandler.attachHooker(TerminalCommandHook.class, transportCommand);
@@ -45,6 +48,7 @@ public class TransportStartup {
       hookHandler.attachHooker(HistoryUrlBuilderHook.class, managerUrlBuilder);
       
       hookHandler.attachHooker(ExportConfigHook.class, exportConfigHookerProvider);
+      hookHandler.attachHooker(RemoteEntityImporterHook.class, remoteTransportImporterHooker);
       
       hookHandler.attachHooker(ExporterProviderHook.class, new ExporterProviderHook(transportManagerExporter));
       hookHandler.attachHooker(ImporterProviderHook.class, new ImporterProviderHook(transportImporterProvider));
