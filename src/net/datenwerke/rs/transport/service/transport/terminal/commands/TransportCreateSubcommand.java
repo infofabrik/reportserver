@@ -1,5 +1,6 @@
 package net.datenwerke.rs.transport.service.transport.terminal.commands;
 
+import java.util.Collection;
 import java.util.List;
 
 import com.google.inject.Inject;
@@ -91,7 +92,13 @@ public class TransportCreateSubcommand implements TransportSubCommandHook {
       final VirtualFileSystemDeamon vfs = session.getFileSystem();
       
       try {
-         VFSLocation target = vfs.getLocation(arguments.get(0));
+         Collection<VFSLocation> resolvedTarget = vfs.getLocation(arguments.get(0)).resolveWildcards(vfs);
+         if (resolvedTarget.size()!=1)
+            throw new IllegalArgumentException("Exactly one target folder expected.");
+         VFSLocation target = resolvedTarget.iterator().next();
+         
+         if (null == target.getFilesystemManager())
+            throw new IllegalArgumentException("cannot create transport in root");
          if (!target.exists())
             throw new IllegalArgumentException("Target folder does not exist.");
          if (!target.isFolder())
