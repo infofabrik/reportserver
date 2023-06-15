@@ -13,6 +13,7 @@ import net.datenwerke.rs.terminal.service.terminal.vfs.VFSLocation;
 import net.datenwerke.rs.terminal.service.terminal.vfs.VFSLocationInfo;
 import net.datenwerke.rs.terminal.service.terminal.vfs.VFSObjectInfo;
 import net.datenwerke.rs.terminal.service.terminal.vfs.exceptions.VFSException;
+import net.datenwerke.treedb.service.treedb.AbstractNode;
 import net.datenwerke.treedb.service.treedb.TreeDBManager;
 
 public interface VirtualFileSystemManagerHook extends Hook, Serializable {
@@ -97,4 +98,6 @@ public interface VirtualFileSystemManagerHook extends Hook, Serializable {
    VFSLocation rename(VFSLocation vfsLocation, String name);
 
    String getNameFor(VFSLocation loc);
+   
+   AbstractNode<?> getNodeByLocation(VFSLocation location);
 }

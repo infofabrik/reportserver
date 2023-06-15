@@ -14,6 +14,7 @@ import net.datenwerke.rs.adminutils.service.systemconsole.generalinfo.GeneralInf
 import net.datenwerke.rs.json.service.json.JsonService;
 import net.datenwerke.rs.license.service.LicenseService;
 import net.datenwerke.rs.transport.service.transport.entities.Transport;
+import net.datenwerke.rs.transport.service.transport.entities.TransportFolder;
 import net.datenwerke.rs.utils.crypto.HashUtil;
 import net.datenwerke.rs.utils.misc.DateUtils;
 import net.datenwerke.security.service.authenticator.AuthenticatorService;
@@ -59,13 +60,13 @@ public class TransportServiceImpl implements TransportService {
          
    
    @Override
-   public String createTransport(String description) {
+   public String createTransport(String description, TransportFolder parent) {
       Map<String,String> asMap = createInitialProperties();
       
       Transport transport = new Transport();
       setInitialProperties(transport, asMap);
       transport.setDescription(description);
-      transport.setParent(transportTreeServiceProvider.get().getRoots().get(0));
+      transport.setParent(parent);
       
       transportTreeServiceProvider.get().persist(transport);
       return asMap.get(INITIAL_PROP_KEY);

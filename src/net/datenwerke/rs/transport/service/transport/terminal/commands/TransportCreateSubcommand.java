@@ -14,7 +14,12 @@ import net.datenwerke.rs.terminal.service.terminal.helpmessenger.annotations.Arg
 import net.datenwerke.rs.terminal.service.terminal.helpmessenger.annotations.CliHelpMessage;
 import net.datenwerke.rs.terminal.service.terminal.helpmessenger.annotations.NonOptArgument;
 import net.datenwerke.rs.terminal.service.terminal.obj.CommandResult;
+import net.datenwerke.rs.terminal.service.terminal.vfs.VFSLocation;
+import net.datenwerke.rs.terminal.service.terminal.vfs.VirtualFileSystemDeamon;
+import net.datenwerke.rs.terminal.service.terminal.vfs.exceptions.VFSException;
 import net.datenwerke.rs.transport.service.transport.TransportService;
+import net.datenwerke.rs.transport.service.transport.entities.TransportFolder;
+import net.datenwerke.treedb.service.treedb.AbstractNode;
 
 public class TransportCreateSubcommand implements TransportSubCommandHook {
    
@@ -80,11 +85,27 @@ public class TransportCreateSubcommand implements TransportSubCommandHook {
    @Override 
    public CommandResult execute(CommandParser parser, TerminalSession session) throws TerminalException {
       List<String> arguments = parser.getNonOptionArguments();
-      if (1 != arguments.size())
-         throw new IllegalArgumentException("Exactly one argument expected");
-      final String transport = transportServiceProvider.get().createTransport(arguments.get(0));
+      if (2 != arguments.size())
+         throw new IllegalArgumentException("Exactly two arguments expected");
       
-      return new CommandResult("Transport successfuly created: '" + transport + "'");
+      final VirtualFileSystemDeamon vfs = session.getFileSystem();
+      
+      try {
+         VFSLocation target = vfs.getLocation(arguments.get(0));
+         if (!target.exists())
+            throw new IllegalArgumentException("Target folder does not exist.");
+         if (!target.isFolder())
+            throw new IllegalArgumentException("Target is not a folder.");
+         AbstractNode<?> parent = target.getFilesystemManager().getNodeByLocation(target);
+         if (! (parent instanceof TransportFolder))
+            throw new IllegalArgumentException("Target is not a transport folder.");
+         
+         final String transport = transportServiceProvider.get().createTransport(arguments.get(1), (TransportFolder) parent);
+         
+         return new CommandResult("Transport successfuly created: '" + transport + "'");
+      } catch (VFSException e) {
+         throw new IllegalArgumentException(e);
+      }
    }
    
    @Override

@@ -48,6 +48,7 @@ public abstract class TreeDBManagerImpl<A extends AbstractNode<A>> implements Tr
       beforeNodeCopy(source, target);
 
       A cloned = cloneNode(source);
+      afterNodeCopy(cloned);
       target.addChild(cloned);
       persist(cloned);
       merge(target);
@@ -56,6 +57,9 @@ public abstract class TreeDBManagerImpl<A extends AbstractNode<A>> implements Tr
    }
 
    protected void beforeNodeCopy(A source, A target) {
+   }
+   
+   protected void afterNodeCopy(A copiedNode) {
    }
 
    protected A cloneNode(A node) {

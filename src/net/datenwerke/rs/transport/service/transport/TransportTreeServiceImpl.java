@@ -2,6 +2,7 @@ package net.datenwerke.rs.transport.service.transport;
 
 import java.util.List;
 
+import javax.inject.Provider;
 import javax.persistence.NonUniqueResultException;
 
 import com.google.inject.Inject;
@@ -19,8 +20,13 @@ import net.datenwerke.security.service.treedb.SecuredTreeDBManagerImpl;
 public class TransportTreeServiceImpl extends SecuredTreeDBManagerImpl<AbstractTransportManagerNode>
       implements TransportTreeService {
 
+   private final Provider<TransportService> transportServiceProvider;
+   
    @Inject
-   public TransportTreeServiceImpl() {
+   public TransportTreeServiceImpl(
+         Provider<TransportService> transportServiceProvider
+         ) {
+      this.transportServiceProvider = transportServiceProvider;
    }
 
    @Override
@@ -71,6 +77,12 @@ public class TransportTreeServiceImpl extends SecuredTreeDBManagerImpl<AbstractT
    public Transport doGetTransportByKey(String key) {
       return null; // by magic, must be public for AOP interception to work
    }
-
+   
+   @Override
+   protected void afterNodeCopy(AbstractTransportManagerNode copiedNode) {
+      final TransportService transportService = transportServiceProvider.get();
+      if (copiedNode instanceof Transport)
+         transportService.setInitialProperties((Transport) copiedNode, transportService.createInitialProperties());
+   }
 
 }

@@ -124,7 +124,8 @@ public class Transport extends AbstractTransportManagerNode {
    @Field
    @Column(
          length = 50,
-         unique = true
+         unique = true,
+         nullable = false
    )
    @EntityClonerIgnore
    private String key;

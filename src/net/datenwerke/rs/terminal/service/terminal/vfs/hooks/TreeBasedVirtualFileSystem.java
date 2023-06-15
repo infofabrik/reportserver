@@ -100,7 +100,8 @@ public abstract class TreeBasedVirtualFileSystem<N extends AbstractNode<N>> exte
       return getNodeName((N) getObjectFor(location));
    }
 
-   protected N getNodeByLocation(VFSLocation location) {
+   @Override
+   public N getNodeByLocation(VFSLocation location) {
       if (!location.isFileSystemRoot()) {
          String idStr = location.getPathHelper().getLastPathway();
          if (!idStr.startsWith(VFSLocation.LOCATION_ID_PREFIX))
