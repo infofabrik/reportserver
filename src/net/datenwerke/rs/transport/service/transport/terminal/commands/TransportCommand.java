@@ -5,7 +5,6 @@ import java.util.List;
 import com.google.inject.Inject;
 
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
-import net.datenwerke.rs.base.ext.service.locale.RsBaseExtMessages;
 import net.datenwerke.rs.terminal.service.terminal.TerminalSession;
 import net.datenwerke.rs.terminal.service.terminal.exceptions.TerminalException;
 import net.datenwerke.rs.terminal.service.terminal.helpers.CommandParser;
@@ -13,6 +12,7 @@ import net.datenwerke.rs.terminal.service.terminal.helpmessenger.annotations.Cli
 import net.datenwerke.rs.terminal.service.terminal.hooks.SubCommand;
 import net.datenwerke.rs.terminal.service.terminal.hooks.SubCommandContainerImpl;
 import net.datenwerke.rs.terminal.service.terminal.obj.CommandResult;
+import net.datenwerke.rs.transport.service.transport.locale.TransportManagerMessages;
 
 public class TransportCommand extends SubCommandContainerImpl {
 
@@ -31,9 +31,9 @@ public class TransportCommand extends SubCommandContainerImpl {
    }
 
    @CliHelpMessage(
-         messageClass = RsBaseExtMessages.class, 
+         messageClass = TransportManagerMessages.class, 
          name = BASE_COMMAND, 
-         description = "rpullDesc"
+         description = "transportDesc"
    )
    @Override
    public CommandResult execute(CommandParser parser, TerminalSession session) throws TerminalException {
