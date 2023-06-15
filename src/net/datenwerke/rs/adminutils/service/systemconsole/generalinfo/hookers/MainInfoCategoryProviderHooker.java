@@ -10,7 +10,6 @@ import javax.inject.Inject;
 
 import org.apache.commons.lang3.tuple.ImmutablePair;
 
-import net.datenwerke.gxtdto.client.locale.BaseMessages;
 import net.datenwerke.rs.adminutils.service.systemconsole.generalinfo.GeneralInfoService;
 import net.datenwerke.rs.adminutils.service.systemconsole.generalinfo.hooks.GeneralInfoCategoryProviderHook;
 import net.datenwerke.rs.adminutils.service.systemconsole.generalinfo.locale.GeneralInfoMessages;
@@ -62,7 +61,7 @@ public class MainInfoCategoryProviderHooker implements GeneralInfoCategoryProvid
    public Map<ImmutablePair<String, String>, Map<ImmutablePair<String, String>, Object>> provideCategory() {
       final Map<ImmutablePair<String, String>, Object> props = new LinkedHashMap<>();
 
-      props.put(ImmutablePair.of(RS_VERSION, BaseMessages.INSTANCE.reportServerVersion()),
+      props.put(ImmutablePair.of(RS_VERSION, GeneralInfoMessages.INSTANCE.reportServerVersion()),
             generalInfoService.getRsVersion());
       props.put(ImmutablePair.of(JAVA_VERSION, GeneralInfoMessages.INSTANCE.javaVersionLabel()),
             generalInfoService.getJavaVersion());
