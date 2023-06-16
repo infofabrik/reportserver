@@ -98,6 +98,9 @@ public class TransportManagerTreeHandlerRpcServiceImpl extends TreeDBManagerTree
    @Override
    @Transactional(rollbackOn = { Exception.class })
    protected void doSetInitialProperties(AbstractTransportManagerNode inserted) {
+      if (inserted instanceof Transport) {
+         ((Transport)inserted).setKey("RS_TEMP_" + new Date());
+      }
       setInitialProperties(inserted);
    }
    
