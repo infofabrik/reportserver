@@ -14,6 +14,7 @@ import net.datenwerke.rs.core.service.genrights.datasinks.DatasinkManagerAdminVi
 import net.datenwerke.rs.core.service.genrights.datasources.DatasourceManagerAdminViewSecurityTarget;
 import net.datenwerke.rs.core.service.genrights.remoteservers.RemoteServerManagerAdminViewSecurityTarget;
 import net.datenwerke.rs.core.service.genrights.reportmanager.ReportManagerAdminViewSecurityTarget;
+import net.datenwerke.rs.core.service.genrights.transport.TransportManagerAdminViewSecurityTarget;
 import net.datenwerke.rs.remoteserver.service.remoteservermanager.RemoteServerTreeService;
 import net.datenwerke.rs.remoteserver.service.remoteservermanager.entities.RemoteServerFolder;
 import net.datenwerke.rs.core.service.reportmanager.ReportService;
@@ -289,6 +290,14 @@ public class PrepareDbForReportServer implements DbInstallationTask {
       Acl remoteServerACL = new Acl();
       remoteServerEntity.setAcl(remoteServerACL);
       securityService.merge(remoteServerEntity);
+      
+      /* transports */
+      GenericSecurityTargetEntity transportEntity = securityService
+            .createGenericSecurityTargetEntity(TransportManagerAdminViewSecurityTarget.class);
+      
+      Acl transportACL = new Acl();
+      transportEntity.setAcl(transportACL);
+      securityService.merge(transportEntity);
    }
 
    private void prepareDatasourceTree() {
