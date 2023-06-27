@@ -583,12 +583,15 @@ public class XLSStreamOutputGenerator extends TableOutputGeneratorImpl {
 
       /* adjust column sizes */
       List<Column> columns = report.getVisibleColumns();
-      for (int col = 0; col < td.getColumnCount(); col++) {
-         Column column = columns.get(col);
-         short colWidth;
-         if (null != column.getPreviewWidth()) {
-            colWidth = pixel2WidthUnits(column.getPreviewWidth());
-            dataSheet.setColumnWidth(col, colWidth);
+      // plain excel jasper has not same size
+      if (report.getVisibleColumns().size() == td.getColumnCount()) {
+         for (int col = 0; col < td.getColumnCount(); col++) {
+            Column column = columns.get(col);
+            short colWidth;
+            if (null != column.getPreviewWidth()) {
+               colWidth = pixel2WidthUnits(column.getPreviewWidth());
+               dataSheet.setColumnWidth(col, colWidth);
+            }
          }
       }
 
