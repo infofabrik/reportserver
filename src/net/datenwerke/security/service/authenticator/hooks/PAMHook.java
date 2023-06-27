@@ -9,7 +9,7 @@ import net.datenwerke.security.service.authenticator.ReportServerPAM;
 @HookConfig
 public interface PAMHook extends Hook {
 
-   public void beforeStaticPamConfig();
+   public void beforeStaticPamConfig(LinkedHashSet<ReportServerPAM> pams);
 
    public void afterStaticPamConfig(LinkedHashSet<ReportServerPAM> pams);
 

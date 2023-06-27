@@ -13,7 +13,7 @@ import net.datenwerke.security.service.authenticator.hooks.PAMHook;
 public class PAMHookAdapter implements PAMHook {
 
    @Override
-   public void beforeStaticPamConfig() {
+   public void beforeStaticPamConfig(LinkedHashSet<ReportServerPAM> pams) {
    }
 
    @Override

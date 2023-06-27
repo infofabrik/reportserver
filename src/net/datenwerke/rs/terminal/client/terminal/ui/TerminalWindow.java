@@ -342,7 +342,7 @@ public class TerminalWindow extends DwWindow {
          setInputFieldValue(historyHelper.getLast());
 
       if (null != inputField.getCurrentValue())
-         setInputFieldCursorPos(inputField.getCurrentValue().length() - 1);
+         setInputFieldCursorPos(inputField.getCurrentValue().length());
 
       inputField.focus();
    }
@@ -353,12 +353,13 @@ public class TerminalWindow extends DwWindow {
    }
 
    private void setInputFieldCursorPos(final int pos) {
-      Scheduler.get().scheduleFinally(new ScheduledCommand() {
-         @Override
-         public void execute() {
-            inputField.getCell().setCursorPos(inputField.getElement(), pos);
-         }
-      });
+      scrollIntoFocusAndFocus();
+      Scheduler.get().scheduleDeferred(() -> Scheduler.get()
+            .scheduleFinally(() -> {
+               scrollIntoFocusAndFocus();
+               inputField.getCell().setCursorPos(inputField.getElement(), pos);
+               scrollIntoFocusAndFocus();
+            }));
    }
 
    private void lastHistory() {
@@ -367,7 +368,7 @@ public class TerminalWindow extends DwWindow {
       setInputFieldValue(historyHelper.last());
 
       if (null != inputField.getCurrentValue())
-         setInputFieldCursorPos(inputField.getCurrentValue().length() - 1);
+         setInputFieldCursorPos(inputField.getCurrentValue().length());
 
       inputField.focus();
    }

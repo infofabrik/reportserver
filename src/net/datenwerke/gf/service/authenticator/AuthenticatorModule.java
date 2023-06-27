@@ -48,9 +48,11 @@ public class AuthenticatorModule extends AbstractModule {
          final HookHandlerService hookHandlerService, final Injector injector) {
       String authenticatorsString = propertiesService.getString(AUTHENTICATORS_PROPERTY_NAME);
 
-      hookHandlerService.getHookers(PAMHook.class).forEach(PAMHook::beforeStaticPamConfig);
+      LinkedHashSet<ReportServerPAM> pams = new LinkedHashSet<ReportServerPAM>();
+      
+      hookHandlerService.getHookers(PAMHook.class).forEach(ph -> ph.beforeStaticPamConfig(pams));
 
-      final LinkedHashSet<ReportServerPAM> pams = Arrays.stream(authenticatorsString.split(":"))
+      final LinkedHashSet<ReportServerPAM> staticPams = Arrays.stream(authenticatorsString.split(":"))
          .filter(className -> !className.trim().isEmpty())
          .map(className -> {
             ReportServerPAM pamInstance = null;
@@ -63,6 +65,7 @@ public class AuthenticatorModule extends AbstractModule {
             return pamInstance;
          })
          .collect(toCollection(LinkedHashSet::new));
+      pams.addAll(staticPams);
          
       hookHandlerService.getHookers(PAMHook.class).forEach(ph -> ph.afterStaticPamConfig(pams));
       return pams;
