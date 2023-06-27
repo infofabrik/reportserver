@@ -202,7 +202,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/checker-qual-3.31.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jcifs-2.1.34.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/postgresql-42.6.0.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/sqlite-jdbc-3.41.2.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/unboundid-ldapsdk-6.0.8.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/batik-codec-1.16.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/graphviz-java-0.18.1.jar"/>
@@ -248,5 +247,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/sshd-core-2.10.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/sshd-sftp-2.10.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/rs-schemaupdate-1.3.25.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/sqlite-jdbc-3.42.0.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
