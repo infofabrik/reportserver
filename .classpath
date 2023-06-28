@@ -246,7 +246,7 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/sshd-common-2.10.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/sshd-core-2.10.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/sshd-sftp-2.10.0.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/rs-schemaupdate-1.3.25.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/sqlite-jdbc-3.42.0.0.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/rs-schemaupdate-1.3.26.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
