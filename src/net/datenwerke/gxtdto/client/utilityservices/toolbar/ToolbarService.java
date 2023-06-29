@@ -16,37 +16,58 @@ import net.datenwerke.rs.theme.client.icon.BaseIcon;
 
 public interface ToolbarService {
 
-   public DwTextButton createSmallButtonLeft(BaseIcon icon);
+   DwTextButton createSmallButtonLeft(BaseIcon icon);
 
-   public DwTextButton createSmallButtonLeft(String text, BaseIcon icon);
+   /**
+    * Creates a small button with the given icon aligned to the left of the button.
+    * 
+    * @param text the button text
+    * @param icon the icon
+    * @return the button created
+    */
+   DwTextButton createSmallButtonLeft(String text, BaseIcon icon);
 
-   public DwTextButton createSmallButtonLeft(String text, ImageResource icon);
+   /**
+    * Creates a small button with the given icon aligned to the left of the button.
+    * 
+    * @param text the button text
+    * @param icon the icon
+    * @return the button created
+    */
+   DwTextButton createSmallButtonLeft(String text, ImageResource icon);
 
-   public DwTextButton createLargeButtonLeft(String text, ImageResource icon);
+   /**
+    * Creates a large button with the given icon aligned to the left of the button.
+    * 
+    * @param text The button text
+    * @param icon The icon
+    * @return the button created
+    */
+   DwTextButton createLargeButtonLeft(String text, ImageResource icon);
 
-   public DwTextButton createLargeButtonTop(String text, ImageResource icon);
+   DwTextButton createLargeButtonTop(String text, ImageResource icon);
 
-   public DwTextButton createLargeButtonTop(String text, ImageResource icon, String tooltip);
+   DwTextButton createLargeButtonTop(String text, ImageResource icon, String tooltip);
 
-   public <D extends TextButton> D configureButton(D button, String text, ImageResource icon);
+   <D extends TextButton> D configureButton(D button, String text, ImageResource icon);
 
-   public <D extends TextButton> D configureButton(D button, String text, BaseIcon icon);
+   <D extends TextButton> D configureButton(D button, String text, BaseIcon icon);
 
-   public void addPlainToolbarItem(ToolBar toolbar, ImageResource icon);
+   void addPlainToolbarItem(ToolBar toolbar, ImageResource icon);
 
    DwTextButton createPlainToolbarItem(ImageResource icon);
 
    DwTextButton createPlainToolbarItem(String name, ImageResource icon);
 
-   public Component createText(String views);
+   Component createText(String views);
 
-   public DwTextButton createLargeButtonTop(String label, BaseIcon icon);
+   DwTextButton createLargeButtonTop(String label, BaseIcon icon);
 
    DwTextButton createUnstyledToolbarItem(String name, ImageResource icon);
 
    DwTextButton createUnstyledToolbarItem(String name, BaseIcon icon);
 
-   public void addPlainToolbarItem(ToolBar toolbar, BaseIcon icon);
+   void addPlainToolbarItem(ToolBar toolbar, BaseIcon icon);
 
    Widget createPlainToolbarItem(BaseIcon icon);
 

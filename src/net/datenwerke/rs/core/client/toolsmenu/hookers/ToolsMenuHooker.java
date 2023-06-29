@@ -1,6 +1,5 @@
 package net.datenwerke.rs.core.client.toolsmenu.hookers;
 
-import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
@@ -14,11 +13,11 @@ import com.sencha.gxt.widget.core.client.menu.MenuItem;
 import net.datenwerke.gf.client.homepage.hooks.HomepageHeaderContentHook;
 import net.datenwerke.gf.client.homepage.ui.DwMainViewportTopBarElement;
 import net.datenwerke.gf.client.homepage.ui.DwMainViewportTopBarWidget;
-import net.datenwerke.gxtdto.client.baseex.widget.btn.DwSplitButton;
 import net.datenwerke.gxtdto.client.baseex.widget.menu.DwMenu;
 import net.datenwerke.gxtdto.client.locale.BaseMessages;
 import net.datenwerke.gxtdto.client.theme.CssClassConstant;
 import net.datenwerke.gxtdto.client.utilityservices.UtilsUIService;
+import net.datenwerke.gxtdto.client.utilityservices.toolbar.ToolbarService;
 import net.datenwerke.rs.adminutils.client.suuser.SuUserUiService;
 import net.datenwerke.rs.adminutils.client.suuser.locale.SuMessages;
 import net.datenwerke.rs.adminutils.client.suuser.security.SuGenericTargetIdentifier;
@@ -39,13 +38,12 @@ public class ToolsMenuHooker implements HomepageHeaderContentHook {
    @CssClassConstant
    public static final String CSS_NAME_ICON = "rs-search-box-icon";
 
-   private HTML icon;
-   
    private final Provider<TerminalUIService> terminalUIServiceProvider;
    private final Provider<SecurityUIService> securityServiceProvider;
    private final Provider<UtilsUIService> utilsUIServiceProvider;
    private final Provider<SearchUiService> searchUiServiceProvider;
    private final Provider<SuUserUiService> suUserUiServiceProvider;
+   private final Provider<ToolbarService> toolbarServiceProvider;
 
    @Inject
    public ToolsMenuHooker(
@@ -53,20 +51,19 @@ public class ToolsMenuHooker implements HomepageHeaderContentHook {
          Provider<UtilsUIService> utilsUIServiceProvider,
          Provider<TerminalUIService> terminalUIServiceProvider,
          Provider<SuUserUiService> suUserUiServiceProvider,
-         Provider<SearchUiService> searchUiServiceProvider
+         Provider<SearchUiService> searchUiServiceProvider,
+         Provider<ToolbarService> toolbarServiceProvider
          ) {
       this.terminalUIServiceProvider = terminalUIServiceProvider;
       this.securityServiceProvider = securityServiceProvider;
       this.utilsUIServiceProvider = utilsUIServiceProvider;
       this.suUserUiServiceProvider = suUserUiServiceProvider;
       this.searchUiServiceProvider = searchUiServiceProvider;
+      this.toolbarServiceProvider = toolbarServiceProvider;
    }
 
    @Override
    public DwMainViewportTopBarElement homepageHeaderContentHook_addTopRight(final HBoxLayoutContainer container) {
-      icon = new HTML(BaseIcon.AMAZON.toSafeHtml());
-      icon.setStyleName(CSS_NAME_ICON);
-
       return new DwMainViewportTopBarWidget() {
 
          @Override
@@ -90,10 +87,10 @@ public class ToolsMenuHooker implements HomepageHeaderContentHook {
       String globalSearchLabel = SystemConsoleMessages.INSTANCE.globalSearch();
       
       /* open menu button */
-      TextButton openMenuBtn = new DwSplitButton(BaseMessages.INSTANCE.tools());
-      openMenuBtn.addStyleName("rs-tools-menu-panel-btn");
-      openMenuBtn.setArrowAlign(ButtonArrowAlign.RIGHT);
-      openMenuBtn.setMenu(menu);
+      TextButton toolsBtn = toolbarServiceProvider.get().createSmallButtonLeft(BaseMessages.INSTANCE.tools(), BaseIcon.COG);
+      toolsBtn.addStyleName("rs-tools-menu-panel-btn");
+      toolsBtn.setArrowAlign(ButtonArrowAlign.RIGHT);
+      toolsBtn.setMenu(menu);
       
       if (securityServiceProvider.get().hasRight(TerminalGenericTargetIdentifier.class, ExecuteDto.class)) {
          /* open terminal button */
@@ -120,7 +117,7 @@ public class ToolsMenuHooker implements HomepageHeaderContentHook {
       searchBtn.addSelectionHandler(event -> searchUiServiceProvider.get().displaySearchModule());    
       menu.add(searchBtn);
       
-      return new WidgetComponent(openMenuBtn);
+      return new WidgetComponent(toolsBtn);
    }
 
 }
