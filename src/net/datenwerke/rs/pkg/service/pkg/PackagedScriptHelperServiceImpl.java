@@ -257,7 +257,8 @@ public class PackagedScriptHelperServiceImpl implements PackagedScriptHelperServ
    @Override
    public List<File> listPackages() {
       return Arrays.asList(getPackageDirectory()
-            .listFiles((dir, name) -> name.toLowerCase().endsWith(".zip") && validateZip(new File(dir, name), false)));
+            .listFiles((dir, name) -> name.toLowerCase().endsWith(".zip")
+                  || name.toLowerCase().endsWith(".rsp") && validateZip(new File(dir, name), false)));
    }
 
    @Override
