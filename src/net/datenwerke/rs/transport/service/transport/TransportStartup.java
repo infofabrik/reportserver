@@ -8,6 +8,7 @@ import net.datenwerke.eximport.hooks.ImporterProviderHook;
 import net.datenwerke.gf.service.history.hooks.HistoryUrlBuilderHook;
 import net.datenwerke.gf.service.lifecycle.hooks.ConfigDoneHook;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
+import net.datenwerke.rs.adminutils.service.systemconsole.generalinfo.hooks.GeneralInfoCategoryProviderHook;
 import net.datenwerke.rs.base.ext.service.hooks.ExportConfigHook;
 import net.datenwerke.rs.base.ext.service.hooks.RemoteEntityImporterHook;
 import net.datenwerke.rs.eximport.service.eximport.im.http.hooks.HttpImportConfigurationProviderHook;
@@ -20,6 +21,10 @@ import net.datenwerke.rs.transport.service.transport.eximport.TransportManagerIm
 import net.datenwerke.rs.transport.service.transport.eximport.hookers.RemoteTransportImporterHooker;
 import net.datenwerke.rs.transport.service.transport.eximport.hookers.TransportExportConfigHooker;
 import net.datenwerke.rs.transport.service.transport.history.TransportManagerHistoryUrlBuilderHooker;
+import net.datenwerke.rs.transport.service.transport.hookers.TransportCategoryProviderHooker;
+import net.datenwerke.rs.transport.service.transport.hookers.UsageStatisticsTransportsProviderHooker;
+import net.datenwerke.rs.transport.service.transport.hookers.UsageStatisticsTransportFoldersProviderHooker;
+import net.datenwerke.rs.transport.service.transport.hooks.TransportEntryProviderHook;
 import net.datenwerke.rs.transport.service.transport.terminal.commands.TransportCommand;
 import net.datenwerke.rs.transport.service.transport.terminal.commands.TransportCreateSubcommand;
 import net.datenwerke.rs.transport.service.transport.terminal.commands.TransportSubCommandHook;
@@ -38,11 +43,22 @@ public class TransportStartup {
          final Provider<TransportManagerExporter> transportManagerExporter,
          final Provider<TransportManagerImporter> transportImporterProvider,
          final Provider<HttpTransportManagerImportConfigurationHooker> transportHttpImportConfigHookerProvider,
-         final Provider<RemoteTransportImporterHooker> remoteTransportImporterHooker
+         final Provider<RemoteTransportImporterHooker> remoteTransportImporterHooker,
+         final Provider<UsageStatisticsTransportsProviderHooker> usageStatsTransportsProvider,
+         final Provider<UsageStatisticsTransportFoldersProviderHooker> usageStatsTransportFolderProvider,
+         final Provider<TransportCategoryProviderHooker> usageStatistics
    ) {
 
       hookHandler.attachHooker(TerminalCommandHook.class, transportCommand);
       hookHandler.attachHooker(TransportSubCommandHook.class, transportCreateCommand);
+      
+      hookHandler.attachHooker(TransportEntryProviderHook.class, usageStatsTransportFolderProvider,
+            HookHandlerService.PRIORITY_LOW);
+      hookHandler.attachHooker(TransportEntryProviderHook.class, usageStatsTransportsProvider,
+            HookHandlerService.PRIORITY_LOW + 3);
+      
+      hookHandler.attachHooker(GeneralInfoCategoryProviderHook.class, usageStatistics,
+            HookHandlerService.PRIORITY_LOW + 73);
       
       /* history */
       hookHandler.attachHooker(HistoryUrlBuilderHook.class, managerUrlBuilder);

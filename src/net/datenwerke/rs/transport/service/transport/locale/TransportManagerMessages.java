@@ -15,4 +15,8 @@ public interface TransportManagerMessages extends Messages {
    String commandTransportCreate_description();
    
    String transportDesc();
+   
+   String transports();
+   
+   String transportUsageStatistics();
 }
