@@ -16,8 +16,8 @@ public class TransportManagerVFS extends TreeBasedVirtualFileSystem<AbstractTran
    private static final String FILESYSTEM_NAME = "transports";
 
    @Inject
-   public TransportManagerVFS(Provider<TransportTreeService> remoteServerServiceProvider) {
-      super(remoteServerServiceProvider);
+   public TransportManagerVFS(Provider<TransportTreeService> transportServiceProvider) {
+      super(transportServiceProvider);
    }
 
    @Override

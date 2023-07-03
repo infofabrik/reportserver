@@ -30,4 +30,6 @@ public interface TransportMessages extends Messages {
    String createdByUsername();
 
    String createdByEmail();
+   
+   String transport();
 }

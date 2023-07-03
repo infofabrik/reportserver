@@ -19,4 +19,10 @@ public interface TransportManagerMessages extends Messages {
    String transports();
    
    String transportUsageStatistics();
+   
+   String transportTypeName();
+
+   String historyUrlBuilderName();
+
+   String historyUrlBuilderIcon();
 }

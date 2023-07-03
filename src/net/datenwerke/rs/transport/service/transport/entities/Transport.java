@@ -20,20 +20,20 @@ import net.datenwerke.gf.base.service.annotations.Indexed;
 import net.datenwerke.gxtdto.client.dtomanager.DtoView;
 import net.datenwerke.rs.transport.service.transport.TransportModule;
 import net.datenwerke.rs.transport.service.transport.entities.post.Transport2DtoPostProcessor;
+import net.datenwerke.rs.transport.service.transport.locale.TransportManagerMessages;
 import net.datenwerke.rs.utils.entitycloner.annotation.EntityClonerIgnore;
+import net.datenwerke.rs.utils.instancedescription.annotations.Description;
 import net.datenwerke.rs.utils.instancedescription.annotations.InstanceDescription;
+import net.datenwerke.rs.utils.instancedescription.annotations.Title;
 import net.datenwerke.rs.utils.misc.DateUtils;
-import net.datenwerke.security.service.usermanager.locale.UserManagerMessages;
 
 @Entity
 @Table(name = "TRANSPORT")
 @Audited
 @Indexed
 @InstanceDescription(
-      msgLocation = UserManagerMessages.class, 
-      objNameKey = "userTypeName",
-      title = "${shortKey}", 
-      fields = { "shortKey" }, 
+      msgLocation = TransportManagerMessages.class, 
+      objNameKey = "transportTypeName",
       icon = "archive"
 )
 @GenerateDto(
@@ -41,8 +41,8 @@ import net.datenwerke.security.service.usermanager.locale.UserManagerMessages;
       createDecorator = true, 
       poso2DtoPostProcessors = Transport2DtoPostProcessor.class, 
       displayTitle = "getCreatedOnStr() + \"-\" + getShortKey()", 
-      typeDescriptionMsg = net.datenwerke.security.client.locale.UserManagerMessages.class, 
-      typeDescriptionKey = "user", 
+      typeDescriptionMsg = net.datenwerke.rs.transport.client.transport.locale.TransportMessages.class, 
+      typeDescriptionKey = "transport", 
       icon = "archive",
       additionalFields = {
             @AdditionalField(
@@ -105,6 +105,7 @@ public class Transport extends AbstractTransportManagerNode {
    @Field
    @Type(type = "net.datenwerke.rs.utils.hibernate.RsClobType")
    @ExposeToClient(allowArbitraryLobSize = true, exposeValueToClient = true)
+   @Description
    private String description;
    
    @Lob
@@ -128,6 +129,7 @@ public class Transport extends AbstractTransportManagerNode {
          nullable = false
    )
    @EntityClonerIgnore
+   @Title
    private String key;
    
    public Transport() {

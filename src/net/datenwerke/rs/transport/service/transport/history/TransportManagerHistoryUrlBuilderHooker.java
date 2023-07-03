@@ -7,6 +7,7 @@ import net.datenwerke.rs.core.service.history.helper.TreePanelHistoryUrlBuilderH
 import net.datenwerke.rs.remoteserver.service.remoteservermanager.locale.RemoteServerManagerMessages;
 import net.datenwerke.rs.transport.client.transport.TransportUIModule;
 import net.datenwerke.rs.transport.service.transport.entities.AbstractTransportManagerNode;
+import net.datenwerke.rs.transport.service.transport.locale.TransportManagerMessages;
 import net.datenwerke.rs.utils.localization.LocalizationServiceImpl;
 import net.datenwerke.security.service.security.SecurityService;
 import net.datenwerke.security.service.security.SecurityTarget;
@@ -14,7 +15,7 @@ import net.datenwerke.security.service.security.rights.Read;
 
 public class TransportManagerHistoryUrlBuilderHooker extends TreePanelHistoryUrlBuilderHooker {
 
-   private final RemoteServerManagerMessages messages = LocalizationServiceImpl.getMessages(RemoteServerManagerMessages.class);
+   private final TransportManagerMessages messages = LocalizationServiceImpl.getMessages(TransportManagerMessages.class);
 
    private final static String HISTORY_BUILDER_NAME = "TransportManager";
    

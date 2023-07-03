@@ -16,8 +16,8 @@ import net.datenwerke.rs.theme.client.icon.BaseIcon;
 import net.datenwerke.rs.transport.client.transport.dto.AbstractTransportManagerNodeDto;
 import net.datenwerke.rs.transport.client.transport.dto.pa.TransportDtoPA;
 import net.datenwerke.rs.transport.client.transport.dto.posomap.TransportDto2PosoMap;
+import net.datenwerke.rs.transport.client.transport.locale.TransportMessages;
 import net.datenwerke.rs.transport.service.transport.entities.Transport;
-import net.datenwerke.security.client.locale.UserManagerMessages;
 
 /**
  * Dto for {@link Transport}
@@ -1153,7 +1153,7 @@ abstract public class TransportDto extends AbstractTransportManagerNodeDto {
 
 	@Override
 	public String toTypeDescription()  {
-		return UserManagerMessages.INSTANCE.user();
+		return TransportMessages.INSTANCE.transport();
 	}
 
 	@Override
