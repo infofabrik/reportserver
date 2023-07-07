@@ -54,7 +54,7 @@ public class DatasourceManagerExportRpcServiceImpl extends SecuredRemoteServiceS
    public void quickExport(AbstractDatasourceManagerNodeDto nodeDto) throws ServerCallFailedException {
       AbstractDatasourceManagerNode node = (AbstractDatasourceManagerNode) dtoService.loadPoso(nodeDto);
 
-      String exportXML = exportHelper.export(node, true, DatasourceManagerExporter.EXPORTER_NAME);
+      String exportXML = exportHelper.export(node, true, DatasourceManagerExporter.EXPORTER_NAME, false);
 
       httpExportServiceProvider.get().storeExport(exportXML, node.getName());
    }

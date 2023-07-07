@@ -104,15 +104,18 @@ public class ExportDataAnalyzerServiceImpl implements ExportDataAnalyzerService 
             new StreamingPathFilter(expr, eiHelper.getNamespaceMap()).createNodeFactory(null, element -> new Nodes(element)));
       try {
          Document doc = builder.build(dataProvider.getXmlStream());
-         return doc.getRootElement().getChildElements().get(0).getChildElements();
+         Elements els = doc.getRootElement().getChildElements();
+         if (els.size() == 0)
+            return null;
+         return els.get(0).getChildElements();
       } catch (Exception e) {
          throw new RuntimeException(e);
       }
    }
 
    @Override
-   public Collection<Class<?>> getExporterClasses(ExportDataProvider dataProvider) throws ClassNotFoundException {
-      Set<Class<?>> exporters = new HashSet<Class<?>>();
+   public Collection<Class<? extends Exporter>> getExporterClasses(ExportDataProvider dataProvider) throws ClassNotFoundException {
+      Set<Class<? extends Exporter>> exporters = new HashSet<>();
 
       Elements nodeList = getExporterElements(dataProvider);
       if (null != nodeList) {
@@ -126,12 +129,12 @@ public class ExportDataAnalyzerServiceImpl implements ExportDataAnalyzerService 
    }
 
    @Override
-   public Class<?> getExporterClass(Element el) throws ClassNotFoundException {
+   public Class<? extends Exporter> getExporterClass(Element el) throws ClassNotFoundException {
       if (!hasAttribute(el, ExImportHelperService.EXPORTER_TYPE))
          return null;
 
       String exporterType = getAttribute(el, ExImportHelperService.EXPORTER_TYPE);
-      return reflectionService.getClassForName(exporterType);
+      return (Class<? extends Exporter>)reflectionService.getClassForName(exporterType);
    }
 
    @Override

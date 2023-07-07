@@ -17,18 +17,18 @@ import net.datenwerke.rs.terminal.service.terminal.vfs.VFSLocation;
 import net.datenwerke.rs.terminal.service.terminal.vfs.VirtualFileSystemDeamon;
 import net.datenwerke.rs.terminal.service.terminal.vfs.exceptions.VFSException;
 import net.datenwerke.rs.transport.service.transport.TransportService;
-import net.datenwerke.rs.transport.service.transport.entities.TransportFolder;
+import net.datenwerke.rs.transport.service.transport.entities.Transport;
 import net.datenwerke.rs.transport.service.transport.locale.TransportManagerMessages;
 import net.datenwerke.treedb.service.treedb.AbstractNode;
 
-public class TransportCreateSubcommand implements TransportSubCommandHook {
+public class TransportAddSubcommand implements TransportSubCommandHook {
    
-   public static final String BASE_COMMAND = "create";
+   public static final String BASE_COMMAND = "add";
    
    private final Provider<TransportService> transportServiceProvider;
    
    @Inject
-   public TransportCreateSubcommand(
+   public TransportAddSubcommand(
          Provider<TransportService> transportServiceProvider
          ) {
       this.transportServiceProvider = transportServiceProvider;
@@ -72,22 +72,34 @@ public class TransportCreateSubcommand implements TransportSubCommandHook {
       try {
          Collection<VFSLocation> resolvedTarget = vfs.getLocation(arguments.get(0)).resolveWildcards(vfs);
          if (resolvedTarget.size()!=1)
-            throw new IllegalArgumentException("Exactly one target folder expected.");
+            throw new IllegalArgumentException("Exactly one transport expected.");
          VFSLocation target = resolvedTarget.iterator().next();
          
-         if (null == target.getFilesystemManager())
-            throw new IllegalArgumentException("cannot create transport in root");
+         AbstractNode<?> transportTarget = target.getFilesystemManager().getNodeByLocation(target);
+         if (! (transportTarget instanceof Transport))
+            throw new IllegalArgumentException("Target is not a transport.");
+         
          if (!target.exists())
-            throw new IllegalArgumentException("Target folder does not exist.");
-         if (!target.isFolder())
-            throw new IllegalArgumentException("Target is not a folder.");
-         AbstractNode<?> parent = target.getFilesystemManager().getNodeByLocation(target);
-         if (! (parent instanceof TransportFolder))
-            throw new IllegalArgumentException("Target is not a transport folder.");
+            throw new IllegalArgumentException("Target transport does not exist.");
+         if (target.isFolder())
+            throw new IllegalArgumentException("Target is a folder.");
          
-         final String transport = transportServiceProvider.get().createTransport(arguments.get(1), (TransportFolder) parent);
+         Transport transport = (Transport) transportTarget;
+         if (transport.isClosed())
+            throw new IllegalArgumentException("Cannot add to closed transport");
          
-         return new CommandResult("Transport successfully created: '" + transport + "'");
+         Collection<VFSLocation> resolvedElement = vfs.getLocation(arguments.get(1)).resolveWildcards(vfs);
+         if (resolvedElement.size()!=1)
+            throw new IllegalArgumentException("Exactly one element expected.");
+         VFSLocation elementLoc = resolvedElement.iterator().next();
+         
+         AbstractNode<?> element = elementLoc.getFilesystemManager().getNodeByLocation(elementLoc);
+         if (element.isFolder())
+            throw new IllegalArgumentException("Cannot add a folder to transport.");
+         
+         transportServiceProvider.get().addElement(transport, element, false);
+         
+         return new CommandResult("Added to transport '" + transport + "': '" + element + "'");
       } catch (VFSException e) {
          throw new IllegalArgumentException(e);
       }

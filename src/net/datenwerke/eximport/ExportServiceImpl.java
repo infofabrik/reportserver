@@ -8,6 +8,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
@@ -28,6 +29,11 @@ import net.datenwerke.eximport.ex.ExportSupervisorFactory;
 import net.datenwerke.eximport.ex.Exporter;
 import net.datenwerke.eximport.hooks.ExporterProviderHook;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
+import net.datenwerke.rs.base.ext.service.ExportOptions;
+import net.datenwerke.rs.base.ext.service.hooks.ExportConfigHook;
+import net.datenwerke.rs.base.ext.service.reportmanager.ReportExportOptions;
+import net.datenwerke.rs.core.service.reportmanager.entities.AbstractReportManagerNode;
+import net.datenwerke.treedb.service.treedb.AbstractNode;
 
 /**
  * 
@@ -149,7 +155,7 @@ public class ExportServiceImpl implements ExportService {
    }
 
    @Override
-   public Collection<String> getExporterIds(Collection<Class<?>> exporterTypes) {
+   public Collection<String> getExporterIds(Collection<Class<? extends Exporter>> exporterTypes) {
       List<String> ids = new ArrayList<>();
 
       for (Class<?> type : exporterTypes) {
@@ -170,7 +176,7 @@ public class ExportServiceImpl implements ExportService {
     * @see net.datenwerke.eximport.ExportService#getExporterFor(java.lang.Class)
     */
    @Override
-   public Exporter getExporterFor(final Class<?> exporterType) {
+   public Exporter getExporterFor(final Class<? extends Exporter> exporterType) {
       return getExporters()
             .stream()
             .filter(exporter -> exporterType.equals(exporter.getClass()))
@@ -190,6 +196,28 @@ public class ExportServiceImpl implements ExportService {
             .filter(exporter -> exporter.consumes(object))
             .findAny()
             .orElse(null);
+   }
+
+   @Override
+   public Optional<ExportConfig> configureExport(final AbstractNode<?> node, final boolean includeVariants) {
+      return hookHandler.getHookers(ExportConfigHook.class)
+            .stream()
+            .filter(hooker -> hooker.consumes(node))
+            .map(hooker -> { 
+               ExportOptions exportOptions = null;
+               if (node instanceof AbstractReportManagerNode) {
+                  exportOptions = new ReportExportOptions() {
+                     @Override
+                     public boolean includeVariants() {
+                        return includeVariants;
+                     }
+                  };
+               } else {
+                  exportOptions = new ExportOptions() {};
+               }
+               return hooker.configure(node, exportOptions);
+            })
+            .findAny();
    }
 
 }

@@ -26,7 +26,7 @@ public class FileServerExportConfigHooker implements ExportConfigHook {
       if (!(node instanceof AbstractFileServerNode))
          throw new IllegalArgumentException("node not an AbstractFileServerNode");
       
-      return exportHelper.createExportConfig(node, true, FileServerExporter.EXPORTER_NAME);
+      return exportHelper.createExportConfig(node, true, FileServerExporter.EXPORTER_NAME, false);
    }
 
    @Override

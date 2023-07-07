@@ -118,7 +118,7 @@ public class FileServerRpcServiceImpl extends TreeDBManagerTreeHandler<AbstractF
       AbstractFileServerNode node = (AbstractFileServerNode) dtoService.loadPoso(nodeDto);
 
       /* export report */
-      String exportXML = exportHelper.get().export(node, true, FileServerExporter.EXPORTER_NAME);
+      String exportXML = exportHelper.get().export(node, true, FileServerExporter.EXPORTER_NAME, false);
 
       httpExportServiceProvider.get().storeExport(exportXML, node.getName());
    }

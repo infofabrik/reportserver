@@ -1,7 +1,10 @@
 package net.datenwerke.eximport;
 
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.xml.XMLConstants;
 import javax.xml.stream.XMLStreamException;
@@ -10,6 +13,7 @@ import javax.xml.stream.XMLStreamWriter;
 import com.google.inject.Inject;
 
 import net.datenwerke.eximport.ex.Exporter;
+import net.datenwerke.treedb.ext.service.eximport.TreeNodeExporter;
 import nu.xom.Element;
 import nu.xom.XPathContext;
 
@@ -298,5 +302,18 @@ public class ExImportHelperService {
 
    public XPathContext xpathContext() {
       return new XPathContext(EXIMPORT_XML_NAMESPACE_PREFIX, EXIMPORT_XML_NAMESPACE);
+   }
+   
+   public Set<Class<?>> getAllowedReferenceTypesFor(final Object node, final List<Exporter> exporters) {
+      Set<Class<?>> allowed = new HashSet<>();
+      if (null == node)
+         return allowed;
+      
+      Exporter inCharge = exporters.stream().filter(exporter -> exporter.consumes(node)).findAny().orElse(null);
+      if (inCharge instanceof TreeNodeExporter) {
+         TreeNodeExporter treeExporter = (TreeNodeExporter) inCharge;
+         return treeExporter.getAllowedReferenceTypes();
+      }
+      return allowed;
    }
 }

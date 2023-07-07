@@ -26,7 +26,7 @@ public class DashboardManagerExportConfigHooker implements ExportConfigHook {
       if (!(node instanceof AbstractDashboardManagerNode))
          throw new IllegalArgumentException("node not an AbstractDashboardManagerNode");
       
-      return exportHelper.createExportConfig(node, true, DashboardManagerExporter.EXPORTER_NAME);
+      return exportHelper.createExportConfig(node, true, DashboardManagerExporter.EXPORTER_NAME, false);
    }
 
    @Override

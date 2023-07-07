@@ -4,6 +4,8 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Singleton;
 import com.google.inject.assistedinject.FactoryProvider;
 
+import net.datenwerke.eximport.ex.ExportFileProcessingHelper;
+import net.datenwerke.eximport.ex.ExportFileProcessingHelperImpl;
 import net.datenwerke.eximport.ex.ExportItemConfig;
 import net.datenwerke.eximport.ex.ExportSupervisor;
 import net.datenwerke.eximport.ex.ExportSupervisorFactory;
@@ -27,6 +29,7 @@ public class ExImportModule extends AbstractModule {
       /* services */
       bind(ImportService.class).to(ImportServiceImpl.class).in(Singleton.class);
       bind(ExportService.class).to(ExportServiceImpl.class).in(Singleton.class);
+      bind(ExportFileProcessingHelper.class).to(ExportFileProcessingHelperImpl.class);
       
       bind(ExportDataAnalyzerService.class).to(ExportDataAnalyzerServiceImpl.class);
 

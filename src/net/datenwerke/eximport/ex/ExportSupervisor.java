@@ -25,6 +25,7 @@ import com.google.inject.assistedinject.Assisted;
 import net.datenwerke.eximport.EnclosedObjectConfig;
 import net.datenwerke.eximport.ExImportHelperService;
 import net.datenwerke.eximport.ExImportIdService;
+import net.datenwerke.rs.core.client.helper.ObjectHolder;
 import net.datenwerke.rs.utils.reflection.ReflectionService;
 
 /**
@@ -192,7 +193,6 @@ public class ExportSupervisor {
             }
          }
       }
-
       return encountered;
    }
 
@@ -207,14 +207,22 @@ public class ExportSupervisor {
       String objectId = idService.provideId(object);
       if (null != objectId && isEnclosedObjectId(objectId))
          return null;
+      
+      final Set<Class<?>> allowedReferenceTypes = eiHelper.getAllowedReferenceTypesFor(config.getNode(), exporters);
 
       for (Exporter exporter : exporters) {
          ExportItemConfig<?> itemConfig = exporter.generateExportConfig(object);
+         final ObjectHolder<ExportItemConfig<?>> finalItemConfig = new ObjectHolder<>();
+         finalItemConfig.set(itemConfig);
+         if (!allowedReferenceTypes.stream().anyMatch(allowedClazz -> null != finalItemConfig.get()
+               && allowedClazz.isAssignableFrom(finalItemConfig.get().getItem().getClass()))) {
+            itemConfig = null;
+         } 
          if (null != itemConfig)
             return itemConfig;
       }
 
-      System.out.println("Notice: Could not find exporter to create config for object: " + object.getClass());
+//      System.out.println("Notice: Could not find exporter to create config for object: " + object.getClass());
       return null;
    }
 
@@ -358,5 +366,13 @@ public class ExportSupervisor {
 
    public XMLStreamWriter getXmlStream() {
       return xsw;
+   }
+   
+   public boolean addItemConfig(Collection<ExportItemConfig<?>> configs) {
+      return config.addItemConfig(configs);
+   }
+   
+   public Object getNode() {
+      return config.getNode();
    }
 }

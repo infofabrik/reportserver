@@ -1,5 +1,9 @@
 package net.datenwerke.rs.fileserver.service.fileserver.eximport;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
 import net.datenwerke.rs.fileserver.service.fileserver.entities.AbstractFileServerNode;
 import net.datenwerke.rs.fileserver.service.fileserver.entities.FileServerFile;
 import net.datenwerke.rs.fileserver.service.fileserver.entities.FileServerFolder;
@@ -25,6 +29,11 @@ public class FileServerExporter extends TreeNodeExporter {
    @Override
    protected Class<?>[] getExportableTypes() {
       return new Class<?>[] { FileServerFolder.class, FileServerFile.class };
+   }
+
+   @Override
+   public Set<Class<?>> getAllowedReferenceTypes() {
+      return new HashSet<>(Arrays.asList(AbstractFileServerNode.class));
    }
 
 }

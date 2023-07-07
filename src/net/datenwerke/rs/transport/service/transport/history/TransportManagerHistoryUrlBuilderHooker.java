@@ -4,7 +4,6 @@ import com.google.inject.Inject;
 
 import net.datenwerke.rs.core.service.genrights.transport.TransportManagerAdminViewSecurityTarget;
 import net.datenwerke.rs.core.service.history.helper.TreePanelHistoryUrlBuilderHooker;
-import net.datenwerke.rs.remoteserver.service.remoteservermanager.locale.RemoteServerManagerMessages;
 import net.datenwerke.rs.transport.client.transport.TransportUIModule;
 import net.datenwerke.rs.transport.service.transport.entities.AbstractTransportManagerNode;
 import net.datenwerke.rs.transport.service.transport.locale.TransportManagerMessages;

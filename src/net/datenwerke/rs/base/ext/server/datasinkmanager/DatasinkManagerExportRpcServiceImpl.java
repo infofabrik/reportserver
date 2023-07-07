@@ -5,7 +5,6 @@ import com.google.inject.Provider;
 import com.google.inject.Singleton;
 import com.google.inject.persist.Transactional;
 
-import net.datenwerke.eximport.ex.ExportConfig;
 import net.datenwerke.gxtdto.client.servercommunication.exceptions.ServerCallFailedException;
 import net.datenwerke.gxtdto.server.dtomanager.DtoService;
 import net.datenwerke.rs.base.ext.client.datasinkmanager.eximport.ex.rpc.DatasinkManagerExportRpcService;
@@ -19,7 +18,6 @@ import net.datenwerke.security.service.security.annotation.GenericTargetVerifica
 import net.datenwerke.security.service.security.annotation.RightsVerification;
 import net.datenwerke.security.service.security.annotation.SecurityChecked;
 import net.datenwerke.security.service.security.rights.Execute;
-import net.datenwerke.treedb.ext.service.eximport.TreeNodeExportItemConfig;
 import net.datenwerke.treedb.ext.service.eximport.helper.TreeNodeExportHelperServiceImpl;
 
 @Singleton
@@ -52,7 +50,7 @@ public class DatasinkManagerExportRpcServiceImpl extends SecuredRemoteServiceSer
    public void quickExport(AbstractDatasinkManagerNodeDto nodeDto) throws ServerCallFailedException {
       AbstractDatasinkManagerNode node = (AbstractDatasinkManagerNode) dtoService.loadPoso(nodeDto);
 
-      String exportXML = exportHelper.export(node, true, DatasinkManagerExporter.EXPORTER_NAME);
+      String exportXML = exportHelper.export(node, true, DatasinkManagerExporter.EXPORTER_NAME, false);
 
       httpExportServiceProvider.get().storeExport(exportXML, node.getName());
    }

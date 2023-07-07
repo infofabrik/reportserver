@@ -17,6 +17,7 @@ public class ExportConfig {
    private Date date;
    private String name = "";
    private String description = "";
+   private Object node;
 
    public ExportConfig() {
       date = Calendar.getInstance().getTime();
@@ -76,6 +77,14 @@ public class ExportConfig {
 
    public void setDescription(String description) {
       this.description = description;
+   }
+
+   public Object getNode() {
+      return node;
+   }
+
+   public void setNode(Object node) {
+      this.node = node;
    }
 
 }

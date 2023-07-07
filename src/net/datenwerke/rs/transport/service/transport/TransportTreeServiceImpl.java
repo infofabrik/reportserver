@@ -80,9 +80,10 @@ public class TransportTreeServiceImpl extends SecuredTreeDBManagerImpl<AbstractT
    
    @Override
    protected void afterNodeCopy(AbstractTransportManagerNode copiedNode) {
-      final TransportService transportService = transportServiceProvider.get();
-      if (copiedNode instanceof Transport)
-         transportService.setInitialProperties((Transport) copiedNode, transportService.createInitialProperties());
+      if (copiedNode instanceof Transport) {
+         final TransportService transportService = transportServiceProvider.get();
+         transportService.setInitialProperties((Transport) copiedNode, transportService.createInitialProperties(), false);
+      }
    }
 
 }

@@ -50,7 +50,7 @@ public class TransportManagerExportRpcServiceImpl extends SecuredRemoteServiceSe
    public void quickExport(AbstractTransportManagerNodeDto nodeDto) throws ServerCallFailedException {
       AbstractTransportManagerNode node = (AbstractTransportManagerNode) dtoService.loadPoso(nodeDto);
 
-      String exportXML = exportHelper.export(node, true, TransportManagerExporter.EXPORTER_NAME);
+      String exportXML = exportHelper.export(node, true, TransportManagerExporter.EXPORTER_NAME, false);
 
       httpExportServiceProvider.get().storeExport(exportXML, node.getName());
    }

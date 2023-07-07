@@ -2,7 +2,10 @@ package net.datenwerke.rs.transport.service.transport.eximport;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import net.datenwerke.eximport.obj.ComplexItemProperty;
 import net.datenwerke.eximport.obj.ExportedItem;
@@ -62,6 +65,11 @@ public class TransportManagerExporter extends TreeNodeExporter {
          return name;
       } else
          return super.getDisplayNameFor(exportedItem);
+   }
+
+   @Override
+   public Set<Class<?>> getAllowedReferenceTypes() {
+      return new HashSet<>(Arrays.asList(AbstractTransportManagerNode.class));
    }
 
 }

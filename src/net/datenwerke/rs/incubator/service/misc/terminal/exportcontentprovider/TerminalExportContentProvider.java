@@ -48,7 +48,7 @@ public class TerminalExportContentProvider extends VirtualContentProviderImpl {
 
       AbstractNode node = (AbstractNode) parent.getObject();
 
-      return exportService.export(node, false, "export").getBytes();
+      return exportService.export(node, false, "export", false).getBytes();
    }
 
    @Override

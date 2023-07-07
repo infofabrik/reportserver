@@ -19,12 +19,7 @@ import org.slf4j.LoggerFactory;
 
 import net.datenwerke.eximport.ExportService;
 import net.datenwerke.eximport.ex.ExportConfig;
-import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.adminutils.service.systemconsole.generalinfo.GeneralInfoService;
-import net.datenwerke.rs.base.ext.service.ExportOptions;
-import net.datenwerke.rs.base.ext.service.hooks.ExportConfigHook;
-import net.datenwerke.rs.base.ext.service.reportmanager.ReportExportOptions;
-import net.datenwerke.rs.core.service.reportmanager.entities.AbstractReportManagerNode;
 import net.datenwerke.rs.eximport.client.eximport.ex.dto.ExportedNodeDto;
 import net.datenwerke.rs.eximport.service.genrights.ExportSecurityTarget;
 import net.datenwerke.rs.rest.resources.RsRestResource;
@@ -44,7 +39,6 @@ public class NodeExporterResource extends RsRestResource {
    private final Logger logger = LoggerFactory.getLogger(getClass().getName());
 
    private final Provider<SecurityService> securityServiceProvider;
-   private final Provider<HookHandlerService> hookHandlerServiceProvider;
    private final Provider<TerminalService> terminalServiceProvider;
    private final Provider<TerminalSession> terminalSessionProvider;
    private final Provider<ExportService> exportServiceProvider;
@@ -54,7 +48,6 @@ public class NodeExporterResource extends RsRestResource {
    @Inject
    public NodeExporterResource(
          Provider<SecurityService> securityServiceProvider,
-         Provider<HookHandlerService> hookHandlerServiceProvider,
          Provider<TerminalService> terminalServiceProvider,
          Provider<TerminalSession> terminalSessionProvider,
          Provider<ExportService> exportServiceProvider,
@@ -62,7 +55,6 @@ public class NodeExporterResource extends RsRestResource {
          Provider<AuthenticatorService> authenticatorServiceProvider
          ) {
       this.securityServiceProvider = securityServiceProvider;
-      this.hookHandlerServiceProvider = hookHandlerServiceProvider;
       this.terminalServiceProvider = terminalServiceProvider;
       this.terminalSessionProvider = terminalSessionProvider;
       this.exportServiceProvider = exportServiceProvider;
@@ -80,30 +72,13 @@ public class NodeExporterResource extends RsRestResource {
       if (null == path) 
          return Response.status(Status.INTERNAL_SERVER_ERROR).build();
       try {
-         final AbstractNode node = terminalServiceProvider.get().getSingleObjectOfTypeByQuery(AbstractNode.class, path,
+         final AbstractNode<?> node = terminalServiceProvider.get().getSingleObjectOfTypeByQuery(AbstractNode.class, path,
                terminalSessionProvider.get(), Read.class);
          
          if (!securityServiceProvider.get().checkRights(node, Read.class))
             return Response.status(Status.UNAUTHORIZED).build();
          
-         final Optional<ExportConfig> exportConfig = hookHandlerServiceProvider.get().getHookers(ExportConfigHook.class)
-            .stream()
-            .filter(hooker -> hooker.consumes(node))
-            .map(hooker -> { 
-               ExportOptions exportOptions = null;
-               if (node instanceof AbstractReportManagerNode) {
-                  exportOptions = new ReportExportOptions() {
-                     @Override
-                     public boolean includeVariants() {
-                        return includeVariants;
-                     }
-                  };
-               } else {
-                  exportOptions = new ExportOptions() {};
-               }
-               return hooker.configure(node, exportOptions);
-            })
-            .findAny();
+         final Optional<ExportConfig> exportConfig = exportServiceProvider.get().configureExport(node, includeVariants);
 
          if (!exportConfig.isPresent()) {
             String err = "no exporter found";

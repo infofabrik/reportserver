@@ -107,7 +107,7 @@ public class HttpImportServiceImpl implements HttpImportService {
          throw new IllegalArgumentException("Do not have config");
 
       try {
-         Collection<Class<?>> exporters = analizerService.getExporterClasses(getCurrentConfig().getImportData());
+         Collection<Class<? extends Exporter>> exporters = analizerService.getExporterClasses(getCurrentConfig().getImportData());
          return exportService.getExporterIds(exporters);
       } catch (Exception e) {
          throw new IllegalArgumentException("Could not load exporters", e);

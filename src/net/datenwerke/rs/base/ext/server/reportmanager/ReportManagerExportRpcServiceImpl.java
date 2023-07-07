@@ -70,6 +70,7 @@ public class ReportManagerExportRpcServiceImpl extends SecuredRemoteServiceServl
       ExportConfig exportConfig = new ExportConfig();
       exportConfig.setName(ReportManagerExporter.EXPORTER_NAME);
       exportConfig.addItemConfig(new TreeNodeExportItemConfig(node));
+      exportConfig.setNode(node);
 
       addChildren(exportConfig, node, includeVariants);
 

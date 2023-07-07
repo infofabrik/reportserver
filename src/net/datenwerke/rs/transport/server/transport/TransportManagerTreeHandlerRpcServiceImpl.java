@@ -101,20 +101,20 @@ public class TransportManagerTreeHandlerRpcServiceImpl extends TreeDBManagerTree
       if (inserted instanceof Transport) {
          ((Transport)inserted).setKey("RS_TEMP_" + new Date());
       }
-      setInitialProperties(inserted);
+      setInitialProperties(inserted, true);
    }
    
    @Override
    protected void nodeCloned(AbstractTransportManagerNode clonedNode) {
-      setInitialProperties(clonedNode);
+      setInitialProperties(clonedNode, false);
       clonedNode.setCreatedOn(new Date());
    }
    
-   private void setInitialProperties(AbstractTransportManagerNode node) {
+   private void setInitialProperties(AbstractTransportManagerNode node, boolean setXml) {
       if (node instanceof Transport) {
          Transport transport = (Transport) node;
          TransportService transportService = transportServiceProvider.get();
-         transportService.setInitialProperties(transport, transportService.createInitialProperties());
+         transportService.setInitialProperties(transport, transportService.createInitialProperties(), setXml);
       }
    }
 

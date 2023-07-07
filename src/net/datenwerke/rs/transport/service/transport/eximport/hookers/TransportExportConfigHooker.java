@@ -26,7 +26,7 @@ public class TransportExportConfigHooker implements ExportConfigHook {
       if (!(node instanceof AbstractTransportManagerNode))
          throw new IllegalArgumentException("node not an AbstractTransportManagerNode");
       
-      return exportHelper.createExportConfig(node, true, TransportManagerExporter.EXPORTER_NAME);
+      return exportHelper.createExportConfig(node, true, TransportManagerExporter.EXPORTER_NAME, false);
    }
 
    @Override

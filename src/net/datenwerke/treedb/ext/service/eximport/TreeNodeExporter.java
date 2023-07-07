@@ -3,6 +3,7 @@ package net.datenwerke.treedb.ext.service.eximport;
 import java.lang.reflect.Field;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 import javax.xml.stream.XMLStreamException;
 
@@ -73,7 +74,7 @@ public abstract class TreeNodeExporter extends ExporterImpl<TreeNodeExportItemCo
          exporter.addIgnoredFieldName(OWNER_FIELD_NAME);
       if (null == exporterConfig || !exporterConfig.containsExImporterOption(TreeNodeExImportOptions.INCLUDE_SECURITY))
          exporter.addIgnoredFieldName(ACL_FIELD_NAME);
-
+      
       /* export */
       exporter.setAdjuster(new ObjectExporterAdjuster() {
 
@@ -175,5 +176,7 @@ public abstract class TreeNodeExporter extends ExporterImpl<TreeNodeExportItemCo
    protected abstract Class<? extends AbstractNode<?>> getTreeType();
 
    protected abstract Class<?>[] getExportableTypes();
-
+   
+   public abstract Set<Class<?>> getAllowedReferenceTypes();
+   
 }

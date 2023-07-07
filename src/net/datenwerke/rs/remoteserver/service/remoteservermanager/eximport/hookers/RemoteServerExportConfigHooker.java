@@ -26,7 +26,7 @@ public class RemoteServerExportConfigHooker implements ExportConfigHook {
       if (!(node instanceof AbstractRemoteServerManagerNode))
          throw new IllegalArgumentException("node not an AbstractRemoteServerManagerNode");
       
-      return exportHelper.createExportConfig(node, true, RemoteServerManagerExporter.EXPORTER_NAME);
+      return exportHelper.createExportConfig(node, true, RemoteServerManagerExporter.EXPORTER_NAME, false);
    }
 
    @Override

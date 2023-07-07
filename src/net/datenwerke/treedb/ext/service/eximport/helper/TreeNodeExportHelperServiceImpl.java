@@ -17,9 +17,9 @@ public class TreeNodeExportHelperServiceImpl implements TreeNodeExportHelperServ
    }
 
    @Override
-   public String export(AbstractNode node, boolean addChildren, String name) {
+   public String export(AbstractNode node, boolean addChildren, String name, boolean includePathToRoot) {
       /* export report */
-      ExportConfig exportConfig = createExportConfig(node, addChildren, name);
+      ExportConfig exportConfig = createExportConfig(node, addChildren, name, includePathToRoot);
 
       return exportService.exportIndent(exportConfig);
    }
@@ -33,14 +33,25 @@ public class TreeNodeExportHelperServiceImpl implements TreeNodeExportHelperServ
    }
    
    @Override
-   public ExportConfig createExportConfig(AbstractNode node, boolean addChildren, String name) {
+   public ExportConfig createExportConfig(AbstractNode node, boolean addChildren, String name, boolean includePathToRoot) {
       /* export report */
       ExportConfig exportConfig = new ExportConfig();
       exportConfig.setName(name);
+      exportConfig.setNode(node);
       exportConfig.addItemConfig(new TreeNodeExportItemConfig(node));
 
       if (addChildren)
          addChildren(exportConfig, node);
+      
+      if (includePathToRoot) {
+         AbstractNode<?> parent = node.getParent();
+         while (null != parent) {
+            // add parent to export config
+            exportConfig.addItemConfig(new TreeNodeExportItemConfig(parent));
+            parent = parent.getParent();
+         }
+
+      }
       
       return exportConfig;
    }

@@ -1,5 +1,9 @@
 package net.datenwerke.rs.remoteserver.service.remoteservermanager.eximport;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
 import net.datenwerke.rs.remoteserver.service.remoteservermanager.entities.AbstractRemoteServerManagerNode;
 import net.datenwerke.rs.remoteserver.service.remoteservermanager.entities.RemoteServerDefinition;
 import net.datenwerke.rs.remoteserver.service.remoteservermanager.entities.RemoteServerFolder;
@@ -25,6 +29,11 @@ public class RemoteServerManagerExporter extends TreeNodeExporter {
    @Override
    protected Class<?>[] getExportableTypes() {
       return new Class<?>[] { RemoteServerFolder.class, RemoteServerDefinition.class };
+   }
+
+   @Override
+   public Set<Class<?>> getAllowedReferenceTypes() {
+      return new HashSet<>(Arrays.asList(AbstractRemoteServerManagerNode.class));
    }
 
 }

@@ -57,7 +57,7 @@ public interface ExportDataAnalyzerService {
     * @return A {@link Collection} of exporter {@link Class}es
     * @throws ClassNotFoundException
     */
-   Collection<Class<?>> getExporterClasses(ExportDataProvider dataProvider) throws ClassNotFoundException;
+   Collection<Class<? extends Exporter>> getExporterClasses(ExportDataProvider dataProvider) throws ClassNotFoundException;
 
    /**
     * Returns the {@link Class} of the exporter of the given {@link Element}
@@ -66,7 +66,7 @@ public interface ExportDataAnalyzerService {
     * @return The {@link Class} of the exporter
     * @throws ClassNotFoundException
     */
-   Class<?> getExporterClass(Element el) throws ClassNotFoundException;
+   Class<? extends Exporter> getExporterClass(Element el) throws ClassNotFoundException;
 
    /**
     * Get a {@link List} of ExportedItems from the given {@link Document} and
