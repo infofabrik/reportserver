@@ -18,6 +18,7 @@ public class ExportConfig {
    private String name = "";
    private String description = "";
    private Object node;
+   private boolean includePathToRoot;
 
    public ExportConfig() {
       date = Calendar.getInstance().getTime();
@@ -87,4 +88,13 @@ public class ExportConfig {
       this.node = node;
    }
 
+   public boolean isIncludePathToRoot() {
+      return includePathToRoot;
+   }
+
+   public void setIncludePathToRoot(boolean includePathToRoot) {
+      this.includePathToRoot = includePathToRoot;
+   }
+
+   
 }

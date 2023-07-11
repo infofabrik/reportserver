@@ -38,6 +38,7 @@ public class TreeNodeExportHelperServiceImpl implements TreeNodeExportHelperServ
       ExportConfig exportConfig = new ExportConfig();
       exportConfig.setName(name);
       exportConfig.setNode(node);
+      exportConfig.setIncludePathToRoot(includePathToRoot);
       exportConfig.addItemConfig(new TreeNodeExportItemConfig(node));
 
       if (addChildren)

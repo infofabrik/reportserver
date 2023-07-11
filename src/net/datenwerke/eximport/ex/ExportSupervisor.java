@@ -3,10 +3,12 @@ package net.datenwerke.eximport.ex;
 import static net.datenwerke.rs.utils.exception.shared.LambdaExceptionUtil.rethrowConsumer;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.IdentityHashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -27,6 +29,8 @@ import net.datenwerke.eximport.ExImportHelperService;
 import net.datenwerke.eximport.ExImportIdService;
 import net.datenwerke.rs.core.client.helper.ObjectHolder;
 import net.datenwerke.rs.utils.reflection.ReflectionService;
+import net.datenwerke.treedb.ext.service.eximport.TreeNodeExportItemConfig;
+import net.datenwerke.treedb.service.treedb.AbstractNode;
 
 /**
  * 
@@ -73,6 +77,25 @@ public class ExportSupervisor {
       xsw.writeEndElement();
 
    }
+   
+   private void addConfigPathsToRoot(Collection<ExportItemConfig<?>> newConfigs) {
+      Iterator<ExportItemConfig<?>> it = newConfigs.iterator();
+      List<ExportItemConfig<?>> configPathsToRoot = new ArrayList<>();
+      while (it.hasNext()) {
+         ExportItemConfig<?> next = it.next();
+         Object o = next.getItem();
+         if (o instanceof AbstractNode) {
+            AbstractNode<?> node = (AbstractNode<?>) o;
+            AbstractNode<?> parent = node.getParent();
+            while (null != parent) {
+               // add parent to export config
+               configPathsToRoot.add(new TreeNodeExportItemConfig(parent));
+               parent = parent.getParent();
+            }
+         }
+      }
+      newConfigs.addAll(configPathsToRoot);
+   }
 
    private void configureExporters() {
       Map<Exporter, Collection<ExportItemConfig<?>>> configMap = createConfigMap();
@@ -91,8 +114,11 @@ public class ExportSupervisor {
 
             /* references */
             Collection<ExportItemConfig<?>> newConfigs = exporter.addReferences(this, configs);
+            if (config.isIncludePathToRoot()) 
+               addConfigPathsToRoot(newConfigs);
+            
             configChanged |= config.addItemConfig(newConfigs);
-
+            
             /* enclosed objects */
             Collection<EnclosedObjectConfig> newEnclosed = exporter.addEnclosed(this, configs);
             configChanged |= enclosedConfigs.addAll(newEnclosed);
@@ -112,8 +138,12 @@ public class ExportSupervisor {
                      /* references */
                      newConfigs.addAll(exporter.addReferences(this, enclosedCon));
 
+                     if (config.isIncludePathToRoot()) 
+                        addConfigPathsToRoot(newConfigs);
+                     
                      /* enclosed */
                      newEnclosed.addAll(exporter.addEnclosed(this, enclosedCon));
+                     
                      break;
                   }
                }
