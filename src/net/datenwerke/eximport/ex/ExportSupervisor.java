@@ -107,7 +107,7 @@ public class ExportSupervisor {
       while (configChanged) {
          configChanged = false;
          for (Exporter exporter : exporters) {
-            Collection<ExportItemConfig<?>> configs = CollectionUtils.subtract(configMap.get(exporter),
+            final Collection<ExportItemConfig<?>> configs = CollectionUtils.subtract(configMap.get(exporter),
                   processedConfigs.keySet());
             if (configs.isEmpty())
                continue;
@@ -124,13 +124,12 @@ public class ExportSupervisor {
             configChanged |= enclosedConfigs.addAll(newEnclosed);
 
             /* mark configs as processed */
-            for (ExportItemConfig c : configs)
-               processedConfigs.put(c, true);
+            configs.forEach(c -> processedConfigs.put(c, true));
          }
 
          /* ask if the enclosed objects want to add any new objects */
-         Collection<ExportItemConfig<?>> newConfigs = new HashSet<ExportItemConfig<?>>();
-         Collection<EnclosedObjectConfig> newEnclosed = new HashSet<EnclosedObjectConfig>();
+         Collection<ExportItemConfig<?>> newConfigs = new HashSet<>();
+         Collection<EnclosedObjectConfig> newEnclosed = new HashSet<>();
          for (EnclosedObjectConfig enclosedCon : enclosedConfigs) {
             if (!processedEnclosedConfigs.containsKey(enclosedCon)) {
                for (Exporter exporter : exporters) {
@@ -163,9 +162,9 @@ public class ExportSupervisor {
    }
 
    private Map<Exporter, Collection<ExportItemConfig<?>>> createConfigMap() {
-      Map<Exporter, Collection<ExportItemConfig<?>>> configMap = new HashMap<Exporter, Collection<ExportItemConfig<?>>>();
+      Map<Exporter, Collection<ExportItemConfig<?>>> configMap = new HashMap<>();
       for (Exporter exporter : exporters)
-         configMap.put(exporter, new LinkedList<ExportItemConfig<?>>());
+         configMap.put(exporter, new LinkedList<>());
 
       for (ExportItemConfig<?> itemConfig : config.getItemConfigs()) {
          for (Exporter exporter : exporters) {

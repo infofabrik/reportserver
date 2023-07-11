@@ -125,8 +125,10 @@ public class LuceneSearchIndexServiceImpl implements SearchIndexService {
             Object val = f.get(unproxied);
             if (null != val) {
                String sval = String.valueOf(f.get(unproxied));
-               catchall.append(sval).append(" ");
-               doc.add(new StringField(name, sval, Store.YES));
+               if (sval.length()<=32000) { // lucene max 32766 BYTES
+                  catchall.append(sval).append(" ");
+                  doc.add(new StringField(name, sval, Store.YES));
+               }
             }
          } catch (IllegalArgumentException e) {
          } catch (IllegalAccessException e) {
