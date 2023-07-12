@@ -24,6 +24,7 @@ import com.google.inject.Inject;
 import net.datenwerke.dtoservices.dtogenerator.annotations.AdditionalField;
 import net.datenwerke.dtoservices.dtogenerator.annotations.ExposeMethodToClient;
 import net.datenwerke.dtoservices.dtogenerator.annotations.GenerateDto;
+import net.datenwerke.gxtdto.client.utils.SqlTypes;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.base.service.dbhelper.annotations.QueryConditionInMaxSize;
 import net.datenwerke.rs.base.service.dbhelper.db.CockroachDB;
@@ -406,7 +407,8 @@ abstract public class DatabaseHelper {
          return Float.class;
       case Types.FLOAT:
       case Types.DOUBLE:
-      case 101: // Oracle: BINARY_DOUBLE
+      case SqlTypes.BINARY_DOUBLE: // Oracle: BINARY_DOUBLE
+      case SqlTypes.BINARY_FLOAT: // Oracle: BINARY_FLOAT
          return Double.class;
       case Types.BINARY:
       case Types.VARBINARY:
@@ -417,8 +419,8 @@ abstract public class DatabaseHelper {
       case Types.TIME:
          return Time.class;
       case Types.TIMESTAMP:
-      case -102: // Oracle: Timestamp with Local Timezone
-      case -155: // MSSQL: DateTimeOffset
+      case SqlTypes.TIMESTAMPLTZ: // Oracle: Timestamp with Local Timezone
+      case SqlTypes.DATE_TIME_OFFSET: // MSSQL: DateTimeOffset
          return Timestamp.class;
       case Types.CLOB:
          return Clob.class;

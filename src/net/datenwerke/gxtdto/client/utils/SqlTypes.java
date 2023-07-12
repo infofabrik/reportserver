@@ -319,6 +319,24 @@ public class SqlTypes {
     */
    public static final int TIMESTAMPLTZ = -102;
    public static final String TIMESTAMPLTZ_NAME = "TIMESTAMPLTZ";
+   
+   /**
+    * Oracle BINARY_DOUBLE
+    */
+   public static final int BINARY_DOUBLE = 101;
+   public static final String BINARY_DOUBLE_NAME = "BINARY_DOUBLE";
+   
+   /**
+    * Oracle BINARY_FLOAT
+    */
+   public static final int BINARY_FLOAT = 100;
+   public static final String BINARY_FLOAT_NAME = "BINARY_FLOAT";
+   
+   /**
+    * MSSQL DateTimeOffset
+    */
+   public static final int DATE_TIME_OFFSET = -155;
+   public static final String DATE_TIME_OFFSET_NAME = "DATETIMEOFFSET";
 
    private final static Map<Integer, String> typeToName;
    static {
@@ -360,6 +378,9 @@ public class SqlTypes {
       typeToName.put(LONGNVARCHAR, LONGNVARCHAR_NAME);
       typeToName.put(NCLOB, NCLOB_NAME);
       typeToName.put(SQLXML, SQLXML_NAME);
+      typeToName.put(BINARY_DOUBLE, BINARY_DOUBLE_NAME);
+      typeToName.put(BINARY_FLOAT, BINARY_FLOAT_NAME);
+      typeToName.put(DATE_TIME_OFFSET, DATE_TIME_OFFSET_NAME);
    }
 
    public static String getName(Integer type) {
@@ -396,6 +417,8 @@ public class SqlTypes {
       case BIT:
       case DECIMAL:
       case DOUBLE:
+      case BINARY_DOUBLE:
+      case BINARY_FLOAT:
       case FLOAT:
       case INTEGER:
       case NUMERIC:
@@ -428,6 +451,7 @@ public class SqlTypes {
       case TIME:
       case TIMESTAMP:
       case TIMESTAMPLTZ:
+      case DATE_TIME_OFFSET:
          return true;
       }
       return false;
@@ -439,6 +463,7 @@ public class SqlTypes {
       switch (type) {
       case TIMESTAMP:
       case TIMESTAMPLTZ:
+      case DATE_TIME_OFFSET:
          return true;
       }
       return false;
