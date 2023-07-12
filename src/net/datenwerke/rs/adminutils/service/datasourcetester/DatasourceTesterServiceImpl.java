@@ -1,7 +1,5 @@
 package net.datenwerke.rs.adminutils.service.datasourcetester;
 
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
 import java.sql.Connection;
 import java.util.Optional;
 
@@ -67,11 +65,10 @@ public class DatasourceTesterServiceImpl implements DatasourceTesterService {
       
       try {
          Connection connection = (Connection) dbPoolServiceProvider.get().getConnection(datasource.getConnectionConfig()).get();
-         final ReflectionService reflectionService = reflectionServiceProvider.get();
-         Method isValidMethod = reflectionService.getMethod(Connection.class, "isValid", int.class);
-         if (null != isValidMethod && ! reflectionService.isAbstract(isValidMethod)) {
+         try {
             return connection.isValid(60);
-         } else {
+         } catch (Exception e) {
+            // the method does not exist or is abstract
             /* create config */
             DatabaseDatasourceConfig config = (DatabaseDatasourceConfig) datasource.createConfigObject();
             config.setQuery(dbHelper.createDummyQuery());

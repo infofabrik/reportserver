@@ -544,7 +544,7 @@ abstract public class DatabaseHelper {
    }
    
    public String createDummyQuery() {
-      return "select 1";
+      return "select 1 as a";
    }
 
 }
