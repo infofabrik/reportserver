@@ -406,6 +406,7 @@ abstract public class DatabaseHelper {
          return Float.class;
       case Types.FLOAT:
       case Types.DOUBLE:
+      case 101: // Oracle: BINARY_DOUBLE
          return Double.class;
       case Types.BINARY:
       case Types.VARBINARY:
