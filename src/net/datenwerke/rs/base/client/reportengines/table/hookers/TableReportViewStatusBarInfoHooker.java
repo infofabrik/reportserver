@@ -3,8 +3,6 @@ package net.datenwerke.rs.base.client.reportengines.table.hookers;
 import com.google.gwt.core.client.Duration;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.WhiteSpace;
-import com.google.gwt.event.logical.shared.ValueChangeEvent;
-import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
@@ -74,10 +72,12 @@ public class TableReportViewStatusBarInfoHooker implements ReportPreviewViewStat
    private SeparatorToolItem countDataSetSep;
 
    @Inject
-   public TableReportViewStatusBarInfoHooker(TableReportUtilityDao tableReportUtilityService,
-         StatementManagerDao statementManager, Provider<FormatUiHelper> formatHelperProvider) {
+   public TableReportViewStatusBarInfoHooker(
+         TableReportUtilityDao tableReportUtilityService,
+         StatementManagerDao statementManager, 
+         Provider<FormatUiHelper> formatHelperProvider
+         ) {
 
-      /* store objcets */
       this.tableReportUtilityDao = tableReportUtilityService;
       this.statementManager = statementManager;
       this.formatHelperProvider = formatHelperProvider;
@@ -95,12 +95,9 @@ public class TableReportViewStatusBarInfoHooker implements ReportPreviewViewStat
       /* paging buttons */
       if (reportPreviewView instanceof PageablePreviewView) {
          DwTextButton pagePrefBtn = new DwTextButton();
-         pagePrefBtn.addSelectHandler(new SelectHandler() {
-            @Override
-            public void onSelect(SelectEvent event) {
-               if (currentPage > 1)
-                  setPageCount(--currentPage, (PageablePreviewView) reportPreviewView);
-            }
+         pagePrefBtn.addSelectHandler(event -> {
+            if (currentPage > 1)
+               setPageCount(--currentPage, (PageablePreviewView) reportPreviewView);
          });
          pagePrefBtn.setIcon(pagingAppearance.prev());
          pagePrefBtn.addStyleName(BUTTON_STYLE_INFORM);
@@ -109,25 +106,19 @@ public class TableReportViewStatusBarInfoHooker implements ReportPreviewViewStat
          pageField = new DwNumberField<Integer>(new NumberPropertyEditor.IntegerPropertyEditor());
          pageField.setWidth(30);
          pageField.setValue(currentPage);
-         pageField.addValueChangeHandler(new ValueChangeHandler<Integer>() {
-            @Override
-            public void onValueChange(ValueChangeEvent<Integer> event) {
-               if (null != pageField.getValue() && currentPage != pageField.getValue().intValue())
-                  setPageCount(Math.max(0, Math.min(numberOfPages, pageField.getValue().intValue())),
-                        (PageablePreviewView) reportPreviewView);
-            }
+         pageField.addValueChangeHandler(event -> {
+            if (null != pageField.getValue() && currentPage != pageField.getValue().intValue())
+               setPageCount(Math.max(0, Math.min(numberOfPages, pageField.getValue().intValue())),
+                     (PageablePreviewView) reportPreviewView);
          });
 
          toolbar.add(pageField);
 
          DwTextButton pageNextBtn = new DwTextButton();
-         pageNextBtn.addSelectHandler(new SelectHandler() {
-            @Override
-            public void onSelect(SelectEvent event) {
-               if (numberOfPages == -1 || currentPage < numberOfPages)
-                  setPageCount(++currentPage, (PageablePreviewView) reportPreviewView);
-            }
-         });
+         pageNextBtn.addSelectHandler(event -> {
+            if (numberOfPages == -1 || currentPage < numberOfPages)
+               setPageCount(++currentPage, (PageablePreviewView) reportPreviewView); 
+            });
          pageNextBtn.setIcon(pagingAppearance.next());
          pageNextBtn.addStyleName(BUTTON_STYLE_INFORM);
          toolbar.add(pageNextBtn);

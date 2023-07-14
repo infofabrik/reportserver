@@ -37,7 +37,7 @@ public class DB2OffsetQuery extends OffsetQuery {
       buf.append(" FROM ( SELECT db2OffQry1.*, ROWNUMBER() OVER () AS rownumber FROM (");
       nestedQuery.appendToBuffer(buf);
       buf.append(") db2OffQry1 ) db2OffQry2 WHERE db2OffQry2.rownumber BETWEEN ");
-      buf.append(queryBuilder.getOffset()).append(" AND ") //$NON-NLS-1$
+      buf.append(queryBuilder.getOffset() + 1).append(" AND ") //$NON-NLS-1$
             .append(queryBuilder.getLimit() + queryBuilder.getOffset());
    }
 
