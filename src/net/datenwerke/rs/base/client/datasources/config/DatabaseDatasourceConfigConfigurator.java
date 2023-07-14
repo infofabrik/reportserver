@@ -162,6 +162,7 @@ public class DatabaseDatasourceConfigConfigurator implements DatasourceDefinitio
          @Override
          public void getData(PagingLoadConfig loadConfig,
                AsyncCallback<PagingLoadResult<ListStringBaseModel>> callback) {
+            loadConfig.setLimit(15);
             specConfig.executeGetData((PagingLoadConfig) loadConfig, value, callback);
          }
 

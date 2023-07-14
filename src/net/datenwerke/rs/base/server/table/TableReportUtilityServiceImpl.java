@@ -1,6 +1,8 @@
 
 package net.datenwerke.rs.base.server.table;
 
+import static java.util.stream.Collectors.toList;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -409,9 +411,10 @@ public class TableReportUtilityServiceImpl extends SecuredRemoteServiceServlet i
                loadConfig.getLimit());
          int count = simpleDataSupplyer.getDataCount(referenceReport, parameters);
 
-         List<ListStringBaseModel> list = new ArrayList<ListStringBaseModel>();
-         for (RSTableRow row : tableModel.getData())
-            list.add(new ListStringBaseModel(row.getRow()));
+         List<ListStringBaseModel> list = tableModel.getData()
+               .stream()
+               .map(row -> new ListStringBaseModel(row.getRow()))
+               .collect(toList());
 
          return new PagingLoadResultBean<ListStringBaseModel>(list, count, loadConfig.getOffset());
       } catch (ReportExecutorException e) {
