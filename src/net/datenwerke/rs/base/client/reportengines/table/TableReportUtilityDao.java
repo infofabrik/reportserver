@@ -79,12 +79,12 @@ public class TableReportUtilityDao extends Dao {
       rpcService.getSpecialParameter(tableReport, executeToken, transformAndKeepCallback(callback));
    }
 
-   public void exportToDot(String token, TableReportDto report, AsyncCallback<String> callback) {
-      rpcService.exportToDot(token, report, transformAndKeepCallback(callback));
+   public void exportPrefilterToDot(String token, TableReportDto report, AsyncCallback<String> callback) {
+      rpcService.exportPrefilterToDot(token, report, transformAndKeepCallback(callback));
    }
    
-   public void exportToSvg(String token, TableReportDto report, AsyncCallback<String> callback) {
-      rpcService.exportToSvg(token, report, transformAndKeepCallback(callback));
+   public void exportPrefilterToSvg(String token, TableReportDto report, AsyncCallback<String> callback) {
+      rpcService.exportPrefilterToSvg(token, report, transformAndKeepCallback(callback));
    }
 
 }

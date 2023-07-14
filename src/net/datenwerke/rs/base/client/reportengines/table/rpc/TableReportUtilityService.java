@@ -43,8 +43,8 @@ public interface TableReportUtilityService extends RemoteService {
    PagingLoadResult<ListStringBaseModel> loadData(ReportDto report, DatasourceContainerDto containerDto,
          PagingLoadConfig loadConfig, String query) throws ServerCallFailedException, NonFatalException;
    
-   String exportToDot(String token, TableReportDto report) throws ServerCallFailedException;
+   String exportPrefilterToDot(String token, TableReportDto report) throws ServerCallFailedException;
    
-   String exportToSvg(String token, TableReportDto report) throws ServerCallFailedException;
+   String exportPrefilterToSvg(String token, TableReportDto report) throws ServerCallFailedException;
 
 }

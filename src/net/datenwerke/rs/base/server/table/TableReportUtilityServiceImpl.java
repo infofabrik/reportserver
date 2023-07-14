@@ -426,7 +426,7 @@ public class TableReportUtilityServiceImpl extends SecuredRemoteServiceServlet i
          @ArgumentVerification(name = "report", isDto = true, verify = @RightsVerification(rights = { Read.class,
                Execute.class })) })
    @Override
-   public String exportToDot(String token, @Named("report") TableReportDto reportDto) {
+   public String exportPrefilterToDot(String token, @Named("report") TableReportDto reportDto) {
       User user = authenticatorServiceProvider.get().getCurrentUser();
       return prefilterDotServiceProvider.get().createDotFile(user, reportDto, token);
    }
@@ -435,7 +435,7 @@ public class TableReportUtilityServiceImpl extends SecuredRemoteServiceServlet i
          @ArgumentVerification(name = "report", isDto = true, verify = @RightsVerification(rights = { Read.class,
                Execute.class })) })
    @Override
-   public String exportToSvg(String token, @Named("report") TableReportDto reportDto) throws ServerCallFailedException {
+   public String exportPrefilterToSvg(String token, @Named("report") TableReportDto reportDto) throws ServerCallFailedException {
       User user = authenticatorServiceProvider.get().getCurrentUser();
       String dot = prefilterDotServiceProvider.get().createDotFile(user, reportDto, token);
       try {

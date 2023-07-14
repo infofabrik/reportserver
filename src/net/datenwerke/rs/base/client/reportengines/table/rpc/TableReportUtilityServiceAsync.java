@@ -40,8 +40,8 @@ public interface TableReportUtilityServiceAsync {
    void loadData(ReportDto report, DatasourceContainerDto containerDto, PagingLoadConfig loadConfig, String query,
          AsyncCallback<PagingLoadResult<ListStringBaseModel>> transformAndKeepCallback);
 
-   void exportToDot(String token, TableReportDto report, AsyncCallback<String> callback);
+   void exportPrefilterToDot(String token, TableReportDto report, AsyncCallback<String> callback);
    
-   void exportToSvg(String token, TableReportDto report, AsyncCallback<String> callback);
+   void exportPrefilterToSvg(String token, TableReportDto report, AsyncCallback<String> callback);
 
 }

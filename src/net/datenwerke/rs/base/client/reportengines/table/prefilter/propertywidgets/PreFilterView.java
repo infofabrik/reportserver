@@ -652,7 +652,7 @@ public class PreFilterView extends ReportExecutorMainPanelView {
       exportMenu.add(itemDotExport);
       itemDotExport.addSelectionHandler(event -> {
          startProgress();
-         tableReportUtilityDao.exportToDot(reportExecutorService.createExecuteReportToken(report), report,
+         tableReportUtilityDao.exportPrefilterToDot(reportExecutorService.createExecuteReportToken(report), report,
              new RsAsyncCallback<String>() {
                 @Override
                 public void onSuccess(String result) {
@@ -672,7 +672,7 @@ public class PreFilterView extends ReportExecutorMainPanelView {
       itemSvgExport.addSelectionHandler(event -> {
          startProgress();
          mainPanel.mask(BaseMessages.INSTANCE.loadingMsg());
-         tableReportUtilityDao.exportToSvg(reportExecutorService.createExecuteReportToken(report), report,
+         tableReportUtilityDao.exportPrefilterToSvg(reportExecutorService.createExecuteReportToken(report), report,
                new RsAsyncCallback<String>() {
                   @Override
                   public void onSuccess(String result) {
