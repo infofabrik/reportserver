@@ -273,8 +273,8 @@ public class TableReportViewStatusBarInfoHooker implements ReportPreviewViewStat
                   (Duration.currentTimeMillis() - start) / (double) 1000);
             executeDuration.clearStatus(duration);
 
-            numberOfPages = ((information.getDataCount()
-                  / ((PageablePreviewView) abstractReportPreviewView).getPageSize()) + 1);
+            numberOfPages = (int) Math.ceil( (((double)information.getDataCount()
+                  / (double)((PageablePreviewView) abstractReportPreviewView).getPageSize())));
             countPages.clearStatus(ReportexecutorMessages.INSTANCE.pages() + numberOfPages);
 
             countColumns.clearStatus(ReportexecutorMessages.INSTANCE.columns() + information.getVisibleCount() + "/"

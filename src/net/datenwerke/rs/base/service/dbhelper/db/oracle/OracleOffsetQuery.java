@@ -38,7 +38,7 @@ public class OracleOffsetQuery extends OffsetQuery {
       buf.append(" FROM ( SELECT oraOffQry1.*, ROWNUM rownumber FROM (");
       nestedQuery.appendToBuffer(buf);
       buf.append(") oraOffQry1 ) oraOffQry2 WHERE oraOffQry2.rownumber BETWEEN ");
-      buf.append(queryBuilder.getOffset()).append(" AND ") //$NON-NLS-1$
+      buf.append(queryBuilder.getOffset() + 1).append(" AND ") //$NON-NLS-1$
             .append(queryBuilder.getLimit() + queryBuilder.getOffset()).append(" AND ROWNUM <= ")
             .append(queryBuilder.getLimit());
 

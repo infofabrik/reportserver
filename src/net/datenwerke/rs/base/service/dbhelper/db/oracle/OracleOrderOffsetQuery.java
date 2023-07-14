@@ -61,7 +61,7 @@ public class OracleOrderOffsetQuery extends OrderOffsetQuery {
 
       nestedQuery.appendToBuffer(buf);
       buf.append(") oraOrdOffQry1 ) oraOrdOffQry2 WHERE oraOrdOffQry2.oraRowNum BETWEEN ")
-            .append(queryBuilder.getOffset()).append(" AND ") //$NON-NLS-1$
+            .append(queryBuilder.getOffset() + 1).append(" AND ") //$NON-NLS-1$
             .append(queryBuilder.getLimit() + queryBuilder.getOffset());
 
    }
