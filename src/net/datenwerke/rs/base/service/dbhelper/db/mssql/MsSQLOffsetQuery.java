@@ -40,7 +40,7 @@ public class MsSQLOffsetQuery extends OffsetQuery {
       buf.append(" FROM (SELECT mssqlOffQry1.*, (ROW_NUMBER() OVER(ORDER BY (SELECT '1' as a))) rowNum FROM (");
 
       nestedQuery.appendToBuffer(buf);
-      buf.append(") mssqlOffQry1 ) mssqlOffQry2 WHERE mssqlOffQry2.rowNum BETWEEN ").append(queryBuilder.getOffset())
+      buf.append(") mssqlOffQry1 ) mssqlOffQry2 WHERE mssqlOffQry2.rowNum BETWEEN ").append(queryBuilder.getOffset() + 1)
             .append(" AND ") //$NON-NLS-1$
             .append(queryBuilder.getLimit() + queryBuilder.getOffset());
 

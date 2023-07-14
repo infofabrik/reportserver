@@ -60,7 +60,7 @@ public class MsSQLOrderOffsetQuery extends OrderOffsetQuery {
 
       nestedQuery.appendToBuffer(buf);
       buf.append(") mssqlOrdOffQry1 ) mssqlOrdOffQry2 WHERE mssqlOrdOffQry2.mssqlRowNum BETWEEN ")
-            .append(queryBuilder.getOffset()).append(" AND ") //$NON-NLS-1$
+            .append(queryBuilder.getOffset() + 1).append(" AND ") //$NON-NLS-1$
             .append(queryBuilder.getLimit() + queryBuilder.getOffset());
 
    }
