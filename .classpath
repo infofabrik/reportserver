@@ -94,7 +94,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/slf4j-api-1.7.36.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/error_prone_annotations-2.11.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/guava-31.1-jre.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/h2-2.1.214.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/eigenbase-xom-1.3.5.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/aopalliance-repackaged-2.6.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/guice-bridge-2.6.1.jar"/>
@@ -248,5 +247,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-templates-4.0.13.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-xml-4.0.13.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/picocli-4.7.4.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/h2-2.2.220.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
