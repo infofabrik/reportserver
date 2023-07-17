@@ -206,19 +206,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/batik-codec-1.16.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/graphviz-java-0.18.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/graphviz-java-all-j2v8-0.18.1.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-4.0.12.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-astbuilder-4.0.12.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-cli-picocli-4.0.12.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-datetime-4.0.12.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-dateutil-4.0.12.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-json-4.0.12.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-jsr223-4.0.12.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-macro-4.0.12.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-nio-4.0.12.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-servlet-4.0.12.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-sql-4.0.12.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-templates-4.0.12.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-xml-4.0.12.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/j2v8_linux_x86_64-4.6.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/j2v8_macosx_x86_64-4.6.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/j2v8_win32_x86_64-4.6.0.jar"/>
@@ -231,7 +218,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/mimepull-1.9.13.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/mysql-connector-j-8.0.33.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/openpdf-1.3.30.jaspersoft.2.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/picocli-4.7.3.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/viz.js-graphviz-java-2.1.3.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/commons-configuration2-2.9.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/commons-io-2.12.0.jar"/>
@@ -248,5 +234,19 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/sshd-sftp-2.10.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/sqlite-jdbc-3.42.0.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/rs-schemaupdate-1.3.26.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-4.0.13.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-astbuilder-4.0.13.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-cli-picocli-4.0.13.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-datetime-4.0.13.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-dateutil-4.0.13.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-json-4.0.13.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-jsr223-4.0.13.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-macro-4.0.13.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-nio-4.0.13.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-servlet-4.0.13.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-sql-4.0.13.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-templates-4.0.13.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-xml-4.0.13.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/picocli-4.7.4.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
