@@ -160,11 +160,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/javacup-10k.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/mondrian-9.4.0.0-281.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/opencsv-5.7.1.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/bcmail-jdk18on-1.72.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/bcpg-jdk18on-1.72.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/bcpkix-jdk18on-1.72.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/bcprov-jdk18on-1.72.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/bcutil-jdk18on-1.72.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/guice-5.1.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/guice-assistedinject-5.1.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/guice-persist-5.1.0.jar"/>
@@ -248,5 +243,10 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/error_prone_annotations-2.18.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/guava-32.1.1-jre.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/j2objc-annotations-2.8.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/bcmail-jdk18on-1.75.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/bcpg-jdk18on-1.75.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/bcpkix-jdk18on-1.75.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/bcprov-jdk18on-1.75.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/bcutil-jdk18on-1.75.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
