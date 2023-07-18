@@ -34,7 +34,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/gxt-4.0.2.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/gxt-chart-4.0.2.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/gxt-theme-neptune-4.0.2.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/j2objc-annotations-1.3.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/javax.annotation-3.1.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/javax.inject-1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jaxb-svg11-1.0.2.jar"/>
@@ -92,8 +91,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jcl-over-slf4j-1.7.36.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/log4j-over-slf4j-1.7.36.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/slf4j-api-1.7.36.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/error_prone_annotations-2.11.0.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/guava-31.1-jre.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/eigenbase-xom-1.3.5.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/aopalliance-repackaged-2.6.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/guice-bridge-2.6.1.jar"/>
@@ -198,7 +195,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/hibernate-entitymanager-5.6.15.Final.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/hibernate-envers-5.6.15.Final.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/commons-compress-1.23.0.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/checker-qual-3.31.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jcifs-2.1.34.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/postgresql-42.6.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/unboundid-ldapsdk-6.0.8.jar"/>
@@ -248,5 +244,9 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-xml-4.0.13.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/picocli-4.7.4.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/h2-2.2.220.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/checker-qual-3.33.0.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/error_prone_annotations-2.18.0.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/guava-32.1.1-jre.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/j2objc-annotations-2.8.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
