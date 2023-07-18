@@ -210,7 +210,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/openpdf-1.3.30.jaspersoft.2.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/viz.js-graphviz-java-2.1.3.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/commons-configuration2-2.9.0.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/commons-io-2.12.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/liquibase-core-4.22.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/log4j-api-2.20.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/log4j-core-2.20.0.jar"/>
@@ -248,5 +247,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/bcpkix-jdk18on-1.75.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/bcprov-jdk18on-1.75.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/bcutil-jdk18on-1.75.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/commons-io-2.13.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
