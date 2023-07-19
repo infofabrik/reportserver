@@ -213,11 +213,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/liquibase-core-4.22.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/log4j-api-2.20.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/log4j-core-2.20.0.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/lucene-analysis-common-9.6.0.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/lucene-core-9.6.0.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/lucene-queries-9.6.0.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/lucene-queryparser-9.6.0.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/lucene-sandbox-9.6.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/sshd-common-2.10.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/sshd-core-2.10.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/sshd-sftp-2.10.0.jar"/>
@@ -248,5 +243,10 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/bcprov-jdk18on-1.75.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/bcutil-jdk18on-1.75.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/commons-io-2.13.0.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/lucene-analysis-common-9.7.0.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/lucene-core-9.7.0.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/lucene-queries-9.7.0.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/lucene-queryparser-9.7.0.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/lucene-sandbox-9.7.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
