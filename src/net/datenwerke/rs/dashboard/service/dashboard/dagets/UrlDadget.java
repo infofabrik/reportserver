@@ -20,7 +20,7 @@ public class UrlDadget extends Dadget {
    @ExposeToClient
    private String title;
 
-   @ExposeToClient
+   @ExposeToClient(disableAmpersandEncode = true)
    private String url;
 
    public void setUrl(String url) {

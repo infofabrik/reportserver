@@ -97,7 +97,7 @@ public class UrlDadget2DtoGenerator implements Poso2DtoGenerator<UrlDadget,UrlDa
 			dto.setTitle(StringEscapeUtils.escapeXml(StringUtils.left(poso.getTitle(),8192)));
 
 			/*  set url */
-			dto.setUrl(StringEscapeUtils.escapeXml(StringUtils.left(poso.getUrl(),8192)));
+			dto.setUrl(StringEscapeUtils.escapeAngleBrackets(StringUtils.left(poso.getUrl(),8192)));
 
 		}
 

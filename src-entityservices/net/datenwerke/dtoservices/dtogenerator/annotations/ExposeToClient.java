@@ -45,6 +45,11 @@ public @interface ExposeToClient {
     * 
     */
    boolean disableHtmlEncode() default false;
+   
+   /**
+    * By setting this to true, & will not be encoded to &amp;
+    */
+   boolean disableAmpersandEncode() default false;
 
    boolean enableSimpleHtmlPolicy() default false;
 

@@ -36,6 +36,7 @@ public class SetPropertyInDtoSectionCreator {
    private DeclaredType collectionType;
    private boolean isString;
    private boolean disableHtmlEncode;
+   private boolean disableAmpersandEncode;
    private boolean doNotCutOffStrings;
    private boolean enableSimpleHtmlPolicy;
    private boolean inheritDtoView;
@@ -60,6 +61,7 @@ public class SetPropertyInDtoSectionCreator {
          isString = true;
       }
       disableHtmlEncode = field.getExposeToClientAnno().disableHtmlEncode();
+      disableAmpersandEncode = field.getExposeToClientAnno().disableAmpersandEncode();
       enableSimpleHtmlPolicy = field.getExposeToClientAnno().enableSimpleHtmlPolicy();
       doNotCutOffStrings = field.getExposeToClientAnno().allowArbitraryLobSize();
 
@@ -221,7 +223,7 @@ public class SetPropertyInDtoSectionCreator {
          referenceAccu.add(Sanitizers.class.getName());
          referenceAccu.add(HtmlPolicyBuilder.class.getName());
 
-      } else if (isString && !disableHtmlEncode) {
+      } else if (isString && !disableHtmlEncode && !disableAmpersandEncode) {
          if (doNotCutOffStrings)
             createDtoMethod.addBodyLine(
                   "dto." + getSetMethodForDto() + "(StringEscapeUtils.escapeXml(poso." + getGetMethod() + "() ));");
@@ -231,7 +233,17 @@ public class SetPropertyInDtoSectionCreator {
                         + getGetMethod() + "()," + DtoAnnotationProcessor.CUT_OFF_CLOBS_SIZE + ")));");
          referenceAccu.add(StringEscapeUtils.class.getName());
          referenceAccu.add(StringUtils.class.getName());
-      } else
+      } else if (isString && !disableHtmlEncode && disableAmpersandEncode) {
+         if (doNotCutOffStrings)
+            createDtoMethod.addBodyLine(
+                  "dto." + getSetMethodForDto() + "(StringEscapeUtils.escapeAngleBrackets(poso." + getGetMethod() + "() ));");
+         else
+            createDtoMethod
+                  .addBodyLine("dto." + getSetMethodForDto() + "(StringEscapeUtils.escapeAngleBrackets(StringUtils.left(poso."
+                        + getGetMethod() + "()," + DtoAnnotationProcessor.CUT_OFF_CLOBS_SIZE + ")));");
+         referenceAccu.add(StringEscapeUtils.class.getName());
+         referenceAccu.add(StringUtils.class.getName());
+      } else 
          createDtoMethod.addBodyLine("dto." + getSetMethodForDto() + "(poso." + getGetMethod() + "() );");
 
       createDtoMethod.addBodyLine();

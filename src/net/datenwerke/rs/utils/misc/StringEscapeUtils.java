@@ -9,6 +9,18 @@ public class StringEscapeUtils {
          return null;
       return text.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;");
    };
+   
+   public static String escapeAngleBrackets(String text) {
+      if (null == text)
+         return null;
+      return text.replace("<", "&lt;").replace(">", "&gt;");
+   };
+
+   public static String unescapeAngleBrackets(String text) {
+      if (null == text)
+         return null;
+      return text.replace("&lt;", "<").replace("&gt;", ">");
+   };
 
    public static String unescapeXml(String text) {
       if (null == text)
