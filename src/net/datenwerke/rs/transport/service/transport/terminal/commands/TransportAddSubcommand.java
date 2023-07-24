@@ -90,10 +90,11 @@ public class TransportAddSubcommand implements TransportSubCommandHook {
          
          AbstractNode<?> transportTarget = target.getFilesystemManager().getNodeByLocation(target);
          if (! (transportTarget instanceof Transport))
-            throw new IllegalArgumentException("Target is not a transport.");
+            throw new IllegalArgumentException(
+                  "Target is not a transport or transport not found: '" + arguments.get(0) + "'");
          
          if (!target.exists())
-            throw new IllegalArgumentException("Target transport does not exist.");
+            throw new IllegalArgumentException("Transport does not exist: '" + arguments.get(0) + "'");
          if (target.isFolder())
             throw new IllegalArgumentException("Target is a folder.");
          
@@ -104,9 +105,12 @@ public class TransportAddSubcommand implements TransportSubCommandHook {
          Collection<VFSLocation> resolvedElement = vfs.getLocation(arguments.get(1)).resolveWildcards(vfs);
          if (resolvedElement.size()!=1)
             throw new IllegalArgumentException("Exactly one element expected.");
+            
          VFSLocation elementLoc = resolvedElement.iterator().next();
          
          AbstractNode<?> element = elementLoc.getFilesystemManager().getNodeByLocation(elementLoc);
+         if (null == element)
+            throw new IllegalArgumentException("Element not found: '" + arguments.get(1) + "'");
          if (element.isFolder())
             throw new IllegalArgumentException("Cannot add a folder to transport.");
          
