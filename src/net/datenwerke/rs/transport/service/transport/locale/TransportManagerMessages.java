@@ -25,4 +25,12 @@ public interface TransportManagerMessages extends Messages {
    String historyUrlBuilderName();
 
    String historyUrlBuilderIcon();
+   
+   String commandTransportAdd_desc();
+   
+   String commandTransportAdd_target();
+   
+   String commandTransportAdd_element();
+   
+   String commandTransportAdd_sub_flagV();
 }

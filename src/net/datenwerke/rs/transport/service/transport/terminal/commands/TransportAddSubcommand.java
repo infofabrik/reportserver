@@ -10,6 +10,7 @@ import net.datenwerke.rs.terminal.service.terminal.TerminalSession;
 import net.datenwerke.rs.terminal.service.terminal.exceptions.TerminalException;
 import net.datenwerke.rs.terminal.service.terminal.helpers.AutocompleteHelper;
 import net.datenwerke.rs.terminal.service.terminal.helpers.CommandParser;
+import net.datenwerke.rs.terminal.service.terminal.helpmessenger.annotations.Argument;
 import net.datenwerke.rs.terminal.service.terminal.helpmessenger.annotations.CliHelpMessage;
 import net.datenwerke.rs.terminal.service.terminal.helpmessenger.annotations.NonOptArgument;
 import net.datenwerke.rs.terminal.service.terminal.obj.CommandResult;
@@ -47,17 +48,26 @@ public class TransportAddSubcommand implements TransportSubCommandHook {
    @CliHelpMessage(
          messageClass = TransportManagerMessages.class, 
          name = BASE_COMMAND, 
-         description = "commandTransportCreate_desc",
+         description = "commandTransportAdd_desc",
          nonOptArgs = {
                @NonOptArgument(
                      name = "target", 
-                     description = "commandTransportCreate_target",
+                     description = "commandTransportAdd_target",
                      mandatory = true
                ),
                @NonOptArgument(
-                     name = "description", 
-                     description = "commandTransportCreate_description",
+                     name = "element", 
+                     description = "commandTransportAdd_element",
                      mandatory = true
+               )
+         },
+         args = {
+               @Argument(
+                     flag = "v", 
+                     hasValue = false, 
+                     valueName = "includeVariants", 
+                     description = "commandTransportAdd_sub_flagV", 
+                     mandatory = false
                )
          }
    )
@@ -66,6 +76,9 @@ public class TransportAddSubcommand implements TransportSubCommandHook {
       List<String> arguments = parser.getNonOptionArguments();
       if (2 != arguments.size())
          throw new IllegalArgumentException("Exactly two arguments expected");
+      
+      final String argStr = "v";
+      final boolean includeVariants = parser.hasOption("v", argStr);
       
       final VirtualFileSystemDeamon vfs = session.getFileSystem();
       
@@ -97,7 +110,7 @@ public class TransportAddSubcommand implements TransportSubCommandHook {
          if (element.isFolder())
             throw new IllegalArgumentException("Cannot add a folder to transport.");
          
-         transportServiceProvider.get().addElement(transport, element, false);
+         transportServiceProvider.get().addElement(transport, element, includeVariants);
          
          return new CommandResult("Added to transport '" + transport + "': '" + element + "'");
       } catch (VFSException e) {

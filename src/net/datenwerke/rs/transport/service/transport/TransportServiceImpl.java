@@ -188,7 +188,7 @@ public class TransportServiceImpl implements TransportService {
 
       xmlHelper.setXml(currentXml);
       
-      final String exportedXml = exportService.export(element, false, "Transport", true);
+      final String exportedXml = exportService.export(element, includeVariants, "Transport", true);
       ExportDataProvider exportedDataProvider = new ExportDataProviderImpl(exportedXml.getBytes(Charsets.UTF_8));
       ExportDataProvider currentDataProvider = new ExportDataProviderImpl(currentXml.getBytes(Charsets.UTF_8));
       
