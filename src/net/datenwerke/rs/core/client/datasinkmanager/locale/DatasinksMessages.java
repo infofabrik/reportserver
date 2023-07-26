@@ -119,4 +119,6 @@ public interface DatasinksMessages extends Messages {
    
    String importRemoveKeyFieldLabel();
 
+   String truncateTable();
+
 }

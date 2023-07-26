@@ -217,6 +217,42 @@ public class TableDatasinkDto extends DatasinkDefinitionDto implements Datasourc
 		}
 	};
 
+	private boolean truncateTable;
+	private  boolean truncateTable_m;
+	public static final String PROPERTY_TRUNCATE_TABLE = "dpi-tabledatasink-truncatetable";
+
+	private transient static PropertyAccessor<TableDatasinkDto, Boolean> truncateTable_pa = new PropertyAccessor<TableDatasinkDto, Boolean>() {
+		@Override
+		public void setValue(TableDatasinkDto container, Boolean object) {
+			container.setTruncateTable(object);
+		}
+
+		@Override
+		public Boolean getValue(TableDatasinkDto container) {
+			return container.isTruncateTable();
+		}
+
+		@Override
+		public Class<?> getType() {
+			return Boolean.class;
+		}
+
+		@Override
+		public String getPath() {
+			return "truncateTable";
+		}
+
+		@Override
+		public void setModified(TableDatasinkDto container, boolean modified) {
+			container.truncateTable_m = modified;
+		}
+
+		@Override
+		public boolean isModified(TableDatasinkDto container) {
+			return container.isTruncateTableModified();
+		}
+	};
+
 
 	public TableDatasinkDto() {
 		super();
@@ -477,6 +513,55 @@ public class TableDatasinkDto extends DatasinkDefinitionDto implements Datasourc
 	}
 
 
+	public boolean isTruncateTable()  {
+		if(! isDtoProxy()){
+			return this.truncateTable;
+		}
+
+		if(isTruncateTableModified())
+			return this.truncateTable;
+
+		if(! GWT.isClient())
+			return false;
+
+		boolean _value = dtoManager.getProperty(this, instantiatePropertyAccess().truncateTable());
+
+		return _value;
+	}
+
+
+	public void setTruncateTable(boolean truncateTable)  {
+		/* old value */
+		boolean oldValue = false;
+		if(GWT.isClient())
+			oldValue = isTruncateTable();
+
+		/* set new value */
+		this.truncateTable = truncateTable;
+
+		if(! GWT.isClient())
+			return;
+
+		if(isTrackChanges())
+			addChange(new ChangeTracker(truncateTable_pa, oldValue, truncateTable, this.truncateTable_m));
+
+		/* set indicator */
+		this.truncateTable_m = true;
+
+		this.fireObjectChangedEvent(TableDatasinkDtoPA.INSTANCE.truncateTable(), oldValue);
+	}
+
+
+	public boolean isTruncateTableModified()  {
+		return truncateTable_m;
+	}
+
+
+	public static PropertyAccessor<TableDatasinkDto, Boolean> getTruncateTablePropertyAccessor()  {
+		return truncateTable_pa;
+	}
+
+
 	@Override
 	public String toDisplayTitle()  {
 		try{
@@ -534,6 +619,8 @@ public class TableDatasinkDto extends DatasinkDefinitionDto implements Datasourc
 		this.primaryKeys_m = false;
 		this.tableName = null;
 		this.tableName_m = false;
+		this.truncateTable = false;
+		this.truncateTable_m = false;
 	}
 
 
@@ -550,6 +637,8 @@ public class TableDatasinkDto extends DatasinkDefinitionDto implements Datasourc
 			return true;
 		if(tableName_m)
 			return true;
+		if(truncateTable_m)
+			return true;
 		return false;
 	}
 
@@ -561,6 +650,7 @@ public class TableDatasinkDto extends DatasinkDefinitionDto implements Datasourc
 		list.add(datasourceContainer_pa);
 		list.add(primaryKeys_pa);
 		list.add(tableName_pa);
+		list.add(truncateTable_pa);
 		return list;
 	}
 
@@ -577,6 +667,8 @@ public class TableDatasinkDto extends DatasinkDefinitionDto implements Datasourc
 			list.add(primaryKeys_pa);
 		if(tableName_m)
 			list.add(tableName_pa);
+		if(truncateTable_m)
+			list.add(truncateTable_pa);
 		return list;
 	}
 
@@ -589,6 +681,7 @@ public class TableDatasinkDto extends DatasinkDefinitionDto implements Datasourc
 			list.add(datasourceContainer_pa);
 			list.add(primaryKeys_pa);
 			list.add(tableName_pa);
+			list.add(truncateTable_pa);
 		}
 		return list;
 	}

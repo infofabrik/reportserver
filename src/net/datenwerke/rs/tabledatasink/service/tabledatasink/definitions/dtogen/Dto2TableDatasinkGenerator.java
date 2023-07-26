@@ -157,6 +157,12 @@ public class Dto2TableDatasinkGenerator implements Dto2PosoGenerator<TableDatasi
 		/*  set tableName */
 		poso.setTableName(dto.getTableName() );
 
+		/*  set truncateTable */
+		try{
+			poso.setTruncateTable(dto.isTruncateTable() );
+		} catch(NullPointerException e){
+		}
+
 	}
 
 	protected void mergeProxy2Poso(TableDatasinkDto dto, final TableDatasink poso)  throws ExpectedException {
@@ -228,6 +234,14 @@ public class Dto2TableDatasinkGenerator implements Dto2PosoGenerator<TableDatasi
 			poso.setTableName(dto.getTableName() );
 		}
 
+		/*  set truncateTable */
+		if(dto.isTruncateTableModified()){
+			try{
+				poso.setTruncateTable(dto.isTruncateTable() );
+			} catch(NullPointerException e){
+			}
+		}
+
 	}
 
 	public void mergeUnmanagedPoso(TableDatasinkDto dto, final TableDatasink poso)  throws ExpectedException {
@@ -276,6 +290,12 @@ public class Dto2TableDatasinkGenerator implements Dto2PosoGenerator<TableDatasi
 
 		/*  set tableName */
 		poso.setTableName(dto.getTableName() );
+
+		/*  set truncateTable */
+		try{
+			poso.setTruncateTable(dto.isTruncateTable() );
+		} catch(NullPointerException e){
+		}
 
 	}
 
@@ -335,6 +355,14 @@ public class Dto2TableDatasinkGenerator implements Dto2PosoGenerator<TableDatasi
 		/*  set tableName */
 		if(dto.isTableNameModified()){
 			poso.setTableName(dto.getTableName() );
+		}
+
+		/*  set truncateTable */
+		if(dto.isTruncateTableModified()){
+			try{
+				poso.setTruncateTable(dto.isTruncateTable() );
+			} catch(NullPointerException e){
+			}
 		}
 
 	}

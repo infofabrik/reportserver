@@ -78,6 +78,10 @@ public class TableDatasink extends DatasinkDefinition implements DatasourceConta
    
    @ExposeToClient
    @Field
+   private boolean truncateTable;
+   
+   @ExposeToClient
+   @Field
    private int batchSize = 100;
    
    public int getBatchSize() {
@@ -102,6 +106,13 @@ public class TableDatasink extends DatasinkDefinition implements DatasourceConta
 
    public void setCopyPrimaryKeys(boolean copyPrimaryKeys) {
       this.copyPrimaryKeys = copyPrimaryKeys;
+   }
+   
+   public boolean isTruncateTable() {
+      return truncateTable;
+   }
+   public void setTruncateTable(boolean truncateTable) {
+      this.truncateTable = truncateTable;
    }
 
    public DatasourceContainer getDatasourceContainer() {

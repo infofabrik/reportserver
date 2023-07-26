@@ -29,6 +29,7 @@ public interface TableDatasinkDtoPA extends DatasinkDefinitionDtoPA {
 	public ValueProvider<TableDatasinkDto,DatasourceContainerDto> datasourceContainer();
 	public ValueProvider<TableDatasinkDto,String> primaryKeys();
 	public ValueProvider<TableDatasinkDto,String> tableName();
+	public ValueProvider<TableDatasinkDto,Boolean> truncateTable();
 
 
 }

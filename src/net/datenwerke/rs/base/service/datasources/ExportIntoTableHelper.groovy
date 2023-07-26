@@ -80,4 +80,12 @@ class ExportIntoTableHelper {
       
       indizes
    }
+   
+   def prepareTruncateTableStmt(dstTableName) {
+      def truncateStmt = """\
+         TRUNCATE TABLE $dstTableName
+         """.stripIndent()
+
+      truncateStmt as String
+   }
 }

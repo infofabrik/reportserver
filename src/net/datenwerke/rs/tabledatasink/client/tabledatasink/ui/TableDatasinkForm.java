@@ -43,6 +43,7 @@ public class TableDatasinkForm extends FormView {
    private TextField tableNameField;
    private TextField primaryKeysField;
    private CheckBox copyPrimaryKeysField;
+   private CheckBox truncateTableField;
    private IntegerField batchSizeField;
    
    @Inject
@@ -112,6 +113,10 @@ public class TableDatasinkForm extends FormView {
       copyPrimaryKeysData.setFlex(2);
       copyPrimaryKeysData.setMinSize(54);
       fieldWrapper.add(new FieldLabel(copyPrimaryKeysField, DatasinksMessages.INSTANCE.copyPrimaryKeys()));
+      
+      /* delete table before copying */
+      truncateTableField = new CheckBox();
+      fieldWrapper.add(new FieldLabel(truncateTableField, DatasinksMessages.INSTANCE.truncateTable()));
 
       /* batch size */
       batchSizeField = new IntegerField();
@@ -134,6 +139,7 @@ public class TableDatasinkForm extends FormView {
       binding.addHtmlSafeStringBinding(tableNameField, model, TableDatasinkDtoPA.INSTANCE.tableName());
       binding.addHtmlSafeStringBinding(primaryKeysField, model, TableDatasinkDtoPA.INSTANCE.primaryKeys());
       binding.addHtmlSafeStringBinding(copyPrimaryKeysField, model, TableDatasinkDtoPA.INSTANCE.copyPrimaryKeys());
+      binding.addHtmlSafeStringBinding(truncateTableField, model, TableDatasinkDtoPA.INSTANCE.truncateTable());
       binding.addHtmlSafeStringBinding(batchSizeField, model, TableDatasinkDtoPA.INSTANCE.batchSize());
    }
    

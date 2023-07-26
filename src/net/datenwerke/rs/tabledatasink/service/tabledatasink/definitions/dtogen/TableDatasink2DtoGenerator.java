@@ -102,6 +102,9 @@ public class TableDatasink2DtoGenerator implements Poso2DtoGenerator<TableDatasi
 			/*  set tableName */
 			dto.setTableName(StringEscapeUtils.escapeXml(StringUtils.left(poso.getTableName(),8192)));
 
+			/*  set truncateTable */
+			dto.setTruncateTable(poso.isTruncateTable() );
+
 		}
 
 		/* post processing */
