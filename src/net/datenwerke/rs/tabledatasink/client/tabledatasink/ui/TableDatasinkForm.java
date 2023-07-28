@@ -116,7 +116,7 @@ public class TableDatasinkForm extends FormView {
       
       /* delete table before copying */
       truncateTableField = new CheckBox();
-      fieldWrapper.add(new FieldLabel(truncateTableField, DatasinksMessages.INSTANCE.truncateTable()));
+      fieldWrapper.add(new FieldLabel(truncateTableField, "Truncate"));
 
       /* batch size */
       batchSizeField = new IntegerField();
