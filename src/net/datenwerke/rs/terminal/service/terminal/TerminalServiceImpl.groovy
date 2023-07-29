@@ -212,25 +212,35 @@ public class TerminalServiceImpl implements TerminalService {
          return result
       }
       
+      def model = convertSimpleMapListToTableModel(emptyTableMessage, mapList, firstKeys, keyToText)
+      result.addResultTable model
+      
+      return result
+   }
+   
+   @Override
+   public RSTableModel convertSimpleMapListToTableModel(String emptyTableMessage,
+         List<Map<String, String>> mapList, List<String> firstKeys, Map<String, String> keyToText) {
+         
       // all maps must have the same size
       assert mapList*.size().toUnique().size() == 1
       // all maps must contain the given firstKeys
       def allContained = mapList.collect{ it.keySet().containsAll(firstKeys) }.toUnique()
       assert allContained.size() == 1 && allContained[0]
-      
+
       RSTableModel model = new RSTableModel()
       def allTableTitles = firstKeys + (mapList[0]*.key-firstKeys)
       TableDefinition tableDef = new TableDefinition(allTableTitles.collect{keyToText[it]?:it}, mapList[0]*.key.collect { String })
       model.tableDefinition = tableDef
-      result.addResultTable model
-      mapList.each{ 
+      
+      mapList.each{
          def vals = []
          firstKeys.each { header -> vals << it[header] }
          it.findAll { key, val -> !(key in firstKeys ) }.each{ key, val -> vals << val }
          model.addDataRow(new RSStringTableRow(vals))
       }
       
-      return result
+      return model
    }
 
    @Override

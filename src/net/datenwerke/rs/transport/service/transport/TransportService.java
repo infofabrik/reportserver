@@ -1,5 +1,6 @@
 package net.datenwerke.rs.transport.service.transport;
 
+import java.util.List;
 import java.util.Map;
 
 import net.datenwerke.rs.transport.service.transport.entities.Transport;
@@ -17,5 +18,9 @@ public interface TransportService {
    void addElement(Transport transport, AbstractNode<?> element, boolean includeVariants);
    
    boolean isTransportable(AbstractNode<?> node);
+   
+   Map<String, Object> getMetadata(Transport transport);
+   
+   Map<String, List<Map<String,String>>> getElements(Transport transport);
    
 }

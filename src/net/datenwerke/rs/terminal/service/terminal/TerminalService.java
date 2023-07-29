@@ -152,6 +152,9 @@ public interface TerminalService {
     */
    CommandResult convertSimpleMapListToCommandResult(List<String> headlines, String emptyTableMessage,
          List<Map<String, String>> mapList, List<String> firstKeys, Map<String, String> keyToText);
+   
+   RSTableModel convertSimpleMapListToTableModel(String emptyTableMessage,
+         List<Map<String, String>> mapList, List<String> firstKeys, Map<String, String> keyToText);
 
    /**
     * Joins the list with ", ". If sort is true, sorts the given list

@@ -33,4 +33,8 @@ public interface TransportManagerMessages extends Messages {
    String commandTransportAdd_element();
    
    String commandTransportAdd_sub_flagV();
+   
+   String commandTransportDescribe_desc();
+   
+   String commandTransportDescribe_transport();
 }

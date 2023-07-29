@@ -28,6 +28,7 @@ import net.datenwerke.rs.transport.service.transport.hooks.TransportEntryProvide
 import net.datenwerke.rs.transport.service.transport.terminal.commands.TransportAddSubcommand;
 import net.datenwerke.rs.transport.service.transport.terminal.commands.TransportCommand;
 import net.datenwerke.rs.transport.service.transport.terminal.commands.TransportCreateSubcommand;
+import net.datenwerke.rs.transport.service.transport.terminal.commands.TransportDescribeSubcommand;
 import net.datenwerke.rs.transport.service.transport.terminal.commands.TransportSubCommandHook;
 import net.datenwerke.security.service.security.SecurityService;
 
@@ -40,6 +41,7 @@ public class TransportStartup {
          final Provider<TransportCommand> transportCommand,
          final Provider<TransportCreateSubcommand> transportCreateCommand,
          final Provider<TransportAddSubcommand> transportAddCommand,
+         final Provider<TransportDescribeSubcommand> transportDescribeCommand,
          final Provider<TransportManagerHistoryUrlBuilderHooker> managerUrlBuilder,
          final Provider<TransportExportConfigHooker> exportConfigHookerProvider,
          final Provider<TransportManagerExporter> transportManagerExporter,
@@ -54,6 +56,7 @@ public class TransportStartup {
       hookHandler.attachHooker(TerminalCommandHook.class, transportCommand);
       hookHandler.attachHooker(TransportSubCommandHook.class, transportCreateCommand);
       hookHandler.attachHooker(TransportSubCommandHook.class, transportAddCommand);
+      hookHandler.attachHooker(TransportSubCommandHook.class, transportDescribeCommand);
       
       hookHandler.attachHooker(TransportEntryProviderHook.class, usageStatsTransportFolderProvider,
             HookHandlerService.PRIORITY_LOW);

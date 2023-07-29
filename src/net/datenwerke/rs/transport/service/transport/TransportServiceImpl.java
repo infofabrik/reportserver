@@ -10,11 +10,14 @@ import static net.datenwerke.eximport.ExImportHelperService.DOCUMENT_ROOT_ELEMEN
 
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -22,6 +25,7 @@ import javax.inject.Inject;
 import javax.inject.Provider;
 
 import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.apache.commons.text.StringEscapeUtils;
 
 import com.google.common.base.Charsets;
 
@@ -30,6 +34,8 @@ import net.datenwerke.eximport.ExportDataProvider;
 import net.datenwerke.eximport.ExportDataProviderImpl;
 import net.datenwerke.eximport.ex.ExportFileProcessingHelper;
 import net.datenwerke.eximport.ex.Exporter;
+import net.datenwerke.eximport.obj.ExportedItem;
+import net.datenwerke.eximport.obj.ItemProperty;
 import net.datenwerke.rs.EnvironmentValidatorHelperService;
 import net.datenwerke.rs.adminutils.service.systemconsole.generalinfo.GeneralInfoService;
 import net.datenwerke.rs.core.service.datasinkmanager.entities.AbstractDatasinkManagerNode;
@@ -251,6 +257,69 @@ public class TransportServiceImpl implements TransportService {
             || node instanceof AbstractDatasinkManagerNode
             || node instanceof AbstractDatasourceManagerNode
             || node instanceof AbstractFileServerNode;
+   }
+
+
+   @Override
+   public Map<String, Object> getMetadata(Transport transport) {
+      Map<String, Object> metadata = new LinkedHashMap<>();
+      metadata.put("Key", transport.getKey());
+      metadata.put("Closed", transport.isClosed());
+      metadata.put("Created on", transport.getCreatedOnStr());
+      metadata.put("Created by (first name)", transport.getCreatorFirstname());
+      metadata.put("Created by (last name)", transport.getCreatorLastname());
+      metadata.put("Created by (username)", transport.getCreatorUsername());
+      metadata.put("Created by (email)", transport.getCreatorEmail());
+      metadata.put("Server ID", transport.getServerId());
+      metadata.put("ReportServer version", transport.getRsVersion());
+      metadata.put("Schema version", transport.getRsSchemaVersion());
+      return metadata;
+   }
+
+
+   @Override
+   public Map<String, List<Map<String,String>>> getElements(Transport transport) {
+      Map<String, List<Map<String,String>>> results = new HashMap<>();
+      final ExportDataProvider exportedDataProvider = new ExportDataProviderImpl(
+            transport.getXml().getBytes(Charsets.UTF_8));
+      final ExportDataAnalyzerService analyzerService = exportDataAnalyzerServiceProvider.get();
+      try {
+         Collection<Class<? extends Exporter>> dataClasses = analyzerService.getExporterClasses(exportedDataProvider);
+         Iterator<Class<? extends Exporter>> dataClassesIt = dataClasses.iterator();
+         
+         while (dataClassesIt.hasNext()) {
+            Class<? extends Exporter> dataClass = dataClassesIt.next();
+            
+            List<Map<String, String>> elements = new ArrayList<>();
+            List<ExportedItem> exportedItems = analyzerService.getExportedItemsFor(exportedDataProvider, dataClass);
+            exportedItems
+               .stream()
+               .filter(exportedItem -> !exportedItem.getType().getSimpleName().endsWith("Folder"))
+               .forEach(exportedItem -> {
+                  Map<String, String> itemProps = new LinkedHashMap<>();
+                  ItemProperty keyProp = exportedItem.getPropertyByName("key");
+                  if (null != keyProp) {
+                     itemProps.put("Key", StringEscapeUtils.unescapeXml(keyProp.getElement().getValue()));
+                  } else {
+                     itemProps.put("Key", null);
+                  }
+   
+                  ItemProperty nameProp = exportedItem.getPropertyByName("name");
+                  if (null != nameProp) {
+                     itemProps.put("Name", StringEscapeUtils.unescapeXml(nameProp.getElement().getValue()));
+                  } else {
+                     itemProps.put("Name", null);
+                  }
+   
+                  elements.add(itemProps);
+               });
+            results.put(dataClass.getSimpleName(), elements);
+         }
+         
+      } catch (ClassNotFoundException e) {
+         throw new IllegalArgumentException(e);
+      }
+      return results;
    }
 
 }
