@@ -30,6 +30,6 @@ public class RsCoreUiStartup {
 
       hookHandler.attachHooker(ObjectPreviewTabProviderHook.class, baseObjectInfo, HookHandlerService.PRIORITY_LOWER);
       
-      hookHandler.attachHooker(HomepageHeaderContentHook.class, toolsMenuHooker, HookHandlerService.PRIORITY_LOWER - 5);
+      hookHandler.attachHooker(HomepageHeaderContentHook.class, toolsMenuHooker, HookHandlerService.PRIORITY_MEDIUM);
    }
 }

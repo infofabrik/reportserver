@@ -45,7 +45,7 @@ public class LoginServiceStartup {
       hookHandler.attachHooker(ClientPAMHook.class, new ClientPAMHook(userPasswordClientPamProvider));
 
       /* attach hooks */
-      hookHandler.attachHooker(HomepageHeaderContentHook.class, logoutBtnHook);
+      hookHandler.attachHooker(HomepageHeaderContentHook.class, logoutBtnHook, HookHandlerService.PRIORITY_LOWER);
       hookHandler.attachHooker(AsyncCallbackSuccessHook.class, SessionTimeoutWatchdog.getAsyncCallbackSuccessHook());
       hookHandler.attachHooker(ViolatedSecurityHook.class, new ViolatedSecurityHook() {
 
