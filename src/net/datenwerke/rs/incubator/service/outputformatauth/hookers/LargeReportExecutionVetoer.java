@@ -2,10 +2,14 @@ package net.datenwerke.rs.incubator.service.outputformatauth.hookers;
 import java.util.Arrays;
 import java.util.List;
 
+import org.apache.commons.configuration2.Configuration;
+
 import com.google.inject.Inject;
+import com.google.inject.Provider;
 
 import net.datenwerke.rs.base.service.reportengines.table.TableReportUtils;
 import net.datenwerke.rs.base.service.reportengines.table.entities.TableReport;
+import net.datenwerke.rs.configservice.service.configservice.ConfigService;
 import net.datenwerke.rs.core.service.reportmanager.ReportExecutorService;
 import net.datenwerke.rs.core.service.reportmanager.engine.CompiledReport;
 import net.datenwerke.rs.core.service.reportmanager.engine.config.ReportExecutionConfig;
@@ -13,12 +17,14 @@ import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
 import net.datenwerke.rs.core.service.reportmanager.exceptions.ReportExecutorException;
 import net.datenwerke.rs.core.service.reportmanager.hooks.ReportExecutionNotificationHook;
 import net.datenwerke.rs.core.service.reportmanager.parameters.ParameterSet;
+import net.datenwerke.rs.core.service.reportserver.ReportServerService;
 import net.datenwerke.rs.saiku.service.saiku.SaikuModule;
 import net.datenwerke.security.service.usermanager.entities.User;
 public class LargeReportExecutionVetoer implements ReportExecutionNotificationHook {
    
    private final TableReportUtils tableReportUtils;
-   private static final int EXPORT_MAX_SIZE = 100000;
+   private final Provider<ConfigService> configServiceProvider;
+   private static final int DEFAULT_EXPORT_MAX_SIZE = 10000;
    
    /* always allow certain formats */
    private final List<String> allowedFormats = Arrays.asList(
@@ -28,8 +34,12 @@ public class LargeReportExecutionVetoer implements ReportExecutionNotificationHo
          SaikuModule.OUTPUT_FORMAT_CHART_HTML
    );
    @Inject
-   public LargeReportExecutionVetoer(TableReportUtils tableReportUtils) {
+   public LargeReportExecutionVetoer(
+         TableReportUtils tableReportUtils,
+         Provider<ConfigService> configServiceProvider
+         ) {
       this.tableReportUtils = tableReportUtils;
+      this.configServiceProvider = configServiceProvider;
    }
    
    @Override
@@ -51,11 +61,14 @@ public class LargeReportExecutionVetoer implements ReportExecutionNotificationHo
          TableReport tableReport = (TableReport) report;
          int dataCount = tableReportUtils.getReportInformation(tableReport, null).getDataCount();
       
-         if (dataCount > EXPORT_MAX_SIZE) {
+         Configuration config = configServiceProvider.get().getConfigFailsafe(ReportServerService.CONFIG_FILE);
+         int maxRecords = config.getInt("export.maximumrecords", DEFAULT_EXPORT_MAX_SIZE);
+         
+         if (dataCount > maxRecords) {
             throw new ReportExecutorException("Your report is too large to be exported, please add filters "
                   + "or similar to limit its output. \r\n"
                   + "Current number of rows: " + dataCount 
-                  + ". Maximum number of rows: " + EXPORT_MAX_SIZE + "\r\n");
+                  + ". Maximum number of rows: " + maxRecords + "\r\n");
          }
       }
    }
