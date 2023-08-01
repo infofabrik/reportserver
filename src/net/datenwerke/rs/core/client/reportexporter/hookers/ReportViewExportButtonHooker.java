@@ -10,9 +10,14 @@ import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.inject.Inject;
 import com.sencha.gxt.cell.core.client.ButtonCell.ButtonArrowAlign;
 import com.sencha.gxt.widget.core.client.Component;
+import com.sencha.gxt.widget.core.client.Dialog.PredefinedButton;
+import com.sencha.gxt.widget.core.client.box.ConfirmMessageBox;
 import com.sencha.gxt.widget.core.client.button.TextButton;
 import com.sencha.gxt.widget.core.client.event.SelectEvent;
 import com.sencha.gxt.widget.core.client.event.SelectEvent.SelectHandler;
+import com.sencha.gxt.widget.core.client.info.DefaultInfoConfig;
+import com.sencha.gxt.widget.core.client.info.Info;
+import com.sencha.gxt.widget.core.client.info.InfoConfig;
 import com.sencha.gxt.widget.core.client.menu.Item;
 import com.sencha.gxt.widget.core.client.menu.Menu;
 import com.sencha.gxt.widget.core.client.menu.MenuItem;
@@ -21,9 +26,14 @@ import com.sencha.gxt.widget.core.client.toolbar.ToolBar;
 import net.datenwerke.gxtdto.client.baseex.widget.btn.DwSplitButton;
 import net.datenwerke.gxtdto.client.baseex.widget.btn.DwTextButton;
 import net.datenwerke.gxtdto.client.baseex.widget.mb.DwAlertMessageBox;
+import net.datenwerke.gxtdto.client.baseex.widget.mb.DwConfirmMessageBox;
 import net.datenwerke.gxtdto.client.baseex.widget.menu.DwMenu;
 import net.datenwerke.gxtdto.client.baseex.widget.menu.DwMenuItem;
+import net.datenwerke.gxtdto.client.dtomanager.callback.RsAsyncCallback;
 import net.datenwerke.gxtdto.client.locale.BaseMessages;
+import net.datenwerke.rs.base.client.reportengines.table.TableReportUtilityDao;
+import net.datenwerke.rs.base.client.reportengines.table.dto.TableReportDto;
+import net.datenwerke.rs.base.client.reportengines.table.dto.TableReportInformation;
 import net.datenwerke.rs.core.client.reportexecutor.hooks.ReportExecutorViewToolbarHook;
 import net.datenwerke.rs.core.client.reportexecutor.ui.ReportExecutorInformation;
 import net.datenwerke.rs.core.client.reportexecutor.ui.ReportExecutorMainPanel;
@@ -41,16 +51,21 @@ import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
 public class ReportViewExportButtonHooker implements ReportExecutorViewToolbarHook {
 
    private final ReportExporterUIService reportExporterService;
+   private final TableReportUtilityDao tableReportUtilityDao;
 
    private Map<ReportExporter, Component> exporterMap = new HashMap<ReportExporter, Component>();
 
    private List<ReportExporter> exporters;
 
    @Inject
-   public ReportViewExportButtonHooker(ReportExporterUIService reportExporterService) {
+   public ReportViewExportButtonHooker(
+         ReportExporterUIService reportExporterService,
+         TableReportUtilityDao tableReportUtilityDao
+         ) {
 
       /* store objects */
       this.reportExporterService = reportExporterService;
+      this.tableReportUtilityDao = tableReportUtilityDao;
    }
 
    @Override
@@ -84,7 +99,23 @@ public class ReportViewExportButtonHooker implements ReportExecutorViewToolbarHo
                   if (!validateViews(views))
                      return;
 
-                  first.export(report, info.getExecuteReportToken());
+                  if (report instanceof TableReportDto) {
+                     showCountingMsg();
+                     tableReportUtilityDao.getReportInformation((TableReportDto) report, info.getExecuteReportToken(),
+                           new RsAsyncCallback<TableReportInformation>() {
+                              @Override
+                              public void onSuccess(TableReportInformation information) {
+                                 checkCountAndExport(first, report, info, information);
+                              }
+
+                              @Override
+                              public void onFailure(final Throwable caught) {
+                                 new DwAlertMessageBox(BaseMessages.INSTANCE.error(), caught.getMessage()).show();
+                              }
+                           });
+                  } else {
+                     first.export(report, info.getExecuteReportToken());
+                  }
                }
             });
          }
@@ -147,7 +178,23 @@ public class ReportViewExportButtonHooker implements ReportExecutorViewToolbarHo
                         if (!validateViews(views))
                            return;
 
-                        exporter.export(report, info.getExecuteReportToken());
+                        if (report instanceof TableReportDto) {
+                           showCountingMsg();
+                           tableReportUtilityDao.getReportInformation((TableReportDto) report,
+                                 info.getExecuteReportToken(), new RsAsyncCallback<TableReportInformation>() {
+                                    @Override
+                                    public void onSuccess(TableReportInformation information) {
+                                       checkCountAndExport(exporter, report, info, information);
+                                    }
+
+                                    @Override
+                                    public void onFailure(final Throwable caught) {
+                                       new DwAlertMessageBox(BaseMessages.INSTANCE.error(), caught.getMessage()).show();
+                                    }
+                                 });
+                        } else {
+                           exporter.export(report, info.getExecuteReportToken());
+                        }
                      }
                   });
          }
@@ -168,6 +215,32 @@ public class ReportViewExportButtonHooker implements ReportExecutorViewToolbarHo
          else
             exporterMap.get(exporter).enable();
       }
+   }
+   
+   private void checkCountAndExport(final ReportExporter exporter, final ReportDto report,
+         final ReportExecutorInformation info, TableReportInformation information) {
+      int dataCount = information.getDataCount();
+      int threshold = 100;
+      if (dataCount > threshold) {
+         ConfirmMessageBox cmb = new DwConfirmMessageBox(ReportExporterMessages.INSTANCE.exportReport(),
+               ReportExporterMessages.INSTANCE.exportConfirm(dataCount, threshold));
+         cmb.addDialogHideHandler(event -> {
+            if (event.getHideButton() == PredefinedButton.YES) {
+               exporter.export(report, info.getExecuteReportToken());
+            }
+         });
+         cmb.show();
+      }  else {
+         exporter.export(report, info.getExecuteReportToken());
+      }
+   }
+   
+   private void showCountingMsg() {
+      InfoConfig infoConfig = new DefaultInfoConfig(ReportExporterMessages.INSTANCE.countingMsgTitle(),
+            ReportExporterMessages.INSTANCE.countingMsg());
+      infoConfig.setWidth(350);
+      infoConfig.setDisplay(3500);
+      Info.display(infoConfig);
    }
 
 }

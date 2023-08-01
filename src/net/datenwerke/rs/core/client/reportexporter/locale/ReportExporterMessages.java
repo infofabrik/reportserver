@@ -66,5 +66,11 @@ public interface ReportExporterMessages extends Messages {
    String reportSuccessfullyExported();
 
    String reportLoadingWait();
+   
+   String countingMsgTitle();
+   
+   String countingMsg();
+
+   String exportConfirm(int numberOfRecords, int recordThreshold);
 
 }

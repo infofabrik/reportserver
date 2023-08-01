@@ -66,9 +66,9 @@ public class LargeReportExecutionVetoer implements ReportExecutionNotificationHo
          
          if (dataCount > maxRecords) {
             throw new ReportExecutorException("Your report is too large to be exported, please add filters "
-                  + "or similar to limit its output. \r\n"
+                  + "or similar to limit its output. "
                   + "Current number of rows: " + dataCount 
-                  + ". Maximum number of rows: " + maxRecords + "\r\n");
+                  + ". Maximum number of rows: " + maxRecords);
          }
       }
    }
