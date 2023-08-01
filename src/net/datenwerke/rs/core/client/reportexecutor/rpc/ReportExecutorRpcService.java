@@ -11,31 +11,33 @@ import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
 @RemoteServiceRelativePath("executor")
 public interface ReportExecutorRpcService extends RemoteService {
 
-   public DwModel executeAs(String format, String executeToken, ReportDto report, DwModel config)
+   DwModel executeAs(String format, String executeToken, ReportDto report, DwModel config)
          throws ServerCallFailedException;
 
-   public DwModel storePNGInSession(String executorToken, ReportDto report) throws ServerCallFailedException;
+   DwModel storePNGInSession(String executorToken, ReportDto report) throws ServerCallFailedException;
 
-   public ReportDto createNewVariant(ReportDto reportVariantDto, String executeToken, String title, String description)
+   ReportDto createNewVariant(ReportDto reportVariantDto, String executeToken, String title, String description)
          throws ServerCallFailedException;
 
-   public ReportDto editVariant(ReportDto reportVariantDto, String executeToken, String title, String description)
+   ReportDto editVariant(ReportDto reportVariantDto, String executeToken, String title, String description)
          throws ServerCallFailedException;
 
-   public void deleteVariant(ReportDto reportVariantDto) throws ServerCallFailedException;
+   void deleteVariant(ReportDto reportVariantDto) throws ServerCallFailedException;
 
-   public ReportDto loadFullReportForExecution(ReportDto report) throws ServerCallFailedException;
+   ReportDto loadFullReportForExecution(ReportDto report) throws ServerCallFailedException;
 
-   public ReportDto loadReportForExecutionFrom(HistoryLocation location) throws ServerCallFailedException;
+   ReportDto loadReportForExecutionFrom(HistoryLocation location) throws ServerCallFailedException;
 
-   public String getPreviewMode() throws ServerCallFailedException;
+   String getPreviewMode() throws ServerCallFailedException;
 
-   public void setPreviewModeUserProperty(String value) throws ServerCallFailedException;
+   void setPreviewModeUserProperty(String value) throws ServerCallFailedException;
 
-   public ReportDto loadFullReportUnmanaged(ReportDto report);
+   ReportDto loadFullReportUnmanaged(ReportDto report);
 
-   public Integer getDefaultColumnWidth() throws ServerCallFailedException;
+   Integer getDefaultColumnWidth() throws ServerCallFailedException;
 
-   public Integer getMaxColumnWidth() throws ServerCallFailedException;
+   Integer getMaxColumnWidth() throws ServerCallFailedException;
+   
+   Integer getWarnRecordExportThreshold() throws ServerCallFailedException;
 
 }

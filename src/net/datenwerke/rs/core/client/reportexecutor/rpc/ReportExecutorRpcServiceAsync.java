@@ -35,5 +35,7 @@ public interface ReportExecutorRpcServiceAsync {
    void getDefaultColumnWidth(AsyncCallback<Integer> callback);
 
    void getMaxColumnWidth(AsyncCallback<Integer> callback);
+   
+   void getWarnRecordExportThreshold(AsyncCallback<Integer> callback);
 
 }

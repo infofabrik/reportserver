@@ -115,5 +115,9 @@ public class ReportExecutorDao extends Dao {
    public void getMaxColumnWidth(AsyncCallback<Integer> callback) {
       rpcService.getMaxColumnWidth(transformAndKeepCallback(callback));
    }
+   
+   public void getWarnRecordExportThreshold(AsyncCallback<Integer> callback) {
+      rpcService.getWarnRecordExportThreshold(transformAndKeepCallback(callback));
+   }
 
 }

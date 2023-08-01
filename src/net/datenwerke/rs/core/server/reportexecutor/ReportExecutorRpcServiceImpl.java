@@ -72,8 +72,9 @@ public class ReportExecutorRpcServiceImpl extends SecuredRemoteServiceServlet im
    private static final String PREVIEW_MODE_CFG_KEY = "pdf.mode";
 
    private static final String PREVIEW_DEFAULT_COLUMN_WIDTH = "dynamicList.defaultColumnWidth";
-
    private static final String PREVIEW_MAX_COLUMN_WIDTH = "dynamicList.maxColumnWidth";
+   
+   private static final String WARN_EXPORT_THRESHOLD = "export.warnthreshold";
 
    /**
     * 
@@ -468,6 +469,11 @@ public class ReportExecutorRpcServiceImpl extends SecuredRemoteServiceServlet im
    @Override
    public Integer getMaxColumnWidth() throws ServerCallFailedException {
       return configService.getConfigFailsafe("ui/previews.cf").getInt(PREVIEW_MAX_COLUMN_WIDTH, 1000);
+   }
+
+   @Override
+   public Integer getWarnRecordExportThreshold() throws ServerCallFailedException {
+      return configService.getConfigFailsafe("main/main.cf").getInt(WARN_EXPORT_THRESHOLD, 10000);
    }
 
 }

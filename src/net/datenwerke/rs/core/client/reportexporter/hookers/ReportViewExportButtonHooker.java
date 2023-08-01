@@ -7,6 +7,7 @@ import java.util.Map;
 
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
 import com.sencha.gxt.cell.core.client.ButtonCell.ButtonArrowAlign;
 import com.sencha.gxt.widget.core.client.Component;
@@ -34,6 +35,7 @@ import net.datenwerke.gxtdto.client.locale.BaseMessages;
 import net.datenwerke.rs.base.client.reportengines.table.TableReportUtilityDao;
 import net.datenwerke.rs.base.client.reportengines.table.dto.TableReportDto;
 import net.datenwerke.rs.base.client.reportengines.table.dto.TableReportInformation;
+import net.datenwerke.rs.core.client.reportexecutor.ReportExecutorDao;
 import net.datenwerke.rs.core.client.reportexecutor.hooks.ReportExecutorViewToolbarHook;
 import net.datenwerke.rs.core.client.reportexecutor.ui.ReportExecutorInformation;
 import net.datenwerke.rs.core.client.reportexecutor.ui.ReportExecutorMainPanel;
@@ -52,6 +54,7 @@ public class ReportViewExportButtonHooker implements ReportExecutorViewToolbarHo
 
    private final ReportExporterUIService reportExporterService;
    private final TableReportUtilityDao tableReportUtilityDao;
+   private final ReportExecutorDao reportExecutorDao;
 
    private Map<ReportExporter, Component> exporterMap = new HashMap<ReportExporter, Component>();
 
@@ -60,12 +63,14 @@ public class ReportViewExportButtonHooker implements ReportExecutorViewToolbarHo
    @Inject
    public ReportViewExportButtonHooker(
          ReportExporterUIService reportExporterService,
-         TableReportUtilityDao tableReportUtilityDao
+         TableReportUtilityDao tableReportUtilityDao,
+         ReportExecutorDao reportExecutorDao
          ) {
 
       /* store objects */
       this.reportExporterService = reportExporterService;
       this.tableReportUtilityDao = tableReportUtilityDao;
+      this.reportExecutorDao = reportExecutorDao;
    }
 
    @Override
@@ -219,20 +224,31 @@ public class ReportViewExportButtonHooker implements ReportExecutorViewToolbarHo
    
    private void checkCountAndExport(final ReportExporter exporter, final ReportDto report,
          final ReportExecutorInformation info, TableReportInformation information) {
-      int dataCount = information.getDataCount();
-      int threshold = 100;
-      if (dataCount > threshold) {
-         ConfirmMessageBox cmb = new DwConfirmMessageBox(ReportExporterMessages.INSTANCE.exportReport(),
-               ReportExporterMessages.INSTANCE.exportConfirm(dataCount, threshold));
-         cmb.addDialogHideHandler(event -> {
-            if (event.getHideButton() == PredefinedButton.YES) {
+      final int dataCount = information.getDataCount();
+
+      reportExecutorDao.getWarnRecordExportThreshold(new AsyncCallback<Integer>() {
+         @Override
+         public void onSuccess(final Integer result) {
+            final int threshold = result;
+            if (dataCount > threshold) {
+               ConfirmMessageBox cmb = new DwConfirmMessageBox(ReportExporterMessages.INSTANCE.exportReport(),
+                     ReportExporterMessages.INSTANCE.exportConfirm(dataCount, threshold));
+               cmb.addDialogHideHandler(event -> {
+                  if (event.getHideButton() == PredefinedButton.YES) {
+                     exporter.export(report, info.getExecuteReportToken());
+                  }
+               });
+               cmb.show();
+            } else {
                exporter.export(report, info.getExecuteReportToken());
             }
-         });
-         cmb.show();
-      }  else {
-         exporter.export(report, info.getExecuteReportToken());
-      }
+         }
+
+         @Override
+         public void onFailure(Throwable caught) {
+         }
+      });
+
    }
    
    private void showCountingMsg() {
