@@ -6,6 +6,7 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 import net.datenwerke.gf.client.history.HistoryLocation;
 import net.datenwerke.gxtdto.client.model.DwModel;
 import net.datenwerke.gxtdto.client.servercommunication.exceptions.ServerCallFailedException;
+import net.datenwerke.rs.core.client.reportexecutor.dto.ExportThresholdDto;
 import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
 
 @RemoteServiceRelativePath("executor")
@@ -38,6 +39,6 @@ public interface ReportExecutorRpcService extends RemoteService {
 
    Integer getMaxColumnWidth() throws ServerCallFailedException;
    
-   Integer getWarnRecordExportThreshold() throws ServerCallFailedException;
+   ExportThresholdDto getWarnRecordExportThreshold() throws ServerCallFailedException;
 
 }

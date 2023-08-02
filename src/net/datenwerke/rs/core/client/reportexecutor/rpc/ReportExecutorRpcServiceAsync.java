@@ -5,6 +5,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 
 import net.datenwerke.gf.client.history.HistoryLocation;
 import net.datenwerke.gxtdto.client.model.DwModel;
+import net.datenwerke.rs.core.client.reportexecutor.dto.ExportThresholdDto;
 import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
 
 public interface ReportExecutorRpcServiceAsync {
@@ -36,6 +37,6 @@ public interface ReportExecutorRpcServiceAsync {
 
    void getMaxColumnWidth(AsyncCallback<Integer> callback);
    
-   void getWarnRecordExportThreshold(AsyncCallback<Integer> callback);
+   void getWarnRecordExportThreshold(AsyncCallback<ExportThresholdDto> callback);
 
 }

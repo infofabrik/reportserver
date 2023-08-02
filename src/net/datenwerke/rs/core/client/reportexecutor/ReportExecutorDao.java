@@ -10,6 +10,7 @@ import net.datenwerke.gxtdto.client.dtomanager.callback.DaoAsyncCallback;
 import net.datenwerke.gxtdto.client.dtomanager.callback.RsAsyncCallback;
 import net.datenwerke.gxtdto.client.model.DwModel;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
+import net.datenwerke.rs.core.client.reportexecutor.dto.ExportThresholdDto;
 import net.datenwerke.rs.core.client.reportexecutor.hooks.PrepareReportModelForStorageOrExecutionHook;
 import net.datenwerke.rs.core.client.reportexecutor.rpc.ReportExecutorRpcServiceAsync;
 import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
@@ -116,7 +117,7 @@ public class ReportExecutorDao extends Dao {
       rpcService.getMaxColumnWidth(transformAndKeepCallback(callback));
    }
    
-   public void getWarnRecordExportThreshold(AsyncCallback<Integer> callback) {
+   public void getExportThresholds(AsyncCallback<ExportThresholdDto> callback) {
       rpcService.getWarnRecordExportThreshold(transformAndKeepCallback(callback));
    }
 

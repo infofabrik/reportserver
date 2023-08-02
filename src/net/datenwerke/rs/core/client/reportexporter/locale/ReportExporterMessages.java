@@ -73,4 +73,6 @@ public interface ReportExporterMessages extends Messages {
 
    String exportConfirm(int numberOfRecords, int recordThreshold);
 
+   String exportNotPossible(int numberOfRecords, int maxThreshold);
+
 }

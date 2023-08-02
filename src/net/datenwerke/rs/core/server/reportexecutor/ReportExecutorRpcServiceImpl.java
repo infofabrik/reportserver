@@ -23,6 +23,7 @@ import net.datenwerke.gxtdto.client.servercommunication.exceptions.ViolatedSecur
 import net.datenwerke.gxtdto.server.dtomanager.DtoService;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.configservice.service.configservice.ConfigService;
+import net.datenwerke.rs.core.client.reportexecutor.dto.ExportThresholdDto;
 import net.datenwerke.rs.core.client.reportexecutor.rpc.ReportExecutorRpcService;
 import net.datenwerke.rs.core.client.reportmanager.dto.interfaces.ReportVariantDto;
 import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
@@ -75,6 +76,7 @@ public class ReportExecutorRpcServiceImpl extends SecuredRemoteServiceServlet im
    private static final String PREVIEW_MAX_COLUMN_WIDTH = "dynamicList.maxColumnWidth";
    
    private static final String WARN_EXPORT_THRESHOLD = "export.warnthreshold";
+   private static final String MAX_EXPORT_THRESHOLD = "export.maximumrecords";
 
    /**
     * 
@@ -472,8 +474,12 @@ public class ReportExecutorRpcServiceImpl extends SecuredRemoteServiceServlet im
    }
 
    @Override
-   public Integer getWarnRecordExportThreshold() throws ServerCallFailedException {
-      return configService.getConfigFailsafe("main/main.cf").getInt(WARN_EXPORT_THRESHOLD, 10000);
+   public ExportThresholdDto getWarnRecordExportThreshold() throws ServerCallFailedException {
+      ExportThresholdDto thresholds = new ExportThresholdDto();
+      thresholds.setWarnThreshold(configService.getConfigFailsafe("main/main.cf").getInt(WARN_EXPORT_THRESHOLD, 10_000));
+      thresholds.setMaxThreshold(configService.getConfigFailsafe("main/main.cf").getInt(MAX_EXPORT_THRESHOLD, 100_000));
+      
+      return thresholds;
    }
 
 }

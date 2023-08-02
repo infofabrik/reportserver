@@ -36,6 +36,7 @@ import net.datenwerke.rs.base.client.reportengines.table.TableReportUtilityDao;
 import net.datenwerke.rs.base.client.reportengines.table.dto.TableReportDto;
 import net.datenwerke.rs.base.client.reportengines.table.dto.TableReportInformation;
 import net.datenwerke.rs.core.client.reportexecutor.ReportExecutorDao;
+import net.datenwerke.rs.core.client.reportexecutor.dto.ExportThresholdDto;
 import net.datenwerke.rs.core.client.reportexecutor.hooks.ReportExecutorViewToolbarHook;
 import net.datenwerke.rs.core.client.reportexecutor.ui.ReportExecutorInformation;
 import net.datenwerke.rs.core.client.reportexecutor.ui.ReportExecutorMainPanel;
@@ -226,13 +227,17 @@ public class ReportViewExportButtonHooker implements ReportExecutorViewToolbarHo
          final ReportExecutorInformation info, TableReportInformation information) {
       final int dataCount = information.getDataCount();
 
-      reportExecutorDao.getWarnRecordExportThreshold(new AsyncCallback<Integer>() {
+      reportExecutorDao.getExportThresholds(new AsyncCallback<ExportThresholdDto>() {
          @Override
-         public void onSuccess(final Integer result) {
-            final int threshold = result;
-            if (dataCount > threshold) {
+         public void onSuccess(final ExportThresholdDto result) {
+            final int warnThreshold = result.getWarnThreshold();
+            final int maxThreshold = result.getMaxThreshold();
+            if (dataCount > maxThreshold) {
+               new DwAlertMessageBox(ReportExporterMessages.INSTANCE.exportReport(),
+                     ReportExporterMessages.INSTANCE.exportNotPossible(dataCount, maxThreshold)).show();
+            } else if (dataCount > warnThreshold) {
                ConfirmMessageBox cmb = new DwConfirmMessageBox(ReportExporterMessages.INSTANCE.exportReport(),
-                     ReportExporterMessages.INSTANCE.exportConfirm(dataCount, threshold));
+                     ReportExporterMessages.INSTANCE.exportConfirm(dataCount, warnThreshold));
                cmb.addDialogHideHandler(event -> {
                   if (event.getHideButton() == PredefinedButton.YES) {
                      exporter.export(report, info.getExecuteReportToken());
