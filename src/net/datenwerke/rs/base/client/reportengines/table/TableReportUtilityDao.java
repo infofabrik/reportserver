@@ -15,6 +15,7 @@ import net.datenwerke.gxtdto.client.dtomanager.callback.DaoAsyncCallback;
 import net.datenwerke.gxtdto.client.model.ListStringBaseModel;
 import net.datenwerke.gxtdto.client.model.StringBaseModel;
 import net.datenwerke.rs.base.client.reportengines.table.dto.ColumnDto;
+import net.datenwerke.rs.base.client.reportengines.table.dto.PageSizeConfig;
 import net.datenwerke.rs.base.client.reportengines.table.dto.TableReportDto;
 import net.datenwerke.rs.base.client.reportengines.table.dto.TableReportInformation;
 import net.datenwerke.rs.base.client.reportengines.table.helpers.filter.FilterType;
@@ -87,4 +88,7 @@ public class TableReportUtilityDao extends Dao {
       rpcService.exportPrefilterToSvg(token, report, transformAndKeepCallback(callback));
    }
 
+   public void getPreviewPageSizeConfigs(AsyncCallback<List<PageSizeConfig>> callback) {
+      rpcService.getPreviewPageSizeConfigs(transformAndKeepCallback(callback));
+   }
 }

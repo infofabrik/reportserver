@@ -14,6 +14,7 @@ import net.datenwerke.gxtdto.client.model.StringBaseModel;
 import net.datenwerke.gxtdto.client.servercommunication.exceptions.NonFatalException;
 import net.datenwerke.gxtdto.client.servercommunication.exceptions.ServerCallFailedException;
 import net.datenwerke.rs.base.client.reportengines.table.dto.ColumnDto;
+import net.datenwerke.rs.base.client.reportengines.table.dto.PageSizeConfig;
 import net.datenwerke.rs.base.client.reportengines.table.dto.TableReportDto;
 import net.datenwerke.rs.base.client.reportengines.table.dto.TableReportInformation;
 import net.datenwerke.rs.base.client.reportengines.table.helpers.filter.FilterType;
@@ -24,16 +25,16 @@ import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
 @RemoteServiceRelativePath("tablereportutility")
 public interface TableReportUtilityService extends RemoteService {
 
-   public ListLoadResult<ColumnDto> getReturnedColumns(TableReportDto tableReport, String executeToken)
+   ListLoadResult<ColumnDto> getReturnedColumns(TableReportDto tableReport, String executeToken)
          throws ServerCallFailedException, NonFatalException;
 
-   public TableReportInformation getReportInformation(TableReportDto tableReport, String executeToken)
+   TableReportInformation getReportInformation(TableReportDto tableReport, String executeToken)
          throws ServerCallFailedException, NonFatalException;
 
-   public Map<String, List<String>> getSpecialParameter(TableReportDto tableReportDto, String executeToken)
+   Map<String, List<String>> getSpecialParameter(TableReportDto tableReportDto, String executeToken)
          throws ServerCallFailedException, NonFatalException;
 
-   public PagingLoadResult<StringBaseModel> getDistinctValuesPaged(SelectorPanelLoadConfig pagingLoadConfig,
+   PagingLoadResult<StringBaseModel> getDistinctValuesPaged(SelectorPanelLoadConfig pagingLoadConfig,
          TableReportDto report, ColumnDto column, FilterType type, boolean useFilters, boolean countResults,
          String executeToken) throws ServerCallFailedException;
 
@@ -47,4 +48,5 @@ public interface TableReportUtilityService extends RemoteService {
    
    String exportPrefilterToSvg(String token, TableReportDto report) throws ServerCallFailedException;
 
+   List<PageSizeConfig> getPreviewPageSizeConfigs() throws ServerCallFailedException;
 }

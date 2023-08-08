@@ -1,5 +1,7 @@
 package net.datenwerke.rs.base.service.reportengines.table;
 
+import static java.util.stream.Collectors.toList;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -9,11 +11,14 @@ import java.util.Set;
 
 import javax.persistence.EntityManager;
 
+import org.apache.commons.configuration2.HierarchicalConfiguration;
+
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.name.Named;
 
 import net.datenwerke.gxtdto.client.servercommunication.exceptions.NonFatalException;
+import net.datenwerke.rs.base.client.reportengines.table.dto.PageSizeConfig;
 import net.datenwerke.rs.base.client.reportengines.table.dto.TableReportInformation;
 import net.datenwerke.rs.base.service.reportengines.table.entities.AdditionalColumnSpec;
 import net.datenwerke.rs.base.service.reportengines.table.entities.Column;
@@ -33,6 +38,7 @@ import net.datenwerke.rs.base.service.reportengines.table.output.object.RSTableM
 import net.datenwerke.rs.base.service.reportengines.table.output.object.TableDefinition;
 import net.datenwerke.rs.base.service.reportengines.table.utils.ColumnMetadata;
 import net.datenwerke.rs.base.service.reportengines.table.utils.TableReportColumnMetadataService;
+import net.datenwerke.rs.configservice.service.configservice.ConfigService;
 import net.datenwerke.rs.core.service.datasourcemanager.entities.DatasourceContainer__;
 import net.datenwerke.rs.core.service.datasourcemanager.entities.DatasourceDefinition;
 import net.datenwerke.rs.core.service.reportmanager.ReportExecutorService;
@@ -58,11 +64,19 @@ public class TableReportUtilsImpl implements TableReportUtils {
    private final Provider<EntityManager> entityManagerProvider;
    private final Provider<AuthenticatorService> authenticatorServiceProvider;
    private final ProxyUtils proxyUtils;
+   private final Provider<ConfigService> configServiceProvider;
+   
+   private final static String PAGE_CONFIG_CONFIG_LIST = "dynamicList.pageSize.configs.config";
 
    @Inject
-   public TableReportUtilsImpl(TableReportColumnMetadataService tableReportMetadataService,
-         ReportExecutorService reportExecutor, Provider<EntityManager> entityManagerProvider,
-         Provider<AuthenticatorService> authenticatorServiceProvider, ProxyUtils proxyUtils) {
+   public TableReportUtilsImpl(
+         TableReportColumnMetadataService tableReportMetadataService,
+         ReportExecutorService reportExecutor, 
+         Provider<EntityManager> entityManagerProvider,
+         Provider<AuthenticatorService> authenticatorServiceProvider, 
+         ProxyUtils proxyUtils,
+         Provider<ConfigService> configServiceProvider
+         ) {
 
       /* store objects */
       this.tableReportMetadataService = tableReportMetadataService;
@@ -70,6 +84,7 @@ public class TableReportUtilsImpl implements TableReportUtils {
       this.entityManagerProvider = entityManagerProvider;
       this.authenticatorServiceProvider = authenticatorServiceProvider;
       this.proxyUtils = proxyUtils;
+      this.configServiceProvider = configServiceProvider;
    }
 
    @Override
@@ -303,6 +318,44 @@ public class TableReportUtilsImpl implements TableReportUtils {
       filter = em.find(filter.getClass(), filter.getId());
       if (null != filter)
          em.remove(filter);
+   }
+
+   @Override
+   public List<PageSizeConfig> getPreviewPageSizeConfigs() {
+      HierarchicalConfiguration config = (HierarchicalConfiguration) configServiceProvider.get()
+            .getConfigFailsafe("ui/previews.cf");
+      if (null == config)
+         return getDefaultPageSizeConfigs();
+
+      List<Object> configList = config.getList(PAGE_CONFIG_CONFIG_LIST);
+      if (null == configList || configList.isEmpty())
+         return getDefaultPageSizeConfigs();
+
+      return configList
+         .stream()
+         .filter(o -> o instanceof String)
+         .map(o -> (String) o)
+         .map(s -> {
+            int minCols = config.getInt(PAGE_CONFIG_CONFIG_LIST + "(" + configList.indexOf(s) + ")[@minCols]", 0);
+            String maxColsStr = config.getString(PAGE_CONFIG_CONFIG_LIST + "(" + configList.indexOf(s) + ")[@maxCols]", "0");
+            int maxCols = 0;
+            if ("MAX".equals(maxColsStr))
+               maxCols = Integer.MAX_VALUE;
+            else
+               maxCols = Integer.parseInt(maxColsStr);
+            int numberOfRows = config.getInt(PAGE_CONFIG_CONFIG_LIST + "(" + configList.indexOf(s) + ")", 0);
+            return new PageSizeConfig(minCols, maxCols, numberOfRows);
+         })
+         .collect(toList());
+   }
+   
+   private List<PageSizeConfig> getDefaultPageSizeConfigs() {
+      List<PageSizeConfig> configs = new ArrayList<>();
+      configs.add(new PageSizeConfig(0, 99, 50));
+      configs.add(new PageSizeConfig(100, 249, 25));
+      configs.add(new PageSizeConfig(250, 499, 10));
+      configs.add(new PageSizeConfig(500, Integer.MAX_VALUE, 5));
+      return configs;
    }
 
 }

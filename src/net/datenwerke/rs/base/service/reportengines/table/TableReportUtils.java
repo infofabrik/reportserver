@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.List;
 
 import net.datenwerke.gxtdto.client.servercommunication.exceptions.NonFatalException;
+import net.datenwerke.rs.base.client.reportengines.table.dto.PageSizeConfig;
 import net.datenwerke.rs.base.client.reportengines.table.dto.TableReportInformation;
 import net.datenwerke.rs.base.service.reportengines.table.entities.AdditionalColumnSpec;
 import net.datenwerke.rs.base.service.reportengines.table.entities.Column;
@@ -60,5 +61,6 @@ public interface TableReportUtils {
    Collection<BinaryColumnFilter> getBinaryColumnFiltersWithColumn(Column column);
 
    List<ColumnReference> getColumnReferencesFor(AdditionalColumnSpec reference);
-
+   
+   List<PageSizeConfig> getPreviewPageSizeConfigs();
 }

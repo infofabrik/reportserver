@@ -32,6 +32,7 @@ import net.datenwerke.gxtdto.client.servercommunication.exceptions.NonFatalExcep
 import net.datenwerke.gxtdto.client.servercommunication.exceptions.ServerCallFailedException;
 import net.datenwerke.gxtdto.server.dtomanager.DtoService;
 import net.datenwerke.rs.base.client.reportengines.table.dto.ColumnDto;
+import net.datenwerke.rs.base.client.reportengines.table.dto.PageSizeConfig;
 import net.datenwerke.rs.base.client.reportengines.table.dto.TableReportDto;
 import net.datenwerke.rs.base.client.reportengines.table.dto.TableReportInformation;
 import net.datenwerke.rs.base.client.reportengines.table.helpers.filter.FilterType;
@@ -443,6 +444,11 @@ public class TableReportUtilityServiceImpl extends SecuredRemoteServiceServlet i
       } catch (IOException e) {
          throw new ServerCallFailedException(e);
       }
+   }
+
+   @Override
+   public List<PageSizeConfig> getPreviewPageSizeConfigs() throws ServerCallFailedException {
+      return tableReportUtils.getPreviewPageSizeConfigs();
    }
 
 }

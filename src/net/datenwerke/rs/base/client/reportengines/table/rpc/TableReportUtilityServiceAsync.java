@@ -12,6 +12,7 @@ import com.sencha.gxt.data.shared.loader.PagingLoadResult;
 import net.datenwerke.gxtdto.client.model.ListStringBaseModel;
 import net.datenwerke.gxtdto.client.model.StringBaseModel;
 import net.datenwerke.rs.base.client.reportengines.table.dto.ColumnDto;
+import net.datenwerke.rs.base.client.reportengines.table.dto.PageSizeConfig;
 import net.datenwerke.rs.base.client.reportengines.table.dto.TableReportDto;
 import net.datenwerke.rs.base.client.reportengines.table.dto.TableReportInformation;
 import net.datenwerke.rs.base.client.reportengines.table.helpers.filter.FilterType;
@@ -41,7 +42,9 @@ public interface TableReportUtilityServiceAsync {
          AsyncCallback<PagingLoadResult<ListStringBaseModel>> transformAndKeepCallback);
 
    void exportPrefilterToDot(String token, TableReportDto report, AsyncCallback<String> callback);
-   
+
    void exportPrefilterToSvg(String token, TableReportDto report, AsyncCallback<String> callback);
+
+   void getPreviewPageSizeConfigs(AsyncCallback<List<PageSizeConfig>> callback);
 
 }

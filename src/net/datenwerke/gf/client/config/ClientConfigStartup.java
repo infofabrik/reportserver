@@ -1,5 +1,7 @@
 package net.datenwerke.gf.client.config;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import net.datenwerke.gf.client.login.LoginService;
@@ -8,12 +10,19 @@ import net.datenwerke.gxtdto.client.waitonevent.SynchronousCallbackOnEventTrigge
 import net.datenwerke.gxtdto.client.waitonevent.WaitOnEventTicket;
 import net.datenwerke.gxtdto.client.waitonevent.WaitOnEventUIService;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
+import net.datenwerke.rs.base.client.reportengines.table.TableReportUtilityDao;
+import net.datenwerke.rs.base.client.reportengines.table.dto.PageSizeConfig;
 
 public class ClientConfigStartup {
 
    @Inject
-   public ClientConfigStartup(HookHandlerService hookHandlerService, final WaitOnEventUIService waitOnEventService,
-         final ClientConfigService clientConfigService, final ClientConfigDao dao) {
+   public ClientConfigStartup(
+         HookHandlerService hookHandlerService, 
+         final WaitOnEventUIService waitOnEventService,
+         final ClientConfigService clientConfigService, 
+         final ClientConfigDao clientConfigDao,
+         final TableReportUtilityDao tableReportUtilityDao
+         ) {
 
       /* load generic rights after login */
       waitOnEventService.callbackOnEvent(LoginService.REPORTSERVER_EVENT_AFTER_ANY_LOGIN,
@@ -22,12 +31,23 @@ public class ClientConfigStartup {
                public void execute(final WaitOnEventTicket ticket) {
                   waitOnEventService.signalProcessingDone(ticket);
 
-                  dao.getClientConfig(ClientConfigModule.MAIN_CLIENT_CONFIG, new RsAsyncCallback<String>() {
+                  clientConfigDao.getClientConfig(ClientConfigModule.MAIN_CLIENT_CONFIG, new RsAsyncCallback<String>() {
                      @Override
                      public void onSuccess(String result) {
                         clientConfigService.setMainConfig(result);
-
-                        waitOnEventService.triggerEvent(ClientConfigModule.CLIENT_CONFIG_FILE_LOADED);
+                        
+                        tableReportUtilityDao.getPreviewPageSizeConfigs(new RsAsyncCallback<List<PageSizeConfig>>() {
+                           @Override
+                           public void onSuccess(List<PageSizeConfig> result) {
+                              clientConfigService.setPreviewPageSizeConfigs(result);
+                              
+                              waitOnEventService.triggerEvent(ClientConfigModule.CLIENT_CONFIG_FILE_LOADED);
+                           }
+                           
+                           public void onFailure(Throwable caught) {
+                              
+                           }
+                        });
                      }
 
                      @Override

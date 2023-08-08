@@ -19,6 +19,7 @@ import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment.HorizontalAlignmentConstant;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
+import com.google.inject.Provider;
 import com.sencha.gxt.core.client.Style.SelectionMode;
 import com.sencha.gxt.core.client.dom.ScrollSupport.ScrollMode;
 import com.sencha.gxt.core.client.util.Margins;
@@ -39,6 +40,7 @@ import com.sencha.gxt.widget.core.client.menu.Menu;
 import com.sencha.gxt.widget.core.client.menu.MenuItem;
 import com.sencha.gxt.widget.core.client.menu.SeparatorMenuItem;
 
+import net.datenwerke.gf.client.config.ClientConfigService;
 import net.datenwerke.gxtdto.client.baseex.widget.DwContentPanel;
 import net.datenwerke.gxtdto.client.baseex.widget.DwWindow;
 import net.datenwerke.gxtdto.client.baseex.widget.btn.DwTextButton;
@@ -58,6 +60,7 @@ import net.datenwerke.rs.base.client.reportengines.table.columnfilter.locale.Fil
 import net.datenwerke.rs.base.client.reportengines.table.dto.ColumnDto;
 import net.datenwerke.rs.base.client.reportengines.table.dto.NullHandlingDto;
 import net.datenwerke.rs.base.client.reportengines.table.dto.OrderDto;
+import net.datenwerke.rs.base.client.reportengines.table.dto.PageSizeConfig;
 import net.datenwerke.rs.base.client.reportengines.table.dto.TableReportDto;
 import net.datenwerke.rs.base.client.reportengines.table.dto.decorator.ColumnDtoDec;
 import net.datenwerke.rs.base.client.reportengines.table.dto.decorator.TableReportDtoDec;
@@ -115,14 +118,21 @@ public class TableReportPreviewView extends AbstractReportPreviewView implements
 
    private Grid<String[]> grid;
 
-   private ReportExecutorUIService reportExecutorUIService;
+   private final ReportExecutorUIService reportExecutorUIService;
+   private final Provider<ClientConfigService> clientConfigServiceProvider;
 
    @Inject
-   public TableReportPreviewView(ReportExecutorDao rexDao, HookHandlerService hookHandler,
-         StatementManagerDao statementManager, ReportExecutorUIService reportExecutorUIService) {
+   public TableReportPreviewView(
+         ReportExecutorDao rexDao, 
+         HookHandlerService hookHandler,
+         StatementManagerDao statementManager, 
+         ReportExecutorUIService reportExecutorUIService,
+         Provider<ClientConfigService> clientConfigServiceProvider
+         ) {
       super(rexDao, hookHandler);
       this.statementManager = statementManager;
       this.reportExecutorUIService = reportExecutorUIService;
+      this.clientConfigServiceProvider = clientConfigServiceProvider;
 
       wrapper = DwContentPanel.newInlineInstance();
 
@@ -570,14 +580,20 @@ public class TableReportPreviewView extends AbstractReportPreviewView implements
 
    @Override
    public int getPageSize() {
-      List<ColumnDto> cols = ((TableReportDto) report).getColumns();
-      if (null == cols || cols.size() < 100)
-         return 50;
-      if (cols.size() < 250)
-         return 25;
-      if (cols.size() < 500)
-         return 10;
-      return 5;
+      final List<ColumnDto> cols = ((TableReportDto) report).getColumns();
+      final List<PageSizeConfig> pageSizeConfigs = clientConfigServiceProvider.get().getPreviewPageSizeConfigs();
+      
+      final int defaultRows = pageSizeConfigs.get(0).getNumberOfRows();
+      
+      if (null == cols) 
+         return defaultRows;
+      
+      return pageSizeConfigs
+         .stream()
+         .filter(config -> config.getMinCols() <= cols.size() && cols.size() <= config.getMaxCols())
+         .map(PageSizeConfig::getNumberOfRows)
+         .findFirst()
+         .orElse(defaultRows);
    }
 
 }
