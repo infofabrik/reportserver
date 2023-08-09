@@ -449,6 +449,7 @@ public class SimpleDataSupplier {
    private int countData(TableDataSource ds) throws ReportExecutorException {
       /* get data */
       DataCountOutputGenerator dataCountOutputGenerator = new DataCountOutputGenerator();
+      dataCountOutputGenerator.preInitialize();
       try {
          /* open datasource */
          ds.open();

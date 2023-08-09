@@ -20,6 +20,14 @@ import net.datenwerke.security.service.usermanager.entities.User;
 public interface TableOutputGenerator extends ReportOutputGenerator {
 
    /**
+    * If something needs to be done before the
+    * {@link #initialize(OutputStream, TableDefinition, boolean, TableReport, TableReport, CellFormatter[], ParameterSet, User, ReportExecutionConfig...)}
+    * method is called, e.g. something that has to be initialized before the
+    * {@link TableDefinition} is created, it can be done here.
+    */
+   void preInitialize();
+   
+   /**
     * Initializes the generator before the first data point is provided.
     * 
     * @param os The output stream to be used. If no output stream is provided (the

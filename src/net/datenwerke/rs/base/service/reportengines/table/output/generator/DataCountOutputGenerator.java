@@ -36,11 +36,15 @@ public class DataCountOutputGenerator extends TableOutputGeneratorImpl {
    }
 
    @Override
+   public void preInitialize() {
+      this.start = System.currentTimeMillis();
+   }
+
+   @Override
    public void initialize(OutputStream os, TableDefinition td, boolean withSubtotals, TableReport report,
          TableReport originalReport, CellFormatter[] cellFormatters, ParameterSet parameters, User user,
          ReportExecutionConfig... configs) throws IOException {
       super.initialize(os, td, withSubtotals, report, originalReport, cellFormatters, parameters, user, configs);
-      this.start = System.currentTimeMillis();
    }
 
    @Override

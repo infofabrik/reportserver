@@ -45,6 +45,10 @@ public abstract class TableOutputGeneratorImpl implements TableOutputGenerator {
    protected CellFormatter[] cellFormatters;
 
    @Override
+   public void preInitialize() {
+   }
+   
+   @Override
    public void initialize(OutputStream os, TableDefinition td, boolean withSubtotals, TableReport report,
          TableReport originalReport, CellFormatter[] cellFormatters, ParameterSet parameters, User user,
          ReportExecutionConfig... configs) throws IOException {
@@ -60,7 +64,7 @@ public abstract class TableOutputGeneratorImpl implements TableOutputGenerator {
 
       this.charset = reportServerService.get().getCharset();
    }
-
+   
    protected boolean hasConfig(Class<? extends ReportExecutionConfig> type) {
       return null != getConfig(type);
    }

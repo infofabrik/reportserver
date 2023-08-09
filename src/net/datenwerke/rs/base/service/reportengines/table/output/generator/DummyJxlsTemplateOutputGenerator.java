@@ -16,6 +16,10 @@ import net.datenwerke.security.service.usermanager.entities.User;
 public class DummyJxlsTemplateOutputGenerator implements SimpleJxlsTemplateOutputGenerator {
 
    @Override
+   public void preInitialize() {
+   }
+   
+   @Override
    public void initialize(OutputStream os, TableDefinition td, boolean withSubtotals, TableReport report,
          TableReport orgReport, CellFormatter[] cellFormatters, ParameterSet parameters, User user,
          ReportExecutionConfig... configs) throws IOException {

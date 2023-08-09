@@ -272,6 +272,8 @@ public class TableReportEngine extends ReportEngine<TableDataSource, TableOutput
                executorToken = ((RECReportExecutorToken) cfg).getToken();
          }
 
+         outputGenerator.preInitialize();
+         
          /* open datasource */
          ds.open(executorToken);
 
@@ -332,6 +334,9 @@ public class TableReportEngine extends ReportEngine<TableDataSource, TableOutput
 
       boolean foundData = false;
       try {
+         
+         outputGenerator.preInitialize();
+         
          /* open datasource */
          ds.open();
 

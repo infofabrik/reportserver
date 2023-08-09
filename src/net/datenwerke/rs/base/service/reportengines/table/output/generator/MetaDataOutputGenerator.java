@@ -26,6 +26,10 @@ public class MetaDataOutputGenerator implements TableOutputGenerator {
    public String[] getFormats() {
       return new String[] { ReportExecutorService.OUTPUT_FORMAT_METADATA };
    }
+   
+   @Override
+   public void preInitialize() {
+   }
 
    @Override
    public void initialize(OutputStream os, TableDefinition td, boolean withSubtotals, TableReport report,
