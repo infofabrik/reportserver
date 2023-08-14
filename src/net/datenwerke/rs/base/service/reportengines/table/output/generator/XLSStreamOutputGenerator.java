@@ -591,8 +591,13 @@ public class XLSStreamOutputGenerator extends TableOutputGeneratorImpl {
             if (null != column.getPreviewWidth()) {
                colWidth = pixel2WidthUnits(column.getPreviewWidth());
                dataSheet.setColumnWidth(col, colWidth);
+            } else {
+               dataSheet.setColumnWidth(col, 260 * Math.min(75, columnWidths[col]) + 2);
             }
          }
+      } else {
+         for(int column = 0; column < td.getColumnCount(); column++)
+            dataSheet.setColumnWidth(column, 260 * Math.min(75, columnWidths[column]) + 2);
       }
 
       workbook.write(os);
