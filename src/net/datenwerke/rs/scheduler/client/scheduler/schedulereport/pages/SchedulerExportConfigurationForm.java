@@ -10,12 +10,14 @@ import java.util.Map;
 import com.google.gwt.core.client.JsonUtils;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
+import com.google.inject.Provider;
 import com.google.inject.assistedinject.Assisted;
 import com.sencha.gxt.widget.core.client.Component;
 import com.sencha.gxt.widget.core.client.form.FormPanel.LabelAlign;
 
 import net.datenwerke.gxtdto.client.baseex.widget.DwContentPanel;
 import net.datenwerke.gxtdto.client.dialog.error.SimpleErrorDialog;
+import net.datenwerke.gxtdto.client.dtomanager.callback.RsAsyncCallback;
 import net.datenwerke.gxtdto.client.forms.simpleform.SimpleForm;
 import net.datenwerke.gxtdto.client.forms.simpleform.SimpleMultiForm;
 import net.datenwerke.gxtdto.client.forms.simpleform.actions.SimpleFormAction;
@@ -29,6 +31,7 @@ import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.core.client.reportexecutor.ui.ReportViewConfiguration;
 import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
 import net.datenwerke.rs.core.client.sendto.SendToClientConfig;
+import net.datenwerke.rs.core.client.sendto.SendToDao;
 import net.datenwerke.rs.core.client.sendto.SendToJsonConfig;
 import net.datenwerke.rs.core.service.reportmanager.ReportExecutorService;
 import net.datenwerke.rs.printer.client.printer.hookers.PrinterExportSnippetProvider;
@@ -45,7 +48,8 @@ public class SchedulerExportConfigurationForm extends DwContentPanel
    private static final String SEND_TO_ACTIVE_KEY = "__xx_sendToActive";
 
    private final HookHandlerService hookHandler;
-
+   private final Provider<SendToDao> sendToDaoProvider;
+   
    private Map<ScheduleExportSnippetProviderHook, SimpleForm> formMap = new IdentityHashMap<>();
 
    private List<ScheduleExportSnippetProviderHook> snippetProviders;
@@ -65,6 +69,7 @@ public class SchedulerExportConfigurationForm extends DwContentPanel
    @Inject
    public SchedulerExportConfigurationForm(
          HookHandlerService hookHandler,
+         Provider<SendToDao> sendToDaoProvider,
          @Assisted Collection<ReportViewConfiguration> configs, 
          @Assisted ArrayList<SendToClientConfig> sendToConfigs,
          @Nullable @Assisted ReportScheduleDefinition definition
@@ -73,8 +78,9 @@ public class SchedulerExportConfigurationForm extends DwContentPanel
 
       /* store objects */
       this.hookHandler = hookHandler;
+      this.sendToDaoProvider = sendToDaoProvider;
+      
       this.sendToConfigs = sendToConfigs;
-
       this.definition = definition;
       this.configs = configs;
 
@@ -111,81 +117,83 @@ public class SchedulerExportConfigurationForm extends DwContentPanel
          });
 
       /* send-to configs from send-to scripts */
-      sendToConfigs.forEach(sendToConfig -> {
-         final SimpleForm activateForm = SimpleForm.getInlineInstance();
-
-         String title = sendToConfig.getTitle();
-
-         activateForm.setLabelAlign(LabelAlign.LEFT);
-         sendToActivationForms.put(sendToConfig.getId(), activateForm);
-         activateForm.addField(Boolean.class, SEND_TO_ACTIVE_KEY, title);
-         form.addSubForm(activateForm);
-
-         if (null != definition)
-            if (null != definition && null != definition.getSendToConfig(sendToConfig.getId()))
-               activateForm.setValue(SEND_TO_ACTIVE_KEY, true);
-
-         if (null != sendToConfig.getForm()) {
-            SendToJsonConfig formConfig;
-            try {
-               formConfig = JsonUtils.safeEval(sendToConfig.getForm()).cast();
-
-               final SimpleForm detailForm = SimpleForm.fromJson((SimpleFormJsonConfig) formConfig.getForm().cast());
-
-               if (null != definition) {
-                  final Map<String, String> values = definition.getSendToConfig(sendToConfig.getId()).getValues();
-                  if (null != values) {
-                     detailForm.getFieldKeys()
-                        .stream()
-                        .filter(field -> values.containsKey(field))
-                        .forEach(field -> detailForm.setValue(field, values.get(field)));
+      if (null != sendToConfigs) {
+         sendToConfigs.forEach(sendToConfig -> {
+            final SimpleForm activateForm = SimpleForm.getInlineInstance();
+   
+            String title = sendToConfig.getTitle();
+   
+            activateForm.setLabelAlign(LabelAlign.LEFT);
+            sendToActivationForms.put(sendToConfig.getId(), activateForm);
+            activateForm.addField(Boolean.class, SEND_TO_ACTIVE_KEY, title);
+            form.addSubForm(activateForm);
+   
+            if (null != definition)
+               if (null != definition && null != definition.getSendToConfig(sendToConfig.getId()))
+                  activateForm.setValue(SEND_TO_ACTIVE_KEY, true);
+   
+            if (null != sendToConfig.getForm()) {
+               SendToJsonConfig formConfig;
+               try {
+                  formConfig = JsonUtils.safeEval(sendToConfig.getForm()).cast();
+   
+                  final SimpleForm detailForm = SimpleForm.fromJson((SimpleFormJsonConfig) formConfig.getForm().cast());
+   
+                  if (null != definition) {
+                     final Map<String, String> values = definition.getSendToConfig(sendToConfig.getId()).getValues();
+                     if (null != values) {
+                        detailForm.getFieldKeys()
+                           .stream()
+                           .filter(field -> values.containsKey(field))
+                           .forEach(field -> detailForm.setValue(field, values.get(field)));
+                     }
                   }
+   
+                  detailForm.loadFields();
+                  form.addSubForm(detailForm);
+                  sendToForms.put(sendToConfig.getId(), detailForm);
+   
+                  activateForm.addCondition(SEND_TO_ACTIVE_KEY, new FieldEquals(true), new SimpleFormAction() {
+                     @Override
+                     public void onSuccess(SimpleForm form) {
+                        for (String key : detailForm.getFieldKeys()) {
+                           Widget field = detailForm.getDisplayedField(key);
+                           if (null == field)
+                              continue;
+                           if (field instanceof Component)
+                              ((Component) field).show();
+                           else
+                              field.setVisible(true);
+                        }
+   
+                        detailForm.forceLayout();
+                     }
+   
+                     @Override
+                     public void onFailure(SimpleForm form) {
+                        for (String key : detailForm.getFieldKeys()) {
+                           Widget field = detailForm.getDisplayedField(key);
+                           if (null == field)
+                              continue;
+                           if (field instanceof Component)
+                              ((Component) field).hide();
+                           else
+                              field.setVisible(false);
+                        }
+   
+                        detailForm.forceLayout();
+                     }
+                  });
+   
+               } catch (RuntimeException e) {
+                  new SimpleErrorDialog(BaseMessages.INSTANCE.error(), e.getMessage()).show();
+                  return;
                }
-
-               detailForm.loadFields();
-               form.addSubForm(detailForm);
-               sendToForms.put(sendToConfig.getId(), detailForm);
-
-               activateForm.addCondition(SEND_TO_ACTIVE_KEY, new FieldEquals(true), new SimpleFormAction() {
-                  @Override
-                  public void onSuccess(SimpleForm form) {
-                     for (String key : detailForm.getFieldKeys()) {
-                        Widget field = detailForm.getDisplayedField(key);
-                        if (null == field)
-                           continue;
-                        if (field instanceof Component)
-                           ((Component) field).show();
-                        else
-                           field.setVisible(true);
-                     }
-
-                     detailForm.forceLayout();
-                  }
-
-                  @Override
-                  public void onFailure(SimpleForm form) {
-                     for (String key : detailForm.getFieldKeys()) {
-                        Widget field = detailForm.getDisplayedField(key);
-                        if (null == field)
-                           continue;
-                        if (field instanceof Component)
-                           ((Component) field).hide();
-                        else
-                           field.setVisible(false);
-                     }
-
-                     detailForm.forceLayout();
-                  }
-               });
-
-            } catch (RuntimeException e) {
-               new SimpleErrorDialog(BaseMessages.INSTANCE.error(), e.getMessage()).show();
-               return;
             }
-         }
-
-         activateForm.loadFields();
-      });
+   
+            activateForm.loadFields();
+         });
+      }
       
       form.loadFields();
 
@@ -256,7 +264,19 @@ public class SchedulerExportConfigurationForm extends DwContentPanel
          outputFormat = jobReportConfigForm.getOutputFormat();
          
          final ReportDto report = jobReportConfigForm.getReport();
-         initForm(report);
+         this.mask(BaseMessages.INSTANCE.loadingMsg());
+         sendToDaoProvider.get().loadClientConfigsFor(report, new RsAsyncCallback<ArrayList<SendToClientConfig>>() {
+            @Override
+            public void onSuccess(ArrayList<SendToClientConfig> result) {
+               SchedulerExportConfigurationForm.this.unmask();
+               sendToConfigs = result;
+               initForm(report);
+            }
+            @Override
+            public void onFailure(Throwable caught) {
+               SchedulerExportConfigurationForm.this.unmask();
+            }
+         });
          this.report = report;
       }
 

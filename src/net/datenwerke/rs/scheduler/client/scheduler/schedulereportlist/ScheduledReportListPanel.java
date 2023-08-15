@@ -306,7 +306,7 @@ public class ScheduledReportListPanel extends DwBorderContainer {
       newBtn.addSelectHandler(event -> {
          ScheduleDialog dialog = scheduleDialogProvider.get();
 
-         dialog.displayDialog(Optional.empty(), Collections.emptyList(), new ArrayList<>(), new DialogCallback() {
+         dialog.displayDialog(Optional.empty(), Collections.emptyList(), null, new DialogCallback() {
             @Override
             public void finished(ReportScheduleDefinition configDto, final WizardDialog dialog) {
                dialog.mask(BaseMessages.INSTANCE.storingMsg());
