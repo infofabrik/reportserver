@@ -239,7 +239,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/lucene-queryparser-9.7.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/lucene-sandbox-9.7.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/hsqldb-2.7.2.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/jcifs-2.1.35.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/mysql-connector-j-8.1.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/unboundid-ldapsdk-6.0.9.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/liquibase-core-4.23.1.jar"/>
@@ -248,5 +247,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/bcpkix-jdk18on-1.76.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/bcprov-jdk18on-1.76.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/bcutil-jdk18on-1.76.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/jcifs-2.1.36.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
