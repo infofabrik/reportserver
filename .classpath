@@ -232,11 +232,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/error_prone_annotations-2.18.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/guava-32.1.1-jre.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/j2objc-annotations-2.8.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/bcmail-jdk18on-1.75.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/bcpg-jdk18on-1.75.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/bcpkix-jdk18on-1.75.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/bcprov-jdk18on-1.75.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/bcutil-jdk18on-1.75.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/commons-io-2.13.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/lucene-analysis-common-9.7.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/lucene-core-9.7.0.jar"/>
@@ -248,5 +243,10 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/mysql-connector-j-8.1.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/unboundid-ldapsdk-6.0.9.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/liquibase-core-4.23.1.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/bcmail-jdk18on-1.76.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/bcpg-jdk18on-1.76.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/bcpkix-jdk18on-1.76.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/bcprov-jdk18on-1.76.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/bcutil-jdk18on-1.76.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
