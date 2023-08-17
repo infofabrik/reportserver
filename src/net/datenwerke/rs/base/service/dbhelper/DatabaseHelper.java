@@ -41,6 +41,7 @@ import net.datenwerke.rs.base.service.dbhelper.db.YugabyteDB;
 import net.datenwerke.rs.base.service.dbhelper.db.athena.Athena;
 import net.datenwerke.rs.base.service.dbhelper.db.derby.Derby;
 import net.datenwerke.rs.base.service.dbhelper.db.mssql.SqlServer;
+import net.datenwerke.rs.base.service.dbhelper.db.mssql.SqlServerJTDS;
 import net.datenwerke.rs.base.service.dbhelper.db.oracle.Oracle;
 import net.datenwerke.rs.base.service.dbhelper.db.teradata.Teradata;
 import net.datenwerke.rs.base.service.dbhelper.dtogen.post.DatabaseHelper2DtoPostProcessor;
@@ -228,7 +229,9 @@ abstract public class DatabaseHelper {
           * Patch for sorting issues (e.g. RS-3230). This will be refactored in RS-3239.
           */
          if (builder.getDbHelper() instanceof MariaDB || builder.getDbHelper() instanceof Teradata
-               || builder.getDbHelper() instanceof SqlServer || builder.getDbHelper() instanceof MySQL
+               || builder.getDbHelper() instanceof SqlServer
+               || builder.getDbHelper() instanceof SqlServerJTDS
+               || builder.getDbHelper() instanceof MySQL
                || builder.getDbHelper() instanceof PostgreSQL || builder.getDbHelper() instanceof Oracle
                || builder.getDbHelper() instanceof GoogleBigQuery || builder.getDbHelper() instanceof Redshift
                || builder.getDbHelper() instanceof YugabyteDB

@@ -31,6 +31,7 @@ import net.datenwerke.rs.base.service.dbhelper.db.db2.Db2z;
 import net.datenwerke.rs.base.service.dbhelper.db.derby.Derby;
 import net.datenwerke.rs.base.service.dbhelper.db.informix.Informix;
 import net.datenwerke.rs.base.service.dbhelper.db.mssql.SqlServer;
+import net.datenwerke.rs.base.service.dbhelper.db.mssql.SqlServerJTDS;
 import net.datenwerke.rs.base.service.dbhelper.db.oracle.Oracle;
 import net.datenwerke.rs.base.service.dbhelper.db.teradata.Teradata;
 import net.datenwerke.rs.base.service.dbhelper.hooks.DatabaseHelperProviderHook;
@@ -46,6 +47,7 @@ public class ProvideBaseDatabaseHelpersHookers implements DatabaseHelperProvider
          Firebird firebird, 
          MariaDB mariaDb, 
          SqlServer mssql,
+         SqlServerJTDS mssqlJtds,
          MySQL mysql,
          MonetDB monetdb, 
          Oracle oracle, 
@@ -72,6 +74,7 @@ public class ProvideBaseDatabaseHelpersHookers implements DatabaseHelperProvider
       helpers.add(db2z);
       helpers.add(h2);
       helpers.add(mssql);
+      helpers.add(mssqlJtds);
       helpers.add(mysql);
       helpers.add(mariaDb);
       helpers.add(monetdb);
