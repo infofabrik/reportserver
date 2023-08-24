@@ -49,7 +49,7 @@ public class AuthenticationResult {
    public void setAllowed(boolean allowed) {
       this.allowed = allowed;
    }
-   
+
    /**
     * Denies access
     * 
@@ -57,6 +57,17 @@ public class AuthenticationResult {
     */
    public static AuthenticationResult denyAccess() {
       return new AuthenticationResult(false, null);
+   }
+
+   /**
+    * Denies access
+    * 
+    * @param user the user
+    * 
+    * @return an AuthenticationResult denying access
+    */
+   public static AuthenticationResult denyAccess(User user) {
+      return new AuthenticationResult(false, user);
    }
 
    /**
@@ -91,6 +102,22 @@ public class AuthenticationResult {
    public static AuthenticationResult cannotAuthenticate(boolean authoritative) {
       if (authoritative)
          return denyAccess();
+      else
+         return dontCareAccess();
+   }
+
+   /**
+    * If authoritative is true, creates an AuthenticationResult denying access to
+    * the respective user. Else, creates an AuthenticationResult specifying don't
+    * care, somebody else should decide
+    * 
+    * @param authoritative
+    * @param user          the user
+    * @return
+    */
+   public static AuthenticationResult cannotAuthenticate(boolean authoritative, User user) {
+      if (authoritative)
+         return denyAccess(user);
       else
          return dontCareAccess();
    }

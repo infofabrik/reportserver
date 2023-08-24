@@ -42,7 +42,6 @@ public class BsiPasswordPolicyPostAuthenticateHook implements PostAuthenticateHo
          return;
 
       User user = authRes.getUser();
-
       if (null != user) {
          final BsiPasswordPolicyUserMetadata data = bsiPasswordPolicyService.getUserMetadata(user);
 

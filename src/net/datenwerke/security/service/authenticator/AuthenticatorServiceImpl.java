@@ -139,12 +139,28 @@ public class AuthenticatorServiceImpl implements AuthenticatorService {
    }
 
    private AuthenticationResult evaluateTokens(final AuthToken[] tokens) {
-      return pams.get()
-         .stream()
-         .map(pam -> pam.authenticate(tokens))
-         .filter(authResponse -> authResponse.isAllowed() && null != authResponse.getUser())
-         .findAny()
-         .orElse(AuthenticationResult.denyAccess());
+      User tmpUser = null;
+      boolean result = true;
+
+      for (ReportServerPAM pam : pams.get()) {
+         AuthenticationResult authRes = pam.authenticate(tokens);
+
+         if (!authRes.isAllowed())
+            result = false;
+
+         User authUser = authRes.getUser();
+         if (null != authUser) {
+            if (null == tmpUser)
+               tmpUser = authUser;
+
+            if (!tmpUser.equals(authUser))
+               result = false;
+         }
+      }
+      if (null == tmpUser)
+         result = false;
+
+      return new AuthenticationResult(result, tmpUser);
    }
 
    public User getCurrentUser() {

@@ -35,8 +35,10 @@ public class UserPasswordPAM implements ReportServerPAM {
             User u = authenticate(credentials.getUsername(), credentials.getPassword());
             if (null != u) 
                return AuthenticationResult.grantAccess(u);
-            else 
-               return AuthenticationResult.cannotAuthenticate(isAuthoritative());
+            else {
+               User usr = userManagerService.getUserOrNull(credentials.getUsername());
+               return AuthenticationResult.cannotAuthenticate(isAuthoritative(), usr);
+            }
          }
       }
 

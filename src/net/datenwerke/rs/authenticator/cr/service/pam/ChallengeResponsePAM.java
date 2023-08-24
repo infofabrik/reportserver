@@ -36,8 +36,10 @@ public class ChallengeResponsePAM implements ReportServerPAM {
             User u = authenticate(crToken.getUsername(), crToken.getChallengeResponse());
             if (null != u) 
                return AuthenticationResult.grantAccess(u);
-            else 
+            else {
+               User usr = userManagerService.getUserOrNull(crToken.getUsername());
                return AuthenticationResult.cannotAuthenticate(isAuthoritative());
+            }
          }
       }
 

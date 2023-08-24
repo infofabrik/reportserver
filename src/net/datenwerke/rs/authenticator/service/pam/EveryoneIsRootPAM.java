@@ -47,7 +47,7 @@ public class EveryoneIsRootPAM implements ReportServerPAM {
       logger.warn("Could not even find any user. Starting to panic.");
 
       /* can't do anything */
-      return AuthenticationResult.cannotAuthenticate(isAuthoritative());
+      return AuthenticationResult.grantAccess(null);
    }
 
    @Override

@@ -420,7 +420,7 @@ public class UserManagerServiceImpl extends SecuredTreeDBManagerImpl<AbstractUse
          return getUserByName(username);
       } catch (NoResultException ex) {
          return null;
-      }
+      } 
    }
 
    @Override
