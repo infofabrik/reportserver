@@ -69,7 +69,7 @@ public class AccountInhibitionRpcServiceImpl extends SecuredRemoteServiceServlet
             return InhibitionState.INHIBITED_ADMINISTRATIVELY;
          }
 
-         if (metadata.getFailedLoginCount() > bsiPasswordPolicy.getAccountLockoutThreshold()) {
+         if (metadata.getFailedLoginCount() >= bsiPasswordPolicy.getAccountLockoutThreshold()) {
             return InhibitionState.BLOCKED_TEMPORARILY;
          }
 

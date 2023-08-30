@@ -34,7 +34,7 @@ public class UserDtoSetStatusPostProcessor implements UserDtoPostProcessorHook {
       else {
          BsiPasswordPolicy policy = bsiPasswordPolicyService.getPolicy();
 
-         if (data.getFailedLoginCount() > policy.getAccountLockoutThreshold())
+         if (data.getFailedLoginCount() >= policy.getAccountLockoutThreshold())
             userDto.setActive(false);
       }
    }

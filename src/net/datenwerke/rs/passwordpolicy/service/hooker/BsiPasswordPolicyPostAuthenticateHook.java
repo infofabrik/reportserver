@@ -58,7 +58,7 @@ public class BsiPasswordPolicyPostAuthenticateHook implements PostAuthenticateHo
          }
 
          /* Check if account is locked */
-         if (data.getFailedLoginCount() > bsiPasswordPolicy.getAccountLockoutThreshold()) {
+         if (data.getFailedLoginCount() >= bsiPasswordPolicy.getAccountLockoutThreshold()) {
             authRes.setAllowed(false);
             authRes.addInfo(new AccountLockedAuthenticateResultInfo(new Date((long) data.getLastFailedLogin().getTime()
                   + ((long) bsiPasswordPolicy.getAccountLockoutAutoResetTimeout() * (long) MILLISECONDS_PER_MINUTE))));

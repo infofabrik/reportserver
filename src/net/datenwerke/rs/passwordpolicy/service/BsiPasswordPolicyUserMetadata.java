@@ -37,7 +37,7 @@ public class BsiPasswordPolicyUserMetadata {
    private Date lastChangedPassword;
    private Date accountExpirationDate;
 
-   private int failedLoginCount = -1;
+   private int failedLoginCount = 0;
    private List<String> recentPasswords;
 
    private Boolean accountInhibited;
