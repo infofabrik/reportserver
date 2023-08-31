@@ -1,4 +1,4 @@
-package net.datenwerke.rs.incubator.client.globalsearch.locale;
+package net.datenwerke.rs.search.client.search.globalsearch.locale;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.i18n.client.Messages;

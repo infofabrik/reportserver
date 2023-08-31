@@ -1,4 +1,4 @@
-package net.datenwerke.rs.incubator.client.globalsearch.hookers;
+package net.datenwerke.rs.search.client.search.globalsearch.hookers;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,13 +57,13 @@ import net.datenwerke.gxtdto.client.utils.labelprovider.DisplayTitleLabelProvide
 import net.datenwerke.gxtdto.client.utils.loadconfig.SearchLoadConfig;
 import net.datenwerke.gxtdto.client.utils.loadconfig.SearchLoadConfigBean;
 import net.datenwerke.gxtdto.client.xtemplates.NullSafeFormatter;
-import net.datenwerke.rs.incubator.client.globalsearch.locale.GlobalSearchMessages;
 import net.datenwerke.rs.search.client.search.SearchDao;
 import net.datenwerke.rs.search.client.search.SearchUiService;
 import net.datenwerke.rs.search.client.search.dto.EmptySearchResultDto;
 import net.datenwerke.rs.search.client.search.dto.SearchResultEntryDto;
 import net.datenwerke.rs.search.client.search.dto.SearchResultListDto;
 import net.datenwerke.rs.search.client.search.dto.pa.SearchResultEntryDtoPA;
+import net.datenwerke.rs.search.client.search.globalsearch.locale.GlobalSearchMessages;
 import net.datenwerke.rs.theme.client.icon.BaseIcon;
 
 public class GlobalSearchHooker implements HomepageHeaderContentHook {

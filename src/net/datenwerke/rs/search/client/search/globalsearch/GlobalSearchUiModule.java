@@ -1,4 +1,4 @@
-package net.datenwerke.rs.incubator.client.globalsearch;
+package net.datenwerke.rs.search.client.search.globalsearch;
 
 import com.google.gwt.inject.client.AbstractGinModule;
 

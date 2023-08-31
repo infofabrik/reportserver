@@ -37,12 +37,12 @@ import net.datenwerke.gxtdto.client.baseex.widget.btn.DwTextButton;
 import net.datenwerke.gxtdto.client.utils.labelprovider.DisplayTitleLabelProvider;
 import net.datenwerke.gxtdto.client.utils.loadconfig.SearchLoadConfig;
 import net.datenwerke.gxtdto.client.utils.loadconfig.SearchLoadConfigBean;
-import net.datenwerke.rs.incubator.client.globalsearch.locale.GlobalSearchMessages;
 import net.datenwerke.rs.incubator.client.managerhelpersearch.hookers.ManagerHelperSearchBar.SearchTemplates;
 import net.datenwerke.rs.search.client.search.dto.EmptySearchResultDto;
 import net.datenwerke.rs.search.client.search.dto.SearchResultEntryDto;
 import net.datenwerke.rs.search.client.search.dto.SearchResultListDto;
 import net.datenwerke.rs.search.client.search.dto.pa.SearchResultEntryDtoPA;
+import net.datenwerke.rs.search.client.search.globalsearch.locale.GlobalSearchMessages;
 import net.datenwerke.rs.theme.client.icon.BaseIcon;
 
 /**
