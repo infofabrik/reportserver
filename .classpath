@@ -213,19 +213,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/sshd-sftp-2.10.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/sqlite-jdbc-3.42.0.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/rs-schemaupdate-1.3.26.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-4.0.13.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-astbuilder-4.0.13.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-cli-picocli-4.0.13.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-datetime-4.0.13.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-dateutil-4.0.13.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-json-4.0.13.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-jsr223-4.0.13.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-macro-4.0.13.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-nio-4.0.13.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-servlet-4.0.13.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-sql-4.0.13.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-templates-4.0.13.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-xml-4.0.13.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/picocli-4.7.4.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/h2-2.2.220.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/checker-qual-3.33.0.jar"/>
@@ -248,5 +235,18 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/bcprov-jdk18on-1.76.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/bcutil-jdk18on-1.76.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jcifs-2.1.36.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-4.0.14.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-astbuilder-4.0.14.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-cli-picocli-4.0.14.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-datetime-4.0.14.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-dateutil-4.0.14.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-json-4.0.14.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-jsr223-4.0.14.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-macro-4.0.14.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-nio-4.0.14.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-servlet-4.0.14.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-sql-4.0.14.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-templates-4.0.14.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-xml-4.0.14.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
