@@ -353,5 +353,7 @@ public interface TeamSpaceService {
    void assertAccess(TeamSpace ts);
 
    void assertIsUser(TeamSpace teamSpace);
+   
+   Boolean isFileUploadEnabled();
 
 }

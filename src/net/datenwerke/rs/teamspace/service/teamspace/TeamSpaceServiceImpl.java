@@ -9,11 +9,14 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 
+import org.apache.commons.configuration2.Configuration;
+
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.name.Named;
 
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
+import net.datenwerke.rs.configservice.service.configservice.ConfigService;
 import net.datenwerke.rs.teamspace.service.teamspace.entities.TeamSpace;
 import net.datenwerke.rs.teamspace.service.teamspace.entities.TeamSpaceApp;
 import net.datenwerke.rs.teamspace.service.teamspace.entities.TeamSpaceMember;
@@ -55,11 +58,21 @@ public class TeamSpaceServiceImpl implements TeamSpaceService {
    private final SecurityService securityService;
    private final UserManagerService userService;
    private final UserPropertiesService userPropertiesService;
+   private final Provider<ConfigService> configServiceProvider;
+   
+   public static final String CONFIG_FILE = "security/teamspace.cf";
+   private static final String PROPERTY_FILE_UPLOAD_DISABLED = "fileupload[@disabled]";
 
    @Inject
-   public TeamSpaceServiceImpl(Provider<AuthenticatorService> authenticatorServiceProvider,
-         Provider<EntityManager> entityManagerProvider, HookHandlerService hookHandler, SecurityService securityService,
-         UserManagerService userService, UserPropertiesService userPropertiesService) {
+   public TeamSpaceServiceImpl(
+         Provider<AuthenticatorService> authenticatorServiceProvider,
+         Provider<EntityManager> entityManagerProvider, 
+         HookHandlerService hookHandler, 
+         SecurityService securityService,
+         UserManagerService userService, 
+         UserPropertiesService userPropertiesService,
+         Provider<ConfigService> configServiceProvider
+         ) {
 
       /* store objects */
       this.authenticatorServiceProvider = authenticatorServiceProvider;
@@ -68,6 +81,7 @@ public class TeamSpaceServiceImpl implements TeamSpaceService {
       this.securityService = securityService;
       this.userService = userService;
       this.userPropertiesService = userPropertiesService;
+      this.configServiceProvider = configServiceProvider;
    }
 
    @Override
@@ -540,6 +554,12 @@ public class TeamSpaceServiceImpl implements TeamSpaceService {
       if (!isUser(teamSpace))
          throw new ViolatedSecurityException(
                "User does not have User rights in TeamSpace: " + (null == teamSpace ? "" : teamSpace.getId()));
+   }
+
+   @Override
+   public Boolean isFileUploadEnabled() {
+      Configuration config = configServiceProvider.get().getConfigFailsafe(CONFIG_FILE);
+      return !config.getBoolean(PROPERTY_FILE_UPLOAD_DISABLED, false);
    }
 
 }

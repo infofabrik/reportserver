@@ -70,4 +70,6 @@ public interface TsDiskRpcService extends RemoteService, RPCTreeLoader, RPCTreeM
    void deleteNodesWithForce(List<AbstractNodeDto> nodes, Dto state) throws ServerCallFailedException;
 
    List<TsReferenceInfo> getReferenceInfosFor(ReportDto report) throws ServerCallFailedException;
+   
+   Boolean isFileUploadEnabled() throws ServerCallFailedException;
 }

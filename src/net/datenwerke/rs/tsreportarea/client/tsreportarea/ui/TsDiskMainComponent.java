@@ -581,10 +581,23 @@ public class TsDiskMainComponent extends DwBorderContainer {
             mainToolbar.add(importReportBtn);
             importReportBtn.addSelectHandler(event -> importDialogCreator.get().displayDialog(TsDiskMainComponent.this));
             
-            DwTextButton uploadFileBtn = toolbarService.createSmallButtonLeft(TsFavoriteMessages.INSTANCE.uploadFileText(),
-                  BaseIcon.REPORT_ADD);
+            DwTextButton uploadFileBtn = toolbarService
+                  .createSmallButtonLeft(TsFavoriteMessages.INSTANCE.uploadFileText(), BaseIcon.REPORT_ADD);
             mainToolbar.add(uploadFileBtn);
             uploadFileBtn.addSelectHandler(event -> displayUploadFileDialog());
+            
+            favoriteDao.isFileUploadEnabled(new RsAsyncCallback<Boolean>() {
+               @Override
+               public void onSuccess(Boolean result) {
+                  if (!result) 
+                     mainToolbar.remove(uploadFileBtn);
+               }
+
+               @Override
+               public void onFailure(Throwable caught) {
+                  super.onFailure(caught);
+               }
+            });
          }
       }
 

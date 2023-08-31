@@ -121,4 +121,8 @@ public class TsDiskDao extends Dao {
    public void getReferenceInfosFor(ReportDto report, AsyncCallback<List<TsReferenceInfo>> callback) {
       rpcService.getReferenceInfosFor(report, transformAndKeepCallback(callback));
    }
+   
+   public void isFileUploadEnabled(AsyncCallback<Boolean> callback) {
+      rpcService.isFileUploadEnabled(transformAndKeepCallback(callback));
+   }
 }

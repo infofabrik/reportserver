@@ -88,12 +88,18 @@ public class TsDiskRpcServiceImpl extends SecuredRemoteServiceServlet implements
    private final UserManagerService userManagerService;
 
    private final UserPropertiesService userPropertiesService;
-
+   
    @Inject
-   public TsDiskRpcServiceImpl(Provider<AuthenticatorService> authenticatorServiceProvider, DtoService dtoService,
-         TsDiskService diskService, ReportService reportService, SecurityService securityService,
-         TeamSpaceService teamSpaceService, UserManagerService userManagerService,
-         UserPropertiesService userPropertiesService) {
+   public TsDiskRpcServiceImpl(
+         Provider<AuthenticatorService> authenticatorServiceProvider, 
+         DtoService dtoService,
+         TsDiskService diskService, 
+         ReportService reportService, 
+         SecurityService securityService,
+         TeamSpaceService teamSpaceService, 
+         UserManagerService userManagerService,
+         UserPropertiesService userPropertiesService
+         ) {
 
       /* store objects */
       this.authenticatorServiceProvider = authenticatorServiceProvider;
@@ -1097,6 +1103,10 @@ public class TsDiskRpcServiceImpl extends SecuredRemoteServiceServlet implements
       }
 
       return referenceInfos;
+   }
+   
+   public Boolean isFileUploadEnabled() throws ServerCallFailedException {
+      return teamSpaceService.isFileUploadEnabled();
    }
 
 }

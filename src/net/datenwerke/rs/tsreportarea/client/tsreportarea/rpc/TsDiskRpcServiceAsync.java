@@ -61,4 +61,6 @@ public interface TsDiskRpcServiceAsync extends RPCTreeLoaderAsync, RPCTreeManage
    void deleteNodesWithForce(List<AbstractNodeDto> nodes, Dto state, AsyncCallback<Void> callback);
 
    void getReferenceInfosFor(ReportDto report, AsyncCallback<List<TsReferenceInfo>> callback);
+   
+   void isFileUploadEnabled(AsyncCallback<Boolean> callback);
 }

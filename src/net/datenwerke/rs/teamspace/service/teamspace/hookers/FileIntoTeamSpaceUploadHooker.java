@@ -32,6 +32,10 @@ public class FileIntoTeamSpaceUploadHooker implements FileUploadHandlerHook {
 
    @Override
    public String uploadOccured(UploadedFile uploadedFile, Map<String,String> context) {
+      
+      if (!teamSpaceService.isFileUploadEnabled())
+         throw new IllegalArgumentException("TeamSpace file upload is disabled");
+      
       long teamspaceId = Long.valueOf(context.get(TeamSpaceUIModule.TEAMSPACE_IMPORT_TEAMSPACE_ID));
       Long folderId = null;
       if(context.containsKey(TeamSpaceUIModule.TEAMSPACE_IMPORT_FOLDER_ID))
