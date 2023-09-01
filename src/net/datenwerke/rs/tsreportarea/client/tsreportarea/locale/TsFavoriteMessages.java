@@ -99,4 +99,6 @@ public interface TsFavoriteMessages extends Messages {
    
    String uploadFileSuccess();
    
+   String uploadFileTooLarge(Long bytes);
+   
 }

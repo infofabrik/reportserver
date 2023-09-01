@@ -36,6 +36,10 @@ public class FileIntoTeamSpaceUploadHooker implements FileUploadHandlerHook {
       if (!teamSpaceService.isFileUploadEnabled())
          throw new IllegalArgumentException("TeamSpace file upload is disabled");
       
+      if (uploadedFile.getFileBytes().length > teamSpaceService.getMaxUploadFileSizeBytes())
+         throw new IllegalArgumentException(
+               "Uploaded file is too large. Max bytes: " + teamSpaceService.getMaxUploadFileSizeBytes());
+
       long teamspaceId = Long.valueOf(context.get(TeamSpaceUIModule.TEAMSPACE_IMPORT_TEAMSPACE_ID));
       Long folderId = null;
       if(context.containsKey(TeamSpaceUIModule.TEAMSPACE_IMPORT_FOLDER_ID))

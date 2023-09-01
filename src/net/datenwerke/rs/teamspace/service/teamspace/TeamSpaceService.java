@@ -355,5 +355,7 @@ public interface TeamSpaceService {
    void assertIsUser(TeamSpace teamSpace);
    
    Boolean isFileUploadEnabled();
+   
+   Long getMaxUploadFileSizeBytes();
 
 }

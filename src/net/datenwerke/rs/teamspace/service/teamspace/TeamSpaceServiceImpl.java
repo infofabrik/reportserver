@@ -62,6 +62,7 @@ public class TeamSpaceServiceImpl implements TeamSpaceService {
    
    public static final String CONFIG_FILE = "security/teamspace.cf";
    private static final String PROPERTY_FILE_UPLOAD_DISABLED = "fileupload[@disabled]";
+   private static final String PROPERTY_FILE_UPLOAD_MAX_SIZE_BYTES = "fileupload.maxSizeBytes";
 
    @Inject
    public TeamSpaceServiceImpl(
@@ -560,6 +561,12 @@ public class TeamSpaceServiceImpl implements TeamSpaceService {
    public Boolean isFileUploadEnabled() {
       Configuration config = configServiceProvider.get().getConfigFailsafe(CONFIG_FILE);
       return !config.getBoolean(PROPERTY_FILE_UPLOAD_DISABLED, false);
+   }
+
+   @Override
+   public Long getMaxUploadFileSizeBytes() {
+      Configuration config = configServiceProvider.get().getConfigFailsafe(CONFIG_FILE);
+      return config.getLong(PROPERTY_FILE_UPLOAD_MAX_SIZE_BYTES, 52_428_800); //50 MB
    }
 
 }

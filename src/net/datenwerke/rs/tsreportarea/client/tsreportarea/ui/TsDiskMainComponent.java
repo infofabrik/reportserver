@@ -53,6 +53,7 @@ import net.datenwerke.gf.client.upload.FileUploadUIModule;
 import net.datenwerke.gf.client.upload.FileUploadUiService;
 import net.datenwerke.gf.client.upload.dto.FileToUpload;
 import net.datenwerke.gf.client.upload.dto.UploadProperties;
+import net.datenwerke.gf.client.upload.filter.FileUploadFilter;
 import net.datenwerke.gf.client.upload.simpleform.FileUpload;
 import net.datenwerke.gf.client.upload.simpleform.SFFCFileUpload;
 import net.datenwerke.gxtdto.client.baseex.widget.DwContentPanel;
@@ -164,6 +165,8 @@ public class TsDiskMainComponent extends DwBorderContainer {
    private VerticalLayoutContainer detailPanelContainer;
    
    private final Provider<FileUploadUiService> fileUploadServiceProvider;
+   
+   private Long maxFileSizeByte = null;
 
    @Inject
    public TsDiskMainComponent(
@@ -196,6 +199,17 @@ public class TsDiskMainComponent extends DwBorderContainer {
       this.teamSpaceService = teamSpaceService;
       this.uiTreeFactory = uiTreeFactory;
       this.fileUploadServiceProvider = fileUploadServiceProvider;
+      
+      favoriteDao.getMaxUploadFileSizeBytes(new AsyncCallback<Long>() {
+         @Override
+         public void onSuccess(final Long result) {
+            maxFileSizeByte = result;
+         }
+
+         @Override
+         public void onFailure(Throwable caught) {
+         }
+      });
 
       /* init */
       initializeUI();
@@ -786,12 +800,25 @@ public class TsDiskMainComponent extends DwBorderContainer {
             });
       
       /* upload */
+      FileUploadFilter uploadFilter = new FileUploadFilter() {
+         @Override
+         public String doProcess(String name, long size, String base64) {
+            if (null == maxFileSizeByte)
+               return "Max upload file size can not be determined.";
+            
+            if (size > maxFileSizeByte) {
+               return TsFavoriteMessages.INSTANCE.uploadFileTooLarge(maxFileSizeByte);
+            }
+            return null;
+         }
+      };
       final String uploadField = form.addField(FileUpload.class, FileServerUiModule.UPLOAD_SERVLET_KEY_UPLOAD,
             "File", new SFFCFileUpload() {
                @Override
                public UploadProperties getProperties() {
                   UploadProperties uploadProperties = new UploadProperties("file",
                         TeamSpaceUIModule.TEAMSPACE_FILE_IMPORT_HANDLER_ID);
+                  uploadProperties.setFilter(uploadFilter);
                   return uploadProperties;
                }
 

@@ -63,4 +63,6 @@ public interface TsDiskRpcServiceAsync extends RPCTreeLoaderAsync, RPCTreeManage
    void getReferenceInfosFor(ReportDto report, AsyncCallback<List<TsReferenceInfo>> callback);
    
    void isFileUploadEnabled(AsyncCallback<Boolean> callback);
+   
+   void getMaxUploadFileSizeBytes(AsyncCallback<Long> callback);
 }
