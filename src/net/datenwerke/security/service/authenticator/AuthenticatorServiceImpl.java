@@ -252,7 +252,7 @@ public class AuthenticatorServiceImpl implements AuthenticatorService {
    }
    
    @Override
-   public Set<ReportServerPAM> getStaticPams() {
+   public Set<ReportServerPAM> getPams() {
       return pams.get();
    }
 

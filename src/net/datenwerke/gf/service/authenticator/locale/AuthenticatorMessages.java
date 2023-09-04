@@ -7,7 +7,7 @@ public interface AuthenticatorMessages extends Messages {
 
    public final static AuthenticatorMessages INSTANCE = LocalizationServiceImpl.getMessages(AuthenticatorMessages.class);
 
-   public String staticPamsLabel();
+   public String pamsLabel();
 
    public String pamConfiguration();
 

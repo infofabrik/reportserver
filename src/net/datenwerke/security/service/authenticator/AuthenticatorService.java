@@ -42,6 +42,6 @@ public interface AuthenticatorService {
 
    void logoffUserInThread();
    
-   Set<ReportServerPAM> getStaticPams();
+   Set<ReportServerPAM> getPams();
 
 }

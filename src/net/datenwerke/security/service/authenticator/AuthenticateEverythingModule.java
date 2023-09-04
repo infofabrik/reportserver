@@ -67,7 +67,7 @@ public class AuthenticateEverythingModule extends AbstractModule {
          }
 
          @Override
-         public Set<ReportServerPAM> getStaticPams() {
+         public Set<ReportServerPAM> getPams() {
             // TODO Auto-generated method stub
             return null;
          }
