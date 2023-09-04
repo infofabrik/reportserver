@@ -74,4 +74,6 @@ public interface TsDiskRpcService extends RemoteService, RPCTreeLoader, RPCTreeM
    Boolean isFileUploadEnabled() throws ServerCallFailedException;
    
    Long getMaxUploadFileSizeBytes() throws ServerCallFailedException;
+   
+   List<String> getFileUploadEndingWhiteList() throws ServerCallFailedException;
 }

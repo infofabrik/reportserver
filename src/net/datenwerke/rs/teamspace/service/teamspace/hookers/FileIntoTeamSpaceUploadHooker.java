@@ -1,5 +1,7 @@
 package net.datenwerke.rs.teamspace.service.teamspace.hookers;
 
+import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import com.google.inject.Inject;
@@ -39,6 +41,18 @@ public class FileIntoTeamSpaceUploadHooker implements FileUploadHandlerHook {
       if (uploadedFile.getFileBytes().length > teamSpaceService.getMaxUploadFileSizeBytes())
          throw new IllegalArgumentException(
                "Uploaded file is too large. Max bytes: " + teamSpaceService.getMaxUploadFileSizeBytes());
+      
+      String filename = uploadedFile.getFileName();
+      if (!filename.contains("."))
+         throw new IllegalArgumentException("No file ending");
+      
+      String ending = filename.toLowerCase().substring(filename.lastIndexOf(".")+1);
+      List<String> endingWhiteList = teamSpaceService.getFileUploadEndingWhiteList();
+      boolean allowed = endingWhiteList
+            .stream()
+            .anyMatch(allowedType -> allowedType.toLowerCase(Locale.ROOT).equals(ending));
+      if (!allowed)
+         throw new IllegalArgumentException("File ending '" + ending + "' is not allowed");
 
       long teamspaceId = Long.valueOf(context.get(TeamSpaceUIModule.TEAMSPACE_IMPORT_TEAMSPACE_ID));
       Long folderId = null;

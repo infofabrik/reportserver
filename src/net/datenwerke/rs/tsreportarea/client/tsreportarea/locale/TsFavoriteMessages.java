@@ -100,5 +100,9 @@ public interface TsFavoriteMessages extends Messages {
    String uploadFileSuccess();
    
    String uploadFileTooLarge(Long bytes);
+
+   String uploadFileEnding(String ending);
+
+   String noFileEnding();
    
 }

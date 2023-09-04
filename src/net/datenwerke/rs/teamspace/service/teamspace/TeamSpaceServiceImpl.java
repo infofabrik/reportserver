@@ -1,5 +1,7 @@
 package net.datenwerke.rs.teamspace.service.teamspace;
 
+import static java.util.stream.Collectors.toList;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -63,6 +65,7 @@ public class TeamSpaceServiceImpl implements TeamSpaceService {
    public static final String CONFIG_FILE = "security/teamspace.cf";
    private static final String PROPERTY_FILE_UPLOAD_DISABLED = "fileupload[@disabled]";
    private static final String PROPERTY_FILE_UPLOAD_MAX_SIZE_BYTES = "fileupload.maxSizeBytes";
+   private static final String PROPERTY_FILE_UPLOAD_ALLOWED_FILE_ENDINGS = "fileupload.whitelist.endings.ending";
 
    @Inject
    public TeamSpaceServiceImpl(
@@ -567,6 +570,14 @@ public class TeamSpaceServiceImpl implements TeamSpaceService {
    public Long getMaxUploadFileSizeBytes() {
       Configuration config = configServiceProvider.get().getConfigFailsafe(CONFIG_FILE);
       return config.getLong(PROPERTY_FILE_UPLOAD_MAX_SIZE_BYTES, 52_428_800); //50 MB
+   }
+
+   @Override
+   public List<String> getFileUploadEndingWhiteList() {
+      Configuration config = configServiceProvider.get().getConfigFailsafe(CONFIG_FILE);
+      return config.getList(PROPERTY_FILE_UPLOAD_ALLOWED_FILE_ENDINGS).stream()
+            .map(Object::toString)
+            .collect(toList());
    }
 
 }

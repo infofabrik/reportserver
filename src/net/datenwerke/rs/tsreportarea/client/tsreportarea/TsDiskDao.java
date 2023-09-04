@@ -129,4 +129,8 @@ public class TsDiskDao extends Dao {
    public void getMaxUploadFileSizeBytes(AsyncCallback<Long> callback) {
       rpcService.getMaxUploadFileSizeBytes(transformAndKeepCallback(callback));
    }
+   
+   public void getFileUploadEndingWhiteList(AsyncCallback<List<String>> asyncCallback) {
+      rpcService.getFileUploadEndingWhiteList(asyncCallback);
+   }
 }

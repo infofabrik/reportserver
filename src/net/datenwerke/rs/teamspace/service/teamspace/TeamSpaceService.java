@@ -1,6 +1,7 @@
 package net.datenwerke.rs.teamspace.service.teamspace;
 
 import java.util.Collection;
+import java.util.List;
 
 import net.datenwerke.rs.teamspace.service.teamspace.entities.TeamSpace;
 import net.datenwerke.rs.teamspace.service.teamspace.entities.TeamSpaceApp;
@@ -357,5 +358,7 @@ public interface TeamSpaceService {
    Boolean isFileUploadEnabled();
    
    Long getMaxUploadFileSizeBytes();
+   
+   List<String> getFileUploadEndingWhiteList();
 
 }

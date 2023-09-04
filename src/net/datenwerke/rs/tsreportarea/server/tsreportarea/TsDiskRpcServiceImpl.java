@@ -1114,4 +1114,9 @@ public class TsDiskRpcServiceImpl extends SecuredRemoteServiceServlet implements
       return teamSpaceService.getMaxUploadFileSizeBytes();
    }
 
+   @Override
+   public List<String> getFileUploadEndingWhiteList() throws ServerCallFailedException {
+      return teamSpaceService.getFileUploadEndingWhiteList();
+   }
+
 }

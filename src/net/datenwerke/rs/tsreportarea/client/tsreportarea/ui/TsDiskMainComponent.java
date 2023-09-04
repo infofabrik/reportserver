@@ -5,6 +5,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 
@@ -81,6 +82,7 @@ import net.datenwerke.gxtdto.client.servercommunication.callback.NotamCallback;
 import net.datenwerke.gxtdto.client.utilityservices.toolbar.DwToolBar;
 import net.datenwerke.gxtdto.client.utilityservices.toolbar.ToolbarService;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
+import net.datenwerke.rs.core.client.helper.ObjectHolder;
 import net.datenwerke.rs.core.client.reportmanager.dto.interfaces.ReportVariantDto;
 import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
 import net.datenwerke.rs.fileserver.client.fileserver.FileServerUiModule;
@@ -166,7 +168,8 @@ public class TsDiskMainComponent extends DwBorderContainer {
    
    private final Provider<FileUploadUiService> fileUploadServiceProvider;
    
-   private Long maxFileSizeByte = null;
+   private Long fileUploadMaxFileSizeByte = null;
+   private List<String> fileUploadEndingWhiteList = null;
 
    @Inject
    public TsDiskMainComponent(
@@ -203,9 +206,19 @@ public class TsDiskMainComponent extends DwBorderContainer {
       favoriteDao.getMaxUploadFileSizeBytes(new AsyncCallback<Long>() {
          @Override
          public void onSuccess(final Long result) {
-            maxFileSizeByte = result;
+            fileUploadMaxFileSizeByte = result;
          }
 
+         @Override
+         public void onFailure(Throwable caught) {
+         }
+      });
+      
+      favoriteDao.getFileUploadEndingWhiteList(new AsyncCallback<List<String>>() {
+         @Override
+         public void onSuccess(List<String> result) {
+            fileUploadEndingWhiteList = result;
+         }
          @Override
          public void onFailure(Throwable caught) {
          }
@@ -803,12 +816,27 @@ public class TsDiskMainComponent extends DwBorderContainer {
       FileUploadFilter uploadFilter = new FileUploadFilter() {
          @Override
          public String doProcess(String name, long size, String base64) {
-            if (null == maxFileSizeByte)
+            if (null == fileUploadMaxFileSizeByte)
                return "Max upload file size can not be determined.";
+            if (null == fileUploadEndingWhiteList)
+               return "File ending white list can not be determined.";
             
-            if (size > maxFileSizeByte) {
-               return TsFavoriteMessages.INSTANCE.uploadFileTooLarge(maxFileSizeByte);
-            }
+            if (size > fileUploadMaxFileSizeByte) 
+               return TsFavoriteMessages.INSTANCE.uploadFileTooLarge(fileUploadMaxFileSizeByte);
+            
+            ObjectHolder<String> ending = new ObjectHolder<>();
+            if (name.contains("."))
+               ending.set(name.toLowerCase().substring(name.lastIndexOf(".")+1));
+            else
+               return TsFavoriteMessages.INSTANCE.noFileEnding();
+            
+            boolean allowed = fileUploadEndingWhiteList
+                  .stream()
+                  .anyMatch(allowedType -> allowedType.toLowerCase(Locale.ROOT).equals(ending.get()));
+            
+            if (!allowed)
+               return TsFavoriteMessages.INSTANCE.uploadFileEnding(ending.get());
+            
             return null;
          }
       };
