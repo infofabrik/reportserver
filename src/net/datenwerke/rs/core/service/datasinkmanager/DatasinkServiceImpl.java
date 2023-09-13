@@ -2,6 +2,7 @@ package net.datenwerke.rs.core.service.datasinkmanager;
 
 import static net.datenwerke.rs.core.service.datasinkmanager.DatasinkModule.PROPERTY_DEFAULT_DISABLED;
 import static net.datenwerke.rs.core.service.datasinkmanager.DatasinkModule.PROPERTY_DEFAULT_SCHEDULING_ENABLED;
+import static net.datenwerke.rs.utils.misc.StringEscapeUtils.removeInvalidFilenameChars;
 
 import java.io.ByteArrayOutputStream;
 import java.util.HashMap;
@@ -31,6 +32,7 @@ import net.datenwerke.rs.fileserver.service.fileserver.entities.FileServerFolder
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 import net.datenwerke.rs.scheduler.service.scheduler.jobs.report.ReportExecuteJob;
 import net.datenwerke.rs.utils.misc.DateUtils;
+import net.datenwerke.rs.utils.misc.StringEscapeUtils;
 import net.datenwerke.rs.utils.zip.ZipUtilsService;
 import net.datenwerke.rs.utils.zip.ZipUtilsService.FileFilter;
 import net.datenwerke.scheduler.service.scheduler.exceptions.ActionExecutionException;
@@ -250,17 +252,18 @@ public class DatasinkServiceImpl implements DatasinkService {
    @Override
    public String getFilenameForDatasink(ReportExecuteJob rJob, boolean compress, String filename) {
       if (compress)
-         return filename + ".zip";
+         return removeInvalidFilenameChars(filename) + ".zip";
       else 
-         return filename + "." + rJob.getExecutedReport().getFileExtension();
+         return removeInvalidFilenameChars(filename) + "." + rJob.getExecutedReport().getFileExtension();
    }
 
    @Override
    public String getFilenameForDatasink(String name, CompiledReport cReport, boolean compress) {
       if (compress) 
-         return name + ".zip";
+         return removeInvalidFilenameChars(name) + ".zip";
       else 
-         return name + "." + cReport.getFileExtension();
+         return removeInvalidFilenameChars(name) + "." + cReport.getFileExtension();
    }
-
+   
+   
 }

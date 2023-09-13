@@ -35,4 +35,19 @@ public class StringEscapeUtils {
       }
       return StringUtils.replace(str, "'", "''");
    }
+   
+   // https://learn.microsoft.com/en-us/windows/win32/fileio/naming-a-file
+   public static String removeInvalidFilenameChars(String name) {
+      String replacement = "_";
+      return name
+            .replace("<", replacement)
+            .replace(">", replacement)
+            .replace(":", replacement)
+            .replace("\"", replacement)
+            .replace("/", replacement)
+            .replace("\\", replacement)
+            .replace("|", replacement)
+            .replace("?", replacement)
+            .replace("*", replacement);
+   }
 }
