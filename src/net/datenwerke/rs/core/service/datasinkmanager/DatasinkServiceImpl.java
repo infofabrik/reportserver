@@ -220,7 +220,7 @@ public class DatasinkServiceImpl implements DatasinkService {
                   .notifyOfScheduledReportDispatched(rJob.getExecutedReport().getReport(), rJob, datasink, config));
          }
       } catch (Exception e) {
-         throw new ActionExecutionException("Report could not be sent to datasink: " + datasink.getClass().getSimpleName(), e);
+         throw new ActionExecutionException("Report could not be sent to datasink: " + datasink, e);
       }
    }
    
@@ -245,7 +245,7 @@ public class DatasinkServiceImpl implements DatasinkService {
          }
       } catch (Exception e) {
          throw new DatasinkExportException(
-               "Report could not be sent to datasink: " + datasink.getClass().getSimpleName(), e);
+               "Report could not be sent to datasink: " + datasink, e);
       }
    }
 
