@@ -265,6 +265,7 @@ public class TransportServiceImpl implements TransportService {
       Map<String, Object> metadata = new LinkedHashMap<>();
       metadata.put("Key", transport.getKey());
       metadata.put("Closed", transport.isClosed());
+      metadata.put("Description", transport.getDescription());
       metadata.put("Created on", transport.getCreatedOnStr());
       metadata.put("Created by (first name)", transport.getCreatorFirstname());
       metadata.put("Created by (last name)", transport.getCreatorLastname());
