@@ -159,7 +159,7 @@ public class TransportServiceImpl implements TransportService {
       asMap.put(INITIAL_PROP_USER_LASTNAME, lastname);
       asMap.put(INITIAL_PROP_USER_EMAIL, email);
       asMap.put(INITIAL_PROP_XML, "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
-            + "<" + DOCUMENT_ROOT_ELEMENT + "xmlns=\"http://reportserver.datenwerke.net/eximport\">"
+            + "<" + DOCUMENT_ROOT_ELEMENT + " xmlns=\"http://reportserver.datenwerke.net/eximport\">"
             + "<" + DOCUMENT_HEAD_ELEMENT + ">"
             + "<" + DOCUMENT_HEAD_NAME_ELEMENT + ">Transport</" + DOCUMENT_HEAD_NAME_ELEMENT + ">"
             + "<" + DOCUMENT_HEAD_DESCRIPTION_ELEMENT + "/>"
@@ -168,7 +168,7 @@ public class TransportServiceImpl implements TransportService {
             + "<" + DOCUMENT_HEAD_VERSION_ELEMENT + "/>"
             + "</" + DOCUMENT_HEAD_ELEMENT + ">"
             + "<" + DOCUMENT_DATA_ELEMENT + ">"
-            + "</ " + DOCUMENT_DATA_ELEMENT + ">"
+            + "</" + DOCUMENT_DATA_ELEMENT + ">"
             + "</"+ DOCUMENT_ROOT_ELEMENT + ">\n"
             + "");
       
