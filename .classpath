@@ -188,7 +188,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/hibernate-core-5.6.15.Final.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/hibernate-entitymanager-5.6.15.Final.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/hibernate-envers-5.6.15.Final.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/commons-compress-1.23.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/postgresql-42.6.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/batik-codec-1.16.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/graphviz-java-0.18.1.jar"/>
@@ -248,5 +247,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-templates-4.0.15.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-xml-4.0.15.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/picocli-4.7.5.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/commons-compress-1.24.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
