@@ -10,4 +10,8 @@ public interface ReportVariantsMessages extends Messages {
    String header();
 
    String description();
+   
+   String targetReport();
+
+   String moveVariantToReport();
 }

@@ -8,6 +8,7 @@ import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
+import com.google.inject.Provider;
 import com.sencha.gxt.core.client.Style.SelectionMode;
 import com.sencha.gxt.core.client.dom.ScrollSupport.ScrollMode;
 import com.sencha.gxt.core.client.util.Margins;
@@ -45,6 +46,8 @@ import com.sencha.gxt.widget.core.client.toolbar.SeparatorToolItem;
 import com.sencha.gxt.widget.core.client.toolbar.ToolBar;
 
 import net.datenwerke.gf.client.managerhelper.mainpanel.AbstractEmbeddingTabbedComponentsView;
+import net.datenwerke.gf.client.treedb.UITree;
+import net.datenwerke.gf.client.treedb.simpleform.SFFCGenericTreeNode;
 import net.datenwerke.gxtdto.client.baseex.widget.DwContentPanel;
 import net.datenwerke.gxtdto.client.baseex.widget.DwWindow;
 import net.datenwerke.gxtdto.client.baseex.widget.btn.DwTextButton;
@@ -60,6 +63,7 @@ import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCTeamS
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.impl.SFFCTextAreaImpl;
 import net.datenwerke.gxtdto.client.locale.BaseMessages;
 import net.datenwerke.gxtdto.client.objectinformation.ObjectInfoPanelService;
+import net.datenwerke.gxtdto.client.servercommunication.callback.NotamCallback;
 import net.datenwerke.gxtdto.client.utilityservices.toolbar.DwToolBar;
 import net.datenwerke.gxtdto.client.utilityservices.toolbar.ToolbarService;
 import net.datenwerke.gxtdto.client.utils.modelkeyprovider.DtoIdModelKeyProvider;
@@ -76,6 +80,7 @@ import net.datenwerke.rs.core.client.reportmanager.dto.interfaces.ReportVariantD
 import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
 import net.datenwerke.rs.core.client.reportmanager.dto.reports.pa.ReportDtoPA;
 import net.datenwerke.rs.core.client.reportmanager.locale.ReportmanagerMessages;
+import net.datenwerke.rs.core.client.reportmanager.provider.annotations.ReportManagerTreeFoldersAndReports;
 import net.datenwerke.rs.core.client.reportvariants.locale.ReportVariantsMessages;
 import net.datenwerke.rs.reportdoc.client.ReportDocumentationUiService;
 import net.datenwerke.rs.reportdoc.client.locale.ReportDocumentationMessages;
@@ -107,6 +112,7 @@ public class ReportVariantsView extends AbstractEmbeddingTabbedComponentsView {
    private final ReportExporterUIService reportExporterService;
    private final ReportManagerTreeLoaderDao reportLoaderDao;
    private final ReportExecutorDao reportExecutorDao;
+   private Provider<UITree> reportManagerTreeProvider;
    private final TsDiskDao diskDao;
 
    private final ObjectInfoPanelService objectInfoService;
@@ -115,11 +121,19 @@ public class ReportVariantsView extends AbstractEmbeddingTabbedComponentsView {
    private Grid<ReportDto> grid;
 
    @Inject
-   public ReportVariantsView(ReportManagerTreeLoaderDao treeLoader, ReportManagerTreeManagerDao treeManager,
-         ToolbarService toolbarService, ReportExecutorUIService reportExecutorService,
-         ReportDocumentationUiService reportDocService, TsDiskDao diskDao, ObjectInfoPanelService objectInfoService,
-         ReportExporterUIService reportExporterService, ReportManagerTreeLoaderDao reportLoaderDao,
-         ReportExecutorDao reportExecutorDao) {
+   public ReportVariantsView(
+         ReportManagerTreeLoaderDao treeLoader, 
+         ReportManagerTreeManagerDao treeManager,
+         ToolbarService toolbarService, 
+         ReportExecutorUIService reportExecutorService,
+         ReportDocumentationUiService reportDocService, 
+         TsDiskDao diskDao, 
+         ObjectInfoPanelService objectInfoService,
+         ReportExporterUIService reportExporterService, 
+         ReportManagerTreeLoaderDao reportLoaderDao,
+         ReportExecutorDao reportExecutorDao,
+         @ReportManagerTreeFoldersAndReports Provider<UITree> reportManagerTreeProvider
+         ) {
       this.treeLoader = treeLoader;
       this.treeManager = treeManager;
       this.toolbarService = toolbarService;
@@ -130,6 +144,7 @@ public class ReportVariantsView extends AbstractEmbeddingTabbedComponentsView {
       this.reportExporterService = reportExporterService;
       this.reportLoaderDao = reportLoaderDao;
       this.reportExecutorDao = reportExecutorDao;
+      this.reportManagerTreeProvider = reportManagerTreeProvider;
    }
 
    @Override
@@ -320,6 +335,48 @@ public class ReportVariantsView extends AbstractEmbeddingTabbedComponentsView {
          }
       });
    }
+   
+   protected void moveVariantToAnotherReport(final ReportVariantDto reportVariant) {
+      final DwWindow window = DwWindow.newAutoSizeDialog(340);
+      window.setHeading(ReportVariantsMessages.INSTANCE.moveVariantToReport());
+      window.setModal(true);
+      window.setWidth(340);
+      
+      final SimpleForm form = SimpleForm.getInlineInstance();
+      
+      final String reportKey = form.addField(ReportDto.class, ReportVariantsMessages.INSTANCE.targetReport(),
+            new SFFCGenericTreeNode() {
+               public UITree getTreeForPopup() {
+                  return reportManagerTreeProvider.get();
+               }
+            });
+
+      form.loadFields();
+      
+      window.add(form, new MarginData(10));
+      
+      DwTextButton submit = new DwTextButton(BaseMessages.INSTANCE.submit());
+      window.addButton(submit);
+      
+      submit.addSelectHandler(event -> {
+         if (!form.isValid())
+            return;
+         ReportDto targetReport = (ReportDto) form.getValue(reportKey);
+         if (null == targetReport)
+            return;
+         window.mask(BaseMessages.INSTANCE.storingMsg());
+         treeManager.moveNodeAppend((ReportDto) reportVariant, targetReport,
+               new NotamCallback<AbstractNodeDto>(TreedbMessages.INSTANCE.moved()) {
+                  public void doOnSuccess(AbstractNodeDto result) {
+                     window.hide();
+                     final ReportDto selected = grid.getSelectionModel().getSelectedItem();
+                     store.remove(selected);
+                  }
+               });
+      });
+      
+      window.show();
+   }
 
    protected void importVariantIntoTeamSpace(final ReportDto report) {
       final DwWindow window = DwWindow.newAutoSizeDialog(340);
@@ -500,6 +557,7 @@ public class ReportVariantsView extends AbstractEmbeddingTabbedComponentsView {
       contextMenu.add(new SeparatorMenuItem());
       contextMenu.add(generateInfoMenuItem());
       contextMenu.add(generateImportIntoTsMenuItem());
+      contextMenu.add(generateMoveToAnotherReport());
 
       return contextMenu;
    }
@@ -614,6 +672,19 @@ public class ReportVariantsView extends AbstractEmbeddingTabbedComponentsView {
 
       return importReportItem;
    }
+   
+   private MenuItem generateMoveToAnotherReport() {
+      MenuItem importReportItem = new MenuItem();
+      importReportItem.setText(ReportVariantsMessages.INSTANCE.moveVariantToReport());
+      importReportItem.addSelectionHandler(event -> {
+         ReportVariantDto node = (ReportVariantDto) grid.getSelectionModel().getSelectedItem();
+         if (null != node)
+            moveVariantToAnotherReport(node);
+      });
+      
+      return importReportItem;
+   }
+
 
    private MenuItem generateExecuteReportItem() {
       MenuItem executeReportItem = new MenuItem();
