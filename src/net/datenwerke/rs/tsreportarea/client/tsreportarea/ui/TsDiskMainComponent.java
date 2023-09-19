@@ -841,7 +841,7 @@ public class TsDiskMainComponent extends DwBorderContainer {
          }
       };
       final String uploadField = form.addField(FileUpload.class, FileServerUiModule.UPLOAD_SERVLET_KEY_UPLOAD,
-            "File", new SFFCFileUpload() {
+            TsFavoriteMessages.INSTANCE.file(), new SFFCFileUpload() {
                @Override
                public UploadProperties getProperties() {
                   UploadProperties uploadProperties = new UploadProperties("file",

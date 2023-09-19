@@ -105,4 +105,6 @@ public interface TsFavoriteMessages extends Messages {
 
    String noFileEnding();
    
+   String file();
+   
 }
