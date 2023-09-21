@@ -42,5 +42,7 @@
 	<!-- Not for now <listener> <listener-class>net.datenwerke.rs.services.backgroundexecutor.ExecutorServiceProvider</listener-class> 
 		</listener> -->
 
+	<display-name>ReportServer</display-name>
+	<description>ReportServer - The Business Intelligence Suite - ReportServer is the modern and versatile business intelligence (OSBI) platform for your company.</description>
 </web-app>
   	
