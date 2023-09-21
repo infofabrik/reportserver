@@ -50,7 +50,7 @@ public class FileIntoTeamSpaceUploadHooker implements FileUploadHandlerHook {
       List<String> endingWhiteList = teamSpaceService.getFileUploadEndingWhiteList();
       boolean allowed = endingWhiteList
             .stream()
-            .anyMatch(allowedType -> allowedType.toLowerCase(Locale.ROOT).equals(ending));
+            .anyMatch(allowedType -> ending.matches(allowedType.toLowerCase(Locale.ROOT)));
       if (!allowed)
          throw new IllegalArgumentException("File ending '" + ending + "' is not allowed");
 

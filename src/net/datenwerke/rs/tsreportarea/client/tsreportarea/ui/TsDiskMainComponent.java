@@ -826,13 +826,13 @@ public class TsDiskMainComponent extends DwBorderContainer {
             
             ObjectHolder<String> ending = new ObjectHolder<>();
             if (name.contains("."))
-               ending.set(name.toLowerCase().substring(name.lastIndexOf(".")+1));
+               ending.set(name.toLowerCase(Locale.ROOT).substring(name.lastIndexOf(".")+1));
             else
                return TsFavoriteMessages.INSTANCE.noFileEnding();
             
             boolean allowed = fileUploadEndingWhiteList
                   .stream()
-                  .anyMatch(allowedType -> allowedType.toLowerCase(Locale.ROOT).equals(ending.get()));
+                  .anyMatch(allowedType -> ending.get().matches(allowedType.toLowerCase(Locale.ROOT)));
             
             if (!allowed)
                return TsFavoriteMessages.INSTANCE.uploadFileEnding(ending.get());
