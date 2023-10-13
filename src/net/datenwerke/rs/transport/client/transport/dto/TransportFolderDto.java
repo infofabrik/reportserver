@@ -18,7 +18,6 @@ import net.datenwerke.rs.transport.client.transport.dto.AbstractTransportManager
 import net.datenwerke.rs.transport.client.transport.dto.pa.TransportFolderDtoPA;
 import net.datenwerke.rs.transport.client.transport.dto.posomap.TransportFolderDto2PosoMap;
 import net.datenwerke.rs.transport.service.transport.entities.TransportFolder;
-import net.datenwerke.security.client.locale.UserManagerMessages;
 
 /**
  * Dto for {@link TransportFolder}
@@ -221,7 +220,7 @@ public class TransportFolderDto extends AbstractTransportManagerNodeDto implemen
 
 	@Override
 	public String toTypeDescription()  {
-		return UserManagerMessages.INSTANCE.ou();
+		return BaseMessages.INSTANCE.folder();
 	}
 
 	@Override

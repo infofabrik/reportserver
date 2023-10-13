@@ -28,4 +28,14 @@ public class TransportFolderObjectInfo extends GeneralObjectInfoImpl<TransportFo
       return BaseIcon.FOLDER.toImageResource();
    }
 
+   @Override
+   protected String doGetKey(TransportFolderDto object) {
+      return null;
+   }
+   
+   @Override
+   public boolean hasKeyAttribute() {
+      return false;
+   }
+
 }

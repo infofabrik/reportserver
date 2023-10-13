@@ -16,10 +16,11 @@ import net.datenwerke.gf.base.service.annotations.Field;
 import net.datenwerke.gf.base.service.annotations.Indexed;
 import net.datenwerke.gxtdto.client.dtomanager.DtoView;
 import net.datenwerke.gxtdto.client.dtomanager.FolderDto;
+import net.datenwerke.gxtdto.client.locale.BaseMessages;
+import net.datenwerke.rs.transport.service.transport.locale.TransportManagerMessages;
 import net.datenwerke.rs.utils.instancedescription.annotations.Description;
 import net.datenwerke.rs.utils.instancedescription.annotations.InstanceDescription;
 import net.datenwerke.rs.utils.instancedescription.annotations.Title;
-import net.datenwerke.security.service.usermanager.locale.UserManagerMessages;
 import net.datenwerke.treedb.service.treedb.annotation.TreeDBAllowedChildren;
 
 /**
@@ -34,13 +35,13 @@ import net.datenwerke.treedb.service.treedb.annotation.TreeDBAllowedChildren;
 @GenerateDto(
       dtoPackage = "net.datenwerke.rs.transport.client.transport.dto", 
       dtoImplementInterfaces = FolderDto.class, 
-      typeDescriptionMsg = net.datenwerke.security.client.locale.UserManagerMessages.class, 
-      typeDescriptionKey = "ou", 
+      typeDescriptionMsg = BaseMessages.class, 
+      typeDescriptionKey = "folder", 
       icon = "folder"
 )
 @InstanceDescription(
-      msgLocation = UserManagerMessages.class, 
-      objNameKey = "ouTypeName", 
+      msgLocation = TransportManagerMessages.class, 
+      objNameKey = "transportFolderTypeName", 
       icon = "folder"
 )
 public class TransportFolder extends AbstractTransportManagerNode implements Serializable {

@@ -37,4 +37,6 @@ public interface TransportManagerMessages extends Messages {
    String commandTransportDescribe_desc();
    
    String commandTransportDescribe_transport();
+   
+   String transportFolderTypeName();
 }
