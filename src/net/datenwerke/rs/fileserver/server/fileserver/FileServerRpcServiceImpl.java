@@ -13,6 +13,7 @@ import com.google.inject.persist.Transactional;
 import net.datenwerke.gf.client.upload.dto.FileToUpload;
 import net.datenwerke.gxtdto.client.servercommunication.exceptions.ServerCallFailedException;
 import net.datenwerke.gxtdto.server.dtomanager.DtoService;
+import net.datenwerke.rs.dot.service.dot.DotService;
 import net.datenwerke.rs.eximport.service.eximport.ex.http.HttpExportService;
 import net.datenwerke.rs.eximport.service.genrights.ExportSecurityTarget;
 import net.datenwerke.rs.fileserver.client.fileserver.dto.AbstractFileServerNodeDto;
@@ -61,6 +62,7 @@ public class FileServerRpcServiceImpl extends TreeDBManagerTreeHandler<AbstractF
    private final BasepathZipExtractConfigFactory extractConfigFactory;
    private final Provider<ZipUtilsService> zipUtilsServiceProvider;
    private final Provider<TreeNodeExportHelperService> exportHelper;
+   private final Provider<DotService> dotServiceProvider;
 
    @Inject
    public FileServerRpcServiceImpl(
@@ -71,7 +73,8 @@ public class FileServerRpcServiceImpl extends TreeDBManagerTreeHandler<AbstractF
          Provider<HttpExportService> httpExportServiceProvider, 
          BasepathZipExtractConfigFactory extractConfigFactory, 
          Provider<ZipUtilsService> zipUtilsServiceProvider,
-         Provider<TreeNodeExportHelperService> exportHelper
+         Provider<TreeNodeExportHelperService> exportHelper,
+         Provider<DotService> dotServiceProvider
          ) {
 
       super(fileService, dtoService, securityService, entityClonerService);
@@ -82,6 +85,7 @@ public class FileServerRpcServiceImpl extends TreeDBManagerTreeHandler<AbstractF
       this.extractConfigFactory = extractConfigFactory;
       this.zipUtilsServiceProvider = zipUtilsServiceProvider;
       this.exportHelper = exportHelper;
+      this.dotServiceProvider = dotServiceProvider;
    }
 
    @SecurityChecked(argumentVerification = {

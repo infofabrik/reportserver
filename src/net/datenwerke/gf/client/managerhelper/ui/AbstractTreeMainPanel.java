@@ -114,35 +114,11 @@ abstract public class AbstractTreeMainPanel extends DwContentPanel {
          /* create inner tab panel */
          final VerticalLayoutContainer viewWrapper = new VerticalLayoutContainer();
          viewWrapper.setBorders(false);
-
-         /* add toolbar */
-         DwHookableToolbar toolbar = toolbarProvider.get();
-         toolbar.getElement().addClassName(getCssToolbarName());
-         toolbar.setContainerName(getToolbarName());
+         DwHookableToolbar toolbar = createToolbar(view, selectedNode);
          viewWrapper.add(toolbar, new VerticalLayoutData(1, 39));
 
          /* add to lookup table */
          mainPanelLookup.put(view, viewWrapper);
-
-         /* configure dwToolbar */
-         toolbar.getHookConfig().put("id", String.valueOf(selectedNode.getId()));
-         toolbar.getHookConfig().put("classname", selectedNode.getClass().getName());
-         toolbar.getHookConfig().put("path", treePanel.getPath(selectedNode));
-
-         /* configure toolbar */
-         Collection<MainPanelViewToolbarConfiguratorHook> toolbarConfigurators = hookHandler
-               .getHookers(MainPanelViewToolbarConfiguratorHook.class);
-         for (MainPanelViewToolbarConfiguratorHook configurator : toolbarConfigurators)
-            configurator.mainPanelViewToolbarConfiguratorHook_addLeft(view, toolbar, selectedNode);
-
-         toolbar.addBaseHookersLeft();
-
-         toolbar.add(new FillToolItem());
-
-         for (MainPanelViewToolbarConfiguratorHook configurator : toolbarConfigurators)
-            configurator.mainPanelViewToolbarConfiguratorHook_addRight(view, toolbar, selectedNode);
-
-         toolbar.addBaseHookersRight();
 
          /* add tab to panel */
          TabItemConfig tabItemConfig = new TabItemConfig(view.getComponentHeader());
@@ -185,6 +161,35 @@ abstract public class AbstractTreeMainPanel extends DwContentPanel {
 
       /* rerender */
       forceLayout();
+   }
+   
+   private DwHookableToolbar createToolbar(final MainPanelView view, final AbstractNodeDto selectedNode) {
+      /* add toolbar */
+      DwHookableToolbar toolbar = toolbarProvider.get();
+      toolbar.getElement().addClassName(getCssToolbarName());
+      toolbar.setContainerName(getToolbarName());
+
+
+      /* configure dwToolbar */
+      toolbar.getHookConfig().put("id", String.valueOf(selectedNode.getId()));
+      toolbar.getHookConfig().put("classname", selectedNode.getClass().getName());
+      toolbar.getHookConfig().put("path", treePanel.getPath(selectedNode));
+
+      /* configure toolbar */
+      Collection<MainPanelViewToolbarConfiguratorHook> toolbarConfigurators = hookHandler
+            .getHookers(MainPanelViewToolbarConfiguratorHook.class);
+      for (MainPanelViewToolbarConfiguratorHook configurator : toolbarConfigurators)
+         configurator.mainPanelViewToolbarConfiguratorHook_addLeft(view, toolbar, selectedNode);
+
+      toolbar.addBaseHookersLeft();
+
+      toolbar.add(new FillToolItem());
+
+      for (MainPanelViewToolbarConfiguratorHook configurator : toolbarConfigurators)
+         configurator.mainPanelViewToolbarConfiguratorHook_addRight(view, toolbar, selectedNode);
+
+      toolbar.addBaseHookersRight();
+      return toolbar;
    }
 
    private boolean viewsContain(String viewId, List<MainPanelView> views) {
@@ -232,7 +237,9 @@ abstract public class AbstractTreeMainPanel extends DwContentPanel {
          VerticalLayoutContainer mainPanel = mainPanelLookup.get(view);
 
          mainPanel.clear();
-         mainPanel.add(viewComponent);
+         DwHookableToolbar toolbar = createToolbar(view, selectedNode);
+         mainPanel.add(toolbar, new VerticalLayoutData(1, 39));
+         mainPanel.add(viewComponent, new VerticalLayoutData(1, 1));
          mainPanel.forceLayout();
       }
    }

@@ -7,6 +7,7 @@ import com.google.inject.Inject;
 
 import net.datenwerke.gf.client.upload.dto.FileToUpload;
 import net.datenwerke.gxtdto.client.dtomanager.Dao;
+import net.datenwerke.rs.dot.client.dot.rpc.DotRpcServiceAsync;
 import net.datenwerke.rs.fileserver.client.fileserver.dto.AbstractFileServerNodeDto;
 import net.datenwerke.rs.fileserver.client.fileserver.dto.FileServerFileDto;
 import net.datenwerke.rs.fileserver.client.fileserver.dto.FileServerFolderDto;
@@ -15,10 +16,13 @@ import net.datenwerke.rs.fileserver.client.fileserver.rpc.FileServerRpcServiceAs
 public class FileServerDao extends Dao {
 
    private final FileServerRpcServiceAsync rpcService;
+   private final DotRpcServiceAsync dotRpcService;
 
    @Inject
-   public FileServerDao(FileServerRpcServiceAsync rpcService) {
+   public FileServerDao(FileServerRpcServiceAsync rpcService,
+         DotRpcServiceAsync dotRpcService) {
       this.rpcService = rpcService;
+      this.dotRpcService = dotRpcService;
    }
 
    public void updateFile(FileServerFileDto file, String data, AsyncCallback<Void> callback) {
@@ -37,5 +41,9 @@ public class FileServerDao extends Dao {
    public void uploadAndExtract(FileServerFolderDto folder, FileToUpload fileToUpload,
          AsyncCallback<List<AbstractFileServerNodeDto>> callback) {
       rpcService.uploadAndExtract(folder, fileToUpload, transformListCallback(callback));
+   }
+   
+   public void loadDotAsSVG(FileServerFileDto file, AsyncCallback<String>callback ) {
+      dotRpcService.loadDotAsSVG(file, transformAndKeepCallback(callback));
    }
 }

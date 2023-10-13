@@ -125,6 +125,7 @@ import net.datenwerke.rs.dashboard.server.dashboard.DashboardRpcServiceImpl;
 import net.datenwerke.rs.dashboard.server.dashboard.DashboardTreeRpcServiceImpl;
 import net.datenwerke.rs.dashboard.service.dashboard.DashboardModule;
 import net.datenwerke.rs.demo.DemoDataModule;
+import net.datenwerke.rs.dot.server.dot.DotRpcServiceImpl;
 import net.datenwerke.rs.dot.service.dot.DotModule;
 import net.datenwerke.rs.dropbox.server.dropbox.DropboxRpcServiceImpl;
 import net.datenwerke.rs.dropbox.service.dropbox.DropboxModule;
@@ -426,7 +427,9 @@ public class ReportServerServiceConfig extends DwGwtFrameworkBase {
             serve(BASE_URL + "datasinks_import").with(DatasinkManagerImportRpcServiceImpl.class); //$NON-NLS-1$
             serve(BASE_URL + "datasinkmanager_export").with(DatasinkManagerExportRpcServiceImpl.class); //$NON-NLS-1$
             serve(BASE_URL + "datasinks_service").with(DatasinkRpcServiceImpl.class); //$NON-NLS-1$
-
+            
+            serve(BASE_URL + "dot").with(DotRpcServiceImpl.class); //$NON-NLS-1$
+            
             serve(BASE_URL + "reportdocumentation").with(ReportDocumentationServlet.class); //$NON-NLS-1$
             
             serve(BASE_URL + "datenwerke/jaspertotable").with(JasperToTableRpcServiceImpl.class); //$NON-NLS-1$

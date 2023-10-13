@@ -19,6 +19,8 @@ import net.datenwerke.gf.client.upload.dto.FileToUpload;
 import net.datenwerke.gf.client.upload.dto.UploadProperties;
 import net.datenwerke.gf.client.upload.simpleform.FileUpload;
 import net.datenwerke.gf.client.upload.simpleform.SFFCFileUpload;
+import net.datenwerke.gxtdto.client.baseex.widget.btn.DwTextButton;
+import net.datenwerke.gxtdto.client.dtomanager.callback.RsAsyncCallback;
 import net.datenwerke.gxtdto.client.forms.simpleform.SimpleForm;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCCustomComponent;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCSpace;
@@ -29,11 +31,16 @@ import net.datenwerke.gxtdto.client.forms.simpleform.providers.dummy.CustomCompo
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.dummy.Separator;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.dummy.StaticLabel;
 import net.datenwerke.gxtdto.client.locale.BaseMessages;
+import net.datenwerke.gxtdto.client.utilityservices.UtilsUIService;
+import net.datenwerke.gxtdto.client.utilityservices.toolbar.ToolbarService;
+import net.datenwerke.rs.dot.client.dot.DotUiModule;
+import net.datenwerke.rs.fileserver.client.fileserver.FileServerDao;
 import net.datenwerke.rs.fileserver.client.fileserver.FileServerUiModule;
+import net.datenwerke.rs.fileserver.client.fileserver.dto.FileServerFileDto;
 import net.datenwerke.rs.fileserver.client.fileserver.dto.decorator.FileServerFileDtoDec;
 import net.datenwerke.rs.fileserver.client.fileserver.dto.pa.FileServerFileDtoPA;
 import net.datenwerke.rs.fileserver.client.fileserver.locale.FileServerMessages;
-
+import net.datenwerke.rs.theme.client.icon.BaseIcon;
 /**
  * 
  *
@@ -42,6 +49,12 @@ public class FileForm extends SimpleFormView {
 
    @Inject
    private FileUploadUiService fileUploadService;
+   @Inject
+   private UtilsUIService utilsUIService;
+   @Inject
+   private FileServerDao fileServerDao;
+   @Inject
+   private ToolbarService toolbarUtils;
 
    @Override
    public void configureSimpleForm(final SimpleForm form) {
@@ -138,6 +151,35 @@ public class FileForm extends SimpleFormView {
 
                FieldLabel label = new FieldLabel(cont, FileServerMessages.INSTANCE.previewLabel());
                return label;
+            }
+         });
+      } else if (null != type && DotUiModule.MIME_TYPE.equals(type)) {
+         DwTextButton previewButton = toolbarUtils
+               .createSmallButtonLeft(FileServerMessages.INSTANCE.previewLabel() + " SVG", BaseIcon.SITEMAP);
+         FileForm mainPanel = this;
+         previewButton.addSelectHandler(event -> {
+            mainPanel.mask(BaseMessages.INSTANCE.loadingMsg());
+            fileServerDao.loadDotAsSVG((FileServerFileDto) getSelectedNode(), new RsAsyncCallback<String>() {
+               @Override
+               public void onSuccess(String result) { 
+                  mainPanel.unmask();
+                  utilsUIService.showHtmlPopupWindows(((FileServerFileDtoDec) getSelectedNode()).getName(),
+                        result, false, BaseIcon.SITEMAP, false, false, true, true);
+               }
+
+               @Override
+               public void onFailure(Throwable caught) {
+                  mainPanel.unmask();
+                  super.onFailure(caught);
+               }
+            });
+         });
+         VerticalLayoutContainer cont = new VerticalLayoutContainer();
+         cont.add(previewButton, new VerticalLayoutData(100, -1));
+         form.addField(CustomComponent.class, new SFFCCustomComponent() {      
+            @Override
+            public Widget getComponent() {
+               return cont;
             }
          });
       }
