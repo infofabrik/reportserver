@@ -38,5 +38,7 @@ public interface InternalDbMessages extends Messages {
    String noInternalDbFound();
 
    String schemaVersion();
+   
+   String key();
 
 }

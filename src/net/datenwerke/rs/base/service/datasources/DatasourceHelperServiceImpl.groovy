@@ -322,8 +322,9 @@ class DatasourceHelperServiceImpl implements DatasourceHelperService {
       def map = new LinkedHashMap()
       map = [
          (DatasourcesMessages.INSTANCE.name()):             datasource.name,
-         (DatasourcesMessages.INSTANCE.description()):      datasource.description,
          (DatasourcesMessages.INSTANCE.id()):               datasource.id,
+         (DatasourcesMessages.INSTANCE.key()):              datasource.key ?:'null',
+         (DatasourcesMessages.INSTANCE.description()):      datasource.description,
          (DatasourcesMessages.INSTANCE.createdOn()):        datasource.createdOn,
          (DatasourcesMessages.INSTANCE.changedOn()):        datasource.lastUpdated,
          (DatasourcesMessages.INSTANCE.path()):             historyServiceProvider.get().getFormattedObjectPaths(datasource)

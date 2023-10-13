@@ -34,6 +34,7 @@ public class InternalDbCategoryProviderHooker implements GeneralInfoCategoryProv
    private static final String INTERNAL_DS_PATH = "INTERNAL_DS_PATH";
    private static final String INTERNAL_DS_NAME = "INTERNAL_DS_NAME";
    private static final String INTERNAL_DS_DB_NAME = "INTERNAL_DS_DB_NAME";
+   private static final String INTERNAL_DS_KEY = "INTERNAL_DS_KEY";
    private static final String INTERNAL_DS_DB_VERSION = "INTERNAL_DS_DB_VERSION";
    private static final String INTERNAL_DS_JDBC_DRIVER_NAME = "INTERNAL_DS_JDBC_DRIVER_NAME";
    private static final String INTERNAL_DS_JDBC_DRIVER_VERSION = "INTERNAL_DS_JDBC_DRIVER_VERSION";
@@ -79,10 +80,12 @@ public class InternalDbCategoryProviderHooker implements GeneralInfoCategoryProv
                .fetchInfoDatasourceMetadata(internalDbDatasource, true, true, false, false);
          
          props.put(ImmutablePair.of(INTERNAL_DATASOURCE_ENABLED, GeneralInfoUiModule.ENABLED), true);
-         props.put(ImmutablePair.of(INTERNAL_DS_NAME, InternalDbMessages.INSTANCE.internalDatasourceName()),
-               internalDbDatasource.getName());
          props.put(ImmutablePair.of(INTERNAL_DS_ID, InternalDbMessages.INSTANCE.internalDatasourceId()),
                internalDbDatasource.getId());
+         props.put(ImmutablePair.of(INTERNAL_DS_NAME, InternalDbMessages.INSTANCE.internalDatasourceName()),
+               internalDbDatasource.getName());
+         props.put(ImmutablePair.of(INTERNAL_DS_KEY, InternalDbMessages.INSTANCE.key()),
+               internalDbDatasource.getKey());
          final List<String> paths = historyServiceProvider.get().getFormattedObjectPaths(internalDbDatasource);
          props.put(ImmutablePair.of(INTERNAL_DS_PATH, InternalDbMessages.INSTANCE.internalDatasourcePath()),
                paths.isEmpty() ? "path not found" : paths.get(0));
