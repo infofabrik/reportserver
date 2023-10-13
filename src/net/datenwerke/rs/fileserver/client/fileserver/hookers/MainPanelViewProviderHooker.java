@@ -1,5 +1,7 @@
 package net.datenwerke.rs.fileserver.client.fileserver.hookers;
 
+import static java.util.stream.Collectors.toList;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -10,6 +12,7 @@ import com.google.inject.Provider;
 import net.datenwerke.gf.client.managerhelper.hooks.MainPanelViewProviderHook;
 import net.datenwerke.gf.client.managerhelper.mainpanel.MainPanelView;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
+import net.datenwerke.rs.dot.client.dot.hooks.DotFileViewHook;
 import net.datenwerke.rs.fileserver.client.fileserver.dto.FileServerFileDto;
 import net.datenwerke.rs.fileserver.client.fileserver.dto.FileServerFolderDto;
 import net.datenwerke.rs.fileserver.client.fileserver.hooks.EditFileServerFileHook;
@@ -52,18 +55,24 @@ public class MainPanelViewProviderHooker implements MainPanelViewProviderHook {
 
       views.add(fileFormProvider.get());
 
-      for (EditFileServerFileHook hooker : hookHandler.getHookers(EditFileServerFileHook.class)) {
-         if (hooker.consumes(file)) {
-            views.add(hooker.getView(file));
-            break;
-         }
-      }
-
+      
+      views.addAll(hookHandler.getHookers(DotFileViewHook.class)
+            .stream()
+            .filter(hooker -> hooker.consumes(file))
+            .map(hooker -> hooker.getView(file))
+            .collect(toList()));
+      
+      views.addAll(hookHandler.getHookers(EditFileServerFileHook.class)
+            .stream()
+            .filter(hooker -> hooker.consumes(file))
+            .map(hooker -> hooker.getView(file))
+            .collect(toList()));
+      
       views.add(securityViewProvider.get());
 
       return views;
    }
-
+   
    private List<MainPanelView> getViewForFolder() {
       return Arrays.asList(folderFormProvider.get(), securityViewProvider.get());
    }
