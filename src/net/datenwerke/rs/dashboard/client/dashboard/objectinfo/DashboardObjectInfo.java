@@ -27,4 +27,14 @@ public class DashboardObjectInfo extends GeneralObjectInfoImpl<DashboardNodeDto>
    protected ImageResource doGetIconSmall(DashboardNodeDto object) {
       return BaseIcon.DASHBOARD.toImageResource();
    }
+
+   @Override
+   protected String doGetKey(DashboardNodeDto object) {
+      return null;
+   }
+   
+   @Override
+   public boolean hasKeyAttribute() {
+      return false;
+   }
 }

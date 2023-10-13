@@ -28,4 +28,14 @@ public class FolderObjectInfo extends GeneralObjectInfoImpl<ReportFolderDto> {
    public ImageResource doGetIconSmall(ReportFolderDto object) {
       return BaseIcon.FOLDER_O.toImageResource();
    }
+
+   @Override
+   protected String doGetKey(ReportFolderDto object) {
+      return null;
+   }
+   
+   @Override
+   public boolean hasKeyAttribute() {
+      return false;
+   }
 }

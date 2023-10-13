@@ -29,4 +29,14 @@ public class DatasourceObjectInfo extends GeneralObjectInfoImpl<DatasourceDefini
       return BaseIcon.DATABASE.toImageResource();
    }
 
+   @Override
+   protected String doGetKey(DatasourceDefinitionDto object) {
+      return object.getKey();
+   }
+
+   @Override
+   public boolean hasKeyAttribute() {
+      return true;
+   }
+
 }

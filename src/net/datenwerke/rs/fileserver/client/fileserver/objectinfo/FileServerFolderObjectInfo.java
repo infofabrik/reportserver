@@ -28,4 +28,14 @@ public class FileServerFolderObjectInfo extends GeneralObjectInfoImpl<FileServer
       return BaseIcon.FOLDER.toImageResource();
    }
 
+   @Override
+   protected String doGetKey(FileServerFolderDto object) {
+      return null;
+   }
+   
+   @Override
+   public boolean hasKeyAttribute() {
+      return false;
+   }
+
 }

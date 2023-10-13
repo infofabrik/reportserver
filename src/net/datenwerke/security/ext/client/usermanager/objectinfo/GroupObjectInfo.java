@@ -28,4 +28,14 @@ public class GroupObjectInfo extends GeneralObjectInfoImpl<GroupDto>{
       return BaseIcon.GROUP.toImageResource();
    }
 
+   @Override
+   protected String doGetKey(GroupDto object) {
+      return null;
+   }
+   
+   @Override
+   public boolean hasKeyAttribute() {
+      return false;
+   }
+
 }

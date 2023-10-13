@@ -28,4 +28,14 @@ public class RemoteServerFolderObjectInfo extends GeneralObjectInfoImpl<RemoteSe
       return BaseIcon.FOLDER.toImageResource();
    }
 
+   @Override
+   protected String doGetKey(RemoteServerFolderDto object) {
+      return null;
+   }
+   
+   @Override
+   public boolean hasKeyAttribute() {
+      return false;
+   }
+
 }

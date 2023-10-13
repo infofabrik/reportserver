@@ -27,4 +27,14 @@ public class UserFolderObjectInfo extends GeneralObjectInfoImpl<OrganisationalUn
    protected ImageResource doGetIconSmall(OrganisationalUnitDto object) {
       return BaseIcon.FOLDER.toImageResource();
    }
+
+   @Override
+   protected String doGetKey(OrganisationalUnitDto object) {
+      return null;
+   }
+   
+   @Override
+   public boolean hasKeyAttribute() {
+      return false;
+   }
 }

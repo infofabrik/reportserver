@@ -32,4 +32,14 @@ public class UserObjectInfo extends GeneralObjectInfoImpl<UserDto> {
    protected ImageResource doGetIconSmall(UserDto user) {
       return BaseIcon.USER_PROFILE.toImageResource();
    }
+
+   @Override
+   protected String doGetKey(UserDto object) {
+      return null;
+   }
+   
+   @Override
+   public boolean hasKeyAttribute() {
+      return false;
+   }
 }

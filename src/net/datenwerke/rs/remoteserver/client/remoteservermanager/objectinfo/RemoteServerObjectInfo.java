@@ -26,4 +26,14 @@ public class RemoteServerObjectInfo extends GeneralObjectInfoImpl<RemoteServerDe
    protected ImageResource doGetIconSmall(RemoteServerDefinitionDto object) {
       return object.toIcon().toImageResource();
    }
+
+   @Override
+   protected String doGetKey(RemoteServerDefinitionDto object) {
+      return object.getKey();
+   }
+   
+   @Override
+   public boolean hasKeyAttribute() {
+      return true;
+   }
 }

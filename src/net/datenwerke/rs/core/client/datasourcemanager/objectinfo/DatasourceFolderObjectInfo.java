@@ -28,4 +28,14 @@ public class DatasourceFolderObjectInfo extends GeneralObjectInfoImpl<Datasource
       return BaseIcon.FOLDER.toImageResource();
    }
 
+   @Override
+   protected String doGetKey(DatasourceFolderDto object) {
+      return null;
+   }
+   
+   @Override
+   public boolean hasKeyAttribute() {
+      return false;
+   }
+
 }

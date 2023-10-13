@@ -27,4 +27,14 @@ public class DadgetObjectInfo extends GeneralObjectInfoImpl<DadgetNodeDto>{
    protected ImageResource doGetIconSmall(DadgetNodeDto object) {
       return BaseIcon.DADGET.toImageResource();
    }
+
+   @Override
+   protected String doGetKey(DadgetNodeDto object) {
+      return null;
+   }
+
+   @Override
+   public boolean hasKeyAttribute() {
+      return false;
+   }
 }

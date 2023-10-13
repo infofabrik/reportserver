@@ -11,6 +11,10 @@ public interface ObjectInfoKeyInfoProvider extends Hook {
    public boolean consumes(Object object);
 
    String getName(Object object);
+   
+   boolean hasKeyAttribute();
+
+   String getKey(Object object);
 
    String getDescription(Object object);
 

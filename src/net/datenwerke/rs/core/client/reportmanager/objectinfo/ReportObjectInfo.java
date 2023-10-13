@@ -48,4 +48,14 @@ public final class ReportObjectInfo extends GeneralObjectInfoImpl<ReportDto> {
       throw new IllegalArgumentException("Could not find config provider for: " + report.getClass());
    }
 
+   @Override
+   protected String doGetKey(ReportDto object) {
+      return object.getKey();
+   }
+   
+   @Override
+   public boolean hasKeyAttribute() {
+      return true;
+   }
+
 }

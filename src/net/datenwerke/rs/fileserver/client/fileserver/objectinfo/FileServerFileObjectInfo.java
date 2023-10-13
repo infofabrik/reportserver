@@ -31,4 +31,14 @@ public class FileServerFileObjectInfo extends GeneralObjectInfoImpl<FileServerFi
       return BaseIcon.FILE.toImageResource();
    }
 
+   @Override
+   protected String doGetKey(FileServerFileDto object) {
+      return null;
+   }
+   
+   @Override
+   public boolean hasKeyAttribute() {
+      return false;
+   }
+
 }

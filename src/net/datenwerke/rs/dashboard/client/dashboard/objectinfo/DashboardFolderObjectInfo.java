@@ -27,4 +27,14 @@ public class DashboardFolderObjectInfo extends GeneralObjectInfoImpl<DashboardFo
    protected ImageResource doGetIconSmall(DashboardFolderDto object) {
       return BaseIcon.FOLDER.toImageResource();
    }
+
+   @Override
+   protected String doGetKey(DashboardFolderDto object) {
+      return null;
+   }
+   
+   @Override
+   public boolean hasKeyAttribute() {
+      return false;
+   }
 }

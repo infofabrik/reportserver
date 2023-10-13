@@ -26,4 +26,14 @@ public class DatasinkObjectInfo extends GeneralObjectInfoImpl<DatasinkDefinition
    protected ImageResource doGetIconSmall(DatasinkDefinitionDto object) {
       return object.toIcon().toImageResource();
    }
+
+   @Override
+   protected String doGetKey(DatasinkDefinitionDto object) {
+      return object.getKey();
+   }
+   
+   @Override
+   public boolean hasKeyAttribute() {
+      return true;
+   }
 }

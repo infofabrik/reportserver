@@ -110,4 +110,6 @@ public interface DatasourcesMessages extends Messages {
    String csvLists();
 
    String relationalDatasourcesStatistics();
+   
+   String key();
 }

@@ -28,4 +28,14 @@ public class DatasinkFolderObjectInfo extends GeneralObjectInfoImpl<DatasinkFold
       return BaseIcon.FOLDER.toImageResource();
    }
 
+   @Override
+   protected String doGetKey(DatasinkFolderDto object) {
+      return null;
+   }
+   
+   @Override
+   public boolean hasKeyAttribute() {
+      return false;
+   }
+
 }

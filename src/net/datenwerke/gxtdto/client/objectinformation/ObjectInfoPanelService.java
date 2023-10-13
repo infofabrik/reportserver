@@ -128,11 +128,16 @@ public class ObjectInfoPanelService {
 
       final Map<String, String> data = new HashMap<>();
       data.put(BaseMessages.INSTANCE.name(), keyProvider.getName(object));
-      data.put(BaseMessages.INSTANCE.description(), keyProvider.getDescription(object));
       if (object instanceof AbstractNodeDto) {
          Object id = ((AbstractNodeDto) object).getDtoId();
          data.put(BaseMessages.INSTANCE.id(), null == id ? "null" : id.toString());
       }
+      if (keyProvider.hasKeyAttribute()) {
+         String key = keyProvider.getKey(object);
+         data.put(BaseMessages.INSTANCE.key(), null == key? "null": key);
+      }
+      
+      data.put(BaseMessages.INSTANCE.description(), keyProvider.getDescription(object));
       data.put(BaseMessages.INSTANCE.createdOn(), null == keyProvider.getCreatedOn(object) ? ""
             : DateTimeFormat.getFormat(PredefinedFormat.DATE_SHORT).format(keyProvider.getCreatedOn(object)));
       data.put(BaseMessages.INSTANCE.changedOn(), null == keyProvider.getLastUpdatedOn(object) ? ""

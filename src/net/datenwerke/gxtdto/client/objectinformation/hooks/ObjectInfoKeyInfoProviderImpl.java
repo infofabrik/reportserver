@@ -11,6 +11,13 @@ public abstract class ObjectInfoKeyInfoProviderImpl<A> implements ObjectInfoKeyI
       return doGetName((A) object);
    }
 
+   @Override
+   final public String getKey(Object object) {
+      return doGetKey((A) object);
+   }
+
+   protected abstract String doGetKey(A object);
+
    protected abstract String doGetName(A object);
 
    @Override

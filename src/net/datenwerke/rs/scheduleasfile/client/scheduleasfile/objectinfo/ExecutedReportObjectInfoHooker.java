@@ -46,4 +46,14 @@ public class ExecutedReportObjectInfoHooker extends ObjectInfoKeyInfoProviderImp
       return node.toIcon().toImageResource();
    }
 
+   @Override
+   protected String doGetKey(ExecutedReportFileReferenceDto object) {
+      return null;
+   }
+
+   @Override
+   public boolean hasKeyAttribute() {
+      return false;
+   }
+
 }

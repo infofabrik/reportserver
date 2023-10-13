@@ -26,4 +26,14 @@ public class TransportObjectInfo extends GeneralObjectInfoImpl<TransportDto>{
    protected ImageResource doGetIconSmall(TransportDto object) {
       return object.toIcon().toImageResource();
    }
+
+   @Override
+   protected String doGetKey(TransportDto object) {
+      return object.getKey();
+   }
+   
+   @Override
+   public boolean hasKeyAttribute() {
+      return true;
+   }
 }
