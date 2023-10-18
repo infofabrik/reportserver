@@ -40,6 +40,7 @@ import net.datenwerke.rs.fileserver.client.fileserver.dto.FileServerFileDto;
 import net.datenwerke.rs.fileserver.client.fileserver.dto.decorator.FileServerFileDtoDec;
 import net.datenwerke.rs.fileserver.client.fileserver.dto.pa.FileServerFileDtoPA;
 import net.datenwerke.rs.fileserver.client.fileserver.locale.FileServerMessages;
+import net.datenwerke.rs.markdown.client.markdown.MarkdownUiModule;
 import net.datenwerke.rs.theme.client.icon.BaseIcon;
 /**
  * 
@@ -159,30 +160,44 @@ public class FileForm extends SimpleFormView {
          FileForm mainPanel = this;
          previewButton.addSelectHandler(event -> {
             mainPanel.mask(BaseMessages.INSTANCE.loadingMsg());
-            fileServerDao.loadDotAsSVG((FileServerFileDto) getSelectedNode(), new RsAsyncCallback<String>() {
-               @Override
-               public void onSuccess(String result) { 
-                  mainPanel.unmask();
-                  utilsUIService.showHtmlPopupWindows(((FileServerFileDtoDec) getSelectedNode()).getName(),
-                        result, false, BaseIcon.SITEMAP, false, false, true, true);
-               }
-
-               @Override
-               public void onFailure(Throwable caught) {
-                  mainPanel.unmask();
-                  super.onFailure(caught);
-               }
-            });
+            fileServerDao.loadDotAsSVG((FileServerFileDto) getSelectedNode(), getCallbackPopupWindow(mainPanel));
          });
-         VerticalLayoutContainer cont = new VerticalLayoutContainer();
-         cont.add(previewButton, new VerticalLayoutData(100, -1));
-         form.addField(CustomComponent.class, new SFFCCustomComponent() {      
-            @Override
-            public Widget getComponent() {
-               return cont;
-            }
+         addPreviewButtonToForm(form, previewButton);
+      } else if (null != type && MarkdownUiModule.MIME_TYPE.equals(type)) {
+         DwTextButton previewButton = toolbarUtils.createSmallButtonLeft(FileServerMessages.INSTANCE.previewLabel(), BaseIcon.SITEMAP);
+         FileForm mainPanel = this;
+         previewButton.addSelectHandler(event -> {
+            mainPanel.mask(BaseMessages.INSTANCE.loadingMsg());
+            fileServerDao.loadMarkdownAsHtml((FileServerFileDto) getSelectedNode(), getCallbackPopupWindow(mainPanel));
          });
+         addPreviewButtonToForm(form, previewButton);
       }
+   }
+   private RsAsyncCallback<String> getCallbackPopupWindow(FileForm mainPanel) {
+      return new RsAsyncCallback<String>() {
+         @Override
+         public void onSuccess(String result) { 
+            mainPanel.unmask();
+            utilsUIService.showHtmlPopupWindows(((FileServerFileDtoDec) getSelectedNode()).getName(),
+                  result, false, BaseIcon.SITEMAP, false, false, true, true);
+         }
+         @Override
+         public void onFailure(Throwable caught) {
+            mainPanel.unmask();
+            super.onFailure(caught);
+         }
+      };
+   }
+   
+   private void addPreviewButtonToForm(SimpleForm form, DwTextButton previewButton) {
+      VerticalLayoutContainer cont = new VerticalLayoutContainer();
+      cont.add(previewButton, new VerticalLayoutData(100, -1));
+      form.addField(CustomComponent.class, new SFFCCustomComponent() {      
+         @Override
+         public Widget getComponent() {
+            return cont;
+         }
+      });
    }
 
    @Override

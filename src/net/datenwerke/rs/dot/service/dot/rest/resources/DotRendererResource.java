@@ -1,14 +1,18 @@
 package net.datenwerke.rs.dot.service.dot.rest.resources;
 
+import java.io.IOException;
 import java.util.Date;
 
 import javax.inject.Inject;
 import javax.inject.Provider;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
@@ -66,17 +70,32 @@ public class DotRendererResource extends RsRestResource {
 
          String dot = new String(file.getData());
 
-         ContentDisposition contentDisposition = ContentDisposition.type("inline").fileName("graph.svg")
-               .creationDate(new Date()).build();
-
-         String imageStr = dotServiceProvider.get().render(TextFormat.SVG, dot, width);
-         return Response.status(Status.OK).type("image/svg+xml").entity(imageStr)
-               .header("Content-Disposition", contentDisposition).build();
+         return generateResponse(width, dot);
       } catch (Exception e) {
          logger.error(ExceptionUtils.getRootCauseMessage(e), e);
          return Response.status(Status.INTERNAL_SERVER_ERROR.getStatusCode(), ExceptionUtils.getRootCauseMessage(e))
                .build();
       }
    }
-
+   
+   @POST
+   @Consumes(MediaType.TEXT_PLAIN)
+   @Produces("image/svg+xml")
+   public Response renderExternal(String dot, @DefaultValue("1200") @QueryParam("width") int width) {
+      try {
+         return generateResponse(width, dot);
+      } catch (IOException e) {
+         logger.error(ExceptionUtils.getRootCauseMessage(e), e);
+         return Response.status(Status.INTERNAL_SERVER_ERROR.getStatusCode(), ExceptionUtils.getRootCauseMessage(e))
+               .build();
+      }
+   }
+   
+   private Response generateResponse(int width, String dot) throws IOException {
+      ContentDisposition contentDisposition = ContentDisposition.type("inline").fileName("graph.svg")
+            .creationDate(new Date()).build();
+      String imageStr = dotServiceProvider.get().render(TextFormat.SVG, dot, width);
+      return Response.status(Status.OK).type("image/svg+xml").entity(imageStr)
+            .header("Content-Disposition", contentDisposition).build();
+   }
 }

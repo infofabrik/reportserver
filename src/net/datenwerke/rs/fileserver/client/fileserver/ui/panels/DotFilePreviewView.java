@@ -1,4 +1,4 @@
-package net.datenwerke.rs.fileserver.client.fileserver.fileeditors.text;
+package net.datenwerke.rs.fileserver.client.fileserver.ui.panels;
 
 import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.user.client.ui.HTML;

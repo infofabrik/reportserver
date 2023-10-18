@@ -7,7 +7,7 @@ import net.datenwerke.gf.client.managerhelper.mainpanel.MainPanelView;
 import net.datenwerke.rs.dot.client.dot.DotUiModule;
 import net.datenwerke.rs.dot.client.dot.hooks.DotFileViewHook;
 import net.datenwerke.rs.fileserver.client.fileserver.dto.FileServerFileDto;
-import net.datenwerke.rs.fileserver.client.fileserver.fileeditors.text.DotFilePreviewView;
+import net.datenwerke.rs.fileserver.client.fileserver.ui.panels.DotFilePreviewView;
 
 public class DotFileViewPreviewHooker implements DotFileViewHook {
    @Inject

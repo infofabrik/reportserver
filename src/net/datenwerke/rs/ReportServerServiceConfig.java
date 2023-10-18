@@ -170,6 +170,8 @@ import net.datenwerke.rs.license.server.LicenseRpcServiceImpl;
 import net.datenwerke.rs.license.service.LicenseModule;
 import net.datenwerke.rs.localfsdatasink.server.localfsdatasink.LocalFileSystemRpcServiceImpl;
 import net.datenwerke.rs.localfsdatasink.service.localfsdatasink.LocalFileSystemModule;
+import net.datenwerke.rs.markdown.server.markdown.MarkdownRpcServiceImpl;
+import net.datenwerke.rs.markdown.service.markdown.MarkdownModule;
 import net.datenwerke.rs.oauth.server.oauth.OAuthRpcServiceImpl;
 import net.datenwerke.rs.oauth.server.oauth.OAuthServlet;
 import net.datenwerke.rs.onedrive.server.onedrive.OneDriveRpcServiceImpl;
@@ -429,6 +431,7 @@ public class ReportServerServiceConfig extends DwGwtFrameworkBase {
             serve(BASE_URL + "datasinks_service").with(DatasinkRpcServiceImpl.class); //$NON-NLS-1$
             
             serve(BASE_URL + "dot").with(DotRpcServiceImpl.class); //$NON-NLS-1$
+            serve(BASE_URL + "markdown").with(MarkdownRpcServiceImpl.class); //$NON-NLS-1$
             
             serve(BASE_URL + "reportdocumentation").with(ReportDocumentationServlet.class); //$NON-NLS-1$
             
@@ -735,6 +738,7 @@ public class ReportServerServiceConfig extends DwGwtFrameworkBase {
             new DatasourceBundleModule(),
             
             new DotModule(),
+            new MarkdownModule(),
             
             new ScpModule(),
             

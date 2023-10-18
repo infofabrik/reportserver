@@ -12,17 +12,21 @@ import net.datenwerke.rs.fileserver.client.fileserver.dto.AbstractFileServerNode
 import net.datenwerke.rs.fileserver.client.fileserver.dto.FileServerFileDto;
 import net.datenwerke.rs.fileserver.client.fileserver.dto.FileServerFolderDto;
 import net.datenwerke.rs.fileserver.client.fileserver.rpc.FileServerRpcServiceAsync;
+import net.datenwerke.rs.markdown.client.markdown.rpc.MarkdownRpcServiceAsync;
 
 public class FileServerDao extends Dao {
 
    private final FileServerRpcServiceAsync rpcService;
    private final DotRpcServiceAsync dotRpcService;
+   private final MarkdownRpcServiceAsync mdRpcService;
 
    @Inject
    public FileServerDao(FileServerRpcServiceAsync rpcService,
-         DotRpcServiceAsync dotRpcService) {
+         DotRpcServiceAsync dotRpcService,
+         MarkdownRpcServiceAsync mdRpcService) {
       this.rpcService = rpcService;
       this.dotRpcService = dotRpcService;
+      this.mdRpcService = mdRpcService;
    }
 
    public void updateFile(FileServerFileDto file, String data, AsyncCallback<Void> callback) {
@@ -45,5 +49,8 @@ public class FileServerDao extends Dao {
    
    public void loadDotAsSVG(FileServerFileDto file, AsyncCallback<String>callback ) {
       dotRpcService.loadDotAsSVG(file, transformAndKeepCallback(callback));
+   }
+   public void loadMarkdownAsHtml(FileServerFileDto file, AsyncCallback<String>callback ) {
+      mdRpcService.loadMarkdownAsHtml(file, transformAndKeepCallback(callback));
    }
 }

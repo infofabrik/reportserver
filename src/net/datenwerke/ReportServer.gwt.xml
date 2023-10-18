@@ -115,6 +115,7 @@
 	<source path="rs/jxlsreport/shared"/>
 	<source path="rs/license/client"/>
 	<source path="rs/dot/client"/>
+	<source path="rs/markdown/client"/>
 	<source path="rs/passwordpolicy/client"/>
 	<source path="rs/passwordpolicy/shared"/>
 	<source path="rs/remoteaccess/client"/>

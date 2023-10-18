@@ -18,6 +18,7 @@ import net.datenwerke.rs.fileserver.client.fileserver.dto.FileServerFolderDto;
 import net.datenwerke.rs.fileserver.client.fileserver.hooks.EditFileServerFileHook;
 import net.datenwerke.rs.fileserver.client.fileserver.ui.forms.FileForm;
 import net.datenwerke.rs.fileserver.client.fileserver.ui.forms.FolderForm;
+import net.datenwerke.rs.markdown.client.markdown.hooks.MarkdownFileViewHook;
 import net.datenwerke.security.ext.client.security.ui.SecurityView;
 import net.datenwerke.treedb.client.treedb.dto.AbstractNodeDto;
 
@@ -57,6 +58,12 @@ public class MainPanelViewProviderHooker implements MainPanelViewProviderHook {
 
       
       views.addAll(hookHandler.getHookers(DotFileViewHook.class)
+            .stream()
+            .filter(hooker -> hooker.consumes(file))
+            .map(hooker -> hooker.getView(file))
+            .collect(toList()));
+      
+      views.addAll(hookHandler.getHookers(MarkdownFileViewHook.class)
             .stream()
             .filter(hooker -> hooker.consumes(file))
             .map(hooker -> hooker.getView(file))

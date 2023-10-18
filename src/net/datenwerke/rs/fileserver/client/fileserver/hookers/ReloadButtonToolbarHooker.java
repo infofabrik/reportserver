@@ -1,4 +1,4 @@
-package net.datenwerke.rs.dot.client.dot.hookers;
+package net.datenwerke.rs.fileserver.client.fileserver.hookers;
 
 import com.google.inject.Inject;
 import com.sencha.gxt.widget.core.client.event.SelectEvent;
@@ -14,12 +14,12 @@ import net.datenwerke.rs.fileserver.client.fileserver.dto.AbstractFileServerNode
 import net.datenwerke.rs.theme.client.icon.BaseIcon;
 import net.datenwerke.treedb.client.treedb.dto.AbstractNodeDto;
 
-public class ReloadButtonHooker implements MainPanelViewToolbarConfiguratorHook {
+public abstract class ReloadButtonToolbarHooker implements MainPanelViewToolbarConfiguratorHook {
 
    private final ToolbarService toolbarUtils;
-
+   
    @Inject
-   public ReloadButtonHooker(ToolbarService toolbarUtils) {
+   public ReloadButtonToolbarHooker(ToolbarService toolbarUtils) {
       this.toolbarUtils = toolbarUtils;
    }
 
@@ -45,10 +45,12 @@ public class ReloadButtonHooker implements MainPanelViewToolbarConfiguratorHook 
    private boolean viewApplies(MainPanelView view, AbstractNodeDto selectedNode) {
       if (!(selectedNode instanceof AbstractFileServerNodeDto))
          return false;
-      if (!"_file_svg_preview".equals(view.getViewId()))
+      if (!getExpectedViewID().equals(view.getViewId()))
          return false;
 
       return true;
    }
+   
+   protected abstract String getExpectedViewID();
 
 }
