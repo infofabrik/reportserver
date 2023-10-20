@@ -45,10 +45,8 @@ public class TerminalStartup {
          final Provider<InfoDatasourceSubcommand> infoDatasourceSubcommandProvider,
          final Provider<AliasCommand> aliasCommandProvider,
          final Provider<CopyCommand> copyCommandProvider,
-
          final Provider<InBackgroundOperator> inBgOperator, 
          final Provider<PipeOperator> pipeOperator,
-
          final Provider<SplitTableResultHijacker> splitTableResultHijacker
          ) {
 

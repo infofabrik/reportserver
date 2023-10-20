@@ -50,6 +50,8 @@ import net.datenwerke.rs.fileserver.service.fileserver.terminal.commands.lfs.Lfs
 import net.datenwerke.rs.fileserver.service.fileserver.terminal.hookers.CatCommandHandlerHooker;
 import net.datenwerke.rs.fileserver.service.fileserver.terminal.operators.WriteIntoFileOperator;
 import net.datenwerke.rs.terminal.service.terminal.basecommands.hooks.CatCommandHandlerHook;
+import net.datenwerke.rs.terminal.service.terminal.hookers.FileServerOpenTerminalHooker;
+import net.datenwerke.rs.terminal.service.terminal.hooks.OpenTerminalHandlerHook;
 import net.datenwerke.rs.terminal.service.terminal.hooks.TerminalCommandHook;
 import net.datenwerke.rs.terminal.service.terminal.operator.TerminalCommandOperator;
 import net.datenwerke.security.service.security.SecurityService;
@@ -96,7 +98,8 @@ public class FileServerStartup {
          final Provider<FileServerCategoryProviderHooker> usageStatistics,
          final Provider<UsageStatisticsTotalFilesProviderHooker> usageStatsTotalFilesProvider,
          final Provider<UsageStatisticsFileServerFoldersProviderHooker> usageStatsFolderProvider,
-         final Provider<UsageStatisticsDetailedFilesProviderHooker> usageStatsDetailedFilesProvider
+         final Provider<UsageStatisticsDetailedFilesProviderHooker> usageStatsDetailedFilesProvider,
+         final Provider<FileServerOpenTerminalHooker> fileServerOpenTerminalHooker
          ) {
 
       hookHandler.attachHooker(ExporterProviderHook.class, new ExporterProviderHook(exporterProvider));
@@ -130,6 +133,8 @@ public class FileServerStartup {
       
       hookHandler.attachHooker(RemoteEntityImporterHook.class, remoteFileImporterHooker);
       
+      hookHandler.attachHooker(OpenTerminalHandlerHook.class, fileServerOpenTerminalHooker);
+ 
       hookHandler.attachHooker(FileServerEntryProviderHook.class, usageStatsTotalFilesProvider,
             HookHandlerService.PRIORITY_LOW);
       hookHandler.attachHooker(FileServerEntryProviderHook.class, usageStatsFolderProvider,

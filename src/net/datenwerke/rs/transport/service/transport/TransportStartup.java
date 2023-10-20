@@ -12,6 +12,8 @@ import net.datenwerke.rs.adminutils.service.systemconsole.generalinfo.hooks.Gene
 import net.datenwerke.rs.base.ext.service.hooks.ExportConfigHook;
 import net.datenwerke.rs.base.ext.service.hooks.RemoteEntityImporterHook;
 import net.datenwerke.rs.eximport.service.eximport.im.http.hooks.HttpImportConfigurationProviderHook;
+import net.datenwerke.rs.terminal.service.terminal.hookers.TransportOpenTerminalHooker;
+import net.datenwerke.rs.terminal.service.terminal.hooks.OpenTerminalHandlerHook;
 import net.datenwerke.rs.terminal.service.terminal.hooks.TerminalCommandHook;
 import net.datenwerke.rs.transport.service.transport.entities.Transport;
 import net.datenwerke.rs.transport.service.transport.entities.TransportFolder;
@@ -50,13 +52,15 @@ public class TransportStartup {
          final Provider<RemoteTransportImporterHooker> remoteTransportImporterHooker,
          final Provider<UsageStatisticsTransportsProviderHooker> usageStatsTransportsProvider,
          final Provider<UsageStatisticsTransportFoldersProviderHooker> usageStatsTransportFolderProvider,
-         final Provider<TransportCategoryProviderHooker> usageStatistics
+         final Provider<TransportCategoryProviderHooker> usageStatistics,
+         final Provider<TransportOpenTerminalHooker> transportOpenTerminalHooker
    ) {
 
       hookHandler.attachHooker(TerminalCommandHook.class, transportCommand);
       hookHandler.attachHooker(TransportSubCommandHook.class, transportCreateCommand);
       hookHandler.attachHooker(TransportSubCommandHook.class, transportAddCommand);
       hookHandler.attachHooker(TransportSubCommandHook.class, transportDescribeCommand);
+      hookHandler.attachHooker(OpenTerminalHandlerHook.class, transportOpenTerminalHooker);
       
       hookHandler.attachHooker(TransportEntryProviderHook.class, usageStatsTransportFolderProvider,
             HookHandlerService.PRIORITY_LOW);

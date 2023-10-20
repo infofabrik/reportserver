@@ -4,6 +4,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.DoubleClickEvent;
 import com.google.gwt.user.client.Random;
 import com.google.inject.Inject;
+import com.google.inject.Provider;
 import com.sencha.gxt.widget.core.client.menu.Menu;
 import com.sencha.gxt.widget.core.client.menu.MenuItem;
 import com.sencha.gxt.widget.core.client.menu.SeparatorMenuItem;
@@ -17,6 +18,7 @@ import net.datenwerke.gf.client.treedb.helper.menu.DuplicateMenuItem;
 import net.datenwerke.gf.client.treedb.helper.menu.InfoMenuItem;
 import net.datenwerke.gf.client.treedb.helper.menu.InsertMenuItem;
 import net.datenwerke.gf.client.treedb.helper.menu.ReloadMenuItem;
+import net.datenwerke.gf.client.treedb.helper.menu.TerminalMenuItem;
 import net.datenwerke.gf.client.treedb.helper.menu.TreeDBUIMenuProvider;
 import net.datenwerke.gf.client.treedb.icon.TreeDBUIIconProvider;
 import net.datenwerke.gxtdto.client.baseex.widget.menu.DwMenu;
@@ -31,13 +33,19 @@ import net.datenwerke.rs.fileserver.client.fileserver.dto.decorator.FileServerFi
 import net.datenwerke.rs.fileserver.client.fileserver.locale.FileServerMessages;
 import net.datenwerke.rs.fileserver.client.fileserver.provider.helper.FileIconMapping;
 import net.datenwerke.rs.fileserver.client.fileserver.provider.treehooks.FileExportExternalEntryProviderHook;
+import net.datenwerke.rs.terminal.client.terminal.TerminalUIService;
+import net.datenwerke.rs.terminal.client.terminal.security.TerminalGenericTargetIdentifier;
 import net.datenwerke.rs.theme.client.icon.BaseIcon;
+import net.datenwerke.security.client.security.SecurityUIService;
+import net.datenwerke.security.client.security.dto.ExecuteDto;
 import net.datenwerke.treedb.client.treedb.dto.AbstractNodeDto;
 
 public class FileServerManagerTreeConfigurationHooker implements TreeConfiguratorHook {
 
    private final FileServerTreeManagerDao treeHandler;
    private final HookHandlerService hookHandler;
+   private final Provider<TerminalUIService> terminalUIServiceProvider; 
+   private final Provider<SecurityUIService> securityServiceProvider;
 
    class DownloadHelper implements DownloadMenuUrlGenerator {
 
@@ -54,12 +62,18 @@ public class FileServerManagerTreeConfigurationHooker implements TreeConfigurato
    }
 
    @Inject
-   public FileServerManagerTreeConfigurationHooker(FileServerTreeManagerDao treeHandler,
-         HookHandlerService hookHandler) {
+   public FileServerManagerTreeConfigurationHooker(
+         FileServerTreeManagerDao treeHandler,
+         HookHandlerService hookHandler, 
+         Provider<TerminalUIService> terminalUIServiceProvider,
+         Provider<SecurityUIService> securityServiceProvider
+         ) {
 
       /* store objects */
       this.treeHandler = treeHandler;
       this.hookHandler = hookHandler;
+      this.terminalUIServiceProvider = terminalUIServiceProvider;
+      this.securityServiceProvider = securityServiceProvider;
    }
 
    @Override
@@ -79,6 +93,8 @@ public class FileServerManagerTreeConfigurationHooker implements TreeConfigurato
       MenuItem insertItem = generateInsertMenu();
       folderMenu.add(insertItem);
       folderMenu.add(new DeleteMenuItem(treeHandler));
+      if (securityServiceProvider.get().hasRight(TerminalGenericTargetIdentifier.class, ExecuteDto.class))
+         folderMenu.add(new TerminalMenuItem(terminalUIServiceProvider));
       folderMenu.add(new SeparatorMenuItem());
       folderMenu.add(new ReloadMenuItem());
       folderMenu.add(new SeparatorMenuItem());
@@ -94,6 +110,8 @@ public class FileServerManagerTreeConfigurationHooker implements TreeConfigurato
       fileMenu.add(insertItem);
       fileMenu.add(new DuplicateMenuItem(treeHandler));
       fileMenu.add(new DeleteMenuItem(treeHandler));
+      if (securityServiceProvider.get().hasRight(TerminalGenericTargetIdentifier.class, ExecuteDto.class))
+         fileMenu.add(new TerminalMenuItem(terminalUIServiceProvider));
       fileMenu.add(new SeparatorMenuItem());
       fileMenu.add(new InfoMenuItem());
       fileMenu.add(new DownloadMenuItem(new DownloadHelper()));

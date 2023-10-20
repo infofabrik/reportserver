@@ -205,4 +205,6 @@ public interface BaseMessages extends Messages {
    
    String tools();
    
+   String openTerminalSessionHere();
+   
 }

@@ -2,6 +2,7 @@ package net.datenwerke.security.ext.client.usermanager.provider.treehookers;
 
 import com.google.gwt.event.dom.client.DoubleClickEvent;
 import com.google.inject.Inject;
+import com.google.inject.Provider;
 import com.sencha.gxt.widget.core.client.menu.Menu;
 import com.sencha.gxt.widget.core.client.menu.MenuItem;
 import com.sencha.gxt.widget.core.client.menu.SeparatorMenuItem;
@@ -12,13 +13,18 @@ import net.datenwerke.gf.client.treedb.helper.menu.DeleteMenuItem;
 import net.datenwerke.gf.client.treedb.helper.menu.InfoMenuItem;
 import net.datenwerke.gf.client.treedb.helper.menu.InsertMenuItem;
 import net.datenwerke.gf.client.treedb.helper.menu.ReloadMenuItem;
+import net.datenwerke.gf.client.treedb.helper.menu.TerminalMenuItem;
 import net.datenwerke.gf.client.treedb.helper.menu.TreeDBUIMenuProvider;
 import net.datenwerke.gf.client.treedb.icon.IconMapping;
 import net.datenwerke.gf.client.treedb.icon.TreeDBUIIconProvider;
 import net.datenwerke.gxtdto.client.baseex.widget.menu.DwMenu;
 import net.datenwerke.gxtdto.client.baseex.widget.menu.DwMenuItem;
 import net.datenwerke.gxtdto.client.locale.BaseMessages;
+import net.datenwerke.rs.terminal.client.terminal.TerminalUIService;
+import net.datenwerke.rs.terminal.client.terminal.security.TerminalGenericTargetIdentifier;
 import net.datenwerke.rs.theme.client.icon.BaseIcon;
+import net.datenwerke.security.client.security.SecurityUIService;
+import net.datenwerke.security.client.security.dto.ExecuteDto;
 import net.datenwerke.security.client.usermanager.dto.GroupDto;
 import net.datenwerke.security.client.usermanager.dto.OrganisationalUnitDto;
 import net.datenwerke.security.client.usermanager.dto.UserDto;
@@ -32,12 +38,20 @@ import net.datenwerke.treedb.client.treedb.dto.AbstractNodeDto;
 public class UserManagerTreeConfigurationHooker implements TreeConfiguratorHook {
 
    final private UserManagerTreeManagerDao treeHandler;
+   final private Provider<TerminalUIService> terminalUIServiceProvider;
+   private final Provider<SecurityUIService> securityServiceProvider;
 
    @Inject
-   public UserManagerTreeConfigurationHooker(UserManagerTreeManagerDao treeHandler) {
+   public UserManagerTreeConfigurationHooker(
+         UserManagerTreeManagerDao treeHandler, 
+         Provider<TerminalUIService> terminalUIServiceProvider,
+         Provider<SecurityUIService> securityServiceProvider
+         ) {
 
       /* store objects */
       this.treeHandler = treeHandler;
+      this.terminalUIServiceProvider = terminalUIServiceProvider;
+      this.securityServiceProvider = securityServiceProvider;
    }
 
    @Override
@@ -58,6 +72,8 @@ public class UserManagerTreeConfigurationHooker implements TreeConfiguratorHook 
       inserItem.disable();
       userMenu.add(inserItem);
       userMenu.add(new DeleteMenuItem(treeHandler));
+      if (securityServiceProvider.get().hasRight(TerminalGenericTargetIdentifier.class, ExecuteDto.class))
+         userMenu.add(new TerminalMenuItem(terminalUIServiceProvider));
       userMenu.add(new SeparatorMenuItem());
       userMenu.add(new InfoMenuItem());
 
@@ -67,6 +83,8 @@ public class UserManagerTreeConfigurationHooker implements TreeConfiguratorHook 
       inserItem.disable();
       groupMenu.add(inserItem);
       groupMenu.add(new DeleteMenuItem(treeHandler));
+      if (securityServiceProvider.get().hasRight(TerminalGenericTargetIdentifier.class, ExecuteDto.class))
+         groupMenu.add(new TerminalMenuItem(terminalUIServiceProvider));
       groupMenu.add(new SeparatorMenuItem());
       groupMenu.add(new InfoMenuItem());
 
@@ -75,6 +93,8 @@ public class UserManagerTreeConfigurationHooker implements TreeConfiguratorHook 
       inserItem = generateInsertMenu();
       ouMenu.add(inserItem);
       ouMenu.add(new DeleteMenuItem(treeHandler));
+      if (securityServiceProvider.get().hasRight(TerminalGenericTargetIdentifier.class, ExecuteDto.class))
+         ouMenu.add(new TerminalMenuItem(terminalUIServiceProvider));
       ouMenu.add(new SeparatorMenuItem());
       ouMenu.add(new InfoMenuItem());
       ouMenu.add(new ReloadMenuItem());

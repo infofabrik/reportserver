@@ -32,6 +32,8 @@ import net.datenwerke.rs.core.service.datasourcemanager.hooks.UsageStatisticsDat
 import net.datenwerke.rs.eximport.service.eximport.hooks.ExportAllHook;
 import net.datenwerke.rs.eximport.service.eximport.hooks.ImportAllHook;
 import net.datenwerke.rs.eximport.service.eximport.im.http.hooks.HttpImportConfigurationProviderHook;
+import net.datenwerke.rs.terminal.service.terminal.hookers.DatasorceOpenTerminalHooker;
+import net.datenwerke.rs.terminal.service.terminal.hooks.OpenTerminalHandlerHook;
 import net.datenwerke.rs.utils.eventbus.EventBus;
 import net.datenwerke.security.service.eventlogger.jpa.ForceRemoveEntityEvent;
 import net.datenwerke.security.service.security.SecurityService;
@@ -60,7 +62,9 @@ public class DatasourceStartup {
          final Provider<ImportAllDatasourcesHooker> importAllDatasources,
          
          final Provider<DatasourceExportConfigHooker> datasourceExportConfigHooker,
-         Provider<RemoteDatasourceImporterHooker> remoteDatasourceImporterHooker
+         Provider<RemoteDatasourceImporterHooker> remoteDatasourceImporterHooker,
+         
+         final Provider<DatasorceOpenTerminalHooker> datasorceOpenTerminalHooker
          ) {
 
       eventBus.attachObjectEventHandler(ForceRemoveEntityEvent.class, DatasourceDefinition.class,
@@ -96,5 +100,7 @@ public class DatasourceStartup {
             HookHandlerService.PRIORITY_LOW + 5);
       hookHandler.attachHooker(GeneralInfoCategoryProviderHook.class, usageStatistics,
             HookHandlerService.PRIORITY_LOW + 56);
+      
+      hookHandler.attachHooker(OpenTerminalHandlerHook.class, datasorceOpenTerminalHooker);
    }
 }

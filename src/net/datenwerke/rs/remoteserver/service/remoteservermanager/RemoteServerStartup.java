@@ -23,6 +23,8 @@ import net.datenwerke.rs.remoteserver.service.remoteservermanager.hookers.Remote
 import net.datenwerke.rs.remoteserver.service.remoteservermanager.hookers.UsageStatisticsRemoteServersFoldersProviderHooker;
 import net.datenwerke.rs.remoteserver.service.remoteservermanager.hookers.UsageStatisticsTotalRemoteServersProviderHooker;
 import net.datenwerke.rs.remoteserver.service.remoteservermanager.hooks.RemoteServerEntryProviderHook;
+import net.datenwerke.rs.terminal.service.terminal.hookers.RemoteServerOpenTerminalHooker;
+import net.datenwerke.rs.terminal.service.terminal.hooks.OpenTerminalHandlerHook;
 import net.datenwerke.rs.utils.eventbus.EventBus;
 import net.datenwerke.security.service.security.SecurityService;
 
@@ -41,7 +43,8 @@ public class RemoteServerStartup {
          final Provider<UsageStatisticsRemoteServersFoldersProviderHooker> usageStatsFolderProvider,
          final Provider<RemoteServerManagerExporter> remoteServerManagerExporter,
          final Provider<RemoteServerManagerImporter> remoteServerImporterProvider,
-         final Provider<HttpRemoteServerManagerImportConfigurationHooker> remoteServerHttpImportConfigHookerProvider
+         final Provider<HttpRemoteServerManagerImportConfigurationHooker> remoteServerHttpImportConfigHookerProvider,
+         final Provider<RemoteServerOpenTerminalHooker> remoteServerOpenTerminalHooker
          ) {
 
       /* history */
@@ -62,6 +65,7 @@ public class RemoteServerStartup {
       hookHandler.attachHooker(ExporterProviderHook.class, new ExporterProviderHook(remoteServerManagerExporter));
       hookHandler.attachHooker(ImporterProviderHook.class, new ImporterProviderHook(remoteServerImporterProvider));
       hookHandler.attachHooker(HttpImportConfigurationProviderHook.class, remoteServerHttpImportConfigHookerProvider);
+      hookHandler.attachHooker(OpenTerminalHandlerHook.class, remoteServerOpenTerminalHooker);
       
       /* register security targets */
       hookHandler.attachHooker(ConfigDoneHook.class, () -> {

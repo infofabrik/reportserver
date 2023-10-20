@@ -7,9 +7,12 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.sencha.gxt.core.client.dom.ScrollSupport.ScrollMode;
+import com.sencha.gxt.core.client.util.Margins;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
+import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer.VerticalLayoutData;
 
 import net.datenwerke.gf.client.managerhelper.mainpanel.MainPanelView;
+import net.datenwerke.gxtdto.client.baseex.widget.DwContentPanel;
 import net.datenwerke.gxtdto.client.dtomanager.callback.RsAsyncCallback;
 import net.datenwerke.gxtdto.client.locale.BaseMessages;
 import net.datenwerke.gxtdto.client.utilityservices.UtilsUIService;
@@ -43,22 +46,27 @@ public class MarkdownFilePreviewView extends MainPanelView {
 
    @Override
    public Widget getViewComponent(AbstractNodeDto selectedNode) {
-      
-      VerticalLayoutContainer wrapper = new VerticalLayoutContainer();
+
+      DwContentPanel wrapper = new DwContentPanel();
+      wrapper.setLightHeader();
+      wrapper.setHeading(FileServerMessages.INSTANCE.previewLabel() + ": " + selectedNode.getId());
       wrapper.setScrollMode(ScrollMode.NONE);
+
       final IFrameElement iframe = Document.get().createIFrameElement();
       iframe.setAttribute("width", "100%");
       iframe.setAttribute("height", "100%");
-      iframe.setAttribute("frameborder", "0");      
-      wrapper.getElement().appendChild(iframe);
+      iframe.setAttribute("frameborder", "0");
+      VerticalLayoutContainer innerContainer = new VerticalLayoutContainer();
+      innerContainer.getElement().appendChild(iframe);
+      wrapper.add(innerContainer, new VerticalLayoutData(1, 1, new Margins(10)));
 
-     
       mask(BaseMessages.INSTANCE.loadingMsg());
       fileServerDao.get().loadMarkdownAsHtml((FileServerFileDto) getSelectedNode(), new RsAsyncCallback<String>() {
          @Override
          public void onSuccess(String result) {
-            unmask();
+
             fillIframe(iframe, result);
+            unmask();
          }
 
          @Override
@@ -67,7 +75,10 @@ public class MarkdownFilePreviewView extends MainPanelView {
             unmask();
          }
       });
-      return wrapper;
+      VerticalLayoutContainer outer = new VerticalLayoutContainer();
+      outer.setScrollMode(ScrollMode.AUTOY);
+      outer.add(wrapper, new VerticalLayoutData(1, 1, new Margins(10)));
+      return outer;
    }
    
    private final native void fillIframe(IFrameElement iframe, String content) /*-{

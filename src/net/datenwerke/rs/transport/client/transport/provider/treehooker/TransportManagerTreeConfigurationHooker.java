@@ -2,6 +2,7 @@ package net.datenwerke.rs.transport.client.transport.provider.treehooker;
 
 import com.google.gwt.event.dom.client.DoubleClickEvent;
 import com.google.inject.Inject;
+import com.google.inject.Provider;
 import com.sencha.gxt.widget.core.client.menu.Menu;
 import com.sencha.gxt.widget.core.client.menu.MenuItem;
 import com.sencha.gxt.widget.core.client.menu.SeparatorMenuItem;
@@ -13,29 +14,40 @@ import net.datenwerke.gf.client.treedb.helper.menu.DuplicateMenuItem;
 import net.datenwerke.gf.client.treedb.helper.menu.InfoMenuItem;
 import net.datenwerke.gf.client.treedb.helper.menu.InsertMenuItem;
 import net.datenwerke.gf.client.treedb.helper.menu.ReloadMenuItem;
+import net.datenwerke.gf.client.treedb.helper.menu.TerminalMenuItem;
 import net.datenwerke.gf.client.treedb.helper.menu.TreeDBUIMenuProvider;
 import net.datenwerke.gf.client.treedb.icon.IconMapping;
 import net.datenwerke.gf.client.treedb.icon.TreeDBUIIconProvider;
 import net.datenwerke.gxtdto.client.baseex.widget.menu.DwMenu;
 import net.datenwerke.gxtdto.client.baseex.widget.menu.DwMenuItem;
 import net.datenwerke.gxtdto.client.locale.BaseMessages;
+import net.datenwerke.rs.terminal.client.terminal.TerminalUIService;
+import net.datenwerke.rs.terminal.client.terminal.security.TerminalGenericTargetIdentifier;
 import net.datenwerke.rs.theme.client.icon.BaseIcon;
 import net.datenwerke.rs.transport.client.transport.TransportTreeManagerDao;
 import net.datenwerke.rs.transport.client.transport.TransportUIModule;
 import net.datenwerke.rs.transport.client.transport.dto.TransportDto;
 import net.datenwerke.rs.transport.client.transport.dto.TransportFolderDto;
 import net.datenwerke.rs.transport.client.transport.dto.decorator.TransportDtoDec;
+import net.datenwerke.security.client.security.SecurityUIService;
+import net.datenwerke.security.client.security.dto.ExecuteDto;
 import net.datenwerke.treedb.client.treedb.dto.AbstractNodeDto;
 
 public class TransportManagerTreeConfigurationHooker implements TreeConfiguratorHook {
 
    private final TransportTreeManagerDao treeHandler;
+   private final Provider<TerminalUIService> terminalUIServiceProvider;
+   private final Provider<SecurityUIService> securityServiceProvider;
 
    @Inject
    public TransportManagerTreeConfigurationHooker(
-         TransportTreeManagerDao treeHandler
+         TransportTreeManagerDao treeHandler, 
+         Provider<TerminalUIService> terminalUIServiceProvider,
+         Provider<SecurityUIService> securityServiceProvider
          ) {
       this.treeHandler = treeHandler;
+      this.terminalUIServiceProvider = terminalUIServiceProvider;
+      this.securityServiceProvider = securityServiceProvider;
    }
 
    @Override
@@ -50,6 +62,8 @@ public class TransportManagerTreeConfigurationHooker implements TreeConfigurator
       MenuItem insertItem = generateInsertMenu();
       folderMenu.add(insertItem);
       folderMenu.add(new DeleteMenuItem(treeHandler));
+      if (securityServiceProvider.get().hasRight(TerminalGenericTargetIdentifier.class, ExecuteDto.class))
+         folderMenu.add(new TerminalMenuItem(terminalUIServiceProvider));
       folderMenu.add(new SeparatorMenuItem());
       folderMenu.add(new InfoMenuItem());
       folderMenu.add(new ReloadMenuItem());
@@ -61,6 +75,8 @@ public class TransportManagerTreeConfigurationHooker implements TreeConfigurator
       transportMenu.add(insertItem);
       transportMenu.add(new DuplicateMenuItem(treeHandler));
       transportMenu.add(new DeleteMenuItem(treeHandler));
+      if (securityServiceProvider.get().hasRight(TerminalGenericTargetIdentifier.class, ExecuteDto.class))
+         transportMenu.add(new TerminalMenuItem(terminalUIServiceProvider));
       transportMenu.add(new SeparatorMenuItem());
       transportMenu.add(new InfoMenuItem());
       

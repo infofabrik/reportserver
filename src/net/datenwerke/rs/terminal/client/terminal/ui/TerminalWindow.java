@@ -1,6 +1,7 @@
 package net.datenwerke.rs.terminal.client.terminal.ui;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import com.google.gwt.core.client.GWT;
@@ -33,6 +34,7 @@ import com.sencha.gxt.widget.core.client.form.TextField;
 import net.datenwerke.gxtdto.client.baseex.widget.DwContentPanel;
 import net.datenwerke.gxtdto.client.baseex.widget.DwWindow;
 import net.datenwerke.gxtdto.client.baseex.widget.layout.DwFlowContainer;
+import net.datenwerke.gxtdto.client.dtomanager.Dto2PosoMapper;
 import net.datenwerke.gxtdto.client.dtomanager.callback.RsAsyncCallback;
 import net.datenwerke.gxtdto.client.locale.BaseMessages;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
@@ -52,6 +54,7 @@ import net.datenwerke.rs.terminal.client.terminal.helper.HistoryHelper;
 import net.datenwerke.rs.terminal.client.terminal.hooks.ClientCommandHook;
 import net.datenwerke.rs.terminal.client.terminal.locale.TerminalMessages;
 import net.datenwerke.rs.theme.client.icon.BaseIcon;
+import net.datenwerke.treedb.client.treedb.dto.AbstractNodeDto;
 
 /**
  * 
@@ -139,9 +142,9 @@ public class TerminalWindow extends DwWindow {
    protected void initSession() {
       mainPanel.mask(TerminalMessages.INSTANCE.init());
       isDisabled = true;
-      terminalDao.init(new RsAsyncCallback<String>() {
+      terminalDao.init(null, null, new RsAsyncCallback<HashMap<String, String>>() {
          @Override
-         public void onSuccess(String result) {
+         public void onSuccess(HashMap<String, String> result) {
             mainPanel.unmask();
             isDisabled = false;
             inputField.focus();
@@ -150,6 +153,20 @@ public class TerminalWindow extends DwWindow {
 
    }
 
+   public void initSessionInNodeLocation(AbstractNodeDto node, Dto2PosoMapper dto2PosoMapper) {
+      mainPanel.mask(TerminalMessages.INSTANCE.init());
+      isDisabled = true;
+      terminalDao.init(node, dto2PosoMapper, new RsAsyncCallback<HashMap<String, String>>() {
+         @Override
+         public void onSuccess(HashMap<String, String> result) {
+            mainPanel.unmask();
+            isDisabled = false;
+            inputField.focus();
+            enterPressed("cd " + terminalDao.getPathWay());
+         }
+      });
+   }
+   
    protected void initializeUI() {
       setSize(640, 480);
       setOnEsc(false);

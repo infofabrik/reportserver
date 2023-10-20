@@ -31,6 +31,8 @@ import net.datenwerke.rs.core.service.datasinkmanager.hooks.UsageStatisticsDatas
 import net.datenwerke.rs.core.service.datasinkmanager.terminal.operators.WriteIntoDatasinkOperator;
 import net.datenwerke.rs.eximport.service.eximport.hooks.ExportAllHook;
 import net.datenwerke.rs.eximport.service.eximport.im.http.hooks.HttpImportConfigurationProviderHook;
+import net.datenwerke.rs.terminal.service.terminal.hookers.DatasinkOpenTerminalHooker;
+import net.datenwerke.rs.terminal.service.terminal.hooks.OpenTerminalHandlerHook;
 import net.datenwerke.rs.terminal.service.terminal.operator.TerminalCommandOperator;
 import net.datenwerke.rs.utils.eventbus.EventBus;
 import net.datenwerke.security.service.eventlogger.jpa.ForceRemoveEntityEvent;
@@ -59,7 +61,9 @@ public class DatasinkStartup {
          
          final Provider<ExportAllDatasinksHooker> exportAllDatasinks,
          final Provider<DatasinkExportConfigHooker> datasinkExportConfigHooker,
-         final Provider<RemoteDatasinkImporterHooker> remoteDatasinkImporterHooker
+         final Provider<RemoteDatasinkImporterHooker> remoteDatasinkImporterHooker,
+         
+         final Provider<DatasinkOpenTerminalHooker> datasinkOpenTerminalHooker
          ) {
 
       eventBus.attachObjectEventHandler(ForceRemoveEntityEvent.class, DatasinkDefinition.class,
@@ -95,5 +99,7 @@ public class DatasinkStartup {
          installedDatasinkDefinitions.get()
             .forEach(securityServiceProvider.get()::registerSecurityTarget);
       });
+      
+      hookHandler.attachHooker(OpenTerminalHandlerHook.class, datasinkOpenTerminalHooker);
    }
 }

@@ -1,15 +1,20 @@
 package net.datenwerke.rs.terminal.server.terminal;
 
+import java.util.HashMap;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.inject.Inject;
+import com.google.inject.Provider;
 import com.google.inject.Singleton;
 import com.google.inject.persist.Transactional;
 
+import net.datenwerke.gxtdto.client.dtomanager.Dto2PosoMapper;
 import net.datenwerke.gxtdto.client.servercommunication.exceptions.ExpectedException;
 import net.datenwerke.gxtdto.client.servercommunication.exceptions.ServerCallFailedException;
 import net.datenwerke.gxtdto.server.dtomanager.DtoService;
+import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.terminal.client.terminal.dto.AutocompleteResultDto;
 import net.datenwerke.rs.terminal.client.terminal.dto.CommandResultDto;
 import net.datenwerke.rs.terminal.client.terminal.dto.exceptions.CommandNotFoundExceptionDto;
@@ -23,13 +28,17 @@ import net.datenwerke.rs.terminal.service.terminal.exceptions.MaxAutocompleteRes
 import net.datenwerke.rs.terminal.service.terminal.exceptions.SessionNotFoundException;
 import net.datenwerke.rs.terminal.service.terminal.exceptions.TerminalException;
 import net.datenwerke.rs.terminal.service.terminal.genrights.TerminalSecurityTarget;
+import net.datenwerke.rs.terminal.service.terminal.hooks.OpenTerminalHandlerHook;
 import net.datenwerke.rs.terminal.service.terminal.obj.AutocompleteResult;
 import net.datenwerke.rs.terminal.service.terminal.obj.CommandResult;
+import net.datenwerke.rs.terminal.service.terminal.vfs.hooks.TreeBasedVirtualFileSystem;
 import net.datenwerke.security.server.SecuredRemoteServiceServlet;
 import net.datenwerke.security.service.security.annotation.GenericTargetVerification;
 import net.datenwerke.security.service.security.annotation.RightsVerification;
 import net.datenwerke.security.service.security.annotation.SecurityChecked;
 import net.datenwerke.security.service.security.rights.Execute;
+import net.datenwerke.security.service.treedb.entities.SecuredAbstractNode;
+import net.datenwerke.treedb.client.treedb.dto.AbstractNodeDto;
 
 @Singleton
 public class TerminalRpcServiceImpl extends SecuredRemoteServiceServlet implements TerminalRpcService {
@@ -60,20 +69,50 @@ public class TerminalRpcServiceImpl extends SecuredRemoteServiceServlet implemen
 
    private final DtoService dtoService;
    private final TerminalService terminalService;
+   private final Provider<HookHandlerService> hookHandlerProvider;
 
    @Inject
-   public TerminalRpcServiceImpl(DtoService dtoService, TerminalService terminalService) {
+   public TerminalRpcServiceImpl(DtoService dtoService, 
+         TerminalService terminalService,
+         Provider<HookHandlerService> hookHandlerProvider) {
 
       /* store objects */
       this.dtoService = dtoService;
       this.terminalService = terminalService;
+      this.hookHandlerProvider = hookHandlerProvider;
    }
 
    @Override
    @Transactional(rollbackOn = { Exception.class })
    @SecurityChecked(genericTargetVerification = @GenericTargetVerification(target = TerminalSecurityTarget.class, verify = @RightsVerification(rights = Execute.class)))
-   public String initSession() throws ServerCallFailedException {
-      return terminalService.initTerminalSession().getSessionId();
+   public HashMap<String, String> initSession(AbstractNodeDto nodeDto, Dto2PosoMapper dto2PosoMapper) throws ServerCallFailedException {
+      HashMap<String, String> properties = new HashMap<String, String>();
+      String sessionId = terminalService.initTerminalSession().getSessionId();
+      properties.put("sessionId", sessionId);
+      String pathWay = null;
+
+      if (null != nodeDto) {
+         try {
+            OpenTerminalHandlerHook hook = getOpenTerminalHandlerHook(dtoService.getPosoFromDtoMapper(dto2PosoMapper).getName());
+            SecuredAbstractNode<?> node = hook.getNode(nodeDto.getId());
+            TreeBasedVirtualFileSystem<?> vfs = hook.getVfs();
+            
+            if (null != vfs && null != node) {
+               TerminalSession session = terminalService.getTerminalSession(sessionId);
+               vfs.init(session);
+               if (node.isFolder())
+                  pathWay = vfs.getLocationFor(node).getAbsolutePath();
+               else
+                  pathWay = vfs.getLocationFor(node).getParentLocation().getAbsolutePath();
+
+            }
+         } catch (SessionNotFoundException e) {
+            throw new SessionNotFoundExceptionDto();
+         }
+      }
+      
+      properties.put("pathWay", pathWay);
+      return properties;
    }
 
    @Override
@@ -175,6 +214,14 @@ public class TerminalRpcServiceImpl extends SecuredRemoteServiceServlet implemen
       } catch (TerminalException e) {
          throw new ServerCallFailedException(e);
       }
+   }
+
+   private OpenTerminalHandlerHook getOpenTerminalHandlerHook(String type) {
+      return hookHandlerProvider.get().getHookers(OpenTerminalHandlerHook.class)
+            .stream()
+            .filter(h -> h.consumes(type))
+            .findAny()
+            .get();
    }
 
 }

@@ -17,6 +17,8 @@ import net.datenwerke.rs.dashboard.service.dashboard.eventhandler.HandleReportRe
 import net.datenwerke.rs.dashboard.service.dashboard.eventhandler.HandleReportReferenceRemoveEventHandler;
 import net.datenwerke.rs.dashboard.service.dashboard.eventhandler.HandleReportRemoveEventHandler;
 import net.datenwerke.rs.dashboard.service.dashboard.eventhandler.HandleUserRemoveEventHandler;
+import net.datenwerke.rs.terminal.service.terminal.hookers.DashboardOpenTerminalHooker;
+import net.datenwerke.rs.terminal.service.terminal.hooks.OpenTerminalHandlerHook;
 import net.datenwerke.rs.tsreportarea.service.tsreportarea.entities.AbstractTsDiskNode;
 import net.datenwerke.rs.tsreportarea.service.tsreportarea.entities.TsDiskReportReference;
 import net.datenwerke.rs.utils.eventbus.EventBus;
@@ -42,7 +44,9 @@ public class DashboardStartup {
          HandleDadgetNodeForceRemoveEventHandler handleDadgetNodeForceRemoveEvents,
 
          HandleDashboardNodeRemoveEventHandler handleDashboardNodeRemoveEvents,
-         HandleDashboardNodeForceRemoveEventHandler handleDashboardNodeForceRemoveEvents
+         HandleDashboardNodeForceRemoveEventHandler handleDashboardNodeForceRemoveEvents,
+         
+         final Provider<DashboardOpenTerminalHooker> dashboardOpenTerminalHooker
 
    ) {
 
@@ -67,5 +71,7 @@ public class DashboardStartup {
       securityServiceProvider.get().registerSecurityTarget(DadgetNode.class);
       securityServiceProvider.get().registerSecurityTarget(DashboardNode.class);
       securityServiceProvider.get().registerSecurityTarget(DashboardFolder.class);
+      
+      hookHandler.attachHooker(OpenTerminalHandlerHook.class, dashboardOpenTerminalHooker);
    }
 }

@@ -21,6 +21,8 @@ import net.datenwerke.rs.core.service.reportmanager.hooks.ConfigureReportViaHttp
 import net.datenwerke.rs.core.service.reportmanager.hooks.VariantCreatorHook;
 import net.datenwerke.rs.core.service.reportmanager.metadata.hookers.VariantCreatedAdjustMetadataHooker;
 import net.datenwerke.rs.search.service.search.hooks.SearchResultAllowerHook;
+import net.datenwerke.rs.terminal.service.terminal.hookers.ReportOpenTerminalHooker;
+import net.datenwerke.rs.terminal.service.terminal.hooks.OpenTerminalHandlerHook;
 import net.datenwerke.rs.utils.eventbus.EventBus;
 import net.datenwerke.security.service.eventlogger.jpa.RemoveEntityEvent;
 import net.datenwerke.security.service.security.SecurityService;
@@ -33,6 +35,7 @@ public class ReportManagerStartup {
          EventBus eventBus,
          final Provider<SecurityService> securityServiceProvider,
          final @ReportServerReportTypes Provider<Set<Class<? extends Report>>> installedReportTypes,
+         final Provider<ReportOpenTerminalHooker> reportOpenTerminalHooker,
 
          Provider<ConfigureBaseReportViaRequestHooker> baseReportRequestConfiguration,
          Provider<ReportManagerHistoryUrlBuilderHooker> reportManagerUrlBuilder,
@@ -48,6 +51,7 @@ public class ReportManagerStartup {
       hookHandler.attachHooker(ConfigureReportViaHistoryLocationHook.class, baseReportRequestConfiguration);
       hookHandler.attachHooker(VariantCreatorHook.class, adjustMetadataHooker);
       hookHandler.attachHooker(SearchResultAllowerHook.class, reportManagerSearchResultCheckHooker);
+      hookHandler.attachHooker(OpenTerminalHandlerHook.class, reportOpenTerminalHooker);
 
       hookHandler.attachHooker(HistoryUrlBuilderHook.class, reportManagerUrlBuilder);
 

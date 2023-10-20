@@ -8,11 +8,13 @@ import com.sencha.gxt.core.client.dom.ScrollSupport.ScrollMode;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
 
 import net.datenwerke.gxtdto.client.baseex.widget.DwWindow;
+import net.datenwerke.gxtdto.client.dtomanager.Dto2PosoMapper;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.terminal.client.terminal.dto.CommandResultDto;
 import net.datenwerke.rs.terminal.client.terminal.helper.DisplayHelper;
 import net.datenwerke.rs.terminal.client.terminal.hooks.CommandResultProcessorHook;
 import net.datenwerke.rs.terminal.client.terminal.ui.TerminalWindow;
+import net.datenwerke.treedb.client.treedb.dto.AbstractNodeDto;
 
 /**
  * 
@@ -76,6 +78,13 @@ public class TerminalUIServiceImpl implements TerminalUIService {
          initTerminal();
 
       terminalWindowProvider.get().show();
+   }
+   
+   @Override
+   public void displayTerminalWindow(AbstractNodeDto node, Dto2PosoMapper dto2PosoMapper) {
+      final TerminalWindow terminal = terminalWindowProvider.get();
+      terminal.initSessionInNodeLocation(node, dto2PosoMapper);
+      terminal.show();
    }
 
    @Override

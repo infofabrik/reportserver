@@ -2,6 +2,7 @@ package net.datenwerke.rs.remoteserver.client.remoteservermanager.provider.treeh
 
 import com.google.gwt.event.dom.client.DoubleClickEvent;
 import com.google.inject.Inject;
+import com.google.inject.Provider;
 import com.sencha.gxt.widget.core.client.menu.Menu;
 import com.sencha.gxt.widget.core.client.menu.MenuItem;
 import com.sencha.gxt.widget.core.client.menu.SeparatorMenuItem;
@@ -13,6 +14,7 @@ import net.datenwerke.gf.client.treedb.helper.menu.DuplicateMenuItem;
 import net.datenwerke.gf.client.treedb.helper.menu.InfoMenuItem;
 import net.datenwerke.gf.client.treedb.helper.menu.InsertMenuItem;
 import net.datenwerke.gf.client.treedb.helper.menu.ReloadMenuItem;
+import net.datenwerke.gf.client.treedb.helper.menu.TerminalMenuItem;
 import net.datenwerke.gf.client.treedb.helper.menu.TreeDBUIMenuProvider;
 import net.datenwerke.gf.client.treedb.icon.IconMapping;
 import net.datenwerke.gf.client.treedb.icon.TreeDBUIIconProvider;
@@ -24,20 +26,33 @@ import net.datenwerke.rs.remoteserver.client.remoteservermanager.RemoteServerTre
 import net.datenwerke.rs.remoteserver.client.remoteservermanager.RemoteServerUIModule;
 import net.datenwerke.rs.remoteserver.client.remoteservermanager.dto.RemoteServerFolderDto;
 import net.datenwerke.rs.remoteserver.client.remoteservermanager.hooks.RemoteServerDefinitionConfigProviderHook;
+import net.datenwerke.rs.terminal.client.terminal.TerminalUIService;
+import net.datenwerke.rs.terminal.client.terminal.security.TerminalGenericTargetIdentifier;
 import net.datenwerke.rs.theme.client.icon.BaseIcon;
+import net.datenwerke.security.client.security.SecurityUIService;
+import net.datenwerke.security.client.security.dto.ExecuteDto;
 import net.datenwerke.treedb.client.treedb.dto.AbstractNodeDto;
 
 public class RemoteServerManagerTreeConfigurationHooker implements TreeConfiguratorHook {
 
    private final HookHandlerService hookHandler;
    private final RemoteServerTreeManagerDao treeHandler;
+   private final Provider<TerminalUIService> terminalUIServiceProvider;
+   private final Provider<SecurityUIService> securityServiceProvider;
 
    @Inject
-   public RemoteServerManagerTreeConfigurationHooker(HookHandlerService hookHandler, RemoteServerTreeManagerDao treeHandler) {
+   public RemoteServerManagerTreeConfigurationHooker(
+         HookHandlerService hookHandler, 
+         RemoteServerTreeManagerDao treeHandler, 
+         Provider<TerminalUIService> terminalUIServiceProvider,
+         Provider<SecurityUIService> securityServiceProvider
+         ) {
 
       /* store objects */
       this.hookHandler = hookHandler;
       this.treeHandler = treeHandler;
+      this.terminalUIServiceProvider = terminalUIServiceProvider;
+      this.securityServiceProvider = securityServiceProvider;
    }
 
    @Override
@@ -52,6 +67,8 @@ public class RemoteServerManagerTreeConfigurationHooker implements TreeConfigura
       MenuItem insertItem = generateInsertMenu();
       folderMenu.add(insertItem);
       folderMenu.add(new DeleteMenuItem(treeHandler));
+      if (securityServiceProvider.get().hasRight(TerminalGenericTargetIdentifier.class, ExecuteDto.class))
+         folderMenu.add(new TerminalMenuItem(terminalUIServiceProvider));
       folderMenu.add(new SeparatorMenuItem());
       folderMenu.add(new InfoMenuItem());
       folderMenu.add(new ReloadMenuItem());
@@ -65,6 +82,8 @@ public class RemoteServerManagerTreeConfigurationHooker implements TreeConfigura
          remoteServerMenu.add(insertItem);
          remoteServerMenu.add(new DuplicateMenuItem(treeHandler));
          remoteServerMenu.add(new DeleteMenuItem(treeHandler));
+         if (securityServiceProvider.get().hasRight(TerminalGenericTargetIdentifier.class, ExecuteDto.class))
+            remoteServerMenu.add(new TerminalMenuItem(terminalUIServiceProvider));
          remoteServerMenu.add(new SeparatorMenuItem());
          remoteServerMenu.add(new InfoMenuItem());
       }

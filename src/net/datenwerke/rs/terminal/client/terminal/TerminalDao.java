@@ -1,30 +1,36 @@
 package net.datenwerke.rs.terminal.client.terminal;
 
+import java.util.HashMap;
+
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
 
 import net.datenwerke.gxtdto.client.dtomanager.Dao;
+import net.datenwerke.gxtdto.client.dtomanager.Dto2PosoMapper;
 import net.datenwerke.gxtdto.client.dtomanager.callback.DaoAsyncCallback;
 import net.datenwerke.gxtdto.client.dtomanager.callback.RsAsyncCallback;
 import net.datenwerke.rs.terminal.client.terminal.dto.AutocompleteResultDto;
 import net.datenwerke.rs.terminal.client.terminal.dto.CommandResultDto;
 import net.datenwerke.rs.terminal.client.terminal.rpc.TerminalRpcServiceAsync;
+import net.datenwerke.treedb.client.treedb.dto.AbstractNodeDto;
 
 public class TerminalDao extends Dao {
 
    private final TerminalRpcServiceAsync rpcService;
    private String sessionId;
+   private String pathWay;
 
    @Inject
    public TerminalDao(TerminalRpcServiceAsync rpcService) {
       this.rpcService = rpcService;
    }
 
-   public void init(final RsAsyncCallback<String> callback) {
-      rpcService.initSession(transformAndKeepCallback(new RsAsyncCallback<String>() {
+   public void init(AbstractNodeDto node, Dto2PosoMapper dto2PosoMapper, final RsAsyncCallback<HashMap<String, String>> callback) {
+      rpcService.initSession(node, dto2PosoMapper, transformAndKeepCallback(new RsAsyncCallback<HashMap<String, String>>() {
          @Override
-         public void onSuccess(String result) {
-            sessionId = result;
+         public void onSuccess(HashMap<String, String> result) {
+            sessionId = result.get("sessionId");
+            pathWay = result.get("pathWay");
             callback.onSuccess(result);
          }
       }));
@@ -79,4 +85,13 @@ public class TerminalDao extends Dao {
       sessionId = null;
       rpcService.closeSession(sessionId, new RsAsyncCallback<Void>());
    }
+
+   public String getPathWay() {
+      return pathWay;
+   }
+
+   public void setPathWay(String pathWay) {
+      this.pathWay = pathWay;
+   }
+
 }
