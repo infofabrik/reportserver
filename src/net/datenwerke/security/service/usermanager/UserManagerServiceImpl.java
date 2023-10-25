@@ -434,14 +434,14 @@ public class UserManagerServiceImpl extends SecuredTreeDBManagerImpl<AbstractUse
    @Override
    public long getNumberOfInhibitedUsers() {
       return ((Number) entityManagerProvider.get()
-            .createQuery("SELECT COUNT(p) FROM UserProperty p WHERE p.key = 'accountInhibited' and STR(p.value) = 'true'")
+            .createQuery("SELECT COUNT(p) FROM UserProperty p WHERE p.key = 'accountInhibited' and CAST(p.value AS string) = 'true'")
             .getSingleResult()).longValue();
    }
 
    @Override
    public long getNumberOfExpiredUsers() {
       return ((Number) entityManagerProvider.get().createQuery(
-            "SELECT COUNT(p) FROM UserProperty p WHERE p.key = 'accountExpirationDate' and cast(STR(p.value) as long) < "
+            "SELECT COUNT(p) FROM UserProperty p WHERE p.key = 'accountExpirationDate' and CAST(CAST(p.value as string) as long) < "
                   + Long.toString(new Date().getTime()))
             .getSingleResult()).longValue();
    }

@@ -136,6 +136,8 @@ public class JobFilterConfiguration implements JobFilterCriteria {
 
       if ("jobId".equals(sortField))
          return true;
+      if ("jobTitle".equals(sortField))
+         return true;
       if ("lastScheduled".equals(sortField))
          return true;
       if ("nextScheduled".equals(sortField))
@@ -147,6 +149,8 @@ public class JobFilterConfiguration implements JobFilterCriteria {
          Root<? extends AbstractJob> root) {
       if ("jobId".equals(sortField))
          return root.get(AbstractJob_.id);
+      if ("jobTitle".equals(sortField))
+         return root.get(AbstractJob_.title);
       if ("lastScheduled".equals(sortField))
          return root.join(AbstractJob_.history).join(JobHistory_.executionLogEntries, JoinType.LEFT)
                .get(ExecutionLogEntry_.start);

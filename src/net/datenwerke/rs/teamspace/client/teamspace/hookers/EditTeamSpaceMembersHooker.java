@@ -1,6 +1,7 @@
 package net.datenwerke.rs.teamspace.client.teamspace.hookers;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -321,6 +322,8 @@ public class EditTeamSpaceMembersHooker extends TeamSpaceEditDialogHookImpl {
       final CCContainer<StrippedDownTeamSpaceMemberDto, TeamSpaceRoleDto> cccRole = gridHelperService
             .createComboBoxColumnConfig(TeamSpaceRoleDto.values(), memberPa.role(), false, null, 140);
       ColumnConfig<StrippedDownTeamSpaceMemberDto, TeamSpaceRoleDto> roleConfig = cccRole.getConfig();
+      roleConfig.setSortable(true);
+      roleConfig.setComparator(Comparator.comparing(TeamSpaceRoleDto::toString));
       roleConfig.setHeader(TeamSpaceMessages.INSTANCE.editTeamSpaceMembersGridRoleColumn());
       configs.add(roleConfig);
 

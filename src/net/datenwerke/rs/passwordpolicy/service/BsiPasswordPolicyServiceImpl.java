@@ -57,6 +57,7 @@ public class BsiPasswordPolicyServiceImpl implements BsiPasswordPolicyService, R
    public BsiPasswordPolicy getPolicy() {
       if (null == bsiPasswordPolicy) {
          bsiPasswordPolicy = policyProvider.get();
+         bsiPasswordPolicy.reset();
          try {
             bsiPasswordPolicy.loadConfig();
             logger.info("password policy loaded. policy is: " + (bsiPasswordPolicy.isValid() ? " valid" : "invalid"));

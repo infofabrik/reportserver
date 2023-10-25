@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
+import com.google.inject.Singleton;
 
 import net.datenwerke.rs.configservice.service.configservice.ConfigService;
 import net.datenwerke.rs.passwordpolicy.service.hooker.BsiPasswordPolicyChangePasswordHook;
@@ -21,6 +22,7 @@ import net.datenwerke.security.service.usermanager.hooks.PasswordSetHook;
  * 
  *
  */
+@Singleton
 public class BsiPasswordPolicy implements PasswordPolicy {
 
    private final Logger logger = LoggerFactory.getLogger(getClass().getName());
@@ -61,6 +63,14 @@ public class BsiPasswordPolicy implements PasswordPolicy {
       this.passwordChangeHookProvider = passwordChangeHookProvider;
       this.passwordSetHookProvider = passwordSetHookProvider;
       this.postAuthenticateHookProvider = postAuthenticateHookProvider;
+      reset();
+   }
+   
+   public void reset() {
+      passwordMaxAge = 0;
+      passwordMinAge = 0;
+      accountLockoutThreshold = Integer.MAX_VALUE;
+      accountLockoutAutoResetTimeout = 0;
    }
 
    public void loadConfig() {
