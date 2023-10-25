@@ -45,7 +45,7 @@ public class ScriptReportPreviewView extends AbstractReportPreviewView {
          SimpleContainer container = new SimpleContainer();
          wrapper.setWidget(container);
 
-         container.add(utilsService.asIframe((String) reportExecutionResult.getValue()));
+         container.add(utilsService.asIFrame((String) reportExecutionResult.getValue()));
          Scheduler.get().scheduleDeferred(new ScheduledCommand() {
             @Override
             public void execute() {

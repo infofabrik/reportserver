@@ -28,26 +28,36 @@ public class UtilsUIServiceImpl implements UtilsUIService {
    }
 
    @Override
-   public Widget asIframe(final String html) {
-      final IFrameElement iframe = Document.get().createIFrameElement();
-      iframe.setAttribute("width", "100%");
-      iframe.setAttribute("height", "100%");
-      iframe.setAttribute("frameborder", "0");
+   public Widget asIFrame(final String html) {
+      final IFrameElement iframe = createIFrame();
       FlowPanel innerBox = new FlowPanel() {
          @Override
          protected void onLoad() {
             super.onLoad();
 
             // Fill the IFrame with the content html
-            fillIframe(iframe, html);
+            fillIFrame(iframe, html);
          }
       };
       innerBox.getElement().appendChild(iframe);
 
       return innerBox;
    }
+   
+   @Override 
+   public IFrameElement createIFrame() {
+      final IFrameElement iframe = Document.get().createIFrameElement();
+      iframe.setAttribute("width", "100%");
+      iframe.setAttribute("height", "100%");
+      iframe.setAttribute("frameborder", "0");
+      return iframe;
+   }
+   @Override
+   public void setIFrameContent(IFrameElement iframe, String content) {
+      fillIFrame(iframe, content);
+   }
 
-   private final native void fillIframe(IFrameElement iframe, String content) /*-{
+   private final native void fillIFrame(IFrameElement iframe, String content) /*-{
 	  var doc = iframe.document;
 	 
 	  if(iframe.contentDocument)
@@ -109,7 +119,7 @@ public class UtilsUIServiceImpl implements UtilsUIService {
             setMaximizable(maximizable);
             setResizable(resizable);
 
-            setWidget(asIframe(html));
+            setWidget(asIFrame(html));
 
             DwTextButton okButton = new DwTextButton(BaseMessages.INSTANCE.ok());
             okButton.addSelectHandler(event -> hide());
@@ -173,4 +183,5 @@ public class UtilsUIServiceImpl implements UtilsUIService {
 		if (timezone === undefined) timezone = 'Europe/Berlin'; 
 		return timezone;
 	}-*/;
+
 }

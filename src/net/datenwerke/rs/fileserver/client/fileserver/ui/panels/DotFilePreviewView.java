@@ -38,7 +38,7 @@ public class DotFilePreviewView extends MainPanelView {
    public Widget getViewComponent(AbstractNodeDto selectedNode) {
       DwContentPanel wrapper = new DwContentPanel();
       wrapper.setLightHeader();
-      wrapper.setHeading(FileServerMessages.INSTANCE.previewLabel() + ": " + selectedNode.getId());
+      wrapper.setHeading(FileServerMessages.INSTANCE.previewLabel() + " (" + selectedNode.getId() + ")");
       wrapper.setScrollMode(ScrollMode.AUTO);
       ScrollPanel view = new ScrollPanel();
       view.setHeight("100%");

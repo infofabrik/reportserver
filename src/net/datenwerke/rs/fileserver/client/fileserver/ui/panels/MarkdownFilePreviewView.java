@@ -1,6 +1,5 @@
 package net.datenwerke.rs.fileserver.client.fileserver.ui.panels;
 
-import com.google.gwt.dom.client.Document;
 import com.google.gwt.dom.client.IFrameElement;
 import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.user.client.ui.Widget;
@@ -49,13 +48,10 @@ public class MarkdownFilePreviewView extends MainPanelView {
 
       DwContentPanel wrapper = new DwContentPanel();
       wrapper.setLightHeader();
-      wrapper.setHeading(FileServerMessages.INSTANCE.previewLabel() + ": " + selectedNode.getId());
+      wrapper.setHeading(FileServerMessages.INSTANCE.previewLabel() + " (" + selectedNode.getId() + ")");
       wrapper.setScrollMode(ScrollMode.NONE);
 
-      final IFrameElement iframe = Document.get().createIFrameElement();
-      iframe.setAttribute("width", "100%");
-      iframe.setAttribute("height", "100%");
-      iframe.setAttribute("frameborder", "0");
+      final IFrameElement iframe = utilsUIService.get().createIFrame();
       VerticalLayoutContainer innerContainer = new VerticalLayoutContainer();
       innerContainer.getElement().appendChild(iframe);
       wrapper.add(innerContainer, new VerticalLayoutData(1, 1, new Margins(10)));
@@ -64,8 +60,7 @@ public class MarkdownFilePreviewView extends MainPanelView {
       fileServerDao.get().loadMarkdownAsHtml((FileServerFileDto) getSelectedNode(), new RsAsyncCallback<String>() {
          @Override
          public void onSuccess(String result) {
-
-            fillIframe(iframe, result);
+            utilsUIService.get().setIFrameContent(iframe, result);
             unmask();
          }
 
@@ -80,20 +75,6 @@ public class MarkdownFilePreviewView extends MainPanelView {
       outer.add(wrapper, new VerticalLayoutData(1, 1, new Margins(10)));
       return outer;
    }
-   
-   private final native void fillIframe(IFrameElement iframe, String content) /*-{
-   var doc = iframe.document;
-  
-   if(iframe.contentDocument)
-     doc = iframe.contentDocument; // For NS6
-   else if(iframe.contentWindow)
-     doc = iframe.contentWindow.document; // For IE5.5 and IE6
-  
-    // Put the content in the iframe
-   doc.open();
-   doc.writeln(content);
-   doc.close();
- }-*/;
    
    @Override
    public ImageResource getIcon() {

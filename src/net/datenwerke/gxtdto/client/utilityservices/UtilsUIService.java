@@ -1,5 +1,6 @@
 package net.datenwerke.gxtdto.client.utilityservices;
 
+import com.google.gwt.dom.client.IFrameElement;
 import com.google.gwt.user.client.ui.Widget;
 
 import net.datenwerke.rs.theme.client.icon.BaseIcon;
@@ -17,8 +18,12 @@ public interface UtilsUIService {
    public void reloadPage();
 
    public void reloadPageWithoutAsking();
+   
+   public void setIFrameContent(IFrameElement iframe, String content);
+   
+   public IFrameElement createIFrame();
 
-   Widget asIframe(String html);
+   Widget asIFrame(String html);
 
    String guessUserTimezone();
    

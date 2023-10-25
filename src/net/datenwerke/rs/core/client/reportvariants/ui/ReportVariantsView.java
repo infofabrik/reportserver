@@ -47,7 +47,7 @@ import com.sencha.gxt.widget.core.client.toolbar.ToolBar;
 
 import net.datenwerke.gf.client.managerhelper.mainpanel.AbstractEmbeddingTabbedComponentsView;
 import net.datenwerke.gf.client.treedb.UITree;
-import net.datenwerke.gf.client.treedb.simpleform.SFFCGenericTreeNode;
+import net.datenwerke.gf.client.treedb.selection.TreeSelectionPopup;
 import net.datenwerke.gxtdto.client.baseex.widget.DwContentPanel;
 import net.datenwerke.gxtdto.client.baseex.widget.DwWindow;
 import net.datenwerke.gxtdto.client.baseex.widget.btn.DwTextButton;
@@ -334,48 +334,6 @@ public class ReportVariantsView extends AbstractEmbeddingTabbedComponentsView {
             ReportVariantsView.this.unmask();
          }
       });
-   }
-   
-   protected void moveVariantToAnotherReport(final ReportVariantDto reportVariant) {
-      final DwWindow window = DwWindow.newAutoSizeDialog(340);
-      window.setHeading(ReportVariantsMessages.INSTANCE.moveVariantToReport());
-      window.setModal(true);
-      window.setWidth(340);
-      
-      final SimpleForm form = SimpleForm.getInlineInstance();
-      
-      final String reportKey = form.addField(ReportDto.class, ReportVariantsMessages.INSTANCE.targetReport(),
-            new SFFCGenericTreeNode() {
-               public UITree getTreeForPopup() {
-                  return reportManagerTreeProvider.get();
-               }
-            });
-
-      form.loadFields();
-      
-      window.add(form, new MarginData(10));
-      
-      DwTextButton submit = new DwTextButton(BaseMessages.INSTANCE.submit());
-      window.addButton(submit);
-      
-      submit.addSelectHandler(event -> {
-         if (!form.isValid())
-            return;
-         ReportDto targetReport = (ReportDto) form.getValue(reportKey);
-         if (null == targetReport)
-            return;
-         window.mask(BaseMessages.INSTANCE.storingMsg());
-         treeManager.moveNodeAppend((ReportDto) reportVariant, targetReport,
-               new NotamCallback<AbstractNodeDto>(TreedbMessages.INSTANCE.moved()) {
-                  public void doOnSuccess(AbstractNodeDto result) {
-                     window.hide();
-                     final ReportDto selected = grid.getSelectionModel().getSelectedItem();
-                     store.remove(selected);
-                  }
-               });
-      });
-      
-      window.show();
    }
 
    protected void importVariantIntoTeamSpace(final ReportDto report) {
@@ -683,6 +641,28 @@ public class ReportVariantsView extends AbstractEmbeddingTabbedComponentsView {
       });
       
       return importReportItem;
+   }
+
+   private void moveVariantToAnotherReport(ReportVariantDto reportVariant) {
+      TreeSelectionPopup popup = new TreeSelectionPopup(reportManagerTreeProvider.get(), ReportDto.class) {
+         @Override
+         protected void itemsSelected(List<AbstractNodeDto> selectedItems) {
+            for (AbstractNodeDto targetReport : selectedItems) {
+               if (targetReport instanceof ReportDto) {
+                  treeManager.moveNodeAppend((ReportDto) reportVariant, (ReportDto) targetReport,
+                        new NotamCallback<AbstractNodeDto>(TreedbMessages.INSTANCE.moved()) {
+                           public void doOnSuccess(AbstractNodeDto result) {
+                              final ReportDto selected = grid.getSelectionModel().getSelectedItem();
+                              store.remove(selected);
+                           }
+                        });
+               }
+            }
+         }
+      };
+      
+      popup.setHeading(ReportVariantsMessages.INSTANCE.moveVariantToReport());
+      popup.show();
    }
 
 

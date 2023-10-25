@@ -71,7 +71,7 @@ public class StaticHtmlDadgetProcessor implements DadgetProcessorHook {
 
       panel.setHeading(((StaticHtmlDadgetDto) dadget).getTitle());
 
-      panel.add(utilsService.asIframe(((StaticHtmlDadgetDto) dadget).getData()));
+      panel.add(utilsService.asIFrame(((StaticHtmlDadgetDto) dadget).getData()));
    }
 
    @Override

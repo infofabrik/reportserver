@@ -19,7 +19,8 @@ public class JerseyConfig extends ResourceConfig {
             "net.datenwerke.rs.rest",
             "net.datenwerke.rs.adminutils.service.systemconsole.generalinfo.rest",
             "net.datenwerke.rs.base.ext.service.rest.resources",
-            "net.datenwerke.rs.dot.service.dot.rest.resources"
+            "net.datenwerke.rs.dot.service.dot.rest.resources",
+            "net.datenwerke.rs.markdown.service.markdown.rest.resources"
             );
 
       GuiceBridge.getGuiceBridge().initializeGuiceBridge(locator);
