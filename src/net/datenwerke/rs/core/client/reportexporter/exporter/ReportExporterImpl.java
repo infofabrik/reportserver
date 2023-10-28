@@ -10,7 +10,6 @@ import com.sencha.gxt.widget.core.client.info.DefaultInfoConfig;
 import com.sencha.gxt.widget.core.client.info.Info;
 import com.sencha.gxt.widget.core.client.info.InfoConfig;
 
-import net.datenwerke.gf.client.uiutils.ClientDownloadHelper;
 import net.datenwerke.gxtdto.client.baseex.widget.mb.DwAlertMessageBox;
 import net.datenwerke.gxtdto.client.dialog.error.SimpleErrorDialog;
 import net.datenwerke.gxtdto.client.dtomanager.callback.RsAsyncCallback;
@@ -92,7 +91,7 @@ public abstract class ReportExporterImpl implements ReportExporter {
       if (skipDownload)
          return exportAsSkipDownload(report, executorToken, getOutputFormat());
       else
-         return doExport(report, executorToken, getExportAsDownloadCallback(executorToken));
+         return doExport(report, executorToken, getExportInPopupCallback(executorToken));
 
    }
 
@@ -146,16 +145,6 @@ public abstract class ReportExporterImpl implements ReportExporter {
       };
    }
 
-   protected AsyncCallback<Void> getExportAsDownloadCallback(final String executorToken) {
-      return new ModalAsyncCallback<Void>(3000) {
-         @Override
-         public void doOnSuccess(Void v) {
-            String url = exporterService.getExportServletPath() + "&tid=" + executorToken + "&download=true";
-            ClientDownloadHelper.triggerDownload(url);
-         }
-      };
-   }
-
    protected Request exportAsSkipDownload(final ReportDto reportDto, final String executorToken, String format) {
       RsAsyncCallback<Void> callback = new RsAsyncCallback<Void>() {
 
@@ -197,5 +186,15 @@ public abstract class ReportExporterImpl implements ReportExporter {
    public boolean showInExportList() {
       return true;
    }
+   
+   protected AsyncCallback<Void> getExportInPopupCallback(final String executorToken) {
+      return new ModalAsyncCallback<Void>(3000) {
+          @Override
+          public void doOnSuccess(Void v){
+              String url = exporterService.getExportServletPath() + "&tid=" + executorToken + "&download=true";
+              utilsService.redirectInPopup(url);
+          }
+      };
+  }
    
 }

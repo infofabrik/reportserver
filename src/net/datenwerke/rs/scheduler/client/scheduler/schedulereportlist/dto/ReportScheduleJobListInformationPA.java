@@ -7,6 +7,9 @@ import com.sencha.gxt.core.client.ValueProvider;
 import com.sencha.gxt.data.shared.ModelKeyProvider;
 import com.sencha.gxt.data.shared.PropertyAccess;
 
+import net.datenwerke.security.client.usermanager.dto.UserDto;
+import net.datenwerke.security.client.usermanager.dto.ie.StrippedDownUser;
+
 public interface ReportScheduleJobListInformationPA extends PropertyAccess<ReportScheduleJobListInformation> {
 
    @Path("jobId")
@@ -31,4 +34,8 @@ public interface ReportScheduleJobListInformationPA extends PropertyAccess<Repor
    public ValueProvider<ReportScheduleJobListInformation, Boolean> reportDeleted();
 
    public ValueProvider<ReportScheduleJobListInformation, Boolean> executorDeleted();
+   
+   public ValueProvider<ReportScheduleJobListInformation, UserDto> executor();
+   
+   public ValueProvider<ReportScheduleJobListInformation, StrippedDownUser> scheduledBy();
 }

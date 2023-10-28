@@ -24,6 +24,8 @@ import net.datenwerke.rs.scheduler.client.scheduler.schedulereportlist.dto.Repor
 import net.datenwerke.rs.scheduler.client.scheduler.schedulereportlist.dto.ReportScheduleJobListInformationPA;
 import net.datenwerke.scheduler.client.scheduler.dto.filter.JobFilterConfigurationDto;
 import net.datenwerke.scheduler.client.scheduler.dto.filter.OrderDto;
+import net.datenwerke.security.client.usermanager.dto.UserDto;
+import net.datenwerke.security.client.usermanager.dto.ie.StrippedDownUser;
 
 public class SchedulerUiServiceImpl implements SchedulerUiService {
 
@@ -76,20 +78,21 @@ public class SchedulerUiServiceImpl implements SchedulerUiService {
       colConfig.add(descriptionConfig);
 
       if (displayExecutorColumn) {
-         ColumnConfig<ReportScheduleJobListInformation, ReportScheduleJobListInformation> executorConfig = new ColumnConfig<ReportScheduleJobListInformation, ReportScheduleJobListInformation>(
-               new IdentityValueProvider<ReportScheduleJobListInformation>(), 150,
+         ColumnConfig<ReportScheduleJobListInformation, UserDto> executorConfig = new ColumnConfig<ReportScheduleJobListInformation, UserDto>(
+               scheduleInfoPa.executor(), 150,
                SchedulerMessages.INSTANCE.executor());
-         executorConfig.setCell(new AbstractCell<ReportScheduleJobListInformation>() {
+         executorConfig.setCell(new AbstractCell<UserDto>() {
             @Override
-            public void render(com.google.gwt.cell.client.Cell.Context context, ReportScheduleJobListInformation value,
+            public void render(com.google.gwt.cell.client.Cell.Context context, UserDto value,
                   SafeHtmlBuilder sb) {
-               if (!value.isExecutorDeleted()) {
-                  String name = value.getExecutorName();
-                  if (null != name)
-                     sb.appendEscaped(name);
-               } else
+               if (null != value) {
+                  if (null != value.getFirstname())
+                     sb.appendEscaped(value.getFirstname() + " ");
+                  if (null != value.getLastname())
+                     sb.appendEscaped(value.getLastname());
+               } else {
                   sb.appendEscaped(SchedulerMessages.INSTANCE.deletedExecutor());
-
+               }
             }
          });
          executorConfig.setMenuDisabled(true);
@@ -97,19 +100,21 @@ public class SchedulerUiServiceImpl implements SchedulerUiService {
       }
 
       if (displayScheduledByColumn) {
-         ColumnConfig<ReportScheduleJobListInformation, ReportScheduleJobListInformation> scheduledByConfig = new ColumnConfig<ReportScheduleJobListInformation, ReportScheduleJobListInformation>(
-               new IdentityValueProvider<ReportScheduleJobListInformation>(), 150,
+         ColumnConfig<ReportScheduleJobListInformation, StrippedDownUser> scheduledByConfig = new ColumnConfig<ReportScheduleJobListInformation, StrippedDownUser>(
+               scheduleInfoPa.scheduledBy(), 150,
                SchedulerMessages.INSTANCE.scheduledBy());
-         scheduledByConfig.setCell(new AbstractCell<ReportScheduleJobListInformation>() {
+         scheduledByConfig.setCell(new AbstractCell<StrippedDownUser>() {
             @Override
-            public void render(com.google.gwt.cell.client.Cell.Context context, ReportScheduleJobListInformation value,
+            public void render(com.google.gwt.cell.client.Cell.Context context, StrippedDownUser value,
                   SafeHtmlBuilder sb) {
-               if (!value.isScheduledByDeleted()) {
-                  String name = value.getScheduledByName();
-                  if (null != name)
-                     sb.appendEscaped(name);
-               } else
+               if (null != value) {
+                  if (null != value.getFirstname())
+                     sb.appendEscaped(value.getFirstname() + " ");
+                  if (null != value.getLastname())
+                     sb.appendEscaped(value.getLastname());
+               } else {
                   sb.appendEscaped(SchedulerMessages.INSTANCE.deletedScheduledBy());
+               }
             }
          });
          scheduledByConfig.setMenuDisabled(true);

@@ -153,6 +153,10 @@ public class ReportServerJobFilter extends JobFilterConfiguration {
          return true;
       if ("executorLastName".equals(sortField))
          return true;
+      if ("executor".equals(sortField))
+         return true;
+      if ("scheduledBy".equals(sortField))
+         return true;
 
       return super.validateSortField(sortField);
    }
@@ -164,10 +168,16 @@ public class ReportServerJobFilter extends JobFilterConfiguration {
          return root.join(ReportExecuteJob__.report, JoinType.LEFT).get(Report__.id);
       if ("reportName".equals(sortField))
          return root.join(ReportExecuteJob__.report, JoinType.LEFT).get(Report__.name);
+      if ("executor".equals(sortField)) 
+         return builder.concat(root.join(ReportExecuteJob__.executor, JoinType.LEFT).get(User__.firstname),
+               root.join(ReportExecuteJob__.executor, JoinType.LEFT).get(User__.lastname));
       if ("executorId".equals(sortField))
          return root.join(ReportExecuteJob__.executor, JoinType.LEFT).get(User__.id);
       if ("executorLastName".equals(sortField))
          return root.join(ReportExecuteJob__.executor, JoinType.LEFT).get(User__.lastname);
+      if ("scheduledBy".equals(sortField))
+         return builder.concat(root.join(ReportExecuteJob__.scheduledBy, JoinType.LEFT).get(User__.firstname),
+               root.join(ReportExecuteJob__.executor, JoinType.LEFT).get(User__.lastname));
 
       return super.transformSortField(sortField, builder, cQuery, root);
    }
