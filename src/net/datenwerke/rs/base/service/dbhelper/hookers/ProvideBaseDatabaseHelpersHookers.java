@@ -7,6 +7,7 @@ import java.util.List;
 import com.google.inject.Inject;
 
 import net.datenwerke.rs.base.service.dbhelper.DatabaseHelper;
+import net.datenwerke.rs.base.service.dbhelper.db.ClickHouse;
 import net.datenwerke.rs.base.service.dbhelper.db.CockroachDB;
 import net.datenwerke.rs.base.service.dbhelper.db.CrateDB;
 import net.datenwerke.rs.base.service.dbhelper.db.Exasol;
@@ -41,6 +42,7 @@ public class ProvideBaseDatabaseHelpersHookers implements DatabaseHelperProvider
 
    @Inject
    public ProvideBaseDatabaseHelpersHookers(
+		 ClickHouse click,
          Db2z db2z, 
          H2 h2, 
          Firebird firebird, 
@@ -95,6 +97,7 @@ public class ProvideBaseDatabaseHelpersHookers implements DatabaseHelperProvider
       helpers.add(athena);
       helpers.add(derby);
       helpers.add(db2i);
+      helpers.add(click);
    }
 
    @Override

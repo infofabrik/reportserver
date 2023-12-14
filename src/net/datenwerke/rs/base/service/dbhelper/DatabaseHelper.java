@@ -26,6 +26,7 @@ import net.datenwerke.dtoservices.dtogenerator.annotations.ExposeMethodToClient;
 import net.datenwerke.dtoservices.dtogenerator.annotations.GenerateDto;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.base.service.dbhelper.annotations.QueryConditionInMaxSize;
+import net.datenwerke.rs.base.service.dbhelper.db.ClickHouse;
 import net.datenwerke.rs.base.service.dbhelper.db.CockroachDB;
 import net.datenwerke.rs.base.service.dbhelper.db.CrateDB;
 import net.datenwerke.rs.base.service.dbhelper.db.Exasol;
@@ -238,6 +239,7 @@ abstract public class DatabaseHelper {
                || builder.getDbHelper() instanceof CrateDB
                || builder.getDbHelper() instanceof Athena
                || builder.getDbHelper() instanceof Derby
+               || builder.getDbHelper() instanceof ClickHouse
                ) {
             /* Order by */
             if (!builder.getOrderDefinitions().isEmpty() && !builder.isLimit() && !builder.isOffset())
