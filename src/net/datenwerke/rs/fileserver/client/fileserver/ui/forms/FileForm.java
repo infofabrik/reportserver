@@ -22,10 +22,12 @@ import net.datenwerke.gf.client.upload.simpleform.SFFCFileUpload;
 import net.datenwerke.gxtdto.client.baseex.widget.btn.DwTextButton;
 import net.datenwerke.gxtdto.client.dtomanager.callback.RsAsyncCallback;
 import net.datenwerke.gxtdto.client.forms.simpleform.SimpleForm;
+import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCAllowBlank;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCCustomComponent;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCSpace;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCStaticTextField;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCStaticTextFieldWithCallback;
+import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCStringValidatorRegex;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.impl.SFFCTextAreaImpl;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.dummy.CustomComponent;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.dummy.Separator;
@@ -42,6 +44,7 @@ import net.datenwerke.rs.fileserver.client.fileserver.dto.pa.FileServerFileDtoPA
 import net.datenwerke.rs.fileserver.client.fileserver.locale.FileServerMessages;
 import net.datenwerke.rs.markdown.client.markdown.MarkdownUiModule;
 import net.datenwerke.rs.theme.client.icon.BaseIcon;
+import net.datenwerke.rs.utils.validator.shared.SharedRegex;
 /**
  * 
  *
@@ -62,7 +65,24 @@ public class FileForm extends SimpleFormView {
       form.setHeading(FileServerMessages.INSTANCE.editFile()
             + (getSelectedNode() == null ? "" : " (" + getSelectedNode().getId() + ")"));
 
+      form.beginFloatRow();
+      form.setFieldWidth(500);
+      
       form.addField(String.class, FileServerFileDtoPA.INSTANCE.name(), BaseMessages.INSTANCE.propertyName()); // $NON-NLS-1$
+      
+      /* key */
+      form.addField(String.class, FileServerFileDtoPA.INSTANCE.key(), BaseMessages.INSTANCE.key(),
+            new SFFCStringValidatorRegex(SharedRegex.KEY_REGEX, BaseMessages.INSTANCE.invalidKey()),
+            new SFFCAllowBlank() {
+               @Override
+               public boolean allowBlank() {
+                  return false;
+               }
+            }); // $NON-NLS-1$
+      
+      form.endRow();
+      
+      form.setFieldWidth(1);
 
       form.addField(String.class, FileServerFileDtoPA.INSTANCE.description(),
             BaseMessages.INSTANCE.propertyDescription(), new SFFCTextAreaImpl());

@@ -24,6 +24,7 @@ import net.datenwerke.dbpool.config.ConnectionPoolConfigImpl;
 import net.datenwerke.dtoservices.dtogenerator.annotations.AdditionalField;
 import net.datenwerke.dtoservices.dtogenerator.annotations.ExposeToClient;
 import net.datenwerke.dtoservices.dtogenerator.annotations.GenerateDto;
+import net.datenwerke.eximport.ex.annotations.ExportableField;
 import net.datenwerke.gf.base.service.annotations.Field;
 import net.datenwerke.gf.base.service.annotations.Indexed;
 import net.datenwerke.rs.base.service.datasources.definitions.dtogen.DatabaseDatasource2DtoPostProcessor;
@@ -33,6 +34,7 @@ import net.datenwerke.rs.base.service.dbhelper.DatabaseHelper;
 import net.datenwerke.rs.core.service.datasourcemanager.entities.DatasourceDefinition;
 import net.datenwerke.rs.core.service.datasourcemanager.entities.DatasourceDefinitionConfig;
 import net.datenwerke.rs.core.service.datasourcemanager.interfaces.ParameterAwareDatasource;
+import net.datenwerke.rs.utils.entitymerge.service.annotations.EntityMergeField;
 import net.datenwerke.rs.utils.instancedescription.annotations.InstanceDescription;
 import net.datenwerke.security.service.crypto.pbe.PbeService;
 import net.datenwerke.security.service.crypto.pbe.encrypt.EncryptionService;
@@ -74,21 +76,27 @@ public class DatabaseDatasource extends DatasourceDefinition implements Paramete
    @ExposeToClient
    @Field
    @Column(length = 1024)
+   @EntityMergeField
    private String url;
 
    @ExposeToClient
    @Field
+   @EntityMergeField
    private String username;
 
    @ExposeToClient(exposeValueToClient = false, mergeDtoValueBack = true)
+   @EntityMergeField
+   @ExportableField(exportField = false)
    private String password;
 
    @ExposeToClient(disableHtmlEncode = true)
    @Lob
    @Type(type = "net.datenwerke.rs.utils.hibernate.RsClobType")
+   @EntityMergeField
    private String jdbcProperties;
 
    @ExposeToClient
+   @EntityMergeField
    private String databaseDescriptor;
 
    public String getUrl() {

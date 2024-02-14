@@ -29,7 +29,7 @@ import net.datenwerke.treedb.service.treedb.annotation.TreeDBTree;
 @GenerateDto(dtoPackage = "net.datenwerke.rs.core.client.datasourcemanager.dto", abstractDto = true, whitelist = {
       DatasourceFolderDto.class, DatasourceDefinitionDto.class, DatasourceDefinitionConfigDto.class,
       AbstractReportManagerNodeDto.class })
-abstract public class AbstractDatasourceManagerNode extends SecuredAbstractNode<AbstractDatasourceManagerNode> {
+abstract public class AbstractDatasourceManagerNode extends SecuredAbstractNode<AbstractDatasourceManagerNode>{
 
    /**
     * 

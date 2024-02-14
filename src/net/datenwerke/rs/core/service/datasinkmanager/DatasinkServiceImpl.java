@@ -32,7 +32,6 @@ import net.datenwerke.rs.fileserver.service.fileserver.entities.FileServerFolder
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 import net.datenwerke.rs.scheduler.service.scheduler.jobs.report.ReportExecuteJob;
 import net.datenwerke.rs.utils.misc.DateUtils;
-import net.datenwerke.rs.utils.misc.StringEscapeUtils;
 import net.datenwerke.rs.utils.zip.ZipUtilsService;
 import net.datenwerke.rs.utils.zip.ZipUtilsService.FileFilter;
 import net.datenwerke.scheduler.service.scheduler.exceptions.ActionExecutionException;

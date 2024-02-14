@@ -11,23 +11,20 @@ import javax.inject.Provider;
 import com.google.gwt.user.client.ui.Widget;
 import com.sencha.gxt.widget.core.client.container.MarginData;
 
-import net.datenwerke.gf.client.managerhelper.mainpanel.SimpleFormView;
 import net.datenwerke.gf.client.upload.FileUploadUiService;
-import net.datenwerke.gf.client.validator.KeyValidator;
 import net.datenwerke.gxtdto.client.baseex.widget.DwContentPanel;
 import net.datenwerke.gxtdto.client.forms.simpleform.SimpleForm;
 import net.datenwerke.gxtdto.client.forms.simpleform.SimpleFormSubmissionCallback;
 import net.datenwerke.gxtdto.client.forms.simpleform.actions.SimpleFormAction;
 import net.datenwerke.gxtdto.client.forms.simpleform.conditions.FieldChanged;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCCustomComponent;
-import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCStringValidatorRegex;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.impl.SFFCStaticDropdownList;
-import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.impl.SFFCTextAreaImpl;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.dummy.CustomComponent;
 import net.datenwerke.gxtdto.client.locale.BaseMessages;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.base.client.datasinks.hooks.DatasinkAuthenticatorConfiguratorHook;
 import net.datenwerke.rs.core.client.datasinkmanager.locale.DatasinksMessages;
+import net.datenwerke.rs.core.client.datasinkmanager.ui.forms.DatasinkSimpleForm;
 import net.datenwerke.rs.ftp.client.ftp.dto.SftpDatasinkDto;
 import net.datenwerke.rs.ftp.client.ftp.dto.pa.SftpDatasinkDtoPA;
 import net.datenwerke.rs.ftp.service.ftp.definitions.SftpDatasink;
@@ -36,7 +33,7 @@ import net.datenwerke.rs.ftp.service.ftp.definitions.SftpDatasink;
  * Form used to edit {@link SftpDatasink}s in the administration view.
  *
  */
-public class SftpDatasinkForm extends SimpleFormView {
+public class SftpDatasinkForm extends DatasinkSimpleForm {
 
    private final Provider<FileUploadUiService> fileUploadServiceProvider;
 
@@ -52,35 +49,12 @@ public class SftpDatasinkForm extends SimpleFormView {
 
    @Inject
    public SftpDatasinkForm(Provider<FileUploadUiService> fileUploadServiceProvider, HookHandlerService hookHandler) {
+      super();
       this.fileUploadServiceProvider = fileUploadServiceProvider;
-
       this.configs = hookHandler.getHookers(DatasinkAuthenticatorConfiguratorHook.class);
    }
 
-   public void configureSimpleForm(SimpleForm form) {
-      /* configure form */
-      form.setHeading(DatasinksMessages.INSTANCE.editDatasink()
-            + (getSelectedNode() == null ? "" : " (" + getSelectedNode().getId() + ")"));
-
-      form.beginFloatRow();
-      form.setFieldWidth(600);
-      
-      /* name */
-      form.addField(String.class, SftpDatasinkDtoPA.INSTANCE.name(), BaseMessages.INSTANCE.name());
-      
-      form.setFieldWidth(500);
-      /* key */
-      form.addField(String.class, SftpDatasinkDtoPA.INSTANCE.key(), BaseMessages.INSTANCE.key(),
-            new SFFCStringValidatorRegex(KeyValidator.KEY_REGEX, BaseMessages.INSTANCE.invalidKey()));
-      
-      form.endRow();
-      
-      form.setFieldWidth(1);
-
-      /* description */
-      form.addField(String.class, SftpDatasinkDtoPA.INSTANCE.description(), BaseMessages.INSTANCE.description(),
-            new SFFCTextAreaImpl());
-
+   protected void configureSimpleFormCustomFields(SimpleForm form) {
       form.setFieldWidth(750);
       form.beginFloatRow();
 

@@ -1,6 +1,7 @@
 package net.datenwerke.rs.terminal.service.terminal.helpmessenger;
 
 import java.lang.reflect.Method;
+import java.util.Arrays;
 
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
@@ -9,6 +10,8 @@ import com.google.inject.Inject;
 
 import net.datenwerke.rs.base.service.reportengines.table.output.object.RSStringTableRow;
 import net.datenwerke.rs.base.service.reportengines.table.output.object.RSTableModel;
+import net.datenwerke.rs.base.service.reportengines.table.output.object.TableDefinition;
+import net.datenwerke.rs.terminal.service.terminal.TerminalService;
 import net.datenwerke.rs.terminal.service.terminal.TerminalSession;
 import net.datenwerke.rs.terminal.service.terminal.helpers.CommandParser;
 import net.datenwerke.rs.terminal.service.terminal.helpmessenger.annotations.Argument;
@@ -93,7 +96,9 @@ public class HelpMessageInterceptor implements MethodInterceptor {
       result.addResultLine();
 
       RSTableModel table = new RSTableModel();
-      table.addDataRow(new RSStringTableRow("h", ":", messages.helpFlagDescription()));
+      TableDefinition tableDef = new TableDefinition(Arrays.asList("h", ":", messages.helpFlagDescription()), Arrays.asList(String.class, String.class, String.class));
+      
+      int keyLength = 0;
 
       for (TerminalCommandHook cmd : subCommandContainer.getSubCommands()) {
          Class<?> cmdType = cmd.getClass();
@@ -104,9 +109,13 @@ public class HelpMessageInterceptor implements MethodInterceptor {
             String desc = LocalizationServiceImpl.getMessage(subCommandHelp.messageClass(),
                   subCommandHelp.description());
             table.addDataRow(new RSStringTableRow(subCommandHelp.name(), ":", desc));
+            int newKeyLength = getWidthForText(subCommandHelp.name());
+            if (newKeyLength > keyLength) keyLength = newKeyLength;
          }
       }
 
+      tableDef.setDisplaySizes(Arrays.asList(keyLength, getWidthForText(":"), 0));
+      table.setTableDefinition(tableDef);
       result.addResultTable(table);
 
       result.addResultLine(messages.helpDescription() + ": "
@@ -133,24 +142,37 @@ public class HelpMessageInterceptor implements MethodInterceptor {
       result.addResultLine();
 
       RSTableModel table = new RSTableModel();
-      table.addDataRow(new RSStringTableRow("h", ":", messages.helpFlagDescription()));
+      TableDefinition tableDef = new TableDefinition(Arrays.asList("h", ":", messages.helpFlagDescription()), Arrays.asList(String.class, String.class, String.class));
+      
+      int keyLength = 0;
 
       for (Argument arg : helpAnno.args()) {
          String desc = LocalizationServiceImpl.getMessage(helpAnno.messageClass(), arg.description());
          table.addDataRow(new RSStringTableRow(arg.flag(), ":", desc));
+         int newKeyLength = getWidthForText(arg.flag());
+         if (newKeyLength > keyLength) keyLength = newKeyLength;
       }
 
       for (NonOptArgument arg : helpAnno.nonOptArgs()) {
          String desc = LocalizationServiceImpl.getMessage(helpAnno.messageClass(), arg.description());
          table.addDataRow(new RSStringTableRow(arg.name(), ":", desc));
+         int newKeyLength = getWidthForText(arg.name());
+         if (newKeyLength > keyLength) keyLength = newKeyLength;
       }
 
+      tableDef.setDisplaySizes(Arrays.asList(keyLength, getWidthForText(":"), 0));
+      table.setTableDefinition(tableDef);
       result.addResultTable(table);
 
       result.addResultLine(messages.helpDescription() + ": "
             + LocalizationServiceImpl.getMessage(helpAnno.messageClass(), helpAnno.description()));
 
       return result;
+   }
+   
+   private int getWidthForText(String text) {
+      if (text.length() <= 0) return 0;
+      return (int) Math.ceil(text.length() * TerminalService.CHAR_WIDTH);
    }
 
    private String getUsage(CliHelpMessage helpAnno) {

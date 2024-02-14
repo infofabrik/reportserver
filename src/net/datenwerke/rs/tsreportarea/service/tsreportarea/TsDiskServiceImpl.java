@@ -296,4 +296,9 @@ public class TsDiskServiceImpl extends LoggedTreeDbManagerImpl<AbstractTsDiskNod
       return reference;
    }
 
+   @Override
+   public AbstractTsDiskNode getNodeByKey(String key) {
+      throw new UnsupportedOperationException("Method not implemented for TsDisk nodes - they don't have keys");
+   }
+
 }

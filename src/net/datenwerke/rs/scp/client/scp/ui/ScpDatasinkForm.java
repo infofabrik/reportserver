@@ -11,23 +11,20 @@ import javax.inject.Provider;
 import com.google.gwt.user.client.ui.Widget;
 import com.sencha.gxt.widget.core.client.container.MarginData;
 
-import net.datenwerke.gf.client.managerhelper.mainpanel.SimpleFormView;
 import net.datenwerke.gf.client.upload.FileUploadUiService;
-import net.datenwerke.gf.client.validator.KeyValidator;
 import net.datenwerke.gxtdto.client.baseex.widget.DwContentPanel;
 import net.datenwerke.gxtdto.client.forms.simpleform.SimpleForm;
 import net.datenwerke.gxtdto.client.forms.simpleform.SimpleFormSubmissionCallback;
 import net.datenwerke.gxtdto.client.forms.simpleform.actions.SimpleFormAction;
 import net.datenwerke.gxtdto.client.forms.simpleform.conditions.FieldChanged;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCCustomComponent;
-import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCStringValidatorRegex;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.impl.SFFCStaticDropdownList;
-import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.impl.SFFCTextAreaImpl;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.dummy.CustomComponent;
 import net.datenwerke.gxtdto.client.locale.BaseMessages;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.base.client.datasinks.hooks.DatasinkAuthenticatorConfiguratorHook;
 import net.datenwerke.rs.core.client.datasinkmanager.locale.DatasinksMessages;
+import net.datenwerke.rs.core.client.datasinkmanager.ui.forms.DatasinkSimpleForm;
 import net.datenwerke.rs.scp.client.scp.dto.ScpDatasinkDto;
 import net.datenwerke.rs.scp.client.scp.dto.pa.ScpDatasinkDtoPA;
 import net.datenwerke.rs.scp.service.scp.definitions.ScpDatasink;
@@ -36,7 +33,7 @@ import net.datenwerke.rs.scp.service.scp.definitions.ScpDatasink;
  * Form used to edit {@link ScpDatasink}s in the administration view.
  *
  */
-public class ScpDatasinkForm extends SimpleFormView {
+public class ScpDatasinkForm extends DatasinkSimpleForm {
 
    private final Provider<FileUploadUiService> fileUploadServiceProvider;
 
@@ -52,38 +49,15 @@ public class ScpDatasinkForm extends SimpleFormView {
 
    @Inject
    public ScpDatasinkForm(Provider<FileUploadUiService> fileUploadServiceProvider, HookHandlerService hookHandler) {
+      super();
       this.fileUploadServiceProvider = fileUploadServiceProvider;
-
       this.configs = hookHandler.getHookers(DatasinkAuthenticatorConfiguratorHook.class);
    }
 
-   public void configureSimpleForm(SimpleForm form) {
-      /* configure form */
-      form.setHeading(DatasinksMessages.INSTANCE.editDatasink()
-            + (getSelectedNode() == null ? "" : " (" + getSelectedNode().getId() + ")"));
-
-      form.beginFloatRow();
-      form.setFieldWidth(600);
-      
-      /* name */
-      form.addField(String.class, ScpDatasinkDtoPA.INSTANCE.name(), BaseMessages.INSTANCE.name());
-      
-      form.setFieldWidth(500);
-      /* key */
-      form.addField(String.class, ScpDatasinkDtoPA.INSTANCE.key(), BaseMessages.INSTANCE.key(),
-            new SFFCStringValidatorRegex(KeyValidator.KEY_REGEX, BaseMessages.INSTANCE.invalidKey()));
-      
-      form.endRow();
-      
-      form.setFieldWidth(1);
-
-      form.addField(String.class, ScpDatasinkDtoPA.INSTANCE.description(), BaseMessages.INSTANCE.description(),
-            new SFFCTextAreaImpl());
-
+   protected void configureSimpleFormCustomFields(SimpleForm form) {
+      /* host */
       form.setFieldWidth(750);
       form.beginFloatRow();
-
-      /* host */
       form.addField(String.class, ScpDatasinkDtoPA.INSTANCE.host(), BaseMessages.INSTANCE.host());
 
       form.setFieldWidth(50);

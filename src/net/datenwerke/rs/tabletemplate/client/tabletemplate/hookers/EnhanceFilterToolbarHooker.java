@@ -1,7 +1,10 @@
 package net.datenwerke.rs.tabletemplate.client.tabletemplate.hookers;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import com.google.gwt.cell.client.AbstractCell;
 import com.google.gwt.core.client.GWT;
@@ -10,6 +13,7 @@ import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AbstractImagePrototype;
 import com.google.gwt.user.client.ui.Hidden;
 import com.google.inject.Inject;
@@ -40,6 +44,7 @@ import com.sencha.gxt.widget.core.client.form.FormPanel.LabelAlign;
 import com.sencha.gxt.widget.core.client.form.FormPanel.Method;
 import com.sencha.gxt.widget.core.client.form.TextArea;
 import com.sencha.gxt.widget.core.client.form.TextField;
+import com.sencha.gxt.widget.core.client.form.error.DefaultEditorError;
 import com.sencha.gxt.widget.core.client.grid.ColumnConfig;
 import com.sencha.gxt.widget.core.client.grid.ColumnModel;
 import com.sencha.gxt.widget.core.client.grid.Grid;
@@ -49,6 +54,7 @@ import com.sencha.gxt.widget.core.client.toolbar.ToolBar;
 
 import net.datenwerke.gf.client.uiutils.ClientDownloadHelper;
 import net.datenwerke.gf.client.upload.FileUploadUIModule;
+import net.datenwerke.gf.client.validator.KeyValidator;
 import net.datenwerke.gxtdto.client.baseex.widget.DwContentPanel;
 import net.datenwerke.gxtdto.client.baseex.widget.DwWindow;
 import net.datenwerke.gxtdto.client.baseex.widget.btn.DwTextButton;
@@ -68,6 +74,7 @@ import net.datenwerke.rs.base.client.reportengines.table.columnfilter.propertywi
 import net.datenwerke.rs.base.client.reportengines.table.dto.TableReportDto;
 import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
 import net.datenwerke.rs.enterprise.client.EnterpriseUiService;
+import net.datenwerke.rs.keyutils.client.keyutils.KeyUtilsDao;
 import net.datenwerke.rs.tabletemplate.client.tabletemplate.TableTemplateDao;
 import net.datenwerke.rs.tabletemplate.client.tabletemplate.TableTemplateUIModule;
 import net.datenwerke.rs.tabletemplate.client.tabletemplate.TableTemplateUIService;
@@ -154,6 +161,7 @@ public class EnhanceFilterToolbarHooker implements FilterViewEnhanceToolbarHook 
    private final TableTemplateUIService tableTemplateService;
    private final ToolbarService toolbarService;
    private final EnterpriseUiService enterpriseService;
+   private final KeyUtilsDao keyUtilsDao;
 
    private Grid<TableReportTemplateDto> grid;
    private DwContentPanel editTemplateComponent;
@@ -178,9 +186,13 @@ public class EnhanceFilterToolbarHooker implements FilterViewEnhanceToolbarHook 
    }
 
    @Inject
-   public EnhanceFilterToolbarHooker(HookHandlerService hookHandler, TableTemplateDao tableTemplateDao,
-         TableTemplateUIService tableTemplateService, ToolbarService toolbarService,
-         EnterpriseUiService enterpriseService) {
+   public EnhanceFilterToolbarHooker(
+         HookHandlerService hookHandler, 
+         TableTemplateDao tableTemplateDao,
+         TableTemplateUIService tableTemplateService, 
+         ToolbarService toolbarService,
+         EnterpriseUiService enterpriseService,
+         KeyUtilsDao keyUtilsDao) {
 
       /* store obejcts */
       this.hookHandler = hookHandler;
@@ -188,6 +200,7 @@ public class EnhanceFilterToolbarHooker implements FilterViewEnhanceToolbarHook 
       this.tableTemplateService = tableTemplateService;
       this.toolbarService = toolbarService;
       this.enterpriseService = enterpriseService;
+      this.keyUtilsDao = keyUtilsDao;
    }
 
    @Override
@@ -349,6 +362,8 @@ public class EnhanceFilterToolbarHooker implements FilterViewEnhanceToolbarHook 
 
       DwTextButton submit = new DwTextButton(BaseMessages.INSTANCE.submit());
       submit.addSelectHandler(event -> {
+         if(!form.isValid())
+            return;
          form.mask(BaseMessages.INSTANCE.storingMsg());
          form.submit();
       });
@@ -424,6 +439,8 @@ public class EnhanceFilterToolbarHooker implements FilterViewEnhanceToolbarHook 
       }, template);
 
       DwTextButton submitBtn = new DwTextButton(BaseMessages.INSTANCE.submit(), event -> {
+         if(!form.isValid())
+            return;
          form.mask(BaseMessages.INSTANCE.storingMsg());
          form.submit();
       });
@@ -499,8 +516,39 @@ public class EnhanceFilterToolbarHooker implements FilterViewEnhanceToolbarHook 
       TextField keyField = new TextField();
       keyField.setWidth(-1);
       keyField.setName(TableReportTemplateDto.PROPERTY_KEY);
-      if (null != template)
+      if (null != template) {
          keyField.setValue(template.getKey());
+      } else {
+         keyUtilsDao.generateDefaultKey(new AsyncCallback<String>() {      
+            @Override
+            public void onSuccess(String result) {
+               keyField.setValue(result);
+            }
+            
+            @Override
+            public void onFailure(Throwable caught) {
+ 
+            }
+         });
+      }
+      keyField.addValidator(new KeyValidator(BaseMessages.INSTANCE.invalidKey()));
+      keyField.addValidator((editor, value) -> {
+            String msg = BaseMessages.INSTANCE.duplicateKey();
+            Set<String> keySet = templateStore
+                  .getAll().stream()
+                  .map(dto-> dto.getKey())
+                  .collect(Collectors.toSet());
+            if(template != null && template.getKey() != null)
+                  keySet.remove(template.getKey());             
+            if(!keySet.contains(value))
+               return null;
+            else
+               return Collections
+                  .singletonList(new DefaultEditorError(editor, null == msg? BaseMessages.INSTANCE.alphaNumericErrorMsg(): msg, value));
+         });
+      keyField.setAllowBlank(false);
+      keyField.setAutoValidate(true);
+
       layoutContainer.add(new FieldLabel(keyField, messages.templateKeyLabel()), new VerticalLayoutData(1, -1));
 
       final ListStore<ModelClass> typeStore = new ListStore<>(new BasicObjectModelKeyProvider<>());

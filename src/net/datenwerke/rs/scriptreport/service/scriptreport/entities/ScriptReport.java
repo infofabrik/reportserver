@@ -21,6 +21,8 @@ import net.datenwerke.gxtdto.client.dtomanager.DtoView;
 import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
 import net.datenwerke.rs.fileserver.service.fileserver.entities.FileServerFile;
 import net.datenwerke.rs.scriptreport.service.scriptreport.locale.ScriptReportMessages;
+import net.datenwerke.rs.utils.entitymerge.service.annotations.EntityMergeCollection;
+import net.datenwerke.rs.utils.entitymerge.service.annotations.EntityMergeField;
 import net.datenwerke.rs.utils.instancedescription.annotations.InstanceDescription;
 import net.datenwerke.treedb.service.treedb.annotation.TreeDBAllowedChildren;
 
@@ -50,15 +52,18 @@ public class ScriptReport extends Report {
 
    @ExposeToClient
    @ManyToOne
+   @EntityMergeField
    private FileServerFile script;
 
    @ExposeToClient
+   @EntityMergeField
    private String arguments;
 
    @JoinTable(name = "SCRIPT_REPORT_2_EX_FORMAT")
    @ExposeToClient(view = DtoView.LIST)
    @ElementCollection
    @OrderColumn(name = "val_n")
+   @EntityMergeCollection
    private List<String> exportFormats = new ArrayList<String>();
 
    public void setScript(FileServerFile script) {

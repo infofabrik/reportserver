@@ -4,7 +4,6 @@ import static net.datenwerke.rs.base.ext.service.RemoteEntityImporterServiceImpl
 
 import javax.inject.Inject
 
-import org.apache.commons.configuration2.Configuration
 import org.apache.commons.text.StringEscapeUtils
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -16,17 +15,15 @@ import net.datenwerke.eximport.ImportService
 import net.datenwerke.eximport.im.ImportConfig
 import net.datenwerke.eximport.im.ImportMode
 import net.datenwerke.eximport.im.ImportResult
-import net.datenwerke.rs.base.ext.service.RemoteEntityImportPrio
-import net.datenwerke.rs.base.ext.service.RemoteEntityImporterService
 import net.datenwerke.rs.base.ext.service.RemoteEntityImports
 import net.datenwerke.rs.base.ext.service.datasourcemanager.eximport.DatasourceManagerExporter
 import net.datenwerke.rs.base.ext.service.hooks.RemoteEntityImporterHook
 import net.datenwerke.rs.base.ext.service.reportmanager.eximport.ReportManagerExporter
-import net.datenwerke.rs.configservice.service.configservice.ConfigService
 import net.datenwerke.rs.core.service.datasourcemanager.DatasourceService
 import net.datenwerke.rs.core.service.reportmanager.ReportService
 import net.datenwerke.rs.core.service.reportmanager.entities.AbstractReportManagerNode
 import net.datenwerke.rs.core.service.reportmanager.entities.ReportFolder
+import net.datenwerke.rs.keyutils.service.keyutils.KeyMatchService
 import net.datenwerke.treedb.ext.service.eximport.TreeNodeImportItemConfig
 import net.datenwerke.treedb.ext.service.eximport.TreeNodeImporterConfig
 import net.datenwerke.treedb.service.treedb.AbstractNode
@@ -37,9 +34,8 @@ class RemoteReportImporterHooker implements RemoteEntityImporterHook {
    private final Provider<ReportService> reportServiceProvider
    private final Provider<ImportService> importServiceProvider
    private final Provider<DatasourceService> datasourceServiceProvider
-   private final Provider<ConfigService> configServiceProvider
+   private final Provider<KeyMatchService> keyMatchServiceProvider
    
-   private final Configuration config
 
    private final Logger logger = LoggerFactory.getLogger(getClass().name)
 
@@ -49,15 +45,14 @@ class RemoteReportImporterHooker implements RemoteEntityImporterHook {
       Provider<ReportService> reportServiceProvider,
       Provider<ImportService> importServiceProvider,
       Provider<DatasourceService> datasourceServiceProvider,
-      Provider<ConfigService> configServiceProvider
+      Provider<KeyMatchService> keyMatchServiceProvider
    ) {
       this.analyzerServiceProvider = analyzerServiceProvider
       this.reportServiceProvider = reportServiceProvider
       this.importServiceProvider = importServiceProvider
       this.datasourceServiceProvider =  datasourceServiceProvider
-      this.configServiceProvider = configServiceProvider
+      this.keyMatchServiceProvider = keyMatchServiceProvider
       
-      config = configServiceProvider.get().getConfig(RemoteEntityImporterService.CONFIG_FILE)
    }
 
    @Override
@@ -66,7 +61,8 @@ class RemoteReportImporterHooker implements RemoteEntityImporterHook {
    }
 
    @Override
-   public ImportResult importRemoteEntity(ImportConfig config, AbstractNode targetNode, String requestedRemoteEntity) {
+   public ImportResult importRemoteEntity(ImportConfig config, AbstractNode targetNode, String requestedRemoteEntity,
+      String exportXml) {
       return doImportRemoteEntity(config, targetNode, false, [:])
    }
 
@@ -74,21 +70,6 @@ class RemoteReportImporterHooker implements RemoteEntityImporterHook {
    public Map<String, String> checkImportRemoteEntity(ImportConfig config, AbstractNode targetNode,
          Map<String, String> previousCheckResults, String requestedRemoteEntity) {
       return doImportRemoteEntity(config, targetNode, true, previousCheckResults)
-   }
-   
-   private Map<String, String> getDatasourceKeyMappings() {
-      def keyMappings = config.configurationsAt('mappings.datasources.key-mappings.key-mapping')
-      return keyMappings
-         .collectEntries{[it.getString('remote'), it.getString('local')]}
-   }
-   
-   private List<RemoteEntityImportPrio> getDatasourcePrios() {
-      return configServiceProvider.get().parseConfigList(config, 'mappings.datasources.priorities.priority')
-            .collect { RemoteEntityImportPrio.values().find { val -> val.prio == it } } 
-            ?: [
-               RemoteEntityImportPrio.MAPPING,
-               RemoteEntityImportPrio.SAME_KEY
-            ]
    }
    
    private doImportRemoteEntity(ImportConfig config, AbstractNode targetNode, boolean check, Map<String, String> results) {
@@ -182,23 +163,12 @@ class RemoteReportImporterHooker implements RemoteEntityImporterHook {
    
    def matchToLocalDatasource(remoteDatasourceKey) {
       def datasourceService = datasourceServiceProvider.get()
-      def datasourceKeyMappings = getDatasourceKeyMappings()
-      def datasourcePrios = getDatasourcePrios()
-
-      def localDatasource = null
-      datasourcePrios.find {
-         switch (it) {
-            case RemoteEntityImportPrio.MAPPING:
-               if (datasourceKeyMappings.containsKey(remoteDatasourceKey))
-                  localDatasource = datasourceService.getDatasourceByKey(datasourceKeyMappings[remoteDatasourceKey])
-               break
-            case RemoteEntityImportPrio.SAME_KEY:
-               localDatasource = datasourceService.getDatasourceByKey(remoteDatasourceKey)
-               break
-         }
-         if (localDatasource)
-            return true // break find loop
-      }
+      
+      def localDatasource = keyMatchServiceProvider.get().matchToLocalEntity(remoteDatasourceKey, 
+         { datasourceService.getDatasourceByKey(it) }, 
+         KeyMatchService.MAPPINGS_CONFIG_FILE,
+         KeyMatchService.DATASOURCE_MAPPINGS_PATH, 
+         KeyMatchService.DATASOURCE_PRIOS_PATH)
       
       return localDatasource
    }

@@ -41,7 +41,7 @@ public class ScriptDatasinkModule extends AbstractModule {
    @DefaultScriptDatasink
    public Optional<ScriptDatasink> provideDefaultDatasink(DatasinkTreeService datasinkService) {
       return datasinkService.getDefaultDatasink(ScriptDatasink.class, PROPERTY_DEFAULT_SCRIPT_DATASINK_ID,
-            PROPERTY_DEFAULT_SCRIPT_DATASINK_NAME, PROPERTY_DEFAULT_SCRIPT_DATASINK_KEY);
+            PROPERTY_DEFAULT_SCRIPT_DATASINK_NAME, PROPERTY_DEFAULT_SCRIPT_DATASINK_KEY, PROPERTY_SCRIPT_DATASINK_DISABLED);
    }
 
 }

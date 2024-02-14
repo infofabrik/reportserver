@@ -5,6 +5,7 @@ import static java.util.stream.Collectors.toList;
 import static net.datenwerke.rs.utils.exception.shared.LambdaExceptionUtil.rethrowFunction;
 
 import java.io.PrintStream;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -19,14 +20,12 @@ import java.util.concurrent.Executors;
 import javax.mail.Address;
 import javax.mail.Message.RecipientType;
 import javax.mail.Multipart;
-import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 
-import org.apache.commons.configuration2.Configuration;
 import org.apache.commons.io.output.ByteArrayOutputStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,7 +35,6 @@ import com.google.inject.Provider;
 
 import net.datenwerke.rs.core.client.RsCoreUiModule;
 import net.datenwerke.rs.core.service.datasinkmanager.DatasinkService;
-import net.datenwerke.rs.core.service.mail.annotations.MailModuleProperties;
 import net.datenwerke.rs.core.service.mail.events.SendMailEvent;
 import net.datenwerke.rs.core.service.mail.exceptions.MailerRuntimeException;
 import net.datenwerke.rs.core.service.mail.interfaces.NeedsPostprocessing;
@@ -56,10 +54,7 @@ import net.datenwerke.security.service.usermanager.entities.User;
 public class MailServiceImpl implements MailService {
 
    private final Logger logger = LoggerFactory.getLogger(getClass().getName());
-
-   private final static String CFG_ENCRYPTION_POLICY = "mail.encryptionPolicy";
-   private final static String CFG_FORCE_SENDER = "mail.forceSender";
-
+   
    public interface MailSupervisor {
       void handleException(Exception e);
 
@@ -83,10 +78,7 @@ public class MailServiceImpl implements MailService {
    private final CryptoService cryptoService;
    private final Provider<SimpleJuel> simpleJuelProvider;
    private final Provider<EventBus> eventBus;
-   private final Provider<Configuration> config;
-
-   // used when sending emails without email datasinks
-   private final Provider<Session> defaultSessionProvider;
+   
    // used when sending emails based on email datasinks
    private final Provider<EmailDatasinkSessionFactory> emailDatasinkSessionFactory;
 
@@ -97,16 +89,18 @@ public class MailServiceImpl implements MailService {
    private final ExecutorService sendMailPool = Executors.newFixedThreadPool(1);
 
    @Inject
-   public MailServiceImpl(Provider<Session> defaultSessionProvider,
+   public MailServiceImpl(
          Provider<EmailDatasinkSessionFactory> emailDatasinkSessionFactory,
          Provider<SimpleMailFactory> simpleMailFactoryProvider,
-         Provider<SimpleCryptoMailFactory> simpleCryptoMailFactoryProvider, CryptoService cryptoService,
-         Provider<SimpleJuel> simpleJuelProvider, Provider<EventBus> eventBus,
+         Provider<SimpleCryptoMailFactory> simpleCryptoMailFactoryProvider, 
+         CryptoService cryptoService,
+         Provider<SimpleJuel> simpleJuelProvider, 
+         Provider<EventBus> eventBus,
          Provider<EmailDatasinkService> emailDatasinkServiceProvider,
-         @MailModuleProperties Provider<Configuration> config, Provider<DatasinkService> datasinkServiceProvider) {
+         Provider<DatasinkService> datasinkServiceProvider
+         ) {
 
       /* store objects */
-      this.defaultSessionProvider = defaultSessionProvider;
       this.emailDatasinkSessionFactory = emailDatasinkSessionFactory;
       this.simpleMailFactoryProvider = simpleMailFactoryProvider;
       this.simpleCryptoMailFactoryProvider = simpleCryptoMailFactoryProvider;
@@ -114,7 +108,6 @@ public class MailServiceImpl implements MailService {
       this.simpleJuelProvider = simpleJuelProvider;
       this.eventBus = eventBus;
       this.emailDatasinkServiceProvider = emailDatasinkServiceProvider;
-      this.config = config;
       this.datasinkServiceProvider = datasinkServiceProvider;
    }
 
@@ -125,17 +118,11 @@ public class MailServiceImpl implements MailService {
 
    @Override
    public SimpleMail newSimpleMail(Optional<EmailDatasink> emailDatasink) {
-      if (!emailDatasink.isPresent()) {
-         // try to load default
-         Optional<EmailDatasink> defaultEmailDatasink = loadDefaultEmailDatasink();
-         if (defaultEmailDatasink.isPresent())
-            return simpleCryptoMailFactoryProvider.get()
-                  .create(emailDatasinkSessionFactory.get().create(defaultEmailDatasink.get()).get());
-         else
-            return simpleCryptoMailFactoryProvider.get().create(defaultSessionProvider.get());
-      } else
-         return simpleCryptoMailFactoryProvider.get()
-               .create(emailDatasinkSessionFactory.get().create(emailDatasink.get()).get());
+      
+      EmailDatasink toUse = loadDatasink(emailDatasink);
+      
+      return simpleCryptoMailFactoryProvider.get().create(emailDatasinkSessionFactory.get().create(toUse).get(),
+            toUse.getSender(), toUse.getSenderName());
    }
 
    @Override
@@ -192,25 +179,37 @@ public class MailServiceImpl implements MailService {
       unsupported.addAll(partitioned.get(false));
    }
 
-   private Optional<EmailDatasink> loadDefaultEmailDatasink() {
+   @Override
+   public EmailDatasink loadDefaultEmailDatasink() {
       // try to load default email datasink
       Optional<EmailDatasink> defaultEmailDatasink = (Optional<EmailDatasink>) datasinkServiceProvider.get()
             .getDefaultDatasink(emailDatasinkServiceProvider.get());
       if (defaultEmailDatasink.isPresent())
-         return defaultEmailDatasink;
+         return defaultEmailDatasink.get();
 
-      return Optional.empty();
+      throw new IllegalStateException("No default Email - SMTP server datasink configured");
    }
 
+   private EmailDatasink loadDatasink(Optional<EmailDatasink> emailDatasink) {
+      EmailDatasink loaded = null;
+      if (emailDatasink.isPresent())
+         loaded = emailDatasink.get();
+      else
+         loaded = loadDefaultEmailDatasink();
+      
+      if (null == loaded)
+         throw new IllegalStateException("Email - SMTP server datasink could not be loaded");
+      
+      return loaded;
+   }
+   
    @Override
    public synchronized void sendMailSync(Optional<EmailDatasink> emailDatasink, MimeMessage message,
          MailSupervisor supervisor) {
       eventBus.get().fireEvent(new SendMailEvent(message));
 
-      Optional<EmailDatasink> toUse = emailDatasink;
-      if (!toUse.isPresent())
-         toUse = loadDefaultEmailDatasink();
-
+      EmailDatasink toUse = loadDatasink(emailDatasink);
+      
       try {
          /* check crypto policy */
          final List<Address> rcptTOencSupported = new ArrayList<>();
@@ -250,11 +249,10 @@ public class MailServiceImpl implements MailService {
             } else {
                SimpleMail plaintextMail = null;
 
-               if (!toUse.isPresent())
-                  plaintextMail = simpleMailFactoryProvider.get().create(defaultSessionProvider.get());
-               else
-                  plaintextMail = simpleMailFactoryProvider.get()
-                        .create(emailDatasinkSessionFactory.get().create(toUse.get()).get());
+               plaintextMail = simpleMailFactoryProvider.get().create(
+                     emailDatasinkSessionFactory.get().create(toUse).get(), toUse.getSender(),
+                     toUse.getSenderName());
+                  
 
                if (rcptTOencSupported.isEmpty()) {
                   /* only send plaintext */
@@ -318,12 +316,12 @@ public class MailServiceImpl implements MailService {
             ((SessionProvider) message).getSession().setDebug(true);
          }
 
-         if (forceDefaultSender(toUse)) {
-            String senderName = getSenderName(toUse);
+         if (toUse.isForceSender()) {
+            String senderName = toUse.getSenderName();
             if (null == senderName)
-               message.setFrom(new InternetAddress(getSender(toUse)));
+               message.setFrom(new InternetAddress(toUse.getSender()));
             else
-               message.setFrom(new InternetAddress(getSender(toUse), senderName));
+               message.setFrom(new InternetAddress(toUse.getSender(), senderName));
          }
 
          message.setSentDate(new Date());
@@ -352,33 +350,8 @@ public class MailServiceImpl implements MailService {
       sendMail(emailDatasink, message, new MailSupervisorImpl());
    }
 
-   private String getSender(Optional<EmailDatasink> emailDatasink) {
-      if (!emailDatasink.isPresent())
-         return config.get().getString(MailModule.PROPERTY_MAIL_SENDER, null);
-      else
-         return emailDatasink.get().getSender();
-   }
-
-   private String getSenderName(Optional<EmailDatasink> emailDatasink) {
-      if (!emailDatasink.isPresent())
-         return config.get().getString(MailModule.PROPERTY_MAIL_SENDER_NAME, null);
-      else
-         return emailDatasink.get().getSenderName();
-   }
-
-   private boolean forceDefaultSender(Optional<EmailDatasink> emailDatasink) {
-      if (!emailDatasink.isPresent())
-         return !config.get().getString(CFG_FORCE_SENDER, "false").equals("false");
-      else
-         return emailDatasink.get().isForceSender();
-   }
-
-   private boolean forceEncryption(Optional<EmailDatasink> emailDatasink) {
-      if (!emailDatasink.isPresent()) {
-         return !config.get().getString(CFG_ENCRYPTION_POLICY, RsCoreUiModule.EMAIL_ENCRYPTION_MIXED)
-               .equals(RsCoreUiModule.EMAIL_ENCRYPTION_MIXED);
-      } else
-         return !emailDatasink.get().getEncryptionPolicy().equals(RsCoreUiModule.EMAIL_ENCRYPTION_MIXED);
+   private boolean forceEncryption(EmailDatasink emailDatasink) {
+      return !emailDatasink.getEncryptionPolicy().equals(RsCoreUiModule.EMAIL_ENCRYPTION_MIXED);
    }
 
    @Override
@@ -403,6 +376,32 @@ public class MailServiceImpl implements MailService {
    public List<Address> getEmailList(List<User> users) throws AddressException {
       return users.stream().filter(user -> null != user.getEmail() && !"".equals(user.getEmail()))
             .map(rethrowFunction(user -> new InternetAddress(user.getEmail()))).distinct().collect(toList());
+   }
+   
+   @Override
+   public InternetAddress getMailFrom(User user, Optional<EmailDatasink> datasink) {
+      String mailFrom = user.getEmail();
+      String mailFromName = user.getFirstname() + " " + user.getLastname();
+      
+      EmailDatasink toUse = loadDatasink(datasink);
+      
+      if (null == mailFrom || "".equals(mailFrom)) {
+         mailFrom = toUse.getSender();
+         mailFromName = toUse.getSenderName();
+      }
+
+      if (null == mailFrom || "".equals(mailFrom)) {
+         IllegalArgumentException ex = new IllegalArgumentException(
+               "Sender does not have email address: " + user.getId());
+         logger.warn(ex.getMessage(), ex);
+         throw ex;
+      }
+      try {
+         return new InternetAddress(mailFrom, mailFromName);
+      } catch (UnsupportedEncodingException e) {
+         logger.warn(e.getMessage(), e);
+         throw new RuntimeException("Failed to set mail sender address ", e);
+      }
    }
 
 }

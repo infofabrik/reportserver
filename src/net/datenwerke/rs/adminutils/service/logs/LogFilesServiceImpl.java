@@ -12,6 +12,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 import javax.mail.MessagingException;
@@ -120,7 +121,8 @@ public class LogFilesServiceImpl implements LogFilesService {
       replacements.put("filter", filter);
 
       SimpleMail mail = mailBuilderFactoryProvider.get()
-            .create(subject, body, Arrays.asList(currentUser))
+            .create(subject, body, Arrays.asList(currentUser),
+                  mailServiceProvider.get().getMailFrom(currentUser, Optional.empty()))
             .withFileAttachments(files)
             .withZippedAttachments(filenameDesc + ".zip")
             .withTemplateReplacements(replacements)

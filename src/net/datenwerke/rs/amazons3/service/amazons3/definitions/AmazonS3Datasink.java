@@ -14,6 +14,7 @@ import com.google.inject.Provider;
 import net.datenwerke.dtoservices.dtogenerator.annotations.AdditionalField;
 import net.datenwerke.dtoservices.dtogenerator.annotations.ExposeToClient;
 import net.datenwerke.dtoservices.dtogenerator.annotations.GenerateDto;
+import net.datenwerke.eximport.ex.annotations.ExportableField;
 import net.datenwerke.gf.base.service.annotations.Field;
 import net.datenwerke.gf.base.service.annotations.Indexed;
 import net.datenwerke.rs.amazons3.service.amazons3.AmazonS3Service;
@@ -24,6 +25,7 @@ import net.datenwerke.rs.core.service.datasinkmanager.FolderedDatasink;
 import net.datenwerke.rs.core.service.datasinkmanager.configs.DatasinkConfiguration;
 import net.datenwerke.rs.core.service.datasinkmanager.configs.DatasinkFilenameFolderConfig;
 import net.datenwerke.rs.core.service.datasinkmanager.entities.DatasinkDefinition;
+import net.datenwerke.rs.utils.entitymerge.service.annotations.EntityMergeField;
 import net.datenwerke.rs.utils.instancedescription.annotations.InstanceDescription;
 import net.datenwerke.rs.utils.misc.DateUtils;
 import net.datenwerke.security.service.crypto.pbe.PbeService;
@@ -69,29 +71,36 @@ public class AmazonS3Datasink extends DatasinkDefinition implements FolderedData
    @ExposeToClient
    @Field
    @Type(type = "net.datenwerke.rs.utils.hibernate.RsClobType")
+   @EntityMergeField
    private String appKey;
 
    @ExposeToClient(exposeValueToClient = false, mergeDtoValueBack = true)
    @Type(type = "net.datenwerke.rs.utils.hibernate.RsClobType")
+   @EntityMergeField
+   @ExportableField(exportField = false)
    private String secretKey;
 
    @ExposeToClient
    @Field
    @Column(length = 1024)
+   @EntityMergeField
    private String folder = "/";
 
    @ExposeToClient
    @Field
    @Type(type = "net.datenwerke.rs.utils.hibernate.RsClobType")
+   @EntityMergeField
    private String bucketName;
 
    @ExposeToClient
    @Field
    @Column(length = 1024)
+   @EntityMergeField
    private String regionName;
 
    @ExposeToClient
    @Field
+   @EntityMergeField
    private String storageClass;
 
    public String getStorageClass() {
@@ -157,8 +166,10 @@ public class AmazonS3Datasink extends DatasinkDefinition implements FolderedData
     */
 
    public void setSecretKey(String secretKey) {
-      if (null == secretKey)
-         secretKey = "";
+      if (null == secretKey) {
+         this.secretKey = null;
+         return;
+      }
 
       EncryptionService encryptionService = pbeServiceProvider.get().getEncryptionService();
       byte[] encrypted = encryptionService.encrypt(secretKey);

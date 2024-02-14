@@ -34,6 +34,7 @@ import net.datenwerke.rs.fileserver.service.fileserver.hookers.FileServerHistory
 import net.datenwerke.rs.fileserver.service.fileserver.hookers.UsageStatisticsDetailedFilesProviderHooker;
 import net.datenwerke.rs.fileserver.service.fileserver.hookers.UsageStatisticsFileServerFoldersProviderHooker;
 import net.datenwerke.rs.fileserver.service.fileserver.hookers.UsageStatisticsTotalFilesProviderHooker;
+import net.datenwerke.rs.fileserver.service.fileserver.hookers.factory.FileDefaultMergeHookerFactory;
 import net.datenwerke.rs.fileserver.service.fileserver.hooks.FileServerEntryProviderHook;
 import net.datenwerke.rs.fileserver.service.fileserver.rsfs.RsfsUrlStreamHandler;
 import net.datenwerke.rs.fileserver.service.fileserver.terminal.commands.CreateTextFileCommand;
@@ -54,6 +55,7 @@ import net.datenwerke.rs.terminal.service.terminal.hookers.FileServerOpenTermina
 import net.datenwerke.rs.terminal.service.terminal.hooks.OpenTerminalHandlerHook;
 import net.datenwerke.rs.terminal.service.terminal.hooks.TerminalCommandHook;
 import net.datenwerke.rs.terminal.service.terminal.operator.TerminalCommandOperator;
+import net.datenwerke.rs.utils.entitymerge.service.hooks.EntityMergeHook;
 import net.datenwerke.security.service.security.SecurityService;
 
 public class FileServerStartup {
@@ -99,7 +101,9 @@ public class FileServerStartup {
          final Provider<UsageStatisticsTotalFilesProviderHooker> usageStatsTotalFilesProvider,
          final Provider<UsageStatisticsFileServerFoldersProviderHooker> usageStatsFolderProvider,
          final Provider<UsageStatisticsDetailedFilesProviderHooker> usageStatsDetailedFilesProvider,
-         final Provider<FileServerOpenTerminalHooker> fileServerOpenTerminalHooker
+         final Provider<FileServerOpenTerminalHooker> fileServerOpenTerminalHooker,
+         
+         final Provider<FileDefaultMergeHookerFactory> fileFactory
          ) {
 
       hookHandler.attachHooker(ExporterProviderHook.class, new ExporterProviderHook(exporterProvider));
@@ -144,6 +148,9 @@ public class FileServerStartup {
       
       hookHandler.attachHooker(GeneralInfoCategoryProviderHook.class, usageStatistics,
             HookHandlerService.PRIORITY_LOW + 68);
+      
+      /* entity merge */
+      hookHandler.attachHooker(EntityMergeHook.class, fileFactory.get().create(FileServerFile.class));
 
       registerSecurityTargets(securityService);
 

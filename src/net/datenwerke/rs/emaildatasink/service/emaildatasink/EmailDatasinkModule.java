@@ -46,6 +46,6 @@ public class EmailDatasinkModule extends AbstractModule {
    @DefaultEmailDatasink
    public Optional<EmailDatasink> provideDefaultDatasink(DatasinkTreeService datasinkService) {
       return datasinkService.getDefaultDatasink(EmailDatasink.class, PROPERTY_DEFAULT_EMAIL_DATASINK_ID,
-            PROPERTY_DEFAULT_EMAIL_DATASINK_NAME, PROPERTY_DEFAULT_EMAIL_DATASINK_KEY);
+            PROPERTY_DEFAULT_EMAIL_DATASINK_NAME, PROPERTY_DEFAULT_EMAIL_DATASINK_KEY, PROPERTY_EMAIL_DISABLED);
    }
 }

@@ -7,8 +7,6 @@ import net.datenwerke.rs.remotersrestserver.service.remotersrestserver.entities.
 
 public interface RemoteEntityImporterService {
 
-   public static final String CONFIG_FILE = "main/rssync.cf";
-
    /**
     * Note that restUrl, user and apikey will be removed in the near future. These
     * will be replaced by remoteServer entities.
@@ -21,9 +19,10 @@ public interface RemoteEntityImporterService {
     * @param includeVariants in case of reports, true if report variants be
     *                        included. If false, only the base reports are
     *                        imported.
+    * @param flatten         true, if the tree should be flattened
     */
    ImportResult importRemoteEntities(RemoteRsRestServer remoteRsServer, String remoteEntityPath, String localTarget,
-         boolean includeVariants);
+         boolean includeVariants, boolean flatten);
 
    /**
     * Note that restUrl, user and apikey will be removed in the near future. These
@@ -37,10 +36,11 @@ public interface RemoteEntityImporterService {
     * @param includeVariants in case of reports, true if report variants be
     *                        included. If false, only the base reports are
     *                        imported.
+    * @param flatten         true, if the tree should be flattened
     * @param errors          list of errors. Can be edited in the method to add new
     *                        errors if found.
     */
    Map<String, Object> checkImportRemoteEntities(RemoteRsRestServer remoteRsServer, String remoteEntityPath,
-         String localTarget, boolean includeVariants, Map<String, Object> errors);
+         String localTarget, boolean includeVariants, boolean flatten, Map<String, Object> errors);
 
 }

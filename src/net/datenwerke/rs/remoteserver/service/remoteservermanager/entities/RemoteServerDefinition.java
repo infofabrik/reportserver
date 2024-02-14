@@ -20,10 +20,11 @@ import net.datenwerke.dtoservices.dtogenerator.annotations.PropertyValidator;
 import net.datenwerke.dtoservices.dtogenerator.annotations.StringValidator;
 import net.datenwerke.gf.base.service.annotations.Field;
 import net.datenwerke.gxtdto.client.dtomanager.DtoView;
+import net.datenwerke.rs.keyutils.service.keyutils.KeyNameGeneratorService;
 import net.datenwerke.rs.remoteserver.client.remoteservermanager.locale.RemoteServerMessages;
-import net.datenwerke.rs.utils.entitycloner.annotation.EntityClonerIgnore;
 import net.datenwerke.rs.utils.instancedescription.annotations.Description;
 import net.datenwerke.rs.utils.instancedescription.annotations.Title;
+import net.datenwerke.rs.utils.validator.shared.SharedRegex;
 
 /**
  * Used to define remote servers.
@@ -63,16 +64,16 @@ abstract public class RemoteServerDefinition extends AbstractRemoteServerManager
          view = DtoView.LIST, 
          validateDtoProperty = @PropertyValidator(
                string = @StringValidator(
-                     regex = "^[a-zA-Z0-9_\\-]*$"
+                     regex = SharedRegex.KEY_REGEX
                )
          )
    )
    @Field
    @Column(
-         length = 40,
-         unique = true
+         length = KeyNameGeneratorService.KEY_LENGTH,
+         unique = true,
+         nullable = false
    )
-   @EntityClonerIgnore
    private String key;
 
    public String getName() {

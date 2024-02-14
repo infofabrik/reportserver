@@ -44,6 +44,7 @@ public class AdminConsolePanel extends DwContentPanel {
    private final Provider<SecurityUIService> securityServiceProvider;
    private final Provider<UtilsUIService> utilsUIServiceProvider;
    private final Provider<SearchUiService> searchUiServiceProvider;
+   
 
    @Inject
    public AdminConsolePanel(

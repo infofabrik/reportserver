@@ -114,8 +114,7 @@ public class TsDiskUIStartup {
       hookHandler.attachHooker(TsFavoriteMenuHook.class, menuDeleteHooker, HookHandlerService.PRIORITY_LOW);
 
       /* import post processor */
-      hookHandler.attachHooker(ImporterPostProcessorConfiguratorHook.class, importPostProcessorProvider);
-
+      hookHandler.attachHooker(ImporterPostProcessorConfiguratorHook.class, importPostProcessorProvider, HookHandlerService.PRIORITY_HIGH + 10);
       /* history */
       historyService.addHistoryCallback(TsDiskUIModule.TEAMSPACE_SELECT_ITEM_HISTORY_TOKEN, new HistoryCallback() {
 

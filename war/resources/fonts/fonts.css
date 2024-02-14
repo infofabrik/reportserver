@@ -1,0 +1,7 @@
+@font-face {
+  font-family: 'FiraMono';
+  src: url('FiraMono-Regular.ttf');
+  src: url('FiraMono-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}

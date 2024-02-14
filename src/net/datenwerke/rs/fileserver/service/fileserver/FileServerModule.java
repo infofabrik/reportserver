@@ -5,6 +5,7 @@ import com.google.inject.Singleton;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
 
 import net.datenwerke.rs.fileserver.service.fileserver.genrights.GenRightsFileServerManagerModule;
+import net.datenwerke.rs.fileserver.service.fileserver.hookers.factory.FileDefaultMergeHookerFactory;
 import net.datenwerke.rs.fileserver.service.fileserver.terminal.commands.unzip.BasepathZipExtractConfig;
 import net.datenwerke.rs.fileserver.service.fileserver.terminal.commands.unzip.BasepathZipExtractConfigFactory;
 import net.datenwerke.rs.fileserver.service.fileserver.vfs.FileServerVfsModule;
@@ -18,6 +19,8 @@ public class FileServerModule extends AbstractModule {
 
       install(new FactoryModuleBuilder().implement(BasepathZipExtractConfig.class, BasepathZipExtractConfig.class)
             .build(BasepathZipExtractConfigFactory.class));
+      
+      install(new FactoryModuleBuilder().build(FileDefaultMergeHookerFactory.class));
 
       install(new FileServerVfsModule());
       install(new GenRightsFileServerManagerModule());

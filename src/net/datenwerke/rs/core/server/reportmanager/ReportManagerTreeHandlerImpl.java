@@ -10,6 +10,7 @@ import com.google.inject.Singleton;
 import com.google.inject.name.Named;
 import com.google.inject.persist.Transactional;
 
+import groovy.lang.Closure;
 import net.datenwerke.gxtdto.client.dtomanager.Dto;
 import net.datenwerke.gxtdto.client.servercommunication.exceptions.ExpectedException;
 import net.datenwerke.gxtdto.client.servercommunication.exceptions.ServerCallFailedException;
@@ -23,6 +24,7 @@ import net.datenwerke.rs.core.service.reportmanager.entities.AbstractReportManag
 import net.datenwerke.rs.core.service.reportmanager.entities.ReportFolder;
 import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
 import net.datenwerke.rs.core.service.reportmanager.interfaces.ReportVariant;
+import net.datenwerke.rs.keyutils.service.keyutils.KeyNameGeneratorService;
 import net.datenwerke.rs.utils.entitycloner.EntityClonerService;
 import net.datenwerke.security.server.TreeDBManagerTreeHandler;
 import net.datenwerke.security.service.security.SecurityService;
@@ -48,12 +50,21 @@ public class ReportManagerTreeHandlerImpl extends TreeDBManagerTreeHandler<Abstr
    private static final long serialVersionUID = -6463726280201202702L;
 
    final private ReportService reportManager;
-
+   
    @Inject
-   public ReportManagerTreeHandlerImpl(ReportService reportManager, DtoService dtoGenerator,
-         SecurityService securityService, EntityClonerService entityClonerService) {
+   public ReportManagerTreeHandlerImpl(
+         ReportService reportManager, 
+         DtoService dtoGenerator,
+         SecurityService securityService, 
+         EntityClonerService entityClonerService,
+         KeyNameGeneratorService keyGeneratorService
+         ) {
 
-      super(reportManager, dtoGenerator, securityService, entityClonerService);
+      super(reportManager, 
+            dtoGenerator, 
+            securityService, 
+            entityClonerService,
+            keyGeneratorService);
 
       /* store objects */
       this.reportManager = reportManager;
@@ -65,13 +76,21 @@ public class ReportManagerTreeHandlerImpl extends TreeDBManagerTreeHandler<Abstr
    }
 
    @Override
-   protected void nodeCloned(AbstractReportManagerNode clonedNode) {
+   protected void nodeCloned(AbstractReportManagerNode clonedNode, AbstractReportManagerNode realNode) {
       if (!(clonedNode instanceof Report))
          throw new IllegalArgumentException();
-      Report report = (Report) clonedNode;
+      Report clone = (Report) clonedNode;
+      Report real = (Report) realNode;
 
-      report.setName(report.getName() == null ? "copy" : report.getName() + " (copy)");
-      report.setKey(report.getKey() == null ? "" : report.getKey() + "_copy");
+      Closure getAllNodes = new Closure(null) {
+         public List<AbstractReportManagerNode> doCall() {
+            return realNode.getParent().getChildren();
+         }
+      };
+      clone.setName(clone.getName() == null
+            ? keyGeneratorService.getNextCopyName("", getAllNodes)
+            : keyGeneratorService.getNextCopyName(clone.getName(), getAllNodes));
+      clone.setKey(keyGeneratorService.getNextCopyKey(real.getKey(), reportManager));
    }
 
    @SecurityChecked(argumentVerification = {
@@ -87,7 +106,7 @@ public class ReportManagerTreeHandlerImpl extends TreeDBManagerTreeHandler<Abstr
                long id = reportManager.getReportIdFromKey(((ReportDto) node).getKey());
 
                if (id != node.getId())
-                  throw new ExpectedException("There already is a report with the same key: " + id);
+                  throw new ExpectedException("There is already a report with the same key: " + id);
 
                /*
                 * if the report id is the same as the id of the report to be changed do nothing
@@ -135,5 +154,12 @@ public class ReportManagerTreeHandlerImpl extends TreeDBManagerTreeHandler<Abstr
       }
 
       return list.toArray(new String[][] {});
+   }
+   
+   @Override
+   protected void doSetInitialProperties(AbstractReportManagerNode inserted) {
+      if (inserted instanceof Report) {
+         ((Report)inserted).setKey(keyGeneratorService.generateDefaultKey(reportManager));
+      }
    }
 }

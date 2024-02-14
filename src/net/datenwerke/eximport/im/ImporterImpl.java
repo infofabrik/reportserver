@@ -63,7 +63,7 @@ public abstract class ImporterImpl<C extends ImportItemConfig> implements Import
    }
 
    @Override
-   public final void importData() {
+   public void importData() {
       while (!itemConfigs.isEmpty()) {
          ImportItemConfig itemConfig = itemConfigs.poll();
          doImport(itemConfig);

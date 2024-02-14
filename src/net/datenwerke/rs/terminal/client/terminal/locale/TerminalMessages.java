@@ -16,4 +16,6 @@ public interface TerminalMessages extends Messages {
    String adminLabel();
 
    String permissionModuleDescription();
+   
+   String openTerminalSessionHere();
 }

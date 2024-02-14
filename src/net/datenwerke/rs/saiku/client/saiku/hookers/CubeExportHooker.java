@@ -1,13 +1,10 @@
 package net.datenwerke.rs.saiku.client.saiku.hookers;
 
-import com.google.gwt.event.logical.shared.SelectionEvent;
-import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.inject.Inject;
 import com.sencha.gxt.cell.core.client.ButtonCell.ButtonArrowAlign;
 import com.sencha.gxt.widget.core.client.info.DefaultInfoConfig;
 import com.sencha.gxt.widget.core.client.info.Info;
 import com.sencha.gxt.widget.core.client.info.InfoConfig;
-import com.sencha.gxt.widget.core.client.menu.Item;
 import com.sencha.gxt.widget.core.client.menu.Menu;
 import com.sencha.gxt.widget.core.client.menu.MenuItem;
 import com.sencha.gxt.widget.core.client.toolbar.ToolBar;
@@ -76,39 +73,31 @@ public class CubeExportHooker implements ReportExecutorViewToolbarHook {
 
       MenuItem mondrianItem = new DwMenuItem("Mondrian");
       menu.add(mondrianItem);
-      mondrianItem.addSelectionHandler(new SelectionHandler<Item>() {
+      mondrianItem.addSelectionHandler(event -> {
+         startProgress();
+         saikuPivotDao.cubeExport(reportExecutorService.createExecuteReportToken(tableReport), tableReport,
+               new RsAsyncCallback<String>() {
+                  @Override
+                  public void onSuccess(String result) {
+                     displayQuickExportResult(result);
+                  }
 
-         @Override
-         public void onSelection(SelectionEvent<Item> event) {
-            startProgress();
-            saikuPivotDao.cubeExport(reportExecutorService.createExecuteReportToken(tableReport), tableReport,
-                  new RsAsyncCallback<String>() {
-                     @Override
-                     public void onSuccess(String result) {
-                        displayQuickExportResult(result);
-                     }
-
-                     @Override
-                     public void onFailure(Throwable caught) {
-                        new DetailErrorDialog(caught).show();
-                     }
-                  });
-         }
+                  @Override
+                  public void onFailure(Throwable caught) {
+                     new DetailErrorDialog(caught).show();
+                  }
+               });
       });
 
       return false;
    }
 
    protected void startProgress() {
-      try {
-         InfoConfig infoConfig = new DefaultInfoConfig(ExImportMessages.INSTANCE.quickExportProgressTitle(),
-               ExImportMessages.INSTANCE.exportWait());
-         infoConfig.setWidth(350);
-         infoConfig.setDisplay(3500);
-         Info.display(infoConfig);
-      } catch (Exception e) {
-      }
-
+      InfoConfig infoConfig = new DefaultInfoConfig(ExImportMessages.INSTANCE.quickExportProgressTitle(),
+            ExImportMessages.INSTANCE.exportWait());
+      infoConfig.setWidth(350);
+      infoConfig.setDisplay(3500);
+      Info.display(infoConfig);
    }
 
    protected void displayQuickExportResult(String result) {

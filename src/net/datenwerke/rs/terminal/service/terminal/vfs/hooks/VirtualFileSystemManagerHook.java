@@ -56,6 +56,8 @@ public interface VirtualFileSystemManagerHook extends Hook, Serializable {
    List<VFSLocation> moveFilesTo(VFSLocation source, VFSLocation target);
 
    List<VFSLocation> copyFilesTo(VFSLocation source, VFSLocation target, boolean deep) throws VFSException;
+   
+   List<VFSLocation> copyFilesTo(VFSLocation source, VFSLocation target, boolean deep, boolean assignDefaultKeys) throws VFSException;
 
    void remove(VFSLocation location, boolean force);
 

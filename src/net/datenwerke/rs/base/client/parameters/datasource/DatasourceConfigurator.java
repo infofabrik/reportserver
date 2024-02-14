@@ -10,8 +10,6 @@ import java.util.TreeMap;
 
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
-import com.google.gwt.event.logical.shared.SelectionEvent;
-import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Widget;
@@ -30,7 +28,6 @@ import com.sencha.gxt.data.shared.loader.PagingLoadResult;
 import com.sencha.gxt.widget.core.client.event.BeforeShowEvent;
 import com.sencha.gxt.widget.core.client.event.BeforeShowEvent.BeforeShowHandler;
 import com.sencha.gxt.widget.core.client.form.FormPanel.LabelAlign;
-import com.sencha.gxt.widget.core.client.menu.Item;
 import com.sencha.gxt.widget.core.client.menu.Menu;
 import com.sencha.gxt.widget.core.client.menu.MenuItem;
 import com.sencha.gxt.widget.core.client.menu.SeparatorMenuItem;
@@ -75,7 +72,6 @@ import net.datenwerke.rs.base.client.parameters.datasource.dto.pa.DatasourcePara
 import net.datenwerke.rs.base.client.parameters.locale.RsMessages;
 import net.datenwerke.rs.base.client.reportengines.table.TableReportUtilityDao;
 import net.datenwerke.rs.base.client.reportengines.table.dto.ColumnDto;
-import net.datenwerke.rs.base.client.reportengines.table.dto.TableReportDto;
 import net.datenwerke.rs.base.client.reportengines.table.ui.model.SpecialParameters;
 import net.datenwerke.rs.core.client.datasourcemanager.dto.DatasourceContainerDto;
 import net.datenwerke.rs.core.client.datasourcemanager.helper.forms.simpleform.SFFCDatasourceSpecificConfig;
@@ -152,7 +148,7 @@ public class DatasourceConfigurator
          final MenuItem subMenuItemUser, final Menu subMenuReport, final MenuItem subMenuItemReport,
          final Menu subMenuLocale, final MenuItem subMenuItemLocale, final Menu subMenuGlobalConstants,
          final MenuItem subMenuItemGlobalConstants, final Menu subMenuMetadata, final MenuItem subMenuItemMetadata,
-         final Menu subMenuExpressions, final MenuItem subMenuItemExpressions, final TableReportDto report) {
+         final Menu subMenuExpressions, final MenuItem subMenuItemExpressions, final ReportDto report) {
 
       tableReportDao.getSpecialParameter(report, null, new RsAsyncCallback<Map<String, List<String>>>() {
          @Override
@@ -163,15 +159,7 @@ public class DatasourceConfigurator
 
                for (final String itemKey : entry.getValue()) {
                   MenuItem item = new MenuItem(itemKey);
-                  item.addSelectionHandler(new SelectionHandler<Item>() {
-                     @Override
-                     public void onSelection(SelectionEvent<Item> event) {
-                        String value = codeMirrorPanel.getTextArea().getValue();
-                        value = null == value ? "" : value;
-                        value = itemKey.startsWith("$") ? value + itemKey : value + "${" + itemKey + "}";
-                        codeMirrorPanel.getTextArea().setValue(value);
-                     }
-                  });
+                  item.addSelectionHandler(event -> addKeyToCodeMirror(itemKey, codeMirrorPanel));
 
                   if (SpecialParameters._RS_USER.name().equals(paramKey)) {
                      subMenuUser.add(item);
@@ -321,22 +309,14 @@ public class DatasourceConfigurator
                         addSpecialParameter(codeMirrorPanel, subMenuUser, subMenuItemUser, subMenuReport,
                               subMenuItemReport, subMenuLocale, subMenuItemLocale, subMenuGlobalConstants,
                               subMenuItemGlobalConstants, subMenuMetadata, subMenuItemMetadata, subMenuExpressions,
-                              subMenuItemExpressions, (TableReportDto) report);
+                              subMenuItemExpressions, report);
                      }
 
                      private void addReportParameter(final CodeMirrorPanel codeMirrorPanel, final Menu menu) {
                         for (ParameterDefinitionDto def : report.getParameterDefinitions()) {
                            final String key = def.getKey();
                            MenuItem item = new DwMenuItem(def.getName());
-                           item.addSelectionHandler(new SelectionHandler<Item>() {
-                              @Override
-                              public void onSelection(SelectionEvent<Item> event) {
-                                 String value = codeMirrorPanel.getTextArea().getValue();
-                                 value = null == value ? "" : value;
-                                 value = key.startsWith("$") ? value + key : value + "${" + key + "}";
-                                 codeMirrorPanel.getTextArea().setValue(value);
-                              }
-                           });
+                           item.addSelectionHandler(event -> addKeyToCodeMirror(key, codeMirrorPanel));
                            menu.add(item);
                         }
                      }
@@ -594,6 +574,13 @@ public class DatasourceConfigurator
 
       /* return form */
       return form;
+   }
+   
+   private void addKeyToCodeMirror(String key, CodeMirrorPanel codeMirrorPanel) {
+      String value = codeMirrorPanel.getTextArea().getValue();
+      value = null == value ? "" : value;
+      value = key.startsWith("$") ? value + key : value + "${" + key + "}";
+      codeMirrorPanel.getTextArea().setValue(value, true);
    }
 
    protected ListStore<DatasourceParameterDataDto> getParameterDataStore(

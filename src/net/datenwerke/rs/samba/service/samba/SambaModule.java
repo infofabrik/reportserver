@@ -41,7 +41,7 @@ public class SambaModule extends AbstractModule {
    @DefaultSambaDatasink
    public Optional<SambaDatasink> provideDefaultDatasink(DatasinkTreeService datasinkService) {
       return datasinkService.getDefaultDatasink(SambaDatasink.class, PROPERTY_DEFAULT_SAMBA_DATASINK_ID,
-            PROPERTY_DEFAULT_SAMBA_DATASINK_NAME, PROPERTY_DEFAULT_SAMBA_DATASINK_KEY);
+            PROPERTY_DEFAULT_SAMBA_DATASINK_NAME, PROPERTY_DEFAULT_SAMBA_DATASINK_KEY, PROPERTY_SAMBA_DISABLED);
    }
 
 }

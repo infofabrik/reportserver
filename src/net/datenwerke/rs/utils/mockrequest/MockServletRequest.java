@@ -25,7 +25,8 @@ import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpUpgradeHandler;
 import javax.servlet.http.Part;
 
-import com.google.gwt.thirdparty.guava.common.collect.Iterators;
+import com.google.common.collect.Iterators;
+
 
 public class MockServletRequest implements HttpServletRequest {
 

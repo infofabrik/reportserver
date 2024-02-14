@@ -1,6 +1,5 @@
 package net.datenwerke.gf.client.treedb.helper.menu;
 
-import net.datenwerke.gf.client.treedb.UITree;
 import net.datenwerke.gxtdto.client.servercommunication.callback.NotamCallback;
 import net.datenwerke.security.client.security.dto.WriteDto;
 import net.datenwerke.security.client.treedb.dto.decorator.SecuredAbstractNodeDtoDec;
@@ -14,12 +13,8 @@ public class DuplicateMenuItem extends TreeMenuItem {
       super();
 
       setText(TreedbMessages.INSTANCE.duplicateText());
-      addMenuSelectionListener(new TreeMenuSelectionEvent() {
-         public void menuItemSelected(final UITree tree, final AbstractNodeDto node) {
-            treeManager.duplicateNode(node, new NotamCallback<AbstractNodeDto>(TreedbMessages.INSTANCE.duplicated()) {
-            });
-         }
-      });
+      addMenuSelectionListener((tree, node) -> treeManager.duplicateNode(node,
+            new NotamCallback<AbstractNodeDto>(TreedbMessages.INSTANCE.duplicated())));
    }
 
    @Override

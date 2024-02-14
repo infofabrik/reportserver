@@ -37,7 +37,7 @@ import net.datenwerke.gxtdto.client.locale.BaseMessages;
 import net.datenwerke.rs.adminutils.client.systemconsole.locale.SystemConsoleMessages;
 import net.datenwerke.rs.adminutils.client.systemconsole.memory.MemoryConsoleDao;
 import net.datenwerke.rs.adminutils.client.systemconsole.memory.dto.MemoryInfoDto;
-import net.datenwerke.rs.adminutils.client.systemconsole.memory.dto.MemoryInfoDtoPA;
+import net.datenwerke.rs.adminutils.client.systemconsole.memory.dto.pa.MemoryInfoDtoPA;
 import net.datenwerke.rs.theme.client.icon.BaseIcon;
 
 /**

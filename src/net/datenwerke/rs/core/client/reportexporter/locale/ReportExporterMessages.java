@@ -31,8 +31,6 @@ public interface ReportExporterMessages extends Messages {
 
    String exportTypeLabel();
 
-   String exportViaMailLabel();
-
    String formatConfigLabel();
 
    String messageSend();

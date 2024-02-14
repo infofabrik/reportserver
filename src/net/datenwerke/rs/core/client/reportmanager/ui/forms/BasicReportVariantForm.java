@@ -11,12 +11,15 @@ import net.datenwerke.gxtdto.client.forms.simpleform.SimpleFormSubmissionCallbac
 import net.datenwerke.gxtdto.client.forms.simpleform.SimpleMultiForm;
 import net.datenwerke.gxtdto.client.forms.simpleform.actions.SimpleFormAction;
 import net.datenwerke.gxtdto.client.forms.simpleform.conditions.FieldEquals;
+import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCAllowBlank;
+import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCStringValidatorRegex;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.impl.SFFCTextAreaImpl;
 import net.datenwerke.gxtdto.client.locale.BaseMessages;
 import net.datenwerke.rs.core.client.reportmanager.ReportManagerTreeManagerDao;
 import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
 import net.datenwerke.rs.core.client.reportmanager.dto.reports.pa.ReportDtoPA;
 import net.datenwerke.rs.core.client.reportmanager.locale.ReportmanagerMessages;
+import net.datenwerke.rs.utils.validator.shared.SharedRegex;
 import net.datenwerke.treedb.client.treedb.dto.AbstractNodeDto;
 import net.datenwerke.treedb.client.treedb.dto.decorator.AbstractNodeDtoDec;
 
@@ -44,7 +47,14 @@ public class BasicReportVariantForm extends SimpleFormView {
 
       form.beginRow();
       form.addField(String.class, ReportDtoPA.INSTANCE.name(), BaseMessages.INSTANCE.name());
-      form.addField(String.class, ReportDtoPA.INSTANCE.key(), ReportmanagerMessages.INSTANCE.key());
+      form.addField(String.class, ReportDtoPA.INSTANCE.key(), ReportmanagerMessages.INSTANCE.key(),
+            new SFFCStringValidatorRegex(SharedRegex.KEY_REGEX, BaseMessages.INSTANCE.invalidKey()),
+            new SFFCAllowBlank() {
+         @Override
+         public boolean allowBlank() {
+            return false;
+         }
+      }); // $NON-NLS-1$
       form.endRow();
 
       form.addField(String.class, ReportDtoPA.INSTANCE.description(), BaseMessages.INSTANCE.propertyDescription(),

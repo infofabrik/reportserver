@@ -5,8 +5,6 @@ import com.sencha.gxt.core.client.util.DelayedTask;
 import com.sencha.gxt.widget.core.client.Dialog.PredefinedButton;
 import com.sencha.gxt.widget.core.client.box.ProgressMessageBox;
 import com.sencha.gxt.widget.core.client.button.TextButton;
-import com.sencha.gxt.widget.core.client.event.SelectEvent;
-import com.sencha.gxt.widget.core.client.event.SelectEvent.SelectHandler;
 
 import net.datenwerke.gxtdto.client.baseex.widget.mb.DwProgressMessageBox;
 import net.datenwerke.gxtdto.client.locale.BaseMessages;
@@ -102,12 +100,9 @@ public abstract class ModalAsyncCallback<T> extends NotamCallback<T> {
       if (null != waitBox) {
          TextButton cancelBtn = waitBox.getButton(PredefinedButton.CANCEL);
          cancelBtn.setVisible(true);
-         cancelBtn.addSelectHandler(new SelectHandler() {
-            @Override
-            public void onSelect(SelectEvent event) {
-               request.cancel();
-               doOnCancel();
-            }
+         cancelBtn.addSelectHandler(event -> {
+            request.cancel();
+            doOnCancel();
          });
       }
    }

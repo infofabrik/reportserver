@@ -39,6 +39,7 @@ public class AuditLoggingInstallReportService {
    private TableReport createSimpleLoggingReport(ReportFolder folder, DatasourceDefinition loggingDataSource) {
       TableReport simpleLoggingReport = new TableReport();
       simpleLoggingReport.setName("Audit Logs"); //$NON-NLS-1$
+      simpleLoggingReport.setKey("AUDIT_LOGS");
       DatabaseDatasourceConfig datasourceConfig = new DatabaseDatasourceConfig();
 
       String query = "SELECT E.*, P.KEY_FIELD, P.VALUE\n" + "FROM RS_AUDIT_LOG_ENTRY E,\n" + "RS_AUDIT_LOG_PROPERTY P\n"

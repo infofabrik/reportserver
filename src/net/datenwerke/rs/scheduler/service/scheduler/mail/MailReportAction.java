@@ -37,6 +37,7 @@ import net.datenwerke.scheduler.service.scheduler.entities.AbstractAction;
 import net.datenwerke.scheduler.service.scheduler.entities.AbstractJob;
 import net.datenwerke.scheduler.service.scheduler.entities.history.ActionEntry;
 import net.datenwerke.scheduler.service.scheduler.exceptions.ActionExecutionException;
+import static net.datenwerke.rs.utils.misc.StringEscapeUtils.removeInvalidFilenameChars;
 
 /**
  * 
@@ -150,11 +151,13 @@ public class MailReportAction extends AbstractAction {
       mail.setSubject(juel.parse(subjectTemplate));
 
       /* prepare attachment */
-      String filenamePrefix = juel.parse(attachementNameTemplate);
+      String filenamePrefix = removeInvalidFilenameChars(juel.parse(attachementNameTemplate));
       SimpleAttachment attachment = prepareAttachment(job, filenamePrefix);
+      
+      String filename = removeInvalidFilenameChars(attachment.getFileName());
 
-      juel.addReplacement(PROPERTY_FILENAME, attachment.getFileName());
-      juel.addReplacement(PROPERTY_NAME, FilenameUtils.getBaseName(attachment.getFileName()));
+      juel.addReplacement(PROPERTY_FILENAME, filename);
+      juel.addReplacement(PROPERTY_NAME, FilenameUtils.getBaseName(filename));
 
       /* set content */
       if (mailHelper.isHTML())

@@ -39,7 +39,7 @@ public class BoxModule extends AbstractModule {
    @DefaultBoxDatasink
    public Optional<BoxDatasink> provideDefaultDatasink(DatasinkTreeService datasinkService) {
       return datasinkService.getDefaultDatasink(BoxDatasink.class, PROPERTY_DEFAULT_BOX_DATASINK_ID,
-            PROPERTY_DEFAULT_BOX_DATASINK_NAME, PROPERTY_DEFAULT_BOX_DATASINK_KEY);
+            PROPERTY_DEFAULT_BOX_DATASINK_NAME, PROPERTY_DEFAULT_BOX_DATASINK_KEY, PROPERTY_BOX_DISABLED);
    }
 
 }

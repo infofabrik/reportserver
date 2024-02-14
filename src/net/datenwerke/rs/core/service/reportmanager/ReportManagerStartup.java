@@ -15,12 +15,10 @@ import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
 import net.datenwerke.rs.core.service.reportmanager.eventhandler.HandleDatasourceRemoveEventHandler;
 import net.datenwerke.rs.core.service.reportmanager.hookers.ConfigureBaseReportViaRequestHooker;
 import net.datenwerke.rs.core.service.reportmanager.hookers.ReportManagerHistoryUrlBuilderHooker;
-import net.datenwerke.rs.core.service.reportmanager.hookers.ReportManagerNodeSearchResultCheckHooker;
 import net.datenwerke.rs.core.service.reportmanager.hooks.ConfigureReportViaHistoryLocationHook;
 import net.datenwerke.rs.core.service.reportmanager.hooks.ConfigureReportViaHttpRequestHook;
 import net.datenwerke.rs.core.service.reportmanager.hooks.VariantCreatorHook;
 import net.datenwerke.rs.core.service.reportmanager.metadata.hookers.VariantCreatedAdjustMetadataHooker;
-import net.datenwerke.rs.search.service.search.hooks.SearchResultAllowerHook;
 import net.datenwerke.rs.terminal.service.terminal.hookers.ReportOpenTerminalHooker;
 import net.datenwerke.rs.terminal.service.terminal.hooks.OpenTerminalHandlerHook;
 import net.datenwerke.rs.utils.eventbus.EventBus;
@@ -40,8 +38,7 @@ public class ReportManagerStartup {
          Provider<ConfigureBaseReportViaRequestHooker> baseReportRequestConfiguration,
          Provider<ReportManagerHistoryUrlBuilderHooker> reportManagerUrlBuilder,
          HandleDatasourceRemoveEventHandler handleDatasourceRemoveHandler,
-         VariantCreatedAdjustMetadataHooker adjustMetadataHooker,
-         ReportManagerNodeSearchResultCheckHooker reportManagerSearchResultCheckHooker
+         VariantCreatedAdjustMetadataHooker adjustMetadataHooker
          ) {
 
       eventBus.attachObjectEventHandler(RemoveEntityEvent.class, DatasourceDefinition.class,
@@ -50,7 +47,6 @@ public class ReportManagerStartup {
       hookHandler.attachHooker(ConfigureReportViaHttpRequestHook.class, baseReportRequestConfiguration);
       hookHandler.attachHooker(ConfigureReportViaHistoryLocationHook.class, baseReportRequestConfiguration);
       hookHandler.attachHooker(VariantCreatorHook.class, adjustMetadataHooker);
-      hookHandler.attachHooker(SearchResultAllowerHook.class, reportManagerSearchResultCheckHooker);
       hookHandler.attachHooker(OpenTerminalHandlerHook.class, reportOpenTerminalHooker);
 
       hookHandler.attachHooker(HistoryUrlBuilderHook.class, reportManagerUrlBuilder);

@@ -43,7 +43,8 @@ class RemoteFileImporterHooker implements RemoteEntityImporterHook {
    }
    
    @Override
-   public ImportResult importRemoteEntity(ImportConfig config, AbstractNode targetNode, String requestedRemoteEntity) {
+   public ImportResult importRemoteEntity(ImportConfig config, AbstractNode targetNode, String requestedRemoteEntity,
+      String exportXml) {
       return doImportRemoteEntity(config, targetNode, false, [:])
    }
 

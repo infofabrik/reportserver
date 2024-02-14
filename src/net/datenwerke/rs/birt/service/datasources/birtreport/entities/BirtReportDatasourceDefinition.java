@@ -11,6 +11,7 @@ import net.datenwerke.dtoservices.dtogenerator.annotations.GenerateDto;
 import net.datenwerke.rs.core.service.datasourcemanager.entities.CacheableDatasource;
 import net.datenwerke.rs.core.service.datasourcemanager.entities.DatasourceDefinition;
 import net.datenwerke.rs.core.service.datasourcemanager.entities.DatasourceDefinitionConfig;
+import net.datenwerke.rs.utils.entitymerge.service.annotations.EntityMergeField;
 
 @Entity
 @Table(name = "BIRT_REPORT_DATASRC")
@@ -27,6 +28,7 @@ public class BirtReportDatasourceDefinition extends DatasourceDefinition impleme
    }
 
    @ExposeToClient
+   @EntityMergeField
    private int databaseCache = 0;
 
    public int getDatabaseCache() {

@@ -32,4 +32,75 @@ public interface TransportMessages extends Messages {
    String createdByEmail();
    
    String transport();
+   
+   String addToTransportText();
+   
+   String addedToTransport();
+
+   String rpull();
+
+   String rpullOk();
+
+   String status();
+
+   String serverIdLabel();
+
+   String reportServerVersion();
+
+   String schemaVersion();
+
+   String importedOn();
+
+   String importedBy();
+
+   String appliedOn();
+
+   String appliedBy();
+
+   String appliedLog();
+
+   String applyTransport();
+
+   String applyFailed();
+
+   String success();
+
+   String applySuccess();
+
+   String pleaseWait();
+
+   String applyingTitle();
+
+   String applyingProgressMessage();
+
+   String viewNavigationTitle();
+
+   String dialogDescription();
+
+   String shortKeyLabel();
+
+   String createdOnLabel();
+
+   String descriptionLabel();
+   
+   String checkApplyPreconditions();
+
+   String analysisResults();
+   
+   String result();
+
+   String errorMessage();
+   
+   String analyzing();
+
+   String deleteSuccess();
+
+   String deleteAllSelectedObjects();
+
+   String confirmDeleteAllMsg();
+
+   String objects();
+   
+   String duplicateAsOpen();
+   
 }

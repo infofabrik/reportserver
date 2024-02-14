@@ -12,9 +12,7 @@ import net.datenwerke.gxtdto.client.waitonevent.WaitOnEventTicket;
 import net.datenwerke.gxtdto.client.waitonevent.WaitOnEventUIService;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.core.client.reportexecutor.hooks.ReportExecutorViewToolbarHook;
-import net.datenwerke.rs.scheduler.client.scheduler.hookers.EmailExportSnippetProvider;
 import net.datenwerke.rs.scheduler.client.scheduler.hookers.ReportViewScheduleButtonHooker;
-import net.datenwerke.rs.scheduler.client.scheduler.hooks.ScheduleExportSnippetProviderHook;
 import net.datenwerke.rs.scheduler.client.scheduler.schedulereportlist.SchedulerAdminModule;
 import net.datenwerke.rs.scheduler.client.scheduler.schedulereportlist.SchedulerClientModule;
 import net.datenwerke.rs.scheduler.client.scheduler.schedulereportlist.filters.ExecutionStatusEntriesFilter;
@@ -46,32 +44,37 @@ import net.datenwerke.security.client.security.hooks.GenericTargetProviderHook;
 public class SchedulerUIStartup {
 
    @Inject
-   public SchedulerUIStartup(final WaitOnEventUIService waitOnEventService,
+   public SchedulerUIStartup(
+         final WaitOnEventUIService waitOnEventService,
 
          final SchedulerDao schedulerDao,
 
-         final HookHandlerService hookHandler, final Provider<SchedulerAdminModule> adminModuleProvider,
+         final HookHandlerService hookHandler, 
+         final Provider<SchedulerAdminModule> adminModuleProvider,
          ReportViewScheduleButtonHooker scheduleButtonHooker,
          final Provider<SchedulerClientModule> schedulerModuleProvider,
          SchedulingAdminViewSecurityTargetDomainHooker adminSecurityTargetDomain,
          SchedulingBasicSecurityTargetDomainHooker basicSecurityTargetDomain,
 
-         Provider<EmailExportSnippetProvider> emailExportSnippet,
-
          Provider<RemoveScheduleEntryHooker> removeScheduleEntryHooker,
          Provider<LoadDetailsForEntryHooker> loadDetailsScheduleEntryHooker,
-         Provider<EditScheduleEntryHooker> editScheduleEntryHooker, Provider<ScheduleNowHooker> scheduleNowHooker,
+         Provider<EditScheduleEntryHooker> editScheduleEntryHooker, 
+         Provider<ScheduleNowHooker> scheduleNowHooker,
 
-         Provider<MyOrToMeScheduledEntriesFilter> myOrToMeFilter, Provider<JobIdScheduledEntriesFilter> jobIdFilter,
-         Provider<JobNameScheduledEntriesFilter> jobNameFilter, Provider<ReportIdScheduledEntriesFilter> reportIdFilter,
-         Provider<FilterUserScheduledEntriesFilter> userFilter, Provider<ExecutionStatusEntriesFilter> statusFilter,
+         Provider<MyOrToMeScheduledEntriesFilter> myOrToMeFilter, 
+         Provider<JobIdScheduledEntriesFilter> jobIdFilter,
+         Provider<JobNameScheduledEntriesFilter> jobNameFilter, 
+         Provider<ReportIdScheduledEntriesFilter> reportIdFilter,
+         Provider<FilterUserScheduledEntriesFilter> userFilter, 
+         Provider<ExecutionStatusEntriesFilter> statusFilter,
          Provider<FailedLastTimeEntriesFilter> failedLastFilter,
 
          Provider<GenericActionLogEntryDetailHooker> genericActionLogEntryHooker,
 
          final ReportInSchedulerObjectInfo reportInSchedulerInfo,
 
-         final SecurityUIService securityService) {
+         final SecurityUIService securityService
+         ) {
 
       hookHandler.attachHooker(ScheduledReportToolbarListFilter.class, myOrToMeFilter);
       hookHandler.attachHooker(ScheduledReportListFilter.class, jobIdFilter, 10);
@@ -80,9 +83,6 @@ public class SchedulerUIStartup {
       hookHandler.attachHooker(ScheduledReportListFilter.class, userFilter, 30);
       hookHandler.attachHooker(ScheduledReportListFilter.class, statusFilter, 40);
       hookHandler.attachHooker(ScheduledReportListFilter.class, failedLastFilter, 50);
-
-      hookHandler.attachHooker(ScheduleExportSnippetProviderHook.class, emailExportSnippet,
-            HookHandlerService.PRIORITY_HIGH);
 
       /* schedule ui */
       hookHandler.attachHooker(ScheduledReportListDetailToolbarHook.class, removeScheduleEntryHooker);

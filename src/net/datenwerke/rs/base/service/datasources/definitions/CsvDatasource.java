@@ -14,6 +14,7 @@ import net.datenwerke.dtoservices.dtogenerator.annotations.GenerateDto;
 import net.datenwerke.gf.base.service.annotations.Indexed;
 import net.datenwerke.rs.core.service.datasourcemanager.entities.CacheableDatasource;
 import net.datenwerke.rs.core.service.datasourcemanager.entities.DatasourceDefinitionConfig;
+import net.datenwerke.rs.utils.entitymerge.service.annotations.EntityMergeField;
 
 @Entity
 @Table(name = "CSV_DATASOURCE")
@@ -28,12 +29,15 @@ public class CsvDatasource extends FormatBasedDatasourceDefinition implements Ca
    private static final long serialVersionUID = -3362289890273571147L;
 
    @ExposeToClient
+   @EntityMergeField
    private String separator = ";";
 
    @ExposeToClient
+   @EntityMergeField
    private String quote = "\"";
 
    @ExposeToClient
+   @EntityMergeField
    private int databaseCache = -1;
 
    @Override

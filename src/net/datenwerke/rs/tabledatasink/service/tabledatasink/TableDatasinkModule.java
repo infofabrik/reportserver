@@ -41,7 +41,7 @@ public class TableDatasinkModule extends AbstractModule {
    @DefaultTableDatasink
    public Optional<TableDatasink> provideDefaultDatasink(DatasinkTreeService datasinkService) {
       return datasinkService.getDefaultDatasink(TableDatasink.class, PROPERTY_DEFAULT_TABLE_DATASINK_ID,
-            PROPERTY_DEFAULT_TABLE_DATASINK_NAME, PROPERTY_DEFAULT_TABLE_DATASINK_KEY);
+            PROPERTY_DEFAULT_TABLE_DATASINK_NAME, PROPERTY_DEFAULT_TABLE_DATASINK_KEY, PROPERTY_TABLE_DISABLED);
    }
 
 }

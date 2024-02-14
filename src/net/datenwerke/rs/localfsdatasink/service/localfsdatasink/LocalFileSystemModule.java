@@ -42,7 +42,7 @@ public class LocalFileSystemModule extends AbstractModule {
    public Optional<LocalFileSystemDatasink> provideDefaultDatasink(DatasinkTreeService datasinkService) {
       return datasinkService.getDefaultDatasink(LocalFileSystemDatasink.class,
             PROPERTY_DEFAULT_LOCAL_FILESYSTEM_DATASINK_ID, PROPERTY_DEFAULT_LOCAL_FILESYSTEM_DATASINK_NAME,
-            PROPERTY_DEFAULT_LOCAL_FILESYSTEM_DATASINK_KEY);
+            PROPERTY_DEFAULT_LOCAL_FILESYSTEM_DATASINK_KEY, PROPERTY_LOCAL_FILESYSTEM_DISABLED);
    }
 
 }

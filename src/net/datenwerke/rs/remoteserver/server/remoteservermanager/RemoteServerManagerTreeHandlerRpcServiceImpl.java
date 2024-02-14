@@ -1,5 +1,7 @@
 package net.datenwerke.rs.remoteserver.server.remoteservermanager;
 
+import java.util.List;
+
 import javax.persistence.NoResultException;
 
 import com.google.inject.Inject;
@@ -8,10 +10,12 @@ import com.google.inject.Singleton;
 import com.google.inject.name.Named;
 import com.google.inject.persist.Transactional;
 
+import groovy.lang.Closure;
 import net.datenwerke.gxtdto.client.dtomanager.Dto;
 import net.datenwerke.gxtdto.client.servercommunication.exceptions.ExpectedException;
 import net.datenwerke.gxtdto.client.servercommunication.exceptions.ServerCallFailedException;
 import net.datenwerke.gxtdto.server.dtomanager.DtoService;
+import net.datenwerke.rs.keyutils.service.keyutils.KeyNameGeneratorService;
 import net.datenwerke.rs.remoteserver.client.remoteservermanager.dto.RemoteServerDefinitionDto;
 import net.datenwerke.rs.remoteserver.client.remoteservermanager.rpc.RemoteServerTreeLoader;
 import net.datenwerke.rs.remoteserver.client.remoteservermanager.rpc.RemoteServerTreeManager;
@@ -34,16 +38,21 @@ public class RemoteServerManagerTreeHandlerRpcServiceImpl extends TreeDBManagerT
    private static final long serialVersionUID = -455777535667237770L;
    
    private final Provider<RemoteServerTreeService> remoteServerTreeServiceProvider;
-
+   
    @Inject
    public RemoteServerManagerTreeHandlerRpcServiceImpl(
          RemoteServerTreeService remoteserverService, 
          DtoService dtoGenerator,
          SecurityService securityService, 
          EntityClonerService entityClonerService,
-         Provider<RemoteServerTreeService> remoteServerTreeServiceProvider
+         Provider<RemoteServerTreeService> remoteServerTreeServiceProvider,
+         KeyNameGeneratorService keyGeneratorService
          ) {
-      super(remoteserverService, dtoGenerator, securityService, entityClonerService);
+      super(remoteserverService, 
+            dtoGenerator, 
+            securityService, 
+            entityClonerService,
+            keyGeneratorService);
       this.remoteServerTreeServiceProvider = remoteServerTreeServiceProvider;
    }
    
@@ -53,14 +62,31 @@ public class RemoteServerManagerTreeHandlerRpcServiceImpl extends TreeDBManagerT
    }
    
    @Override
-   protected void nodeCloned(AbstractRemoteServerManagerNode clonedNode) {
+   protected void nodeCloned(AbstractRemoteServerManagerNode clonedNode, AbstractRemoteServerManagerNode realNode) {
       if (!(clonedNode instanceof RemoteServerDefinition))
          throw new IllegalArgumentException();
-      RemoteServerDefinition remoteServer = (RemoteServerDefinition) clonedNode;
+      RemoteServerDefinition clone = (RemoteServerDefinition) clonedNode;
+      RemoteServerDefinition real = (RemoteServerDefinition) realNode;
 
-      remoteServer.setName(remoteServer.getName() == null ? "copy" : remoteServer.getName() + " (copy)");
+      Closure getAllNodes = new Closure(null) {
+         public List<AbstractRemoteServerManagerNode> doCall() {
+            return realNode.getParent().getChildren();
+         }
+      };
+      clone.setName(clone.getName() == null
+            ? keyGeneratorService.getNextCopyName("", getAllNodes)
+            : keyGeneratorService.getNextCopyName(clone.getName(), getAllNodes));
+      clone.setKey(keyGeneratorService.getNextCopyKey(real.getKey(), remoteServerTreeServiceProvider.get()));
    }
    
+   @Override
+   protected void doSetInitialProperties(AbstractRemoteServerManagerNode inserted) {
+      if (inserted instanceof RemoteServerDefinition) {
+         ((RemoteServerDefinition) inserted)
+               .setKey(keyGeneratorService.generateDefaultKey(remoteServerTreeServiceProvider.get()));
+      }
+   }
+
    @SecurityChecked(
          argumentVerification = {
                @ArgumentVerification(
@@ -71,7 +97,7 @@ public class RemoteServerManagerTreeHandlerRpcServiceImpl extends TreeDBManagerT
                      )
                ) 
          }
-   )
+   )   
    @Override
    @Transactional(rollbackOn = { Exception.class })
    public AbstractNodeDto updateNode(@Named("node") AbstractNodeDto node, Dto state) throws ServerCallFailedException {
@@ -84,7 +110,7 @@ public class RemoteServerManagerTreeHandlerRpcServiceImpl extends TreeDBManagerT
                      .getRemoteServerIdFromKey(((RemoteServerDefinitionDto) node).getKey());
 
                if (id != node.getId())
-                  throw new ExpectedException("There already is a remote server with the same key");
+                  throw new ExpectedException("There is already a remote server with the same key: " + id);
 
                /*
                 * if the datasource id is the same as the id of the datasource to be changed do nothing
@@ -95,8 +121,6 @@ public class RemoteServerManagerTreeHandlerRpcServiceImpl extends TreeDBManagerT
             }
          }
       }
-
       return super.updateNode(node, state);
    }
-
 }

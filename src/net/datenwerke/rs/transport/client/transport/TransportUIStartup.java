@@ -9,6 +9,7 @@ import net.datenwerke.gf.client.administration.AdministrationUIService;
 import net.datenwerke.gf.client.administration.hooks.AdminModuleProviderHook;
 import net.datenwerke.gf.client.history.HistoryUiService;
 import net.datenwerke.gf.client.managerhelper.hooks.MainPanelViewProviderHook;
+import net.datenwerke.gf.client.managerhelper.hooks.MainPanelViewToolbarConfiguratorHook;
 import net.datenwerke.gf.client.managerhelper.hooks.TreeConfiguratorHook;
 import net.datenwerke.gf.client.treedb.TreeDBHistoryCallback;
 import net.datenwerke.gf.client.treedb.UITree;
@@ -18,6 +19,7 @@ import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.eximport.client.eximport.im.hooks.ImporterConfiguratorHook;
 import net.datenwerke.rs.transport.client.transport.eximport.im.hookers.TransportManagerUIImporterHooker;
 import net.datenwerke.rs.transport.client.transport.hookers.MainPanelViewProviderHooker;
+import net.datenwerke.rs.transport.client.transport.hookers.TransportApplyToolbarConfigurator;
 import net.datenwerke.rs.transport.client.transport.objectinfo.TransportFolderObjectInfo;
 import net.datenwerke.rs.transport.client.transport.objectinfo.TransportObjectInfo;
 import net.datenwerke.rs.transport.client.transport.provider.annotations.TransportManagerAdminViewTree;
@@ -39,6 +41,7 @@ public class TransportUIStartup {
          final TransportManagerViewSecurityTargetDomainHooker securityTargetDomain,
          final MainPanelViewProviderHooker mainPanelViewProvider, 
          final Provider<TransportAdminModule> adminModuleProvider,
+         final Provider<TransportManagerAdminModule> importedTransportsAdminModule,
          final SecurityUIService securityService,
          final TransportManagerTreeConfigurationHooker treeConfigurator,
          final TransportObjectInfo transportObjectInfo,
@@ -47,7 +50,8 @@ public class TransportUIStartup {
          final @TransportManagerAdminViewTree Provider<UITree> managerTree,
          final EventBus eventBus, 
          final Provider<TransportManagerPanel> managerAdminPanel,
-         final TransportManagerUIImporterHooker importerHooker
+         final TransportManagerUIImporterHooker importerHooker,
+         final TransportApplyToolbarConfigurator transportApply
          ) {
 
       /* config tree */
@@ -61,6 +65,9 @@ public class TransportUIStartup {
       /* attach views */
       hookHandler.attachHooker(MainPanelViewProviderHook.class, mainPanelViewProvider);
       
+      /* transport apply button */
+      hookHandler.attachHooker(MainPanelViewToolbarConfiguratorHook.class, transportApply);
+      
       /* object info */
       hookHandler.attachHooker(ObjectInfoKeyInfoProvider.class, transportObjectInfo);
       hookHandler.attachHooker(ObjectInfoKeyInfoProvider.class, folderObjectInfo);
@@ -69,10 +76,14 @@ public class TransportUIStartup {
             
       /* test if user has rights to see transport manager admin view */
       waitOnEventService.callbackOnEvent(AdministrationUIService.REPORTSERVER_EVENT_HAS_ADMIN_RIGHTS, ticket -> {
-         if (securityService.hasRight(TransportManagerGenericTargetIdentifier.class, ReadDto.class))
+         if (securityService.hasRight(TransportManagerGenericTargetIdentifier.class, ReadDto.class)) {
             /* attach admin hooker */
             hookHandler.attachHooker(AdminModuleProviderHook.class, new AdminModuleProviderHook(adminModuleProvider),
                   HookHandlerService.PRIORITY_HIGH + 58);
+            /* attach admin hooker */
+            hookHandler.attachHooker(AdminModuleProviderHook.class, new AdminModuleProviderHook(importedTransportsAdminModule),
+                  HookHandlerService.PRIORITY_HIGH + 59);            
+         }
 
          waitOnEventService.signalProcessingDone(ticket);
       });

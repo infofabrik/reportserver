@@ -99,6 +99,7 @@
 	<source path="rs/dsbundle/shared"/>
 	<source path="rs/reportdoc/client"/>
 	<source path="rs/enterprise/client"/>
+	<source path="rs/pkg/client"/>
 	<source path="rs/eximport/client"/>
 	<source path="rs/eximport/shared"/>
 	<source path="rs/fileserver/client"/>
@@ -108,22 +109,40 @@
 	<source path="rs/grideditor/client"/>
 	<source path="rs/grideditor/shared"/>
 	<source path="rs/incubator/client"/>
+	<source path="rs/scriptdatasource/client"/>
 	<source path="rs/incubator/shared"/>
 	<source path="rs/jxlsreport/client"/>
 	<source path="rs/jxlsreport/shared"/>
+	<source path="rs/keyutils/client"/>
 	<source path="rs/license/client"/>
+	<source path="rs/dot/client"/>
+	<source path="rs/markdown/client"/>
 	<source path="rs/passwordpolicy/client"/>
 	<source path="rs/passwordpolicy/shared"/>
 	<source path="rs/remoteaccess/client"/>
 	<source path="rs/remoteaccess/shared"/>
 	<source path="rs/saiku/client"/>
 	<source path="rs/saiku/shared"/>
-	<source path="rs/legacysaiku/client"/>
-	<source path="rs/legacysaiku/shared"/>
 	<source path="rs/saikupivot/client"/>
 	<source path="rs/scheduleasfile/client"/>
 	<source path="rs/scheduleasfile/shared"/>
 	<source path="rs/ftp/client"/>
+	<source path="rs/samba/client"/>
+	<source path="rs/oauth/client"/>
+	<source path="rs/dropbox/client"/>
+	<source path="rs/onedrive/client"/>
+	<source path="rs/googledrive/client"/>
+	<source path="rs/box/client"/>
+	<source path="rs/amazons3/client"/>
+	<source path="rs/printer/client"/>
+	<source path="rs/tabledatasink/client"/>
+	<source path="rs/scp/client"/>
+	<source path="rs/localfsdatasink/client"/>
+	<source path="rs/scriptdatasink/client"/>
+	<source path="rs/emaildatasink/client"/>
+	<source path="rs/remoteserver/client"/>
+	<source path="rs/remotersrestserver/client"/>
+	<source path="rs/transport/client"/>
 	<source path="rs/scheduler/client"/>
 	<source path="rs/scheduler/shared"/>
 	<source path="rs/scripting/client"/>
@@ -160,7 +179,7 @@
 	<source path="treedb/shared"/>
 	<source path="usermanager/ext/client"/>
 	<source path="usermanager/ext/shared"/>
-	
+	<source path="rs/utils/validator/shared"/>
 	
 	
 	<generate-with class="net.datenwerke.rs.core.service.i18ntools.DwMessageClassGenerator">

@@ -30,78 +30,89 @@ import net.datenwerke.security.service.security.rights.Execute;
 @Singleton
 public class ImportRpcServiceImpl extends SecuredRemoteServiceServlet implements ImportRpcService {
 
-   /**
+    /**
     * 
     */
-   private static final long serialVersionUID = -1313928144420728778L;
+    private static final long serialVersionUID = -1313928144420728778L;
 
-   private final Provider<HttpImportService> httpImportServiceProvider;
-   private final Provider<ImportService> importServiceProvider;
+    private final Provider<HttpImportService> httpImportServiceProvider;
+    private final Provider<ImportService> importServiceProvider;
 
-   @Inject
-   public ImportRpcServiceImpl(Provider<HttpImportService> httpImportServiceProvider,
-         Provider<ImportService> importServiceProvider) {
+    private boolean useMergeImporter = false;
 
-      /* store objects */
-      this.httpImportServiceProvider = httpImportServiceProvider;
-      this.importServiceProvider = importServiceProvider;
-   }
+    @Inject
+    public ImportRpcServiceImpl(
+          Provider<HttpImportService> httpImportServiceProvider,
+          Provider<ImportService> importServiceProvider
+          ) {
 
-   @Override
-   @SecurityChecked(genericTargetVerification = {
-         @GenericTargetVerification(target = ImportSecurityTarget.class, verify = @RightsVerification(rights = Execute.class)) })
-   @Transactional(rollbackOn = { Exception.class })
-   public Collection<String> uploadXML(String xmldata) throws ServerCallFailedException {
-      HttpImportService httpImportService = httpImportServiceProvider.get();
-      httpImportService.createNewConfig();
-      try {
-         httpImportService.setData(xmldata);
-      } catch (InvalidImportDocumentException e) {
-         throw new ServerCallFailedException(e.getMessage());
-      }
+	/* store objects */
+	this.httpImportServiceProvider = httpImportServiceProvider;
+	this.importServiceProvider = importServiceProvider;
+    }
 
-      return httpImportService.getInvolvedExporterIds();
-   }
+    @Override
+    public void setUseMergeImporter(boolean value) {
+       this.useMergeImporter = value;
+    }
 
-   @Override
-   public Collection<String> initViaFile() throws ServerCallFailedException {
-      HttpImportService httpImportService = httpImportServiceProvider.get();
-      return httpImportService.getInvolvedExporterIds();
-   }
+    @Override
+    @SecurityChecked(genericTargetVerification = {
+	    @GenericTargetVerification(target = ImportSecurityTarget.class, verify = @RightsVerification(rights = Execute.class)) })
+    @Transactional(rollbackOn = { Exception.class })
+    public Collection<String> uploadXML(String xmldata) throws ServerCallFailedException {
+	HttpImportService httpImportService = httpImportServiceProvider.get();
+	httpImportService.createNewConfig();
+	try {
+	    httpImportService.setData(xmldata);
+	} catch (InvalidImportDocumentException e) {
+	    throw new ServerCallFailedException(e.getMessage(), e);
+	}
 
-   @Override
-   @SecurityChecked(genericTargetVerification = {
-         @GenericTargetVerification(target = ImportSecurityTarget.class, verify = @RightsVerification(rights = Execute.class)) })
-   @Transactional(rollbackOn = { Exception.class })
-   public void performImport(Map<String, ImportConfigDto> configMap,
-         Map<String, ImportPostProcessConfigDto> postProcessMap) throws ServerCallFailedException {
-      /* reset config */
-      HttpImportService httpImportService = httpImportServiceProvider.get();
-      httpImportService.resetImportConfig();
+	return httpImportService.getInvolvedExporterIds();
+    }
 
-      /* store config */
-      httpImportService.configureImport(configMap);
 
-      ImportResult result = importServiceProvider.get()
-            .importData(httpImportService.getCurrentConfig().getImportConfig());
+    @Override
+    public Collection<String> initViaFile() throws ServerCallFailedException {
+       HttpImportService httpImportService = httpImportServiceProvider.get();
+       return httpImportService.getInvolvedExporterIds();
+    }
 
-      httpImportService.runPostProcess(postProcessMap, result);
+    @Override
+    @SecurityChecked(genericTargetVerification = {
+	    @GenericTargetVerification(target = ImportSecurityTarget.class, verify = @RightsVerification(rights = Execute.class)) })
+    @Transactional(rollbackOn = { Exception.class })
+    public void performImport(Map<String, ImportConfigDto> configMap,
+          Map<String, ImportPostProcessConfigDto> postProcessMap) throws ServerCallFailedException {
+       /* reset config */
+       HttpImportService httpImportService = httpImportServiceProvider.get();
+       httpImportService.resetImportConfig();
 
-      httpImportService.resetImportConfig();
-   }
+       /* store config */
+       httpImportService.configureImport(configMap);
 
-   @Override
-   @SecurityChecked(genericTargetVerification = {
-         @GenericTargetVerification(target = ImportSecurityTarget.class, verify = @RightsVerification(rights = Execute.class)) })
-   @Transactional(rollbackOn = { Exception.class })
-   public void reset() throws ServerCallFailedException {
-      httpImportServiceProvider.get().invalidateCurrentConfig();
-   }
+       ImportService importService = importServiceProvider.get();
+       importService.setUseMergeImporter(useMergeImporter);
+       ImportResult result = importService.importData(httpImportService.getCurrentConfig().getImportConfig());
 
-   @Override
-   public void invalidateConfig() throws ServerCallFailedException {
-      HttpImportService httpImportService = httpImportServiceProvider.get();
-      httpImportService.invalidateCurrentConfig();
-   }
+       httpImportService.runPostProcess(postProcessMap, result);
+
+       httpImportService.resetImportConfig();
+    }
+
+    @Override
+    @SecurityChecked(genericTargetVerification = {
+	    @GenericTargetVerification(target = ImportSecurityTarget.class, verify = @RightsVerification(rights = Execute.class)) })
+    @Transactional(rollbackOn = { Exception.class })
+    public void reset() throws ServerCallFailedException {
+       httpImportServiceProvider.get().invalidateCurrentConfig();
+    }
+
+    @Override
+    public void invalidateConfig() throws ServerCallFailedException {
+       HttpImportService httpImportService = httpImportServiceProvider.get();
+       httpImportService.invalidateCurrentConfig();
+    }
 
 }

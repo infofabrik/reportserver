@@ -7,10 +7,12 @@ import java.util.Set;
 import com.google.inject.Inject;
 import com.google.inject.Provides;
 import com.google.inject.Scopes;
+import com.google.inject.assistedinject.FactoryModuleBuilder;
 
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.core.service.datasinkmanager.annotations.ReportServerDatasinkDefinitions;
 import net.datenwerke.rs.core.service.datasinkmanager.entities.DatasinkDefinition;
+import net.datenwerke.rs.core.service.datasinkmanager.hookers.factory.DatasinkDefaultMergeHookerFactory;
 import net.datenwerke.rs.core.service.datasinkmanager.hooks.DatasinkProviderHook;
 import net.datenwerke.rs.core.service.guice.AbstractReportServerModule;
 
@@ -27,6 +29,9 @@ public class DatasinkModule extends AbstractReportServerModule {
    protected void configure() {
       bind(DatasinkTreeService.class).to(DatasinkTreeServiceImpl.class).in(Scopes.SINGLETON);
       bind(DatasinkService.class).to(DatasinkServiceImpl.class);
+      
+      /* entity merge */
+      install(new FactoryModuleBuilder().build(DatasinkDefaultMergeHookerFactory.class));
 
       /* startup */
       bind(DatasinkStartup.class).asEagerSingleton();

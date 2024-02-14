@@ -5,7 +5,6 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
 
 import net.datenwerke.gxtdto.client.dtomanager.Dao;
-import net.datenwerke.rs.amazons3.client.amazons3.rpc.AmazonS3RpcServiceAsync;
 import net.datenwerke.rs.remotersrestserver.client.remotersrestserver.dto.RemoteRsRestServerDto;
 import net.datenwerke.rs.remotersrestserver.client.remotersrestserver.rpc.RemoteRsRestServerRpcServiceAsync;
 

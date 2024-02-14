@@ -38,4 +38,6 @@ public interface TreeDBManager<A extends AbstractNode<A>> {
    public boolean isFolder(A node);
    
    List<A> getChildrenWithName(A node, String name);
+   
+   public A getNodeByKey(String key);
 }

@@ -22,19 +22,38 @@ public class ReportExportConfigHooker implements ExportConfigHook {
       /* export report */
       ExportConfig exportConfig = new ExportConfig();
       exportConfig.setName(ReportManagerExporter.EXPORTER_NAME);
-      exportConfig.addItemConfig(new TreeNodeExportItemConfig(node));
+      
+      if (options.flatten()) {
+         if (!node.isFolder()) {
+            exportConfig.addItemConfig(new TreeNodeExportItemConfig(node));
+            exportConfig.setNode(node);
+         }
+      } else {
+         exportConfig.addItemConfig(new TreeNodeExportItemConfig(node));
+         exportConfig.setNode(node);
+      }
       
       ReportExportOptions reportExportOptions = (ReportExportOptions) options;
-      addChildren(exportConfig, (AbstractReportManagerNode)node, reportExportOptions.includeVariants());
+      addChildren(exportConfig, (AbstractReportManagerNode) node, reportExportOptions.includeVariants(),
+            options.flatten());
       
       return exportConfig;
    }
    
-   private void addChildren(ExportConfig exportConfig, AbstractReportManagerNode report, boolean includeVariants) {
+   private void addChildren(ExportConfig exportConfig, AbstractReportManagerNode report, boolean includeVariants, boolean flatten) {
       for (AbstractReportManagerNode childNode : report.getChildren()) {
-         if (includeVariants || !(childNode instanceof ReportVariant)) {
-            exportConfig.addItemConfig(new TreeNodeExportItemConfig(childNode));
-            addChildren(exportConfig, childNode, includeVariants);
+         if (childNode instanceof ReportVariant) {
+            if (includeVariants) {
+               exportConfig.addItemConfig(new TreeNodeExportItemConfig(childNode));
+            }
+         } else {
+            if (flatten) {
+               if (!childNode.isFolder())
+                  exportConfig.addItemConfig(new TreeNodeExportItemConfig(childNode));
+            } else {
+               exportConfig.addItemConfig(new TreeNodeExportItemConfig(childNode));
+            }
+            addChildren(exportConfig, childNode, includeVariants, flatten);
          }
       }
    }

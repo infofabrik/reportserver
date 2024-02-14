@@ -1,7 +1,6 @@
 package net.datenwerke.gf.client.managerhelper.mainpanel;
 
 import com.google.gwt.event.logical.shared.HasValueChangeHandlers;
-import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.resources.client.ImageResource;
 import com.sencha.gxt.core.client.dom.ScrollSupport.ScrollMode;
@@ -89,7 +88,6 @@ public abstract class FormView extends MainPanelView {
       /* init form */
       initializeForm(form, fieldWrapper);
       initFormBinding(form, getSelectedNode());
-
       /* buttons */
       if (!(getSelectedNode() instanceof SecuredAbstractNodeDtoDec)
             || ((SecuredAbstractNodeDtoDec) getSelectedNode()).hasAccessRight(WriteDto.class)) {
@@ -111,6 +109,8 @@ public abstract class FormView extends MainPanelView {
             @SuppressWarnings("unchecked")
             @Override
             public void onSelect(SelectEvent event) {
+               if (!form.isValid())
+                  return;
                mask(BaseMessages.INSTANCE.storingMsg());
 
                /* ask widget to finalize the node */
@@ -138,12 +138,7 @@ public abstract class FormView extends MainPanelView {
          }
 
          /* button binding */
-         ValueChangeHandler changeHandler = new ValueChangeHandler() {
-            @Override
-            public void onValueChange(ValueChangeEvent event) {
-               bSubmit.setEnabled(FormPanelHelper.isValid(form, true));
-            }
-         };
+         ValueChangeHandler changeHandler = (event) -> bSubmit.setEnabled(FormPanelHelper.isValid(form, true));
          for (IsField<?> f : FormPanelHelper.getFields(form)) {
             if (f instanceof HasValueChangeHandlers) {
                HasValueChangeHandlers field = (HasValueChangeHandlers) f;
@@ -160,7 +155,6 @@ public abstract class FormView extends MainPanelView {
             form.setEncoding(Encoding.MULTIPART);
          }
       }
-
       return scrollWrapper;
    }
 
@@ -264,15 +258,14 @@ public abstract class FormView extends MainPanelView {
    }
 
    /**
-    * To be overriden
+    * To be overridden
     * 
     * @param binding
     * 
     * @param binding
     * @param selectedNode
     */
-   protected void doInitFormBinding(FormBinding binding, AbstractNodeDto selectedNode) {
-   }
+   protected  abstract void doInitFormBinding(FormBinding binding, AbstractNodeDto selectedNode);
 
    protected boolean isFormBinding() {
       return true;

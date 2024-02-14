@@ -189,6 +189,8 @@ public abstract class AbstractEmbeddingTabbedComponentsView extends MainPanelVie
 
                @Override
                public void formSubmitted(SimpleForm simpleForm) {
+                  if (!simpleForm.isValid())
+                     return;
                   recordUpdated(simpleForm.getBoundModel());
                   setHeadingText((AbstractNodeDto) simpleForm.getBoundModel());
                }

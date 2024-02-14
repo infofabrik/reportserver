@@ -3,7 +3,6 @@ package net.datenwerke.rs.transport.service.transport;
 import java.util.List;
 
 import javax.inject.Provider;
-import javax.persistence.NonUniqueResultException;
 
 import com.google.inject.Inject;
 
@@ -59,31 +58,34 @@ public class TransportTreeServiceImpl extends SecuredTreeDBManagerImpl<AbstractT
    }
 
    @Override
-   public Transport getTransportByKey(String key) {
-      try {
-         return doGetTransportByKey(key);
-      } catch (NonUniqueResultException e) {
-         throw new IllegalArgumentException("There seem to be multiple transports with the same key: " + key, e);
-      } catch (IllegalStateException e) {
-         if (null != e.getCause() && e.getCause() instanceof NonUniqueResultException)
-            throw new IllegalArgumentException("There seem to be multiple transports with the same key: " + key, e);
-         throw e;
-      }
-   }
-   
    @QueryByAttribute(
          where = Transport__.key
    )
-   public Transport doGetTransportByKey(String key) {
-      return null; // by magic, must be public for AOP interception to work
+   public Transport getTransportByKey(String key) {
+      return null; // by magic
    }
    
    @Override
-   protected void afterNodeCopy(AbstractTransportManagerNode copiedNode) {
+   protected void afterNodeCopy(AbstractTransportManagerNode copiedNode, AbstractTransportManagerNode parent) {
       if (copiedNode instanceof Transport) {
          final TransportService transportService = transportServiceProvider.get();
          transportService.setInitialProperties((Transport) copiedNode, transportService.createInitialProperties(), false);
       }
+   }
+
+   @Override
+   @QueryByAttribute(
+         from = Transport.class, 
+         where = Transport__.status, 
+         throwNoResultException = false
+   )
+   public List<Transport> getTransportsByStatus(String status) {
+      return null; // magic
+   }
+
+   @Override
+   public AbstractTransportManagerNode getNodeByKey(String key) {
+      return getTransportByKey(key);
    }
 
 }

@@ -25,8 +25,6 @@ import org.slf4j.LoggerFactory;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
-import net.datenwerke.rs.core.service.mail.annotations.MailModuleDefaultFrom;
-import net.datenwerke.rs.core.service.mail.annotations.MailModuleDefaultFromName;
 import net.datenwerke.rs.core.service.mail.interfaces.SessionProvider;
 import net.datenwerke.rs.emaildatasink.service.emaildatasink.definitions.EmailDatasink;
 import net.datenwerke.rs.utils.misc.Nullable;
@@ -45,8 +43,11 @@ public class SimpleMail extends MimeMessage implements SessionProvider {
    protected static final String CHARSET_UTF8 = "UTF-8";
 
    @Inject
-   public SimpleMail(@Assisted Session session, @Nullable @MailModuleDefaultFrom String from,
-         @Nullable @MailModuleDefaultFromName String fromName) {
+   public SimpleMail(
+         @Assisted Session session, 
+         @Assisted("from") String from,
+         @Assisted("fromName") @Nullable String fromName
+         ) {
       super(session);
 
       if (null != from)

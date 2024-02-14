@@ -37,7 +37,7 @@ public class JobNameScheduledEntriesFilter implements ScheduledReportListFilter 
 
    public void configure(ScheduledReportListPanel scheduledReportListPanel, JobFilterConfigurationDto config,
          List<JobFilterCriteriaDto> addCriterions) {
-      config.setJobId(null);
+      config.setJobTitle(null);
 
       if (null != jobNameHook) {
          String jobName = (String) jobNameHook.getValue(jobNameField);

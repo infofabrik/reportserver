@@ -15,6 +15,7 @@ import net.datenwerke.gxtdto.client.dtomanager.DtoView;
 import net.datenwerke.rs.base.service.datasources.connectors.DatasourceConnector;
 import net.datenwerke.rs.core.service.datasourcemanager.entities.DatasourceDefinition;
 import net.datenwerke.rs.utils.entitycloner.annotation.EnclosedEntity;
+import net.datenwerke.rs.utils.entitymerge.service.annotations.EntityMergeField;
 
 @GenerateDto(dtoPackage = "net.datenwerke.rs.base.client.datasources.dto", abstractDto = true)
 @MappedSuperclass
@@ -29,6 +30,7 @@ public abstract class FormatBasedDatasourceDefinition extends DatasourceDefiniti
    @OneToOne(cascade = CascadeType.ALL)
    @ExposeToClient(view = DtoView.MINIMAL)
    @Audited
+   @EntityMergeField
    private DatasourceConnector connector;
 
    public void setConnector(DatasourceConnector connector) {

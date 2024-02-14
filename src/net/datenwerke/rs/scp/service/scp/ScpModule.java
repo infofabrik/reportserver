@@ -39,7 +39,7 @@ public class ScpModule extends AbstractModule {
    @DefaultScpDatasink
    public Optional<ScpDatasink> provideDefaultDatasink(DatasinkTreeService datasinkService) {
       return datasinkService.getDefaultDatasink(ScpDatasink.class, PROPERTY_DEFAULT_SCP_DATASINK_ID,
-            PROPERTY_DEFAULT_SCP_DATASINK_NAME, PROPERTY_DEFAULT_SCP_DATASINK_KEY);
+            PROPERTY_DEFAULT_SCP_DATASINK_NAME, PROPERTY_DEFAULT_SCP_DATASINK_KEY, PROPERTY_SCP_DISABLED);
    }
 
 }

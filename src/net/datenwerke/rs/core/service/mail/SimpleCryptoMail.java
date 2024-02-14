@@ -32,8 +32,6 @@ import org.slf4j.LoggerFactory;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
-import net.datenwerke.rs.core.service.mail.annotations.MailModuleDefaultFrom;
-import net.datenwerke.rs.core.service.mail.annotations.MailModuleDefaultFromName;
 import net.datenwerke.rs.core.service.mail.interfaces.NeedsPostprocessing;
 import net.datenwerke.rs.utils.misc.Nullable;
 import net.datenwerke.security.service.crypto.CryptoCredentials;
@@ -61,8 +59,12 @@ public class SimpleCryptoMail extends SimpleMail implements NeedsPostprocessing 
    }
 
    @Inject
-   public SimpleCryptoMail(@Assisted Session session, CryptoService cryptoService, @MailModuleDefaultFrom String from,
-         @Nullable @MailModuleDefaultFromName String fromName) {
+   public SimpleCryptoMail(
+         @Assisted Session session, 
+         CryptoService cryptoService, 
+         @Assisted("from") String from,
+         @Assisted("fromName") @Nullable String fromName
+         ) {
       super(session, from, fromName);
 
       this.cryptoService = cryptoService;

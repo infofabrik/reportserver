@@ -26,7 +26,8 @@ public class DatasourceExportConfigHooker implements ExportConfigHook {
       if (!(node instanceof AbstractDatasourceManagerNode))
          throw new IllegalArgumentException("node not an AbstractDatasourceManagerNode");
       
-      return exportHelper.createExportConfig(node, true, DatasourceManagerExporter.EXPORTER_NAME, false);
+      return exportHelper.createExportConfig(node, true, DatasourceManagerExporter.EXPORTER_NAME, false,
+            options.flatten(), n -> true);
    }
 
    @Override

@@ -1,8 +1,6 @@
 package net.datenwerke.rs.core.client.parameters.helper;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.user.client.ui.Label;
@@ -48,17 +46,14 @@ public class ParameterFieldWrapperForFrontend extends DwHorizontalFlowLayoutCont
          final Menu menu = createMenu(defaultValueSetter, instance);
 
          /* add menu button */
-         final BaseIconComponent menuBtn = BaseIcon.BARS.toComponent();
+         final BaseIconComponent menuBtn = BaseIcon.GEAR.toComponent();
          menuBtn.addStyleName("rs-paramview-b");
-         menuBtn.addClickHandler(new ClickHandler() {
-            @Override
-            public void onClick(ClickEvent event) {
-               if (instance.isStillDefault())
-                  disable(menu);
-               else
-                  enable(menu);
-               menu.show(menuBtn);
-            }
+         menuBtn.addClickHandler(event -> {
+            if (instance.isStillDefault())
+               disable(menu);
+            else
+               enable(menu);
+            menu.show(menuBtn);
          });
          if (labelWidth != 0)
             add(menuBtn);

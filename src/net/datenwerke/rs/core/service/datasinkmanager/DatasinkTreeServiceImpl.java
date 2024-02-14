@@ -5,7 +5,6 @@ import java.util.Optional;
 import java.util.Set;
 
 import javax.persistence.EntityManager;
-import javax.persistence.NonUniqueResultException;
 
 import org.apache.commons.configuration2.Configuration;
 
@@ -13,6 +12,7 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.name.Named;
 
+import groovy.lang.Closure;
 import net.datenwerke.rs.configservice.service.configservice.ConfigService;
 import net.datenwerke.rs.core.service.datasinkmanager.annotations.ReportServerDatasinkDefinitions;
 import net.datenwerke.rs.core.service.datasinkmanager.entities.AbstractDatasinkManagerNode;
@@ -100,10 +100,14 @@ public class DatasinkTreeServiceImpl extends SecuredTreeDBManagerImpl<AbstractDa
 
    @Override
    public <T extends DatasinkDefinition> Optional<T> getDefaultDatasink(Class<T> type, String defaultDatasinkIdProperty,
-         String defaultDatasinkNameProperty, String defaultDatasinkKeyProperty) {
+         String defaultDatasinkNameProperty, String defaultDatasinkKeyProperty, String disabledProperty) {
       final ConfigService configService = configServiceProvider.get();
 
       Configuration config = configService.getConfigFailsafe(DatasinkModule.CONFIG_FILE);
+      
+      boolean disabled = config.getBoolean(disabledProperty, false);
+      if (disabled)
+         return Optional.empty();
 
       DatasinkDefinition datasink = null;
       if (config.containsKey(defaultDatasinkKeyProperty)) {
@@ -134,23 +138,32 @@ public class DatasinkTreeServiceImpl extends SecuredTreeDBManagerImpl<AbstractDa
    }
 
    @Override
-   public DatasinkDefinition getDatasinkByKey(String key) {
-      try {
-         return doGetDatasinkByKey(key);
-      } catch (NonUniqueResultException e) {
-         throw new IllegalArgumentException("There seem to be multiple datasinks with the same key: " + key, e);
-      } catch (IllegalStateException e) {
-         if (null != e.getCause() && e.getCause() instanceof NonUniqueResultException)
-            throw new IllegalArgumentException("There seem to be multiple datasinks with the same key: " + key, e);
-         throw e;
-      }
-   }
-   
    @QueryByAttribute(
          where = DatasinkDefinition__.key
    )
-   public DatasinkDefinition doGetDatasinkByKey(String key) {
-      return null; // by magic, must be public for AOP interception to work
+   public DatasinkDefinition getDatasinkByKey(String key) {
+      return null; // by magic
+   }
+   
+   @Override
+   protected void afterNodeCopy(AbstractDatasinkManagerNode copiedNode, AbstractDatasinkManagerNode parent) {
+      if (copiedNode instanceof DatasinkDefinition) {
+         DatasinkDefinition clone = (DatasinkDefinition) copiedNode;
+         Closure getAllNodes = new Closure(null) {
+            public List<AbstractDatasinkManagerNode> doCall() {
+               return parent.getChildren();
+            }
+         };
+         clone.setName(clone.getName() == null
+               ? keyNameGeneratorService.getNextCopyName("", getAllNodes)
+               : keyNameGeneratorService.getNextCopyName(clone.getName(), getAllNodes));
+         clone.setKey(
+               keyNameGeneratorService.getNextCopyKey(clone.getKey(), this));
+      }
    }
 
+   @Override
+   public AbstractDatasinkManagerNode getNodeByKey(String key) {
+      return getDatasinkByKey(key);
+   }
 }

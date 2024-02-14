@@ -17,6 +17,7 @@ import net.datenwerke.rs.birt.service.reportengine.BirtReportService;
 import net.datenwerke.rs.birt.service.reportengine.locale.BirtEngineMessages;
 import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
 import net.datenwerke.rs.utils.entitycloner.annotation.EnclosedEntity;
+import net.datenwerke.rs.utils.entitymerge.service.annotations.EntityMergeField;
 import net.datenwerke.rs.utils.instancedescription.annotations.InstanceDescription;
 import net.datenwerke.treedb.service.treedb.annotation.TreeDBAllowedChildren;
 
@@ -47,6 +48,7 @@ public class BirtReport extends Report {
    @EnclosedEntity
    @ExposeToClient
    @OneToOne(cascade = { CascadeType.ALL })
+   @EntityMergeField
    private BirtReportFile reportFile;
 
    public void setReportFile(BirtReportFile reportFile) {

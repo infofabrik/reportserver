@@ -17,6 +17,8 @@ import net.datenwerke.gf.base.service.annotations.Indexed;
 import net.datenwerke.rs.base.service.datasources.definitions.DatabaseDatasource;
 import net.datenwerke.rs.dsbundle.service.dsbundle.locale.DatasourceBundleMessages;
 import net.datenwerke.rs.utils.entitycloner.annotation.EnclosedEntity;
+import net.datenwerke.rs.utils.entitymerge.service.annotations.EntityMergeCollection;
+import net.datenwerke.rs.utils.entitymerge.service.annotations.EntityMergeField;
 import net.datenwerke.rs.utils.instancedescription.annotations.InstanceDescription;
 
 @Entity
@@ -36,15 +38,19 @@ public class DatabaseBundle extends DatabaseDatasource {
    @OneToMany(cascade = CascadeType.ALL)
    @EnclosedEntity
    @JoinTable(name = "DB_BUNDLE_2_ENTRY")
+   @EntityMergeCollection
    private Set<DatabaseBundleEntry> bundleEntries = new HashSet<DatabaseBundleEntry>();
 
    @ExposeToClient
+   @EntityMergeField
    private String keySource;
 
    @ExposeToClient
+   @EntityMergeField
    private String keySourceParamName;
 
    @ExposeToClient
+   @EntityMergeField
    private String mappingSource;
 
    public Set<DatabaseBundleEntry> getBundleEntries() {

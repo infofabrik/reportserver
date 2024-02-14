@@ -65,7 +65,7 @@ public class DashboardManagerExportRpcServiceImpl extends SecuredRemoteServiceSe
    public void quickExport(AbstractDashboardManagerNodeDto nodeDto) throws ServerCallFailedException {
       AbstractDashboardManagerNode node = (AbstractDashboardManagerNode) dtoService.loadPoso(nodeDto);
 
-      String exportXML = exportHelper.export(node, true, DashboardManagerExporter.EXPORTER_NAME, false);
+      String exportXML = exportHelper.export(node, true, DashboardManagerExporter.EXPORTER_NAME, false, false);
 
       httpExportServiceProvider.get().storeExport(exportXML, node.getName());
    }

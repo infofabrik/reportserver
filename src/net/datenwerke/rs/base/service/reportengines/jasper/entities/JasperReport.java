@@ -23,6 +23,8 @@ import net.datenwerke.rs.base.service.reportengines.jasper.util.JasperUtilsServi
 import net.datenwerke.rs.base.service.reportengines.locale.ReportEnginesMessages;
 import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
 import net.datenwerke.rs.utils.entitycloner.annotation.EnclosedEntity;
+import net.datenwerke.rs.utils.entitymerge.service.annotations.EntityMergeCollection;
+import net.datenwerke.rs.utils.entitymerge.service.annotations.EntityMergeField;
 import net.datenwerke.rs.utils.instancedescription.annotations.InstanceDescription;
 import net.datenwerke.treedb.service.treedb.annotation.TreeDBAllowedChildren;
 
@@ -60,12 +62,14 @@ public class JasperReport extends Report {
    @EnclosedEntity
    @ExposeToClient
    @OneToOne(cascade = { CascadeType.ALL })
+   @EntityMergeField
    private JasperReportJRXMLFile masterFile;
 
    @JoinTable(name = "JASPER_REPORT_2_SUB_JRXML")
    @EnclosedEntity
    @ExposeToClient
    @OneToMany(cascade = CascadeType.ALL)
+   @EntityMergeCollection(toClone = false)
    private List<JasperReportJRXMLFile> subFiles = new ArrayList<JasperReportJRXMLFile>();
 
    public void setMasterFile(JasperReportJRXMLFile masterFile) {

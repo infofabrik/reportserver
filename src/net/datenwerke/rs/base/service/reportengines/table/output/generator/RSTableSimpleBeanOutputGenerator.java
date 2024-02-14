@@ -72,7 +72,7 @@ public class RSTableSimpleBeanOutputGenerator extends TableOutputGeneratorImpl {
       Object val = null;
       if (field == null) {
          if (!exportNullAsString[fieldInRow])
-            val = "";
+            val = null;
          else {
             val = nullReplacements[fieldInRow];
          }

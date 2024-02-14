@@ -26,7 +26,8 @@ public class DatasinkExportConfigHooker implements ExportConfigHook {
       if (!(node instanceof AbstractDatasinkManagerNode))
          throw new IllegalArgumentException("node not an AbstractDatasinkManagerNode");
       
-      return exportHelper.createExportConfig(node, true, DatasinkManagerExporter.EXPORTER_NAME, false);
+      return exportHelper.createExportConfig(node, true, DatasinkManagerExporter.EXPORTER_NAME, false,
+            options.flatten(), n -> true);
    }
 
    @Override

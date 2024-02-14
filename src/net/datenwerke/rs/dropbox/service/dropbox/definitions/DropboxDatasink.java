@@ -20,6 +20,7 @@ import com.google.inject.Provider;
 import net.datenwerke.dtoservices.dtogenerator.annotations.AdditionalField;
 import net.datenwerke.dtoservices.dtogenerator.annotations.ExposeToClient;
 import net.datenwerke.dtoservices.dtogenerator.annotations.GenerateDto;
+import net.datenwerke.eximport.ex.annotations.ExportableField;
 import net.datenwerke.gf.base.service.annotations.Field;
 import net.datenwerke.gf.base.service.annotations.Indexed;
 import net.datenwerke.rs.core.service.datasinkmanager.BasicDatasinkService;
@@ -31,6 +32,7 @@ import net.datenwerke.rs.dropbox.service.dropbox.DropboxService;
 import net.datenwerke.rs.dropbox.service.dropbox.definitions.dtogen.DropboxDatasink2DtoPostProcessor;
 import net.datenwerke.rs.dropbox.service.dropbox.locale.DropboxDatasinkMessages;
 import net.datenwerke.rs.oauth.service.oauth.OAuthAuthenticatable;
+import net.datenwerke.rs.utils.entitymerge.service.annotations.EntityMergeField;
 import net.datenwerke.rs.utils.instancedescription.annotations.InstanceDescription;
 import net.datenwerke.rs.utils.misc.DateUtils;
 import net.datenwerke.security.service.crypto.pbe.PbeService;
@@ -79,19 +81,24 @@ public class DropboxDatasink extends DatasinkDefinition implements OAuthAuthenti
    @ExposeToClient
    @Field
    @Type(type = "net.datenwerke.rs.utils.hibernate.RsClobType")
+   @EntityMergeField
    private String appKey;
 
    @ExposeToClient(exposeValueToClient = false, mergeDtoValueBack = true)
    @Type(type = "net.datenwerke.rs.utils.hibernate.RsClobType")
+   @EntityMergeField
+   @ExportableField(exportField = false)
    private String secretKey;
 
    @ExposeToClient(exposeValueToClient = false, mergeDtoValueBack = true)
    @Type(type = "net.datenwerke.rs.utils.hibernate.RsClobType")
+   @EntityMergeField
    private String refreshToken;
 
    @ExposeToClient
    @Field
    @Column(length = 1024)
+   @EntityMergeField
    private String folder = "/";
 
    @Override
@@ -166,8 +173,10 @@ public class DropboxDatasink extends DatasinkDefinition implements OAuthAuthenti
     */
 
    public void setSecretKey(String secretKey) {
-      if (null == secretKey)
-         secretKey = "";
+      if (null == secretKey) {
+         this.secretKey = null;
+         return;
+      }
 
       EncryptionService encryptionService = pbeServiceProvider.get().getEncryptionService();
       byte[] encrypted = encryptionService.encrypt(secretKey);

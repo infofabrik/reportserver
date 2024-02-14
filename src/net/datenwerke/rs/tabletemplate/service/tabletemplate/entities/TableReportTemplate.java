@@ -1,5 +1,6 @@
 package net.datenwerke.rs.tabletemplate.service.tabletemplate.entities;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -18,8 +19,13 @@ import com.google.common.base.MoreObjects;
 
 import net.datenwerke.dtoservices.dtogenerator.annotations.ExposeToClient;
 import net.datenwerke.dtoservices.dtogenerator.annotations.GenerateDto;
+import net.datenwerke.dtoservices.dtogenerator.annotations.PropertyValidator;
+import net.datenwerke.dtoservices.dtogenerator.annotations.StringValidator;
+import net.datenwerke.gf.base.service.annotations.Field;
 import net.datenwerke.gxtdto.client.dtomanager.DtoView;
+import net.datenwerke.rs.keyutils.service.keyutils.KeyNameGeneratorService;
 import net.datenwerke.rs.utils.entitycloner.annotation.TransientID;
+import net.datenwerke.rs.utils.validator.shared.SharedRegex;
 
 @Entity
 @Table(name = "TABLE_REPORT_TEMPLATE")
@@ -45,7 +51,19 @@ abstract public class TableReportTemplate {
    @Version
    private Long version;
 
-   @ExposeToClient(view = DtoView.LIST)
+   @ExposeToClient(
+         view = DtoView.LIST, 
+         validateDtoProperty = @PropertyValidator(
+               string = @StringValidator(
+                     regex = SharedRegex.KEY_REGEX
+               )
+         )
+   )
+   @Field
+   @Column(
+         length = KeyNameGeneratorService.KEY_LENGTH,
+         nullable = false
+   )
    private String key;
 
    @ExposeToClient(id = true)

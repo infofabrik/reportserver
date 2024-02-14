@@ -11,14 +11,19 @@ import java.util.Map.Entry;
 import java.util.Queue;
 import java.util.Set;
 
+import javax.persistence.EntityManager;
+
 import com.google.inject.Inject;
+import com.google.inject.Provider;
 import com.google.inject.assistedinject.Assisted;
 
 import net.datenwerke.eximport.ExportDataAnalyzerService;
 import net.datenwerke.eximport.ImportService;
 import net.datenwerke.eximport.exceptions.ImportException;
+import net.datenwerke.eximport.im.ImportResult.ImportResultExtraData;
 import net.datenwerke.eximport.obj.EnclosedItemProperty;
 import net.datenwerke.eximport.obj.ExportedItem;
+import net.datenwerke.treedb.ext.service.eximport.TreeNodeImporter;
 
 /**
  * 
@@ -28,26 +33,32 @@ public class ImportSupervisor {
 
    private final ExportDataAnalyzerService analizerService;
    private final ImportService importService;
+   private final Provider<EntityManager> entityManagerProvider;
 
    private final ImportConfig config;
    private final List<Importer> importers;
+   
+   private boolean useMergeImporter = false;
 
-   private Map<String, Object> externalReferences = new HashMap<String, Object>();
-   private Map<String, Object> importedObjects = new HashMap<String, Object>();
-   private Map<Object, String> importedObjectsImportIdLookup = new HashMap<Object, String>();
-   private Set<String> enclosedObjects = new LinkedHashSet<String>();
+   private Map<String, Object> externalReferences = new HashMap<>();
+   private Map<String, Object> importedObjects = new HashMap<>();
+   private Map<String, ImportResultExtraData> importExtraData = new HashMap<>();
+   private Map<Object, String> importedObjectsImportIdLookup = new HashMap<>();
+   private Set<String> enclosedObjects = new LinkedHashSet<>();
 
-   private Set<String> successfullyImported = new LinkedHashSet<String>();
+   private Set<String> successfullyImported = new LinkedHashSet<>();
 
-   private Set<String> ignoredReferencesWithNoConfig = new HashSet<String>();
-
+   private Set<String> ignoredReferencesWithNoConfig = new HashSet<>();
+   
    @Inject
    public ImportSupervisor(ExportDataAnalyzerService analizerService, ImportService importService,
-         @Assisted ImportConfig config, @Assisted List<Importer> importers) {
+         Provider<EntityManager> entityProvider, @Assisted ImportConfig config, @Assisted List<Importer> importers) {
 
       /* store objects */
       this.analizerService = analizerService;
       this.importService = importService;
+
+      this.entityManagerProvider = entityProvider;
 
       this.config = config;
       this.importers = importers;
@@ -63,11 +74,10 @@ public class ImportSupervisor {
          enclosedObjects.addAll(exportedItem.getEnclosedObjectIds());
       }
 
-      for (Importer importer : importers)
-         importer.importData();
+      importers.forEach(Importer::importData);
 
       /* post process */
-      Set<String> processedItems = new HashSet<String>();
+      Set<String> processedItems = new HashSet<>();
 
       boolean addedToProcessing = true;
       while (addedToProcessing) {
@@ -114,14 +124,16 @@ public class ImportSupervisor {
          if (!enclosedObjects.contains(entry.getKey()))
             objects.put(entry.getKey(), entry.getValue());
 
-      return new ImportResult(name, description, date, objects, ignoredReferencesWithNoConfig);
+      return new ImportResult(name, description, date, objects, importExtraData, ignoredReferencesWithNoConfig);
    }
 
    private void configureImporters() {
       Map<Importer, Queue<ImportItemConfig>> configMap = createConfigMap();
 
-      for (Importer importer : importers)
+      for (Importer importer : importers) {
+         if (importer instanceof TreeNodeImporter) ((TreeNodeImporter) importer).setUseMergeImporter(useMergeImporter);
          importer.configure(this, config.getSpecificImporterConfigs(), configMap.get(importer));
+      }
    }
 
    private Map<Importer, Queue<ImportItemConfig>> createConfigMap() {
@@ -145,6 +157,15 @@ public class ImportSupervisor {
                "An object " + object.getClass() + " with id " + id + " was registered a second time.");
       importedObjects.put(id, object);
       importedObjectsImportIdLookup.put(object, id);
+   }
+   
+   public void registerImportExtraData(String id, ImportResultExtraData data) {
+      if (null == id || "".equals(id))
+         throw new IllegalStateException("ID may not be null.");
+      if (importExtraData.containsKey(id))
+         throw new IllegalStateException(
+               "Extra data for the object with id " + id + " was registered a second time.");
+      importExtraData.put(id, data);
    }
 
    public void notifyImportDone(String id, Object obj) {
@@ -240,15 +261,39 @@ public class ImportSupervisor {
       throw new IllegalStateException("Could not find importer for enclosed item: " + type);
    }
 
+   public void setUseMergeImporter(boolean value) {
+      this.useMergeImporter = value;
+   }
+
    public void registerExternalReference(String id, Object referenceObject) {
       externalReferences.put(id, referenceObject);
    }
 
    public boolean isExternalReference(String id) {
-      return externalReferences.containsKey(id);
+      boolean exists = externalReferences.containsKey(id);
+      if (!useMergeImporter)
+         return exists;
+
+      return getExternalReference(id) != null;
    }
 
    public Object getExternalReference(String id) {
-      return externalReferences.get(id);
+      Object obj = externalReferences.get(id);
+
+      if (!useMergeImporter)
+         return obj;
+
+      if (!id.contains("-"))
+         return null;
+
+      String type = id.split("-")[0];
+      String idNum = id.split("-")[1];
+
+      try {
+         obj = entityManagerProvider.get().find(Class.forName(type), Long.parseLong(idNum));
+         return obj;
+      } catch (Exception e) {
+         return null;
+      }
    }
 }

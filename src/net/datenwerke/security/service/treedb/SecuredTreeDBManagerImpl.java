@@ -6,6 +6,7 @@ import java.util.List;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 
+import net.datenwerke.rs.keyutils.service.keyutils.KeyNameGeneratorService;
 import net.datenwerke.security.service.eventlogger.annotations.FireForceRemoveEntityEvents;
 import net.datenwerke.security.service.eventlogger.annotations.FirePersistEntityEvents;
 import net.datenwerke.security.service.eventlogger.annotations.FireRemoveEntityEvents;
@@ -19,6 +20,8 @@ public abstract class SecuredTreeDBManagerImpl<A extends SecuredAbstractNode<A>>
 
    @Inject
    protected SecurityService securityService;
+   @Inject
+   protected KeyNameGeneratorService keyNameGeneratorService;
 
    @Override
    public List<A> getVirtualRoots() {

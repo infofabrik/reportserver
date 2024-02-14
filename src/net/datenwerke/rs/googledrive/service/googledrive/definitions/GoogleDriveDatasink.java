@@ -20,6 +20,7 @@ import com.google.inject.Provider;
 import net.datenwerke.dtoservices.dtogenerator.annotations.AdditionalField;
 import net.datenwerke.dtoservices.dtogenerator.annotations.ExposeToClient;
 import net.datenwerke.dtoservices.dtogenerator.annotations.GenerateDto;
+import net.datenwerke.eximport.ex.annotations.ExportableField;
 import net.datenwerke.gf.base.service.annotations.Field;
 import net.datenwerke.gf.base.service.annotations.Indexed;
 import net.datenwerke.rs.core.service.datasinkmanager.BasicDatasinkService;
@@ -31,6 +32,7 @@ import net.datenwerke.rs.googledrive.service.googledrive.GoogleDriveService;
 import net.datenwerke.rs.googledrive.service.googledrive.definitions.dtogen.GoogleDriveDatasink2DtoPostProcessor;
 import net.datenwerke.rs.googledrive.service.googledrive.locale.GoogleDriveDatasinkMessages;
 import net.datenwerke.rs.oauth.service.oauth.OAuthAuthenticatable;
+import net.datenwerke.rs.utils.entitymerge.service.annotations.EntityMergeField;
 import net.datenwerke.rs.utils.instancedescription.annotations.InstanceDescription;
 import net.datenwerke.rs.utils.misc.DateUtils;
 import net.datenwerke.security.service.crypto.pbe.PbeService;
@@ -80,19 +82,24 @@ public class GoogleDriveDatasink extends DatasinkDefinition implements OAuthAuth
    @ExposeToClient
    @Field
    @Type(type = "net.datenwerke.rs.utils.hibernate.RsClobType")
+   @EntityMergeField
    private String appKey;
 
    @ExposeToClient(exposeValueToClient = false, mergeDtoValueBack = true)
    @Type(type = "net.datenwerke.rs.utils.hibernate.RsClobType")
+   @EntityMergeField
+   @ExportableField(exportField = false)
    private String secretKey;
 
    @ExposeToClient(exposeValueToClient = false, mergeDtoValueBack = true)
    @Type(type = "net.datenwerke.rs.utils.hibernate.RsClobType")
+   @EntityMergeField
    private String refreshToken;
 
    @ExposeToClient
    @Field
    @Column(length = 1024)
+   @EntityMergeField
    private String folder = "/";
 
    @Override
@@ -167,8 +174,10 @@ public class GoogleDriveDatasink extends DatasinkDefinition implements OAuthAuth
     */
 
    public void setSecretKey(String secretKey) {
-      if (null == secretKey)
-         secretKey = "";
+      if (null == secretKey) {
+         this.secretKey = null;
+         return;
+      }
 
       EncryptionService encryptionService = pbeServiceProvider.get().getEncryptionService();
       byte[] encrypted = encryptionService.encrypt(secretKey);

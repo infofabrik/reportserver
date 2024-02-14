@@ -13,5 +13,7 @@ public interface CryptoService {
    public CryptoCredentials getCryptoCredentials(String keyIdentifier);
 
    public CryptoCredentials getUserCryptoCredentials(String email);
+   
+   public String generateDefaultKey();
 
 }

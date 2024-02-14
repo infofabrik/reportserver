@@ -15,6 +15,7 @@ import net.datenwerke.rs.core.service.datasourcemanager.entities.DatasourceDefin
 import net.datenwerke.rs.core.service.datasourcemanager.entities.DatasourceDefinitionConfig;
 import net.datenwerke.rs.fileserver.service.fileserver.entities.FileServerFile;
 import net.datenwerke.rs.scriptdatasource.service.scriptdatasource.locale.ScriptDatasourceMessages;
+import net.datenwerke.rs.utils.entitymerge.service.annotations.EntityMergeField;
 import net.datenwerke.rs.utils.instancedescription.annotations.InstanceDescription;
 
 @Entity
@@ -34,12 +35,15 @@ public class ScriptDatasource extends DatasourceDefinition implements CacheableD
 
    @ExposeToClient
    @ManyToOne
+   @EntityMergeField
    private FileServerFile script;
 
    @ExposeToClient
+   @EntityMergeField
    private int databaseCache = -1;
 
    @ExposeToClient(view = DtoView.MINIMAL)
+   @EntityMergeField
    private boolean defineAtTarget;
 
    @Override

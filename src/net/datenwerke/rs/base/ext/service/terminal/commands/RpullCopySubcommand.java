@@ -139,7 +139,7 @@ public class RpullCopySubcommand implements RpullSubCommandHook {
    private CommandResult checkEntities(RemoteRsRestServer remoteRsServer, String remoteEntityPath,
          String localTarget, boolean includeVariants, Map<String, Object> errors) {
       Map<String, Object> results = remoteEntityImporterServiceProvider.get().checkImportRemoteEntities(remoteRsServer,
-            remoteEntityPath, localTarget, includeVariants, errors);
+            remoteEntityPath, localTarget, includeVariants, false, errors);
       return terminalServiceProvider.get().convertSimpleMapToCommandResult(Arrays.asList("Test results"), "No errors found", results);
    }
    
@@ -150,7 +150,7 @@ public class RpullCopySubcommand implements RpullSubCommandHook {
       final TerminalService terminalService = terminalServiceProvider.get();
       Instant start = Instant.now();
       ImportResult result = remoteEntityImporterServiceProvider.get().importRemoteEntities(remoteRsServer,
-            remoteEntityPath, localTarget, includeVariants);
+            remoteEntityPath, localTarget, includeVariants, false);
       Instant end = Instant.now();
       CommandResult commandResult = new CommandResult();
       

@@ -8,10 +8,12 @@ import org.hibernate.proxy.HibernateProxy;
 
 import com.google.inject.Inject;
 
+import groovy.lang.Closure;
 import net.datenwerke.gf.client.upload.dto.FileToUpload;
 import net.datenwerke.rs.fileserver.service.fileserver.entities.AbstractFileServerNode;
 import net.datenwerke.rs.fileserver.service.fileserver.entities.AbstractFileServerNode__;
 import net.datenwerke.rs.fileserver.service.fileserver.entities.FileServerFile;
+import net.datenwerke.rs.fileserver.service.fileserver.entities.FileServerFile__;
 import net.datenwerke.rs.fileserver.service.fileserver.entities.FileServerFolder;
 import net.datenwerke.rs.fileserver.service.fileserver.vfs.FileServerVfs;
 import net.datenwerke.rs.terminal.service.terminal.TerminalService;
@@ -30,6 +32,7 @@ import net.datenwerke.security.service.treedb.actions.InsertAction;
 
 public class FileServerServiceImpl extends SecuredTreeDBManagerImpl<AbstractFileServerNode>
       implements FileServerService {
+   
 
    @Inject
    private TerminalService terminalService;
@@ -79,20 +82,7 @@ public class FileServerServiceImpl extends SecuredTreeDBManagerImpl<AbstractFile
          return null;
       }
    }
-
-   public AbstractFileServerNode copy(AbstractFileServerNode source, AbstractFileServerNode target, boolean deep,
-         boolean checkRights) {
-      if (checkRights)
-         testCopyRights(source, target);
-      AbstractFileServerNode copiedNode = copy(source, target);
-
-      if (deep)
-         for (AbstractFileServerNode child : source.getChildren())
-            copy(child, copiedNode, true, checkRights);
-
-      return copiedNode;
-   }
-
+   @Override
    protected AbstractFileServerNode copy(AbstractFileServerNode source, AbstractFileServerNode target) {
       /* reuse existing folders */
       if (source instanceof FileServerFolder) {
@@ -103,6 +93,7 @@ public class FileServerServiceImpl extends SecuredTreeDBManagerImpl<AbstractFile
       }
 
       AbstractFileServerNode cloned = cloneNode(source);
+      afterNodeCopy(cloned, target);
       target.addChild(cloned);
       persist(cloned);
       merge(target);
@@ -249,5 +240,44 @@ public class FileServerServiceImpl extends SecuredTreeDBManagerImpl<AbstractFile
       return file;
    }
 
+   @Override
+   @QueryByAttribute(
+         select = FileServerFile__.id, 
+         from = FileServerFile.class, 
+         where = FileServerFile__.key, 
+         throwNoResultException = true
+   )
+   public long getFileIdFromKey(String key) {
+      return -1; // magic
+   }
+   
+   @Override
+   @QueryByAttribute(
+         where = FileServerFile__.key
+   )
+   public FileServerFile getFileByKey(String key) {
+      return null; // by magic
+   }
+   
+   @Override
+   protected void afterNodeCopy(AbstractFileServerNode copiedNode, AbstractFileServerNode parent) {
+      if (copiedNode instanceof FileServerFile) {
+         FileServerFile clone = (FileServerFile) copiedNode;
 
+         Closure getAllNodes = new Closure(null) {
+            public List<AbstractFileServerNode> doCall() {
+               return parent.getChildren();
+            }
+         };
+         clone.setName(clone.getName() == null
+               ? keyNameGeneratorService.getNextCopyNameFileServerFile("", getAllNodes)
+               : keyNameGeneratorService.getNextCopyNameFileServerFile(clone.getName(), getAllNodes));
+         clone.setKey(keyNameGeneratorService.getNextCopyKey(clone.getKey(), this));
+      }
+   }
+
+   @Override
+   public AbstractFileServerNode getNodeByKey(String key) {
+      return getFileByKey(key);
+   }
 }

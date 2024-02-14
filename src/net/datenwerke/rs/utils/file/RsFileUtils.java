@@ -5,8 +5,12 @@ import java.math.BigInteger;
 import java.math.RoundingMode;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.commons.io.FileUtils;
+
+import net.datenwerke.treedb.service.treedb.AbstractNode;
 
 /**
  * Custom Implementation of FileUtils.byteCountToDisplaySize to fix rounding bug

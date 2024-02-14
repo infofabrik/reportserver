@@ -276,4 +276,9 @@ public class DashboardServiceImpl extends SecuredTreeDBManagerImpl<AbstractDashb
       return null;
    }
 
+   @Override
+   public AbstractDashboardManagerNode getNodeByKey(String key) {
+      throw new UnsupportedOperationException("Method not implemented for Dashboard nodes - they don't have keys");
+   }
+
 }

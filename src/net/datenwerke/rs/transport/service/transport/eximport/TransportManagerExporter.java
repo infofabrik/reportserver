@@ -23,7 +23,7 @@ public class TransportManagerExporter extends TreeNodeExporter {
    private static final String EXPORTER_ID = "TransportManagerExporter";
    
    public static final String EXPORTER_NAME = "Transport-Export";
-
+   
    @Override
    public String getExporterId() {
       return EXPORTER_ID;
@@ -71,5 +71,4 @@ public class TransportManagerExporter extends TreeNodeExporter {
    public Set<Class<?>> getAllowedReferenceTypes() {
       return new HashSet<>(Arrays.asList(AbstractTransportManagerNode.class));
    }
-
 }

@@ -446,5 +446,8 @@ public class UserManagerServiceImpl extends SecuredTreeDBManagerImpl<AbstractUse
             .getSingleResult()).longValue();
    }
 
-   
+   @Override
+   public AbstractUserManagerNode getNodeByKey(String key) {
+      throw new UnsupportedOperationException("Method not implemented for User nodes - they don't have keys");
+   }
 }

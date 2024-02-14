@@ -23,9 +23,11 @@ import net.datenwerke.gxtdto.client.dtomanager.DtoView;
 import net.datenwerke.rs.core.client.datasinkmanager.locale.DatasinksMessages;
 import net.datenwerke.rs.core.service.datasinkmanager.HasBasicDatasinkService;
 import net.datenwerke.rs.core.service.datasinkmanager.HasDefaultConfiguration;
-import net.datenwerke.rs.utils.entitycloner.annotation.EntityClonerIgnore;
+import net.datenwerke.rs.keyutils.service.keyutils.KeyNameGeneratorService;
+import net.datenwerke.rs.utils.entitymerge.service.annotations.EntityMergeField;
 import net.datenwerke.rs.utils.instancedescription.annotations.Description;
 import net.datenwerke.rs.utils.instancedescription.annotations.Title;
+import net.datenwerke.rs.utils.validator.shared.SharedRegex;
 
 /**
  * Used to define datasinks that can be used in ReportServer.
@@ -53,6 +55,7 @@ abstract public class DatasinkDefinition extends AbstractDatasinkManagerNode
    @Field
    @Column(length = 128)
    @Title
+   @EntityMergeField
    private String name;
 
    @ExposeToClient(view = DtoView.MINIMAL)
@@ -60,22 +63,24 @@ abstract public class DatasinkDefinition extends AbstractDatasinkManagerNode
    @Field
    @Type(type = "net.datenwerke.rs.utils.hibernate.RsClobType")
    @Description
+   @EntityMergeField
    private String description;
    
    @ExposeToClient(
          view = DtoView.LIST, 
          validateDtoProperty = @PropertyValidator(
                string = @StringValidator(
-                     regex = "^[a-zA-Z0-9_\\-]*$"
+                     regex = SharedRegex.KEY_REGEX
                )
          )
    )
    @Field
    @Column(
-         length = 40,
-         unique = true
+         length = KeyNameGeneratorService.KEY_LENGTH,
+         unique = true,
+         nullable = false
    )
-   @EntityClonerIgnore
+
    private String key;
 
    public String getName() {

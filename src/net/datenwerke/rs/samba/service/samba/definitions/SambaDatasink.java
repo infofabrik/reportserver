@@ -13,6 +13,7 @@ import com.google.inject.Provider;
 import net.datenwerke.dtoservices.dtogenerator.annotations.AdditionalField;
 import net.datenwerke.dtoservices.dtogenerator.annotations.ExposeToClient;
 import net.datenwerke.dtoservices.dtogenerator.annotations.GenerateDto;
+import net.datenwerke.eximport.ex.annotations.ExportableField;
 import net.datenwerke.gf.base.service.annotations.Field;
 import net.datenwerke.gf.base.service.annotations.Indexed;
 import net.datenwerke.rs.core.service.datasinkmanager.BasicDatasinkService;
@@ -24,6 +25,7 @@ import net.datenwerke.rs.core.service.datasinkmanager.entities.DatasinkDefinitio
 import net.datenwerke.rs.samba.service.samba.SambaService;
 import net.datenwerke.rs.samba.service.samba.definitions.dtogen.SambaDatasink2DtoPostProcessor;
 import net.datenwerke.rs.samba.service.samba.locale.SambaMessages;
+import net.datenwerke.rs.utils.entitymerge.service.annotations.EntityMergeField;
 import net.datenwerke.rs.utils.instancedescription.annotations.InstanceDescription;
 import net.datenwerke.rs.utils.misc.DateUtils;
 import net.datenwerke.security.service.crypto.pbe.PbeService;
@@ -69,26 +71,33 @@ public class SambaDatasink extends DatasinkDefinition implements HostDatasink, F
    @ExposeToClient
    @Field
    @Column(length = 1024)
+   @EntityMergeField
    private String host = "smb://smb.host.net";
 
    @ExposeToClient
    @Field
+   @EntityMergeField
    private int port = 445;
 
    @ExposeToClient
    @Field
+   @EntityMergeField
    private String domain;
 
    @ExposeToClient
    @Field
+   @EntityMergeField
    private String username;
 
    @ExposeToClient(exposeValueToClient = false, mergeDtoValueBack = true)
+   @EntityMergeField
+   @ExportableField(exportField = false)
    private String password;
 
    @ExposeToClient
    @Field
    @Column(length = 1024)
+   @EntityMergeField
    private String folder = "./";
 
    @Override
@@ -157,8 +166,10 @@ public class SambaDatasink extends DatasinkDefinition implements HostDatasink, F
     * @param password the password to encrypt and set
     */
    public void setPassword(String password) {
-      if (null == password)
-         password = "";
+      if (null == password) {
+         this.password = null;
+         return;
+      }
 
       EncryptionService encryptionService = pbeServiceProvider.get().getEncryptionService();
       byte[] encrypted = encryptionService.encrypt(password);

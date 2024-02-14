@@ -199,7 +199,8 @@ public class ExportServiceImpl implements ExportService {
    }
 
    @Override
-   public Optional<ExportConfig> configureExport(final AbstractNode<?> node, final boolean includeVariants) {
+   public Optional<ExportConfig> configureExport(final AbstractNode<?> node, final boolean includeVariants,
+         final boolean flatten) {
       return hookHandler.getHookers(ExportConfigHook.class)
             .stream()
             .filter(hooker -> hooker.consumes(node))
@@ -211,9 +212,18 @@ public class ExportServiceImpl implements ExportService {
                      public boolean includeVariants() {
                         return includeVariants;
                      }
+                     @Override
+                     public boolean flatten() {
+                        return flatten;
+                     }
+                     
                   };
                } else {
-                  exportOptions = new ExportOptions() {};
+                  exportOptions = new ExportOptions() {
+                     @Override
+                     public boolean flatten() {
+                        return flatten;
+                     }};
                }
                return hooker.configure(node, exportOptions);
             })

@@ -1,5 +1,7 @@
 package net.datenwerke.rs.transport.service.transport;
 
+import java.util.List;
+
 import net.datenwerke.rs.transport.service.transport.entities.AbstractTransportManagerNode;
 import net.datenwerke.rs.transport.service.transport.entities.Transport;
 import net.datenwerke.treedb.service.treedb.TreeDBManager;
@@ -13,5 +15,7 @@ public interface TransportTreeService extends TreeDBManager<AbstractTransportMan
    long getTransportIdFromKey(String key);
    
    Transport getTransportByKey(String key);
+   
+   List<Transport> getTransportsByStatus(String status);
 
 }

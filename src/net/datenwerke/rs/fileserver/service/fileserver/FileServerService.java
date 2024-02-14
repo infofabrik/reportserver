@@ -8,7 +8,7 @@ import net.datenwerke.rs.terminal.service.terminal.vfs.VFSLocation;
 import net.datenwerke.treedb.service.treedb.TreeDBManager;
 
 public interface FileServerService extends TreeDBManager<AbstractFileServerNode> {
-
+   
    /**
     * Checks rights.
     * 
@@ -50,5 +50,9 @@ public interface FileServerService extends TreeDBManager<AbstractFileServerNode>
    AbstractFileServerNode getNodeByPath(String path, boolean checkRights);
    
    FileServerFile getFileFromUploadFile(FileToUpload uFile);
+   
+   long getFileIdFromKey(String key);
+   
+   FileServerFile getFileByKey(String key);
    
 }

@@ -11,6 +11,7 @@ import net.datenwerke.gf.client.managerhelper.mainpanel.MainPanelView;
 import net.datenwerke.rs.transport.client.transport.dto.TransportDto;
 import net.datenwerke.rs.transport.client.transport.dto.TransportFolderDto;
 import net.datenwerke.rs.transport.client.transport.ui.forms.FolderForm;
+import net.datenwerke.rs.transport.client.transport.ui.forms.ObjectTreeForm;
 import net.datenwerke.rs.transport.client.transport.ui.forms.TransportForm;
 import net.datenwerke.security.ext.client.security.ui.SecurityView;
 import net.datenwerke.treedb.client.treedb.dto.AbstractNodeDto;
@@ -20,6 +21,7 @@ public class MainPanelViewProviderHooker implements MainPanelViewProviderHook {
    
    private final Provider<FolderForm> folderFormProvider;
    private final Provider<TransportForm> transportFormProvider;
+   private final Provider<ObjectTreeForm> objectTreeFormProvider;
 
    private final Provider<SecurityView> securityViewProvider;
 
@@ -27,12 +29,14 @@ public class MainPanelViewProviderHooker implements MainPanelViewProviderHook {
    public MainPanelViewProviderHooker(
          Provider<FolderForm> folderFormProvider,
          Provider<SecurityView> securityViewProvider,
-         Provider<TransportForm> transportFormProvider
+         Provider<TransportForm> transportFormProvider,
+         Provider<ObjectTreeForm> objectTreeFormProvider
          ) {
 
       this.folderFormProvider = folderFormProvider;
       this.securityViewProvider = securityViewProvider;
       this.transportFormProvider = transportFormProvider;
+      this.objectTreeFormProvider = objectTreeFormProvider;
    }
 
    public List<MainPanelView> mainPanelViewProviderHook_getView(AbstractNodeDto node) {
@@ -44,7 +48,7 @@ public class MainPanelViewProviderHooker implements MainPanelViewProviderHook {
    }
    
    private List<MainPanelView> getViewForTransport(final TransportDto transport) {
-      return Arrays.asList(transportFormProvider.get(), securityViewProvider.get());
+      return Arrays.asList(transportFormProvider.get(), securityViewProvider.get(), objectTreeFormProvider.get());
    }
 
 

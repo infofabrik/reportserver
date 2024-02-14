@@ -85,7 +85,7 @@ public class BasicObjectImporter {
       }
    }
 
-   protected void importProperties(Object obj, Collection<ItemProperty> properties) throws SecurityException,
+   public void importProperties(Object obj, Collection<ItemProperty> properties) throws SecurityException,
          NoSuchFieldException, IllegalArgumentException, IllegalAccessException, InstantiationException {
       Set<ItemProperty> processedProperties = new HashSet<ItemProperty>();
       boolean processedPropertiesChanged = true;

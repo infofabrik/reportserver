@@ -113,6 +113,7 @@
 	<source path="rs/incubator/shared"/>
 	<source path="rs/jxlsreport/client"/>
 	<source path="rs/jxlsreport/shared"/>
+	<source path="rs/keyutils/client"/>
 	<source path="rs/license/client"/>
 	<source path="rs/dot/client"/>
 	<source path="rs/markdown/client"/>
@@ -178,7 +179,7 @@
 	<source path="treedb/shared"/>
 	<source path="usermanager/ext/client"/>
 	<source path="usermanager/ext/shared"/>
-	
+	<source path="rs/utils/validator/shared"/>
 	
 	
 	<generate-with class="net.datenwerke.rs.core.service.i18ntools.DwMessageClassGenerator">

@@ -20,6 +20,7 @@ import net.datenwerke.gxtdto.client.servercommunication.exceptions.NeedForcefulD
 import net.datenwerke.gxtdto.client.servercommunication.exceptions.ServerCallFailedException;
 import net.datenwerke.gxtdto.client.servercommunication.exceptions.ViolatedSecurityExceptionDto;
 import net.datenwerke.gxtdto.server.dtomanager.DtoService;
+import net.datenwerke.rs.keyutils.service.keyutils.KeyNameGeneratorService;
 import net.datenwerke.rs.utils.entitycloner.EntityClonerService;
 import net.datenwerke.rs.utils.exception.exceptions.NeedForcefulDeleteException;
 import net.datenwerke.security.service.security.SecurityService;
@@ -61,15 +62,22 @@ public abstract class TreeDBManagerTreeHandler<A extends AbstractNode<A>> extend
    final protected DtoService dtoService;
    final protected SecurityService securityService;
    final protected EntityClonerService entityClonerService;
+   final protected KeyNameGeneratorService keyGeneratorService;
 
-   public TreeDBManagerTreeHandler(TreeDBManager<A> treeDBManager, DtoService dtoGenerator,
-         SecurityService securityService, EntityClonerService entityClonerService) {
+   public TreeDBManagerTreeHandler(
+         TreeDBManager<A> treeDBManager, 
+         DtoService dtoGenerator,
+         SecurityService securityService, 
+         EntityClonerService entityClonerService,
+         KeyNameGeneratorService keyGeneratorService
+         ) {
 
       /* store objects */
       this.dtoService = dtoGenerator;
       this.treeDBManager = treeDBManager;
       this.securityService = securityService;
       this.entityClonerService = entityClonerService;
+      this.keyGeneratorService = keyGeneratorService;
    }
 
    @SecurityChecked(argumentVerification = {
@@ -113,14 +121,14 @@ public abstract class TreeDBManagerTreeHandler<A extends AbstractNode<A>> extend
    @Transactional(rollbackOn = { Exception.class })
    public AbstractNodeDto loadFullViewNode(@Named("node") AbstractNodeDto node, Dto state)
          throws ServerCallFailedException {
-      A realNode = (A) treeDBManager.getNodeById(node.getId());
+      A realNode = (A)treeDBManager.getNodeById(node.getId());
       return (AbstractNodeDto) dtoService.createDtoFullAccess(realNode);
    }
 
    @Override
    @Transactional(rollbackOn = { Exception.class })
    public AbstractNodeDto loadNodeById(Long id, Dto state) throws ServerCallFailedException {
-      A realNode = (A) treeDBManager.getNodeById(id);
+      A realNode = (A)treeDBManager.getNodeById(id);
 
       securityService.assertRights((SecurityTarget) realNode, Read.class);
 
@@ -369,15 +377,15 @@ public abstract class TreeDBManagerTreeHandler<A extends AbstractNode<A>> extend
          throw new ServerCallFailedException("node is not to be duplicated");
       A parent = (A) realNode.getParent();
 
-      A clonedNode = entityClonerService.cloneEntity(realNode);
-      nodeCloned(clonedNode);
+      A clonedNode = entityClonerService.cloneEntity(realNode);      
+      nodeCloned(clonedNode, realNode);
       parent.addChild(clonedNode);
       treeDBManager.persist(clonedNode);
 
       return (AbstractNodeDto) dtoService.createDtoFullAccess(clonedNode);
    }
 
-   protected void nodeCloned(A clonedNode) {
+   protected void nodeCloned(A clonedNode, A sourceNode) {
 
    }
 
@@ -425,7 +433,7 @@ public abstract class TreeDBManagerTreeHandler<A extends AbstractNode<A>> extend
    public List<AbstractNodeDto> moveNodesAppend(List<AbstractNodeDto> nodes,
          @Named("reference") AbstractNodeDto reference, Dto state) throws ServerCallFailedException {
       /* get real nodes */
-      List<A> realNodes = new ArrayList();
+      List<A> realNodes = new ArrayList<A>();
       for (AbstractNodeDto nodeDto : nodes) {
          A node = treeDBManager.getNodeById(nodeDto.getId());
 
@@ -519,5 +527,4 @@ public abstract class TreeDBManagerTreeHandler<A extends AbstractNode<A>> extend
    protected void doUpdateNode(AbstractNodeDto node, A realNode) throws ServerCallFailedException {
 
    }
-
 }

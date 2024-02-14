@@ -41,7 +41,7 @@ public class PrinterModule extends AbstractModule {
    @DefaultPrinterDatasink
    public Optional<PrinterDatasink> provideDefaultDatasink(DatasinkTreeService datasinkService) {
       return datasinkService.getDefaultDatasink(PrinterDatasink.class, PROPERTY_DEFAULT_PRINTER_DATASINK_ID,
-            PROPERTY_DEFAULT_PRINTER_DATASINK_NAME, PROPERTY_DEFAULT_PRINTER_DATASINK_KEY);
+            PROPERTY_DEFAULT_PRINTER_DATASINK_NAME, PROPERTY_DEFAULT_PRINTER_DATASINK_KEY, PROPERTY_PRINTER_DISABLED);
    }
 
 }

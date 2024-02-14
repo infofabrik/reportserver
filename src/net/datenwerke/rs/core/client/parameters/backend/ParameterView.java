@@ -14,8 +14,6 @@ import java.util.Set;
 import com.google.gwt.cell.client.AbstractCell;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.NativeEvent;
-import com.google.gwt.event.logical.shared.SelectionEvent;
-import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.user.client.ui.AbstractImagePrototype;
@@ -28,7 +26,6 @@ import com.sencha.gxt.core.client.util.Margins;
 import com.sencha.gxt.data.shared.ListStore;
 import com.sencha.gxt.dnd.core.client.DND.Feedback;
 import com.sencha.gxt.dnd.core.client.DndDropEvent;
-import com.sencha.gxt.dnd.core.client.GridDragSource;
 import com.sencha.gxt.dnd.core.client.GridDropTarget;
 import com.sencha.gxt.widget.core.client.Component;
 import com.sencha.gxt.widget.core.client.Dialog.PredefinedButton;
@@ -41,8 +38,6 @@ import com.sencha.gxt.widget.core.client.event.CompleteEditEvent;
 import com.sencha.gxt.widget.core.client.event.CompleteEditEvent.CompleteEditHandler;
 import com.sencha.gxt.widget.core.client.event.DialogHideEvent;
 import com.sencha.gxt.widget.core.client.event.DialogHideEvent.DialogHideHandler;
-import com.sencha.gxt.widget.core.client.event.SelectEvent;
-import com.sencha.gxt.widget.core.client.event.SelectEvent.SelectHandler;
 import com.sencha.gxt.widget.core.client.form.FormPanel.LabelAlign;
 import com.sencha.gxt.widget.core.client.form.TextField;
 import com.sencha.gxt.widget.core.client.grid.ColumnConfig;
@@ -51,7 +46,6 @@ import com.sencha.gxt.widget.core.client.grid.Grid;
 import com.sencha.gxt.widget.core.client.grid.GridSelectionModel;
 import com.sencha.gxt.widget.core.client.grid.editing.GridEditing;
 import com.sencha.gxt.widget.core.client.grid.editing.GridInlineEditing;
-import com.sencha.gxt.widget.core.client.menu.Item;
 import com.sencha.gxt.widget.core.client.menu.Menu;
 import com.sencha.gxt.widget.core.client.menu.MenuItem;
 import com.sencha.gxt.widget.core.client.menu.SeparatorMenuItem;
@@ -414,25 +408,17 @@ public class ParameterView extends MainPanelView {
       Menu menu = new Menu();
       
       MenuItem edit = new DwMenuItem(BaseMessages.INSTANCE.edit(), BaseIcon.COG_EDIT);
-      edit.addSelectionHandler(new SelectionHandler<Item>() {
-         @Override
-         public void onSelection(SelectionEvent<Item> event) {
-            List<ParameterDefinitionDto> selectedItems = parameterGrid.getSelectionModel().getSelectedItems();
-            if (null != selectedItems && !selectedItems.isEmpty()) {
-               ParameterDefinitionDto pd = selectedItems.get(0);
-               displayEditParameter(pd);
-            }
+      edit.addSelectionHandler(event -> {
+         List<ParameterDefinitionDto> selectedItems = parameterGrid.getSelectionModel().getSelectedItems();
+         if (null != selectedItems && !selectedItems.isEmpty()) {
+            ParameterDefinitionDto pd = selectedItems.get(0);
+            displayEditParameter(pd);
          }
       });
       menu.add(edit);
       menu.add(new SeparatorMenuItem());
       MenuItem remove = new DwMenuItem(BaseMessages.INSTANCE.remove(), BaseIcon.REMOVE);
-      remove.addSelectionHandler(new SelectionHandler<Item>() {
-         @Override
-         public void onSelection(SelectionEvent<Item> event) {
-            prepareRemove();
-         }
-      });
+      remove.addSelectionHandler(event -> prepareRemove());
       menu.add(remove);
       
       menu.add(new SeparatorMenuItem());
@@ -515,7 +501,6 @@ public class ParameterView extends MainPanelView {
 
    protected void configureDnD(Grid<ParameterDefinitionDto> grid) {
       /* make it draggable */
-      final GridDragSource<ParameterDefinitionDto> gds = new GridDragSource<ParameterDefinitionDto>(grid);
       final GridDropTarget<ParameterDefinitionDto> target = new GridDropTarget<ParameterDefinitionDto>(grid) {
 
          @Override
@@ -560,36 +545,29 @@ public class ParameterView extends MainPanelView {
    private void addButtonsToEditWindow(final DwWindow window, final ParameterDefinitionDto definition) {
       /* cancel */
       DwTextButton cancelBtn = new DwTextButton(BaseMessages.INSTANCE.cancel());
-      cancelBtn.addSelectHandler(new SelectHandler() {
-
-         @Override
-         public void onSelect(SelectEvent event) {
-            definition.clearModified();
-            window.hide();
-         }
+      cancelBtn.addSelectHandler(event -> {
+         definition.clearModified();
+         window.hide();
       });
       window.addButton(cancelBtn);
 
       /* submit */
       final DwTextButton submitBtn = new DwTextButton(BaseMessages.INSTANCE.apply());
-      submitBtn.addSelectHandler(new SelectHandler() {
-         @Override
-         public void onSelect(SelectEvent event) {
-            if (null != editComponent) {
-               ParameterConfigurator configurator = parameterService.getConfigurator(definition);
-               if (null == configurator)
-                  throw new IllegalStateException(
-                        "We should have a configurator for " + definition.getClass().getName()); //$NON-NLS-1$
+      submitBtn.addSelectHandler(event -> {
+         if (null != editComponent) {
+            ParameterConfigurator configurator = parameterService.getConfigurator(definition);
+            if (null == configurator)
+               throw new IllegalStateException(
+                     "We should have a configurator for " + definition.getClass().getName()); //$NON-NLS-1$
 
-               /* update definition before close */
-               configurator.updateDefinitionOnSubmit(definition, editComponent);
-            }
-
-            // TODO: GXT CHECK
-            // window.hide(submitBtn);
-            window.hide();
-            updateParameter(definition);
+            /* update definition before close */
+            configurator.updateDefinitionOnSubmit(definition, editComponent);
          }
+
+         // TODO: GXT CHECK
+         // window.hide(submitBtn);
+         window.hide();
+         updateParameter(definition);
       });
 
       window.addButton(submitBtn);
@@ -618,9 +596,13 @@ public class ParameterView extends MainPanelView {
                   public ListStore<ParameterDefinitionDto> getAllItemsStore() {
                      ListStore<ParameterDefinitionDto> tmpParameterStore = new ListStore<ParameterDefinitionDto>(
                            defPa.dtoId());
-                     for (ParameterDefinitionDto def : parameterStore.getAll())
-                        if (!def.equals(definition))
-                           tmpParameterStore.add(def);
+                     
+                     tmpParameterStore.addAll(
+                           parameterStore.getAll()
+                           .stream()
+                           .filter(def -> !def.equals(definition))
+                           .collect(toList()));
+                     
                      return tmpParameterStore;
                   }
 
@@ -796,18 +778,15 @@ public class ParameterView extends MainPanelView {
 
       ConfirmMessageBox cmb = new DwConfirmMessageBox(ParametersMessages.INSTANCE.updateInstancesMsgTitle(),
             ParametersMessages.INSTANCE.updateInstancesMsg());
-      cmb.addDialogHideHandler(new DialogHideHandler() {
-         @Override
-         public void onDialogHide(DialogHideEvent event) {
-            if (event.getHideButton() == PredefinedButton.YES) {
-               parameterDao.updateParameterInstances((ReportDto) getSelectedNode(), models,
-                     new NotamCallback<ReportDto>(ParametersMessages.INSTANCE.parameterInstancesUpdated()) {
-                        @Override
-                        public void doOnSuccess(ReportDto updatedNode) {
-                           updateStore(updatedNode);
-                        }
-                     });
-            }
+      cmb.addDialogHideHandler(event -> {
+         if (event.getHideButton() == PredefinedButton.YES) {
+            parameterDao.updateParameterInstances((ReportDto) getSelectedNode(), models,
+                  new NotamCallback<ReportDto>(ParametersMessages.INSTANCE.parameterInstancesUpdated()) {
+                     @Override
+                     public void doOnSuccess(ReportDto updatedNode) {
+                        updateStore(updatedNode);
+                     }
+                  });
          }
       });
       cmb.show();
@@ -821,7 +800,7 @@ public class ParameterView extends MainPanelView {
       /* clear store */
       parameterStore.clear();
 
-      List<ParameterDefinitionDto> parameters = new ArrayList<ParameterDefinitionDto>();
+      List<ParameterDefinitionDto> parameters = new ArrayList<>();
 
       if (node instanceof ReportDto)
          parameters = ((ReportDto) node).getParameterDefinitions();

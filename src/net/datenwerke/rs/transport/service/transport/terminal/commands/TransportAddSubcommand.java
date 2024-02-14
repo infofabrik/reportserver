@@ -6,11 +6,11 @@ import java.util.List;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
+import net.datenwerke.rs.terminal.service.terminal.TerminalService;
 import net.datenwerke.rs.terminal.service.terminal.TerminalSession;
 import net.datenwerke.rs.terminal.service.terminal.exceptions.TerminalException;
 import net.datenwerke.rs.terminal.service.terminal.helpers.AutocompleteHelper;
 import net.datenwerke.rs.terminal.service.terminal.helpers.CommandParser;
-import net.datenwerke.rs.terminal.service.terminal.helpmessenger.annotations.Argument;
 import net.datenwerke.rs.terminal.service.terminal.helpmessenger.annotations.CliHelpMessage;
 import net.datenwerke.rs.terminal.service.terminal.helpmessenger.annotations.NonOptArgument;
 import net.datenwerke.rs.terminal.service.terminal.obj.CommandResult;
@@ -20,6 +20,8 @@ import net.datenwerke.rs.terminal.service.terminal.vfs.exceptions.VFSException;
 import net.datenwerke.rs.transport.service.transport.TransportService;
 import net.datenwerke.rs.transport.service.transport.entities.Transport;
 import net.datenwerke.rs.transport.service.transport.locale.TransportManagerMessages;
+import net.datenwerke.security.service.security.rights.Read;
+import net.datenwerke.security.service.security.rights.Write;
 import net.datenwerke.treedb.service.treedb.AbstractNode;
 
 public class TransportAddSubcommand implements TransportSubCommandHook {
@@ -27,12 +29,15 @@ public class TransportAddSubcommand implements TransportSubCommandHook {
    public static final String BASE_COMMAND = "add";
    
    private final Provider<TransportService> transportServiceProvider;
+   private final Provider<TerminalService> terminalServiceProvider;
    
    @Inject
    public TransportAddSubcommand(
-         Provider<TransportService> transportServiceProvider
+         Provider<TransportService> transportServiceProvider,
+         Provider<TerminalService> terminalServiceProvider
          ) {
       this.transportServiceProvider = transportServiceProvider;
+      this.terminalServiceProvider = terminalServiceProvider;
    }
 
    @Override
@@ -60,15 +65,6 @@ public class TransportAddSubcommand implements TransportSubCommandHook {
                      description = "commandTransportAdd_element",
                      mandatory = true
                )
-         },
-         args = {
-               @Argument(
-                     flag = "v", 
-                     hasValue = false, 
-                     valueName = "includeVariants", 
-                     description = "commandTransportAdd_sub_flagV", 
-                     mandatory = false
-               )
          }
    )
    @Override 
@@ -76,29 +72,11 @@ public class TransportAddSubcommand implements TransportSubCommandHook {
       List<String> arguments = parser.getNonOptionArguments();
       if (2 != arguments.size())
          throw new IllegalArgumentException("Exactly two arguments expected");
-      
-      final String argStr = "v";
-      final boolean includeVariants = parser.hasOption("v", argStr);
-      
       final VirtualFileSystemDeamon vfs = session.getFileSystem();
       
       try {
-         Collection<VFSLocation> resolvedTarget = vfs.getLocation(arguments.get(0)).resolveWildcards(vfs);
-         if (resolvedTarget.size()!=1)
-            throw new IllegalArgumentException("Exactly one transport expected.");
-         VFSLocation target = resolvedTarget.iterator().next();
-         
-         AbstractNode<?> transportTarget = target.getFilesystemManager().getNodeByLocation(target);
-         if (! (transportTarget instanceof Transport))
-            throw new IllegalArgumentException(
-                  "Target is not a transport or transport not found: '" + arguments.get(0) + "'");
-         
-         if (!target.exists())
-            throw new IllegalArgumentException("Transport does not exist: '" + arguments.get(0) + "'");
-         if (target.isFolder())
-            throw new IllegalArgumentException("Target is a folder.");
-         
-         Transport transport = (Transport) transportTarget;
+         Transport transport = terminalServiceProvider.get().getSingleObjectOfTypeByQuery(Transport.class,
+               arguments.get(0), session, Read.class, Write.class);
          if (transport.isClosed())
             throw new IllegalArgumentException("Cannot add to closed transport");
          
@@ -114,7 +92,7 @@ public class TransportAddSubcommand implements TransportSubCommandHook {
          if (element.isFolder())
             throw new IllegalArgumentException("Cannot add a folder to transport.");
          
-         transportServiceProvider.get().addElement(transport, element, includeVariants);
+         transportServiceProvider.get().addElement(transport, element, false);
          
          return new CommandResult("Added to transport '" + transport + "': '" + element + "'");
       } catch (VFSException e) {

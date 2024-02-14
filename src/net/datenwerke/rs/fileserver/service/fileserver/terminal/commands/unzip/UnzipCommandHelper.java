@@ -9,12 +9,15 @@ import net.datenwerke.rs.fileserver.service.fileserver.FileServerService;
 import net.datenwerke.rs.fileserver.service.fileserver.entities.AbstractFileServerNode;
 import net.datenwerke.rs.fileserver.service.fileserver.entities.FileServerFile;
 import net.datenwerke.rs.fileserver.service.fileserver.entities.FileServerFolder;
+import net.datenwerke.rs.keyutils.service.keyutils.KeyNameGeneratorService;
 import net.datenwerke.rs.utils.misc.MimeUtils;
 
 public class UnzipCommandHelper {
 
    private FileServerService fileServerService;
    private MimeUtils mimeUtils;
+   @Inject
+   private KeyNameGeneratorService keyGeneratorService;
 
    @Inject
    public UnzipCommandHelper(FileServerService fileServerService, MimeUtils mimeUtils) {
@@ -72,9 +75,9 @@ public class UnzipCommandHelper {
                fsFile.setContentType("application/octet-stream");
 
             fsFile.setContentType(contentType);
+            fsFile.setKey(keyGeneratorService.generateDefaultKey(fileServerService));
             file = fsFile;
          }
-
          file.setParent(base);
          fileServerService.persist(file);
          base.addChild(file);

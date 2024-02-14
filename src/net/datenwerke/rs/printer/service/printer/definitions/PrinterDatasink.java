@@ -18,6 +18,7 @@ import net.datenwerke.rs.core.service.datasinkmanager.configs.DatasinkConfigurat
 import net.datenwerke.rs.core.service.datasinkmanager.entities.DatasinkDefinition;
 import net.datenwerke.rs.printer.service.printer.PrinterService;
 import net.datenwerke.rs.printer.service.printer.locale.PrinterDatasinkMessages;
+import net.datenwerke.rs.utils.entitymerge.service.annotations.EntityMergeField;
 import net.datenwerke.rs.utils.instancedescription.annotations.InstanceDescription;
 
 @Entity
@@ -45,6 +46,7 @@ public class PrinterDatasink extends DatasinkDefinition {
    @ExposeToClient
    @Field
    @Column(length = 2048)
+   @EntityMergeField
    private String printerName;
 
    public String getPrinterName() {

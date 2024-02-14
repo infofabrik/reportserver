@@ -27,7 +27,7 @@ import net.datenwerke.rs.terminal.service.terminal.vfs.hooks.VirtualFileSystemMa
 import net.datenwerke.security.service.security.rights.Right
 
 public class TerminalServiceImpl implements TerminalService {
-
+   
    private final Provider<TerminalSession> terminalSessionProvider
    private final Provider<TerminalSessionMap> terminalSessionMap
 
@@ -188,13 +188,24 @@ public class TerminalServiceImpl implements TerminalService {
    @Override
    public RSTableModel convertSimpleMapToTableModel(Map<String, Object> map) {
       RSTableModel model = new RSTableModel()
+      int keyLength = Math.min(getWidthForText('Key'), 180)
       TableDefinition tableDef = new TableDefinition(['Key', 'Value'], [String, String])
-      tableDef.displaySizes = [180, 0]
-      model.tableDefinition = tableDef
       
-      map.each{key, val -> model.addDataRow(
-         new RSStringTableRow(key, val instanceof List? join(val, true): val as String))}
+      map.each { key, val -> 
+         model.addDataRow(new RSStringTableRow(key, val instanceof List? join(val, true): val as String))
+         int rowKeyLength = getWidthForText(key)
+         if (rowKeyLength > keyLength) keyLength = rowKeyLength
+      }
+      
+      tableDef.displaySizes = [keyLength, 0]
+      model.tableDefinition = tableDef
       return model
+   }
+   
+   @Override
+   public int getWidthForText(String text) {
+      if (text.length() <= 0) return 0;
+      return Math.ceil(text.length() * CHAR_WIDTH)
    }
    
    @Override 
@@ -253,7 +264,7 @@ public class TerminalServiceImpl implements TerminalService {
          
       return model
    }
-
+   
    @Override
    public CommandResult convertSimpleListToCommandResult(String headline, List<String> list) {
       CommandResult result = new CommandResult()

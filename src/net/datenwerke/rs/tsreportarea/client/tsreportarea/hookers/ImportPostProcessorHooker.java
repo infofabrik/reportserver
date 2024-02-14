@@ -21,6 +21,7 @@ public class ImportPostProcessorHooker implements ImporterPostProcessorConfigura
 
    private TsDiskPostProcessorConfigDto config;
    private PropertiesDialogCard card;
+   private TeamSpaceDto teamspaceValue;
 
    @Override
    public ImportPostProcessConfigDto getConfiguration() throws NotProperlyConfiguredException {
@@ -68,6 +69,8 @@ public class ImportPostProcessorHooker implements ImporterPostProcessorConfigura
                      }
                   });
 
+            form.setValue(teamspaceKey, teamspaceValue);
+            
             form.loadFields();
 
             DwContentPanel wrapper = DwContentPanel
@@ -94,7 +97,8 @@ public class ImportPostProcessorHooker implements ImporterPostProcessorConfigura
          @Override
          public void submitPressed() {
             TeamSpaceDto teamSpace = (TeamSpaceDto) form.getValue(teamspaceKey);
-
+            teamspaceValue = teamSpace;
+            
             if (null == teamSpace)
                config = null;
             else {
@@ -114,6 +118,7 @@ public class ImportPostProcessorHooker implements ImporterPostProcessorConfigura
    @Override
    public void reset() {
       card = null;
+      teamspaceValue = null;
    }
 
 }

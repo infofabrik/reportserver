@@ -10,8 +10,6 @@ import com.google.inject.Inject;
 import com.sencha.gxt.widget.core.client.menu.Menu;
 import com.sencha.gxt.widget.core.client.menu.MenuItem;
 
-import net.datenwerke.gf.client.managerhelper.mainpanel.SimpleFormView;
-import net.datenwerke.gf.client.validator.KeyValidator;
 import net.datenwerke.gxtdto.client.baseex.widget.menu.DwMenu;
 import net.datenwerke.gxtdto.client.baseex.widget.menu.DwMenuItem;
 import net.datenwerke.gxtdto.client.forms.simpleform.SimpleForm;
@@ -20,7 +18,6 @@ import net.datenwerke.gxtdto.client.forms.simpleform.conditions.SimpleFormCondit
 import net.datenwerke.gxtdto.client.forms.simpleform.hooks.FormFieldProviderHook;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCPasswordField;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCStaticLabel;
-import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCStringValidatorRegex;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.impl.SFFCStaticDropdownList;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.impl.SFFCTextAreaImpl;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.dummy.StaticLabel;
@@ -31,12 +28,13 @@ import net.datenwerke.rs.base.client.datasources.dto.pa.DatabaseDatasourceDtoPA;
 import net.datenwerke.rs.base.client.datasources.locale.BaseDatasourceMessages;
 import net.datenwerke.rs.base.client.dbhelper.dto.DatabaseHelperDto;
 import net.datenwerke.rs.core.client.datasourcemanager.locale.DatasourcesMessages;
+import net.datenwerke.rs.core.client.datasourcemanager.ui.forms.DatasourceSimpleForm;
 
 /**
  * 
  *
  */
-public class DatabaseDatasourceForm extends SimpleFormView {
+public class DatabaseDatasourceForm extends DatasourceSimpleForm {
 
    private final BaseDatasourceUiService baseDatasourceService;
 
@@ -50,27 +48,8 @@ public class DatabaseDatasourceForm extends SimpleFormView {
       this.baseDatasourceService = baseDatasourceService;
    }
 
-   public void configureSimpleForm(SimpleForm form) {
-      /* configure form */
-      form.setHeading(DatasourcesMessages.INSTANCE.editDataSource()
-            + (getSelectedNode() == null ? "" : " (" + getSelectedNode().getId() + ")"));
-
-      form.beginFloatRow();
-      form.setFieldWidth(600);
-      /* name */
-      form.addField(String.class, DatabaseDatasourceDtoPA.INSTANCE.name(), BaseMessages.INSTANCE.name());
-      
-      form.setFieldWidth(500);
-      /* key */
-      form.addField(String.class, DatabaseDatasourceDtoPA.INSTANCE.key(),
-            BaseMessages.INSTANCE.key(), new SFFCStringValidatorRegex(KeyValidator.KEY_REGEX, BaseMessages.INSTANCE.invalidKey()));
-
-      form.endRow();
-      
-      form.setFieldWidth(1);
-      form.addField(String.class, DatabaseDatasourceDtoPA.INSTANCE.description(), BaseMessages.INSTANCE.description(),
-            new SFFCTextAreaImpl());
-
+   @Override
+   protected void configureSimpleFormCustomFields(SimpleForm form) {
       /* database */
       form.setFieldWidth(1);
       form.addField(List.class, DatabaseDatasourceDtoPA.INSTANCE.databaseDescriptor(),
@@ -132,7 +111,6 @@ public class DatabaseDatasourceForm extends SimpleFormView {
       /* properties */
       form.addField(String.class, DatabaseDatasourceDtoPA.INSTANCE.jdbcProperties(), BaseMessages.INSTANCE.properties(),
             new SFFCTextAreaImpl());
-
    }
 
 }

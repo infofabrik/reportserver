@@ -86,8 +86,10 @@ public interface ExportService {
     * @param node            the node to export
     * @param includeVariants if the node to export is a report and includeVariants
     *                        is true, the report variants are exported as well.
+    * @param flatten         if the tree should be flattened, i.e. all folders
+    *                        should be stripped away.
     * @return the export configuration
     */
-   Optional<ExportConfig> configureExport(AbstractNode<?> node, boolean includeVariants);
+   Optional<ExportConfig> configureExport(AbstractNode<?> node, boolean includeVariants, boolean flatten);
 
 }

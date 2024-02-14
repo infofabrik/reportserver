@@ -77,7 +77,7 @@ public class FtpModule extends AbstractModule {
    @DefaultFtpDatasink
    public Optional<FtpDatasink> provideDefaultFtpDatasink(DatasinkTreeService datasinkService) {
       return datasinkService.getDefaultDatasink(FtpDatasink.class, PROPERTY_DEFAULT_FTP_DATASINK_ID,
-            PROPERTY_DEFAULT_FTP_DATASINK_NAME, PROPERTY_DEFAULT_FTP_DATASINK_KEY);
+            PROPERTY_DEFAULT_FTP_DATASINK_NAME, PROPERTY_DEFAULT_FTP_DATASINK_KEY, PROPERTY_FTP_DISABLED);
    }
 
    @Provides
@@ -85,7 +85,7 @@ public class FtpModule extends AbstractModule {
    @DefaultSftpDatasink
    public Optional<SftpDatasink> provideDefaultSftpDatasink(DatasinkTreeService datasinkService) {
       return datasinkService.getDefaultDatasink(SftpDatasink.class, PROPERTY_DEFAULT_SFTP_DATASINK_ID,
-            PROPERTY_DEFAULT_SFTP_DATASINK_NAME, PROPERTY_DEFAULT_SFTP_DATASINK_KEY);
+            PROPERTY_DEFAULT_SFTP_DATASINK_NAME, PROPERTY_DEFAULT_SFTP_DATASINK_KEY, PROPERTY_SFTP_DISABLED);
    }
 
    @Provides
@@ -93,7 +93,7 @@ public class FtpModule extends AbstractModule {
    @DefaultFtpsDatasink
    public Optional<FtpsDatasink> provideDefaultFtpsDatasink(DatasinkTreeService datasinkService) {
       return datasinkService.getDefaultDatasink(FtpsDatasink.class, PROPERTY_DEFAULT_FTPS_DATASINK_ID,
-            PROPERTY_DEFAULT_FTPS_DATASINK_NAME, PROPERTY_DEFAULT_FTPS_DATASINK_KEY);
+            PROPERTY_DEFAULT_FTPS_DATASINK_NAME, PROPERTY_DEFAULT_FTPS_DATASINK_KEY, PROPERTY_FTPS_DISABLED);
    }
 
 }

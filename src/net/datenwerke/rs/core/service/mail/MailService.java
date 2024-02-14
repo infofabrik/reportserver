@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import javax.mail.Address;
 import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
 import net.datenwerke.rs.core.service.mail.MailServiceImpl.MailSupervisor;
@@ -67,5 +68,9 @@ public interface MailService {
    void sendMail(Optional<EmailDatasink> emailDatasink, MimeMessage message, MailSupervisor supervisor);
 
    List<Address> getEmailList(List<User> users) throws AddressException;
+   
+   InternetAddress getMailFrom(User user, Optional<EmailDatasink> datasink);
+   
+   EmailDatasink loadDefaultEmailDatasink();
 
 }

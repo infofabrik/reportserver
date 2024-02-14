@@ -16,6 +16,7 @@ import com.google.inject.Provider;
 import net.datenwerke.dtoservices.dtogenerator.annotations.AdditionalField;
 import net.datenwerke.dtoservices.dtogenerator.annotations.ExposeToClient;
 import net.datenwerke.dtoservices.dtogenerator.annotations.GenerateDto;
+import net.datenwerke.eximport.ex.annotations.ExportableField;
 import net.datenwerke.gf.base.service.annotations.Field;
 import net.datenwerke.gf.base.service.annotations.Indexed;
 import net.datenwerke.rs.core.service.datasinkmanager.BasicDatasinkService;
@@ -27,6 +28,7 @@ import net.datenwerke.rs.core.service.datasinkmanager.entities.DatasinkDefinitio
 import net.datenwerke.rs.scp.service.scp.ScpService;
 import net.datenwerke.rs.scp.service.scp.definitions.dtogen.ScpDatasink2DtoPostProcessor;
 import net.datenwerke.rs.scp.service.scp.locale.ScpMessages;
+import net.datenwerke.rs.utils.entitymerge.service.annotations.EntityMergeField;
 import net.datenwerke.rs.utils.instancedescription.annotations.InstanceDescription;
 import net.datenwerke.rs.utils.misc.DateUtils;
 import net.datenwerke.security.service.crypto.pbe.PbeService;
@@ -76,32 +78,41 @@ public class ScpDatasink extends DatasinkDefinition implements HostDatasink, Fol
    @ExposeToClient
    @Field
    @Column(length = 1024)
+   @EntityMergeField
    private String host = "scp://scp.host.net";
 
    @ExposeToClient
    @Field
+   @EntityMergeField
    private int port = 22;
 
    @ExposeToClient
    @Field
+   @EntityMergeField
    private String username;
 
    @ExposeToClient
+   @EntityMergeField
    private String authenticationType;
 
    @ExposeToClient(exposeValueToClient = false, mergeDtoValueBack = true)
+   @EntityMergeField
+   @ExportableField(exportField = false)
    private String password;
 
    @Basic(fetch = FetchType.LAZY)
    @Lob
+   @EntityMergeField
    private byte[] privateKey;
 
    @ExposeToClient(exposeValueToClient = false, mergeDtoValueBack = true)
+   @EntityMergeField
    private String privateKeyPassphrase;
 
    @ExposeToClient
    @Field
    @Column(length = 1024)
+   @EntityMergeField
    private String folder = "/absolute/path/to/your/destination/folder";
 
    @Override

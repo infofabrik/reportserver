@@ -11,7 +11,6 @@ import net.datenwerke.gxtdto.client.dtomanager.Dao;
 import net.datenwerke.rs.core.client.reportexporter.dto.ReportExecutionConfigDto;
 import net.datenwerke.rs.core.client.reportexporter.rpc.ReportExporterRpcServiceAsync;
 import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
-import net.datenwerke.security.client.usermanager.dto.ie.StrippedDownUser;
 
 public class ReportExporterDao extends Dao {
 
@@ -40,13 +39,6 @@ public class ReportExporterDao extends Dao {
          List<ReportExecutionConfigDto> configs, AsyncCallback<Void> callback) {
       reportDto = unproxy(reportDto);
       return rpcService.storeInSessionForExport(reportDto, executorToken, format, configs,
-            transformAndKeepCallback(callback));
-   }
-
-   public void exportViaMail(ReportDto reportDto, String executorToke, String format,
-         List<ReportExecutionConfigDto> configs, String subject, String message, boolean compressedExpKey,
-         List<StrippedDownUser> recipients, AsyncCallback<Void> callback) {
-      rpcService.exportViaMail(reportDto, executorToke, format, configs, subject, message, compressedExpKey, recipients,
             transformAndKeepCallback(callback));
    }
 

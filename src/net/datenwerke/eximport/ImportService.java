@@ -33,6 +33,14 @@ public interface ImportService {
     * @return The {@link ImportResult}
     */
    public ImportResult importData(ImportConfig config);
+   
+   /**
+    * If set to true the Mergeimporter logic is used
+    * 
+    * @param value {@link boolean}
+    * @return The {@link void}
+    */
+   public void setUseMergeImporter(boolean value);
 
    /**
     * Returns the exported item identified by ID

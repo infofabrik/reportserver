@@ -166,6 +166,8 @@ import net.datenwerke.rs.installation.RsInstallModule;
 import net.datenwerke.rs.json.service.json.JsonModule;
 import net.datenwerke.rs.jxlsreport.server.JxlsReportFileDownloadServlet;
 import net.datenwerke.rs.jxlsreport.service.jxlsreport.JxlsReportModule;
+import net.datenwerke.rs.keyutils.server.keyutils.KeyUtilsRpcServiceImpl;
+import net.datenwerke.rs.keyutils.service.keyutils.KeyUtilsModule;
 import net.datenwerke.rs.license.server.LicenseRpcServiceImpl;
 import net.datenwerke.rs.license.service.LicenseModule;
 import net.datenwerke.rs.localfsdatasink.server.localfsdatasink.LocalFileSystemRpcServiceImpl;
@@ -224,6 +226,7 @@ import net.datenwerke.rs.terminal.service.terminal.TerminalModule;
 import net.datenwerke.rs.transport.server.transport.TransportManagerExportRpcServiceImpl;
 import net.datenwerke.rs.transport.server.transport.TransportManagerImportRpcServiceImpl;
 import net.datenwerke.rs.transport.server.transport.TransportManagerTreeHandlerRpcServiceImpl;
+import net.datenwerke.rs.transport.server.transport.TransportRpcServiceImpl;
 import net.datenwerke.rs.transport.service.transport.TransportModule;
 import net.datenwerke.rs.tsreportarea.server.tsreportarea.TsDiskRpcServiceImpl;
 import net.datenwerke.rs.tsreportarea.service.tsreportarea.TsDiskModule;
@@ -231,6 +234,7 @@ import net.datenwerke.rs.usagestatistics.service.usagestatistics.UsageStatistics
 import net.datenwerke.rs.uservariables.server.uservariables.UserVariablesRpcServiceImpl;
 import net.datenwerke.rs.uservariables.service.UserVariableModule;
 import net.datenwerke.rs.utils.entitycloner.EntityClonerModule;
+import net.datenwerke.rs.utils.entitymerge.service.EntityMergeModule;
 import net.datenwerke.rs.utils.eventlogger.jpa.JpaEventLoggerModule;
 import net.datenwerke.rs.utils.juel.JuelModule;
 import net.datenwerke.rs.utils.misc.TracerServlet;
@@ -269,7 +273,7 @@ public class ReportServerServiceConfig extends DwGwtFrameworkBase {
 
    private final Logger logger = LoggerFactory.getLogger(getClass().getName());
 
-   public static final String CODE_VERSION = "2023-06-20-09-40-16";
+   public static final String CODE_VERSION = "2024-01-07-17-32-46";
 
    public static final String ENTERPRISE_MODULE_LOCATION = "net.datenwerke.rsenterprise.main.service.RsEnterpriseModule";
    private static final String ENTERPRISE_MODULE_LOAD_MODULE_METHOD = "getEnterpriseModules";
@@ -418,6 +422,7 @@ public class ReportServerServiceConfig extends DwGwtFrameworkBase {
             serve(BASE_URL + "transports_tree").with(TransportManagerTreeHandlerRpcServiceImpl.class); //$NON-NLS-1$
             serve(BASE_URL + "transports_import").with(TransportManagerImportRpcServiceImpl.class); //$NON-NLS-1$
             serve(BASE_URL + "transportmanager_export").with(TransportManagerExportRpcServiceImpl.class); //$NON-NLS-1$
+            serve(BASE_URL + "transports_service").with(TransportRpcServiceImpl.class); //$NON-NLS-1$
             
             serve(BASE_URL + "datasources").with(DatasourceManagerTreeHandlerRpcServiceImpl.class); //$NON-NLS-1$
             serve(BASE_URL + "datasources_tree").with(DatasourceManagerTreeHandlerRpcServiceImpl.class); //$NON-NLS-1$
@@ -449,7 +454,9 @@ public class ReportServerServiceConfig extends DwGwtFrameworkBase {
             serve(BASE_URL + FileServerUiModule.FILE_ACCESS_SERVLET).with(FileServerAccessServlet.class); // $NON-NLS-1$
 
             serve(BASE_URL + "juel").with(JuelRpcServiceImpl.class); //$NON-NLS-1$
-
+            
+            serve(BASE_URL + "keyutils").with(KeyUtilsRpcServiceImpl.class); //$NON-NLS-1$
+            
             serve(BASE_URL + "license").with(LicenseRpcServiceImpl.class); //$NON-NLS-1$
 
             serve(BASE_URL + "logfiles").with(LogFilesRpcServiceImpl.class); //$NON-NLS-1$
@@ -663,7 +670,7 @@ public class ReportServerServiceConfig extends DwGwtFrameworkBase {
             new JasperToTableModule(), 
             new JuelModule(),
 
-            new MailModule(), 
+            new MailModule(),
             new BirtModule(),
             new ComputedColumnsModule(),
 
@@ -706,7 +713,8 @@ public class ReportServerServiceConfig extends DwGwtFrameworkBase {
 
             new UserManagerModule(), 
             new UserManagerExtModule(),
-
+            
+            new EntityMergeModule(),
             new UserManagerExtModule(), 
             new UserVariableModule(), 
             new VersioningModule(), 
@@ -745,18 +753,21 @@ public class ReportServerServiceConfig extends DwGwtFrameworkBase {
             new RestModule(),
             
             new TransportModule(),
+            
+            new KeyUtilsModule(),
 
             new ReportServerPUModule(),
 
             new DwEventLoggerModule(),
 
             new PkgModule(),
+            
             new ReportServerInstallationModule(),
 
             new ManPageModule(), 
             new SuModule(), 
             new PropertiesModule(),
-
+            
             new RsInstallModule(),
 
             /* dbPool */

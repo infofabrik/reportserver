@@ -13,7 +13,6 @@ import java.util.Set;
 import java.util.UUID;
 
 import javax.persistence.EntityManager;
-import javax.persistence.NonUniqueResultException;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -22,6 +21,7 @@ import com.google.inject.Provider;
 import com.google.inject.Singleton;
 import com.google.inject.name.Named;
 
+import groovy.lang.Closure;
 import net.datenwerke.gxtdto.client.servercommunication.exceptions.ExpectedException;
 import net.datenwerke.gxtdto.client.servercommunication.exceptions.ServerCallFailedException;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
@@ -105,6 +105,8 @@ public class ReportServiceImpl extends SecuredTreeDBManagerImpl<AbstractReportMa
       this.authenticatorServiceProvider = authenticatorServiceProvider;
    }
 
+
+   
    /*
     * (non-Javadoc)
     * 
@@ -155,21 +157,11 @@ public class ReportServiceImpl extends SecuredTreeDBManagerImpl<AbstractReportMa
    }
 
    @Override
+   @QueryByAttribute(
+         where = Report__.key
+   )
    public Report getReportByKey(String key) {
-      try {
-         return doGetReportByKey(key);
-      } catch (NonUniqueResultException e) {
-         throw new IllegalArgumentException("There seem to be multiple reports with the same key: " + key, e);
-      } catch (IllegalStateException e) {
-         if (null != e.getCause() && e.getCause() instanceof NonUniqueResultException)
-            throw new IllegalArgumentException("There seem to be multiple reports with the same key: " + key, e);
-         throw e;
-      }
-   }
-
-   @QueryByAttribute(where = Report__.key)
-   public Report doGetReportByKey(String key) {
-      return null; // by magic, must be public for AOP interception to work
+      return null; // by magic
    }
 
    @Override
@@ -437,7 +429,6 @@ public class ReportServiceImpl extends SecuredTreeDBManagerImpl<AbstractReportMa
 
       if (clone instanceof Report) {
          ((Report) clone).setUuid(UUID.randomUUID().toString());
-         ((Report) clone).setKey(null);
       }
       return clone;
    }
@@ -499,4 +490,29 @@ public class ReportServiceImpl extends SecuredTreeDBManagerImpl<AbstractReportMa
       return bis;
    }
 
+   @Override
+   protected void afterNodeCopy(AbstractReportManagerNode copiedNode, AbstractReportManagerNode parent) {
+      if (copiedNode instanceof Report) {
+         Report clone = (Report) copiedNode;
+
+         Closure getAllNodes = new Closure(null) {
+            public List<AbstractReportManagerNode> doCall() {
+               return parent.getChildren();
+            }
+         };
+
+         clone.setName(clone.getName() == null
+               ? keyNameGeneratorService.getNextCopyName("", getAllNodes)
+               : keyNameGeneratorService.getNextCopyName(clone.getName(), getAllNodes));
+         clone.setKey(keyNameGeneratorService.getNextCopyKey(clone.getKey(), this));
+
+      }
+   }
+
+
+
+   @Override
+   public AbstractReportManagerNode getNodeByKey(String key) {
+      return getReportByKey(key);
+   }
 }

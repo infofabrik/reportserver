@@ -50,6 +50,8 @@ import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
 import net.datenwerke.rs.utils.entitycloner.annotation.EnclosedEntity;
 import net.datenwerke.rs.utils.entitydiff.annotations.EntityDiffGuide;
 import net.datenwerke.rs.utils.entitydiff.annotations.EntityDiffGuides;
+import net.datenwerke.rs.utils.entitymerge.service.annotations.EntityMergeCollection;
+import net.datenwerke.rs.utils.entitymerge.service.annotations.EntityMergeField;
 import net.datenwerke.rs.utils.instancedescription.annotations.InstanceDescription;
 import net.datenwerke.security.service.usermanager.entities.User;
 import net.datenwerke.treedb.service.treedb.annotation.TreeDBAllowedChildren;
@@ -104,6 +106,7 @@ public class TableReport extends Report {
    @EnclosedEntity
    @ExposeToClient
    @OneToMany(cascade = CascadeType.ALL)
+   @EntityMergeCollection(defaultMerge = false)
    private List<AdditionalColumnSpec> additionalColumns = new ArrayList<AdditionalColumnSpec>();
 
    @JoinTable(name = "TABLE_REPORT_2_COLUMN")
@@ -111,6 +114,7 @@ public class TableReport extends Report {
    @ExposeToClient
    @OneToMany(cascade = CascadeType.ALL)
    @OrderBy("position")
+   @EntityMergeCollection(defaultMerge = false)
    private List<Column> columns = new ArrayList<>();
 
    /**
@@ -123,37 +127,46 @@ public class TableReport extends Report {
    private boolean ignoreAdditionalColumns = false;
 
    @ExposeToClient
+   @EntityMergeField
    private boolean enableSubtotals = false;
 
    @ExposeToClient
    @EnclosedEntity
    @OneToOne(cascade = CascadeType.ALL)
+   @EntityMergeField(toClone = true)
    private DatasourceContainer metadataDatasourceContainer = new DatasourceContainer();
 
    @ExposeToClient
+   @EntityMergeField
    private Boolean distinctFlag = false;
 
    @EnclosedEntity
    @ExposeToClient
    @OneToOne(cascade = CascadeType.ALL)
+   @EntityMergeField(toClone = true)
    private PreFilter preFilter = new PreFilter();
 
    @Lob
    @Type(type = "net.datenwerke.rs.utils.hibernate.RsClobType")
    @ExposeToClient(allowArbitraryLobSize = true, disableHtmlEncode = true, exposeValueToClient = false)
+   @EntityMergeField
    private String cubeXml;
 
    @ExposeToClient(view = DtoView.FTO)
+   @EntityMergeField
    private boolean cubeFlag = false;
 
    @ExposeToClient
+   @EntityMergeField
    private boolean allowCubification = true;
 
    @ExposeToClient
    @Deprecated
+   @EntityMergeField
    private boolean hideParents = true;
 
    @ExposeToClient(view = DtoView.FTO)
+   @EntityMergeField
    private boolean allowMdx = true;
 
    @Override
@@ -191,39 +204,13 @@ public class TableReport extends Report {
 
       /* copy add columns */
       Map<Integer, Column> columnRefMap = new HashMap<Integer, Column>();
-      List<AdditionalColumnSpec> clonedColumnSpecs = new ArrayList<AdditionalColumnSpec>();
-
-      for (AdditionalColumnSpec columnSpec : ((TableReport) adjustedReport).getAdditionalColumns()) {
-         AdditionalColumnSpec clonedColumnSpec = entityCloner.get().cloneEntity(columnSpec);
-         int idx = 0;
-         for (Column col : ((TableReport) adjustedReport).getColumns()) {
-            if (col instanceof ColumnReference) {
-               if (columnSpec.equals(((ColumnReference) col).getReference())) {
-                  /* clone and set correct reference */
-                  Column clonedColumn = entityCloner.get().cloneEntity(col);
-                  ((ColumnReference) clonedColumn).setReference(clonedColumnSpec);
-                  columnRefMap.put(idx, clonedColumn);
-               }
-            }
-            idx++;
-         }
-         clonedColumnSpecs.add(clonedColumnSpec);
-      }
+      List<AdditionalColumnSpec> clonedColumnSpecs = 
+            createClonedColumnSpecs(adjustedReport, columnRefMap);
+      
       variant.setAdditionalColumns(clonedColumnSpecs);
 
       /* copy columns */
-      List<Column> clonedColumns = new ArrayList<Column>();
-      int idx = 0;
-      for (Column column : ((TableReport) adjustedReport).getColumns()) {
-         if (!(column instanceof ColumnReference)) {
-            Column clonedColumn = entityCloner.get().cloneEntity(column);
-            clonedColumns.add(clonedColumn);
-         } else if (columnRefMap.containsKey(idx)) {
-            clonedColumns.add(columnRefMap.get(idx));
-         } else
-            throw new IllegalStateException();
-         idx++;
-      }
+      List<Column> clonedColumns = createClonedColumns(adjustedReport, columnRefMap);
       variant.setColumns(clonedColumns);
 
       variant.setSelectAllColumns(((TableReport) adjustedReport).isSelectAllColumns());
@@ -243,6 +230,57 @@ public class TableReport extends Report {
 
       return variant;
    }
+
+   /**
+    * Extracted from createVariant. 
+    * Create a cloned version of ColumnSpecs and fill columnRefMap with values
+    * @param source the table report from which the data is extracted
+    * @param columnRefMap supposed to be emtpy
+    * @return the List of cloned ColumnSpecs
+    */
+   public List<AdditionalColumnSpec> createClonedColumnSpecs(Report source, Map<Integer, Column> columnRefMap) {
+      List<AdditionalColumnSpec> clonedColumnSpecs = new ArrayList<>();
+      for (AdditionalColumnSpec columnSpec : ((TableReport) source).getAdditionalColumns()) {
+         AdditionalColumnSpec clonedColumnSpec = entityCloner.get().cloneEntity(columnSpec);
+         int idx = 0;
+         for (Column col : ((TableReport) source).getColumns()) {
+            if (col instanceof ColumnReference) {
+               if (columnSpec.equals(((ColumnReference) col).getReference())) {
+                  /* clone and set correct reference */
+                  Column clonedColumn = entityCloner.get().cloneEntity(col);
+                  ((ColumnReference) clonedColumn).setReference(clonedColumnSpec);
+                  columnRefMap.put(idx, clonedColumn);
+               }
+            }
+            idx++;
+         }
+         clonedColumnSpecs.add(clonedColumnSpec);
+      }
+      return clonedColumnSpecs;
+   }
+   /**
+    * Extracted from createVariant. 
+    * Create a cloned version of Columns
+    * @param source the table report from which the data is extracted
+    * @param columnRefMap required to be filled with values from createClonedColumnSpecs()
+    * @return the List of cloned Columns
+    */
+   public List<Column> createClonedColumns(Report source, Map<Integer, Column> columnRefMap) {
+      List<Column> clonedColumns = new ArrayList<Column>();
+      int idx = 0;
+      for (Column column : ((TableReport) source).getColumns()) {
+         if (!(column instanceof ColumnReference)) {
+            Column clonedColumn = entityCloner.get().cloneEntity(column);
+            clonedColumns.add(clonedColumn);
+         } else if (columnRefMap.containsKey(idx)) {
+            clonedColumns.add(columnRefMap.get(idx));
+         } else
+            throw new IllegalStateException();
+         idx++;
+      }
+      return clonedColumns;
+   }
+
 
    /**
     * We need to repair references in prefilters after creating the variant, as the

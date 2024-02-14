@@ -61,7 +61,7 @@ public class EmailDatasinkServiceImpl implements EmailDatasinkService {
       try {
          SimpleMail mail = mailBuilderFactoryProvider.get()
                .create(emailConfig.getSubject(), null == emailConfig.getBody()? "": emailConfig.getBody(), 
-                     emailConfig.getRecipients())
+                     emailConfig.getRecipients(), mailServiceProvider.get().getMailFrom(user, Optional.of(emailDatasink)))
                .withEmailDatasink(emailDatasink)
                .withAttachments(Arrays.asList(new SimpleAttachment(data,
                      mimeUtilsProvider.get().getMimeTypeByExtension(emailConfig.getFilename()),

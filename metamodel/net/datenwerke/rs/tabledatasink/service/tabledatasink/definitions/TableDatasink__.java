@@ -15,5 +15,6 @@ public class TableDatasink__ extends net.datenwerke.rs.core.service.datasinkmana
 	public static final String primaryKeys = "primaryKeys";
 	public static final String serialVersionUID = "serialVersionUID";
 	public static final String tableName = "tableName";
+	public static final String truncateTable = "truncateTable";
 
 }

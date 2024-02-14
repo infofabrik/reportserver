@@ -20,6 +20,7 @@ import net.datenwerke.rs.core.service.datasinkmanager.configs.DatasinkFilenameFo
 import net.datenwerke.rs.core.service.datasinkmanager.entities.DatasinkDefinition;
 import net.datenwerke.rs.localfsdatasink.service.localfsdatasink.LocalFileSystemService;
 import net.datenwerke.rs.localfsdatasink.service.localfsdatasink.locale.LocalFileSystemMessages;
+import net.datenwerke.rs.utils.entitymerge.service.annotations.EntityMergeField;
 import net.datenwerke.rs.utils.instancedescription.annotations.InstanceDescription;
 import net.datenwerke.rs.utils.misc.DateUtils;
 
@@ -52,11 +53,13 @@ public class LocalFileSystemDatasink extends DatasinkDefinition implements Folde
    @ExposeToClient
    @Field
    @Column(length = 1024)
+   @EntityMergeField
    private String path = "/path/to/your/local/dir";
 
    @ExposeToClient
    @Field
    @Column(length = 1024)
+   @EntityMergeField
    private String folder = "./";
 
    public String getPath() {

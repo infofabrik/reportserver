@@ -16,6 +16,7 @@ import net.datenwerke.gf.base.service.annotations.Indexed;
 import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
 import net.datenwerke.rs.saiku.client.saiku.locale.SaikuMessages;
 import net.datenwerke.rs.saiku.service.saiku.locale.SaikuEngineMessages;
+import net.datenwerke.rs.utils.entitymerge.service.annotations.EntityMergeField;
 import net.datenwerke.rs.utils.instancedescription.annotations.InstanceDescription;
 import net.datenwerke.treedb.service.treedb.annotation.TreeDBAllowedChildren;
 
@@ -43,12 +44,15 @@ public class SaikuReport extends Report {
    @Lob
    @Type(type = "net.datenwerke.rs.utils.hibernate.RsClobType")
    @ExposeToClient(allowArbitraryLobSize = true, disableHtmlEncode = true, exposeValueToClient = false)
+   @EntityMergeField
    private String queryXml;
 
    @ExposeToClient
+   @EntityMergeField
    private boolean allowMdx;
 
    @ExposeToClient
+   @EntityMergeField
    private boolean hideParents;
 
    /*
@@ -57,6 +61,7 @@ public class SaikuReport extends Report {
     */
    @ExposeToClient
    @Transient
+   @EntityMergeField
    private boolean createdFromPivotReport;
 
    /*
@@ -65,6 +70,7 @@ public class SaikuReport extends Report {
     */
    @ExposeToClient
    @Transient
+   @EntityMergeField
    private long originalPivotReportId;
 
    public String getQueryXml() {

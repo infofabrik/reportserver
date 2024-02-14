@@ -8,6 +8,7 @@ import org.apache.commons.configuration2.Configuration;
 import com.google.inject.Inject;
 import com.google.inject.Provides;
 import com.google.inject.Scopes;
+import com.google.inject.assistedinject.FactoryModuleBuilder;
 
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.configservice.service.configservice.ConfigService;
@@ -15,6 +16,7 @@ import net.datenwerke.rs.core.service.datasourcemanager.annotations.DatasourceMo
 import net.datenwerke.rs.core.service.datasourcemanager.annotations.DefaultDatasource;
 import net.datenwerke.rs.core.service.datasourcemanager.annotations.ReportServerDatasourceDefinitions;
 import net.datenwerke.rs.core.service.datasourcemanager.entities.DatasourceDefinition;
+import net.datenwerke.rs.core.service.datasourcemanager.hookers.factory.DatasourceDefaultMergeHookerFactory;
 import net.datenwerke.rs.core.service.datasourcemanager.hooks.DatasourceProviderHook;
 import net.datenwerke.rs.core.service.guice.AbstractReportServerModule;
 
@@ -29,6 +31,9 @@ public class DatasourceModule extends AbstractReportServerModule {
    protected void configure() {
       bind(DatasourceService.class).to(DatasourceServiceImpl.class).in(Scopes.SINGLETON);
 
+      /* entity merge */
+      install(new FactoryModuleBuilder().build(DatasourceDefaultMergeHookerFactory.class));
+      
       /* startup */
       bind(DatasourceStartup.class).asEagerSingleton();
    }

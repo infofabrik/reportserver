@@ -2,11 +2,10 @@ package net.datenwerke.rs.remoteserver.service.remoteservermanager;
 
 import java.util.List;
 
-import javax.persistence.NonUniqueResultException;
-
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 
+import groovy.lang.Closure;
 import net.datenwerke.rs.remoteserver.service.remoteservermanager.entities.AbstractRemoteServerManagerNode;
 import net.datenwerke.rs.remoteserver.service.remoteservermanager.entities.AbstractRemoteServerManagerNode__;
 import net.datenwerke.rs.remoteserver.service.remoteservermanager.entities.RemoteServerDefinition;
@@ -62,22 +61,33 @@ public class RemoteServerTreeServiceImpl extends SecuredTreeDBManagerImpl<Abstra
    }
 
    @Override
-   public RemoteServerDefinition getRemoteServerByKey(String key) {
-      try {
-         return doGetRemoteServerByKey(key);
-      } catch (NonUniqueResultException e) {
-         throw new IllegalArgumentException("There seem to be multiple datasources with the same key: " + key, e);
-      } catch (IllegalStateException e) {
-         if (null != e.getCause() && e.getCause() instanceof NonUniqueResultException)
-            throw new IllegalArgumentException("There seem to be multiple datasources with the same key: " + key, e);
-         throw e;
-      }
-   }
-   
    @QueryByAttribute(
          where = RemoteServerDefinition__.key
    )
-   public RemoteServerDefinition doGetRemoteServerByKey(String key) {
-      return null; // by magic, must be public for AOP interception to work
+   public RemoteServerDefinition getRemoteServerByKey(String key) {
+      return null; // by magic
+   }
+   
+   @Override
+   protected void afterNodeCopy(AbstractRemoteServerManagerNode copiedNode, AbstractRemoteServerManagerNode parent) {
+      if (copiedNode instanceof RemoteServerDefinition) {
+         RemoteServerDefinition clone = (RemoteServerDefinition) copiedNode;
+
+         Closure getAllNodes = new Closure(null) {
+            public List<AbstractRemoteServerManagerNode> doCall() {
+               return parent.getChildren();
+            }
+         };
+
+         clone.setName(clone.getName() == null
+               ? keyNameGeneratorService.getNextCopyName("", getAllNodes)
+               : keyNameGeneratorService.getNextCopyName(clone.getName(), getAllNodes));
+         clone.setKey(keyNameGeneratorService.getNextCopyKey(clone.getKey(), this));
+      }
+   }
+
+   @Override
+   public AbstractRemoteServerManagerNode getNodeByKey(String key) {
+      return getRemoteServerByKey(key);
    }
 }

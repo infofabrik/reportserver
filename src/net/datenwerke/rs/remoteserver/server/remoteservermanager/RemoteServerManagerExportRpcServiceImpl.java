@@ -50,7 +50,7 @@ public class RemoteServerManagerExportRpcServiceImpl extends SecuredRemoteServic
    public void quickExport(AbstractRemoteServerManagerNodeDto nodeDto) throws ServerCallFailedException {
       AbstractRemoteServerManagerNode node = (AbstractRemoteServerManagerNode) dtoService.loadPoso(nodeDto);
 
-      String exportXML = exportHelper.export(node, true, RemoteServerManagerExporter.EXPORTER_NAME, false);
+      String exportXML = exportHelper.export(node, true, RemoteServerManagerExporter.EXPORTER_NAME, false, false);
 
       httpExportServiceProvider.get().storeExport(exportXML, node.getName());
    }

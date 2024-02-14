@@ -27,6 +27,7 @@ public interface FileServerFileDtoPA extends AbstractFileServerNodeDtoPA {
 	/* Properties */
 	public ValueProvider<FileServerFileDto,String> contentType();
 	public ValueProvider<FileServerFileDto,String> description();
+	public ValueProvider<FileServerFileDto,String> key();
 	public ValueProvider<FileServerFileDto,String> name();
 	public ValueProvider<FileServerFileDto,Integer> size();
 

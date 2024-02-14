@@ -14,7 +14,6 @@ import net.datenwerke.gf.client.treedb.helper.menu.DuplicateMenuItem;
 import net.datenwerke.gf.client.treedb.helper.menu.InfoMenuItem;
 import net.datenwerke.gf.client.treedb.helper.menu.InsertMenuItem;
 import net.datenwerke.gf.client.treedb.helper.menu.ReloadMenuItem;
-import net.datenwerke.gf.client.treedb.helper.menu.TerminalMenuItem;
 import net.datenwerke.gf.client.treedb.helper.menu.TreeDBUIMenuProvider;
 import net.datenwerke.gf.client.treedb.icon.IconMapping;
 import net.datenwerke.gf.client.treedb.icon.TreeDBUIIconProvider;
@@ -27,6 +26,7 @@ import net.datenwerke.rs.remoteserver.client.remoteservermanager.RemoteServerUIM
 import net.datenwerke.rs.remoteserver.client.remoteservermanager.dto.RemoteServerFolderDto;
 import net.datenwerke.rs.remoteserver.client.remoteservermanager.hooks.RemoteServerDefinitionConfigProviderHook;
 import net.datenwerke.rs.terminal.client.terminal.TerminalUIService;
+import net.datenwerke.rs.terminal.client.terminal.helper.menu.TerminalMenuItem;
 import net.datenwerke.rs.terminal.client.terminal.security.TerminalGenericTargetIdentifier;
 import net.datenwerke.rs.theme.client.icon.BaseIcon;
 import net.datenwerke.security.client.security.SecurityUIService;

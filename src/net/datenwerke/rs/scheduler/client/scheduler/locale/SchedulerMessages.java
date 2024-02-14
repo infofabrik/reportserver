@@ -199,8 +199,6 @@ public interface SchedulerMessages extends Messages {
 
    String propertyValueLabel();
 
-   String askSendEmail();
-
    String exportConfigHeadline();
 
    String exportConfigDescription();

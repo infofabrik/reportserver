@@ -14,6 +14,7 @@ import net.datenwerke.gxtdto.client.servercommunication.exceptions.ServerCallFai
 import net.datenwerke.gxtdto.server.dtomanager.DtoService;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.base.service.datasources.definitions.DatabaseDatasource;
+import net.datenwerke.rs.base.service.datasources.definitions.DatabaseDatasourceConfig;
 import net.datenwerke.rs.base.service.reportengines.table.entities.TableReport;
 import net.datenwerke.rs.core.client.datasinkmanager.dto.DatasinkDefinitionDto;
 import net.datenwerke.rs.core.client.reportexporter.dto.ReportExecutionConfigDto;
@@ -87,6 +88,15 @@ public class TableDatasinkRpcServiceImpl extends SecuredRemoteServiceServlet imp
       Report referenceReport = reportDtoService.getReferenceReport(reportDto);
       Report orgReport = (Report) reportService.getUnmanagedReportById(reportDto.getId());
       
+      if (!(referenceReport.getDatasourceContainer().getDatasourceConfig() instanceof DatabaseDatasourceConfig))
+         throw new IllegalArgumentException("Only database datasources are currently supported");
+      
+      String srcQuery = ((DatabaseDatasourceConfig) referenceReport.getDatasourceContainer().getDatasourceConfig())
+            .getQuery();
+      Objects.requireNonNull(srcQuery, "Query is empty");
+      if ("".equals(srcQuery.trim())) 
+         throw new IllegalArgumentException("Query is empty");
+      
       DatasourceContainer dstDatasourceContainer = tableDatasink.getDatasourceContainer();
       Objects.requireNonNull(dstDatasourceContainer);
       Objects.requireNonNull(dstDatasourceContainer.getDatasource());
@@ -108,6 +118,8 @@ public class TableDatasinkRpcServiceImpl extends SecuredRemoteServiceServlet imp
       TableReport tableReport = (TableReport) toExecute;
       
       Objects.requireNonNull(tableReport.getDatasourceContainer().getDatasource());
+      if (!(tableReport.getDatasourceContainer().getDatasource() instanceof DatabaseDatasource))
+         throw new IllegalArgumentException("Only database datasources are currently supported");
       
       try {
          datasinkServiceProvider.get().exportIntoDatasink(tableReport, tableDatasink, (String) null);

@@ -12,6 +12,7 @@ import com.google.inject.Inject;
 
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.configservice.service.configservice.ConfigService;
+import net.datenwerke.rs.keyutils.service.keyutils.KeyNameGeneratorService;
 import net.datenwerke.rs.utils.config.ConfigFileNotFoundException;
 import net.datenwerke.security.service.crypto.credentialproviders.CryptoCredentialProvider;
 import net.datenwerke.security.service.crypto.hooks.UserCryptoCredentialHook;
@@ -23,11 +24,18 @@ public class CryptoServiceImpl implements CryptoService {
    private ConfigService configService;
 
    private HookHandlerService hookHandlerService;
+   
+   private KeyNameGeneratorService keyGeneratorService;
 
    @Inject
-   public CryptoServiceImpl(ConfigService configService, HookHandlerService hookHandlerService) {
+   public CryptoServiceImpl(
+         ConfigService configService, 
+         HookHandlerService hookHandlerService, 
+         KeyNameGeneratorService keyGeneratorService
+         ) {
       this.configService = configService;
       this.hookHandlerService = hookHandlerService;
+      this.keyGeneratorService = keyGeneratorService;
    }
 
    @Override
@@ -110,6 +118,11 @@ public class CryptoServiceImpl implements CryptoService {
       }
 
       return res;
+   }
+
+   @Override
+   public String generateDefaultKey() {
+      return keyGeneratorService.generateDefaultKey();
    }
 
 }

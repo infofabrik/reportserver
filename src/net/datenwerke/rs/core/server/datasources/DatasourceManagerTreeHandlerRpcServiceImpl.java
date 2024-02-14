@@ -1,6 +1,7 @@
 package net.datenwerke.rs.core.server.datasources;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.persistence.NoResultException;
@@ -12,6 +13,7 @@ import com.google.inject.Singleton;
 import com.google.inject.name.Named;
 import com.google.inject.persist.Transactional;
 
+import groovy.lang.Closure;
 import net.datenwerke.gxtdto.client.dtomanager.Dto;
 import net.datenwerke.gxtdto.client.servercommunication.exceptions.ExpectedException;
 import net.datenwerke.gxtdto.client.servercommunication.exceptions.ServerCallFailedException;
@@ -28,6 +30,7 @@ import net.datenwerke.rs.core.client.datasourcemanager.rpc.DatasourceTreeManager
 import net.datenwerke.rs.core.service.datasourcemanager.DatasourceService;
 import net.datenwerke.rs.core.service.datasourcemanager.entities.AbstractDatasourceManagerNode;
 import net.datenwerke.rs.core.service.datasourcemanager.entities.DatasourceDefinition;
+import net.datenwerke.rs.keyutils.service.keyutils.KeyNameGeneratorService;
 import net.datenwerke.rs.utils.entitycloner.EntityClonerService;
 import net.datenwerke.rs.utils.properties.PropertiesUtilService;
 import net.datenwerke.security.server.TreeDBManagerTreeHandler;
@@ -61,10 +64,15 @@ public class DatasourceManagerTreeHandlerRpcServiceImpl extends TreeDBManagerTre
          DtoService dtoGenerator,
          SecurityService securityService, 
          EntityClonerService entityClonerService,
-         DatasourceHelperService datasourceHelperService
+         DatasourceHelperService datasourceHelperService,
+         KeyNameGeneratorService keyGeneratorService
          ) {
 
-      super(datasourceService, dtoGenerator, securityService, entityClonerService);
+      super(datasourceService, 
+            dtoGenerator, 
+            securityService, 
+            entityClonerService,
+            keyGeneratorService);
 
       /* store objects */
       this.datasourceService = datasourceService;
@@ -91,12 +99,20 @@ public class DatasourceManagerTreeHandlerRpcServiceImpl extends TreeDBManagerTre
    }
 
    @Override
-   protected void nodeCloned(AbstractDatasourceManagerNode clonedNode) {
+   protected void nodeCloned(AbstractDatasourceManagerNode clonedNode, AbstractDatasourceManagerNode realNode) {
       if (!(clonedNode instanceof DatasourceDefinition))
          throw new IllegalArgumentException();
-      DatasourceDefinition datasource = (DatasourceDefinition) clonedNode;
-
-      datasource.setName(datasource.getName() == null ? "copy" : datasource.getName() + " (copy)");
+      DatasourceDefinition clone = (DatasourceDefinition) clonedNode;
+      DatasourceDefinition real = (DatasourceDefinition) realNode;
+      Closure getAllNodes = new Closure(null) {
+         public List<AbstractDatasourceManagerNode> doCall() {
+            return realNode.getParent().getChildren();
+         }
+      };
+      clone.setName(clone.getName() == null
+            ? keyGeneratorService.getNextCopyName("", getAllNodes)
+            : keyGeneratorService.getNextCopyName(clone.getName(), getAllNodes));
+      clone.setKey(keyGeneratorService.getNextCopyKey(real.getKey(), datasourceService));
    }
 
    @Override
@@ -148,6 +164,13 @@ public class DatasourceManagerTreeHandlerRpcServiceImpl extends TreeDBManagerTre
       return builder.toSafeHtml();
    }
    
+   @Override
+   protected void doSetInitialProperties(AbstractDatasourceManagerNode inserted) {
+      if (inserted instanceof DatasourceDefinition) {
+         ((DatasourceDefinition)inserted).setKey(keyGeneratorService.generateDefaultKey(datasourceService));
+      }
+   }
+   
    @SecurityChecked(
          argumentVerification = {
                @ArgumentVerification(
@@ -170,7 +193,7 @@ public class DatasourceManagerTreeHandlerRpcServiceImpl extends TreeDBManagerTre
                long id = datasourceService.getDatasourceIdFromKey(((DatasourceDefinitionDto) node).getKey());
 
                if (id != node.getId())
-                  throw new ExpectedException("There already is a datasource with the same key: " + id);
+                  throw new ExpectedException("There is already a datasource with the same key: " + id);
 
                /*
                 * if the datasource id is the same as the id of the datasource to be changed do nothing
@@ -181,8 +204,6 @@ public class DatasourceManagerTreeHandlerRpcServiceImpl extends TreeDBManagerTre
             }
          }
       }
-
       return super.updateNode(node, state);
    }
-
 }

@@ -19,6 +19,7 @@ import net.datenwerke.rs.core.service.datasinkmanager.entities.DatasinkDefinitio
 import net.datenwerke.rs.fileserver.service.fileserver.entities.FileServerFile;
 import net.datenwerke.rs.scriptdatasink.service.scriptdatasink.ScriptDatasinkService;
 import net.datenwerke.rs.scriptdatasink.service.scriptdatasink.locale.ScriptDatasinkMessages;
+import net.datenwerke.rs.utils.entitymerge.service.annotations.EntityMergeField;
 import net.datenwerke.rs.utils.instancedescription.annotations.InstanceDescription;
 import net.datenwerke.rs.utils.misc.DateUtils;
 
@@ -50,6 +51,7 @@ public class ScriptDatasink extends DatasinkDefinition {
 
    @ExposeToClient
    @ManyToOne
+   @EntityMergeField
    private FileServerFile script;
    
    public FileServerFile getScript() {

@@ -3,6 +3,7 @@ package net.datenwerke.rs.tabletemplate.service.tabletemplate.entities;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -41,6 +42,7 @@ public class TableReportTemplateList extends ReportProperty implements Iterable<
    }
 
    public void setTemplates(Set<TableReportTemplate> templates) {
+      checkDuplicateKeyPrecondition();
       this.templates = templates;
    }
 
@@ -64,6 +66,15 @@ public class TableReportTemplateList extends ReportProperty implements Iterable<
              .add("Name", getName())
              .add("Templates", templates)
              .toString();
+   }
+   
+   private void checkDuplicateKeyPrecondition() {
+      Set<String> uniqueKeys = templates.stream()
+            .map(template -> template.getKey())
+            .collect(Collectors.toSet());
+      if (uniqueKeys.size() != templates.size())
+         throw new IllegalStateException("Assigning multiple templates with the same key to a report is forbidden.");
+
    }
 
 }

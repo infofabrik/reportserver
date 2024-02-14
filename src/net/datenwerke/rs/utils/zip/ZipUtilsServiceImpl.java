@@ -25,6 +25,7 @@ import java.util.zip.ZipOutputStream;
 
 import org.apache.commons.io.IOUtils;
 
+import net.datenwerke.rs.utils.misc.StringEscapeUtils;
 import net.datenwerke.rs.core.service.RsCoreModule;
 import net.datenwerke.rs.core.service.mail.SimpleAttachment;
 import net.datenwerke.rs.fileserver.service.fileserver.entities.AbstractFileServerNode;
@@ -260,7 +261,7 @@ public class ZipUtilsServiceImpl implements ZipUtilsService {
    }
 
    private String replaceInvalidCharacters(String filename) {
-      return filename.replace(":", "_").replace("/", "_").replace("\\", "_").replace(" ", "_");
+      return StringEscapeUtils.removeInvalidFilenameChars(filename);
    }
 
    @Override

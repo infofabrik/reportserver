@@ -14,6 +14,7 @@ import net.datenwerke.gf.base.service.annotations.Indexed;
 import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
 import net.datenwerke.rs.fileserver.service.fileserver.entities.FileServerFile;
 import net.datenwerke.rs.grideditor.service.grideditor.locale.GridEditorMessages;
+import net.datenwerke.rs.utils.entitymerge.service.annotations.EntityMergeField;
 import net.datenwerke.rs.utils.instancedescription.annotations.InstanceDescription;
 import net.datenwerke.treedb.service.treedb.annotation.TreeDBAllowedChildren;
 
@@ -42,9 +43,11 @@ public class GridEditorReport extends Report {
 
    @ExposeToClient
    @ManyToOne
+   @EntityMergeField
    private FileServerFile script;
 
    @ExposeToClient
+   @EntityMergeField
    private String arguments;
 
    public void setArguments(String arguments) {

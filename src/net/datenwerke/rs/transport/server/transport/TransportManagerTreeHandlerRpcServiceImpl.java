@@ -14,6 +14,7 @@ import net.datenwerke.gxtdto.client.dtomanager.Dto;
 import net.datenwerke.gxtdto.client.servercommunication.exceptions.ExpectedException;
 import net.datenwerke.gxtdto.client.servercommunication.exceptions.ServerCallFailedException;
 import net.datenwerke.gxtdto.server.dtomanager.DtoService;
+import net.datenwerke.rs.keyutils.service.keyutils.KeyNameGeneratorService;
 import net.datenwerke.rs.transport.client.transport.dto.TransportDto;
 import net.datenwerke.rs.transport.client.transport.rpc.TransportTreeLoader;
 import net.datenwerke.rs.transport.client.transport.rpc.TransportTreeManager;
@@ -45,9 +46,14 @@ public class TransportManagerTreeHandlerRpcServiceImpl extends TreeDBManagerTree
          SecurityService securityService, 
          EntityClonerService entityClonerService,
          Provider<TransportTreeService> transportTreeServiceProvider,
-         Provider<TransportService> transportServiceProvider
+         Provider<TransportService> transportServiceProvider,
+         KeyNameGeneratorService keyGeneratorService
          ) {
-      super(transportTreeServiceProvider.get(), dtoGenerator, securityService, entityClonerService);
+      super(transportTreeServiceProvider.get(), 
+            dtoGenerator, 
+            securityService, 
+            entityClonerService,
+            keyGeneratorService);
       this.treeServiceProvider = transportTreeServiceProvider;
       this.transportServiceProvider = transportServiceProvider;
    }
@@ -80,7 +86,7 @@ public class TransportManagerTreeHandlerRpcServiceImpl extends TreeDBManagerTree
                      .getTransportIdFromKey(((TransportDto) node).getKey());
 
                if (id != node.getId())
-                  throw new ExpectedException("There already is a transport with the same key");
+                  throw new ExpectedException("There is already a transport with the same key: " + id);
 
                /*
                 * if the transport id is the same as the id of the transport to be changed do nothing
@@ -100,14 +106,20 @@ public class TransportManagerTreeHandlerRpcServiceImpl extends TreeDBManagerTree
    protected void doSetInitialProperties(AbstractTransportManagerNode inserted) {
       if (inserted instanceof Transport) {
          ((Transport)inserted).setKey("RS_TEMP_" + new Date());
+         ((Transport)inserted).setStatus(TransportService.Status.CREATED.name());
       }
       setInitialProperties(inserted, true);
    }
    
    @Override
-   protected void nodeCloned(AbstractTransportManagerNode clonedNode) {
+   protected void nodeCloned(AbstractTransportManagerNode clonedNode, AbstractTransportManagerNode realNode) {
       setInitialProperties(clonedNode, false);
       clonedNode.setCreatedOn(new Date());
+      if (clonedNode instanceof Transport) {
+         Transport clonedTransport = (Transport)clonedNode;
+         if (clonedTransport.isClosed())
+            clonedTransport.reopen();
+      }
    }
    
    private void setInitialProperties(AbstractTransportManagerNode node, boolean setXml) {

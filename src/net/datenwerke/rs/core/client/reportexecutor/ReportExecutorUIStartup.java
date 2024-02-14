@@ -17,9 +17,7 @@ import net.datenwerke.rs.core.client.reportexecutor.ui.preview.hookers.PdfPrevie
 import net.datenwerke.rs.core.client.reportexecutor.variantstorer.ReportViewVariantStorerHooker;
 import net.datenwerke.rs.core.client.reportexecutor.variantstorer.VariantStorerHook;
 import net.datenwerke.rs.core.client.reportexporter.hookers.ExportExternalButtonHooker;
-import net.datenwerke.rs.core.client.reportexporter.hookers.ExportViaMailHooker;
 import net.datenwerke.rs.core.client.reportexporter.hookers.ReportViewExportButtonHooker;
-import net.datenwerke.rs.core.client.reportexporter.hooks.ExportExternalEntryProviderHook;
 import net.datenwerke.rs.core.client.urlview.hooks.UrlViewSpecialViewHandler;
 import net.datenwerke.rs.core.client.userprofile.UserProfileViewContentHook;
 
@@ -32,12 +30,13 @@ public class ReportExecutorUIStartup {
    @Inject
    public ReportExecutorUIStartup(HookHandlerService hookHandler,
 
-         HistoryUiService historyService, ReportExecutorHistoryCallback executorHistoryCallbackProvider,
+         HistoryUiService historyService, 
+         ReportExecutorHistoryCallback executorHistoryCallbackProvider,
 
-         ReportViewExportButtonHooker exportButtonHooker, ExportExternalButtonHooker exportViaMailButtonHooker,
+         ReportViewExportButtonHooker exportButtonHooker, 
+         ExportExternalButtonHooker exportViaExternalButtonHooker,
          Provider<ReportViewVariantStorerHooker> variantStorerHooker,
 
-         Provider<ExportViaMailHooker> exportViaMailHooker,
          Provider<ReportRefreshExecutionHooker> reportRefreshExecutionHooker,
 
          Provider<ExportTypeSelectionProvider> exportTypeSimpleFormProvider,
@@ -47,7 +46,8 @@ public class ReportExecutorUIStartup {
          Provider<PdfPreviewUserProfileViewContentHooker> pdfPreviewUserProfileViewHooker,
          Provider<LocalDecimalFormatUserProfileViewContentHooker> decimalFormatUserProfileViewHooker,
 
-         ReportExecutorInlineDispatcher reportExecutorDispatcher) {
+         ReportExecutorInlineDispatcher reportExecutorDispatcher
+         ) {
 
       /* simpleform */
       hookHandler.attachHooker(FormFieldProviderHook.class, exportTypeSimpleFormProvider);
@@ -61,10 +61,8 @@ public class ReportExecutorUIStartup {
       /* report view toolbar */
       hookHandler.attachHooker(ReportExecutorViewToolbarHook.class, exportButtonHooker,
             HookHandlerService.PRIORITY_HIGH);
-      hookHandler.attachHooker(ReportExecutorViewToolbarHook.class, exportViaMailButtonHooker,
+      hookHandler.attachHooker(ReportExecutorViewToolbarHook.class, exportViaExternalButtonHooker,
             HookHandlerService.PRIORITY_HIGH + 2);
-      hookHandler.attachHooker(ExportExternalEntryProviderHook.class, exportViaMailHooker,
-            HookHandlerService.PRIORITY_HIGH);
 
       hookHandler.attachHooker(ReportExecutorViewToolbarHook.class, reportRefreshExecutionHooker,
             HookHandlerService.PRIORITY_HIGH - 2);

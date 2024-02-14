@@ -9,7 +9,7 @@ import net.datenwerke.rs.core.service.datasinkmanager.entities.DatasinkDefinitio
 import net.datenwerke.rs.core.service.datasinkmanager.entities.DatasinkFolder;
 import net.datenwerke.treedb.service.treedb.TreeDBManager;
 
-public interface DatasinkTreeService extends TreeDBManager<AbstractDatasinkManagerNode> {
+public interface DatasinkTreeService extends TreeDBManager<AbstractDatasinkManagerNode>{
 
    Set<Class<? extends DatasinkDefinition>> getInstalledDatasinkDefinitions();
 
@@ -22,7 +22,7 @@ public interface DatasinkTreeService extends TreeDBManager<AbstractDatasinkManag
    DatasinkContainer merge(DatasinkContainer container);
 
    <T extends DatasinkDefinition> Optional<T> getDefaultDatasink(Class<T> type, String defaultDatasinkIdProperty,
-         String defaultDatasinkNameProperty, String defaultDatasinkKeyProperty);
+         String defaultDatasinkNameProperty, String defaultDatasinkKeyProperty, String disabledProperty);
 
    long getDatasinkIdFromKey(String key);
    

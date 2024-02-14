@@ -40,6 +40,6 @@ public class OneDriveModule extends AbstractModule {
    @DefaultOneDriveDatasink
    public Optional<OneDriveDatasink> provideDefaultDatasink(DatasinkTreeService datasinkService) {
       return datasinkService.getDefaultDatasink(OneDriveDatasink.class, PROPERTY_DEFAULT_ONEDRIVE_DATASINK_ID,
-            PROPERTY_DEFAULT_ONEDRIVE_DATASINK_NAME, PROPERTY_DEFAULT_ONEDRIVE_DATASINK_KEY);
+            PROPERTY_DEFAULT_ONEDRIVE_DATASINK_NAME, PROPERTY_DEFAULT_ONEDRIVE_DATASINK_KEY, PROPERTY_ONEDRIVE_DISABLED);
    }
 }

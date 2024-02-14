@@ -2,13 +2,13 @@ package net.datenwerke.eximport.ex
 
 import groovy.xml.XmlSlurper
 import groovy.xml.XmlUtil
-import groovy.xml.XmlNodePrinter
+import groovy.xml.slurpersupport.GPathResult
 
 class ExportFileProcessingHelperImpl implements ExportFileProcessingHelper {
    
    String xml;
    
-   private def reportServerExport;
+   private GPathResult reportServerExport;
    
    
    @Override
@@ -30,18 +30,26 @@ class ExportFileProcessingHelperImpl implements ExportFileProcessingHelper {
 
    @Override
    public void replaceExportedItem(String itemId, String exporterDataBlockClazz, String replacementItemXml) {
-      def replacement = new XmlSlurper(false, false).parseText( replacementItemXml )
       def exporterDataBlock = findExporterDataBlock(exporterDataBlockClazz)
          
       def exportedItem = exporterDataBlock
             .exportedItem
             .find { it.'@xml:id'.text() == itemId }
-            
+      def collectionValueList = exportedItem.'**'.find{ it.'@name' == 'children'}?.collectionValue
+
       // remove old node
       exportedItem.replaceNode{ }
-      
-      // add replacement
-      exporterDataBlock.appendNode replacement
+      // add replacement if present
+      if (replacementItemXml) {
+         def replacement = new XmlSlurper(false, false).parseText( replacementItemXml )
+         def childrenNode = replacement.'**'.find { it.'@name' == 'children'}
+         def presentRefIds = childrenNode.collectionValue.collect { it.'@referenceId' as String} as Set
+         collectionValueList.each {
+            if(!presentRefIds.contains(it.'@referenceId' as String))
+               childrenNode?.appendNode(it)
+         }
+         exporterDataBlock.appendNode replacement
+      }      
    }
 
    @Override

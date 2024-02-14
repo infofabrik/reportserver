@@ -11,6 +11,7 @@ import net.datenwerke.rs.dashboard.service.dashboard.entities.AbstractDashboardM
 import net.datenwerke.rs.dashboard.service.dashboard.entities.DadgetNode;
 import net.datenwerke.rs.dashboard.service.dashboard.entities.Dashboard;
 import net.datenwerke.rs.dashboard.service.dashboard.entities.DashboardNode;
+import net.datenwerke.rs.keyutils.service.keyutils.KeyNameGeneratorService;
 import net.datenwerke.rs.utils.entitycloner.EntityClonerService;
 import net.datenwerke.security.server.TreeDBManagerTreeHandler;
 import net.datenwerke.security.service.security.SecurityService;
@@ -29,9 +30,18 @@ public class DashboardTreeRpcServiceImpl extends TreeDBManagerTreeHandler<Abstra
    private static final long serialVersionUID = -6246061438291322619L;
 
    @Inject
-   public DashboardTreeRpcServiceImpl(DtoService dtoService, DashboardManagerService manager,
-         SecurityService securityService, EntityClonerService entityClonerService) {
-      super(manager, dtoService, securityService, entityClonerService);
+   public DashboardTreeRpcServiceImpl(
+         DashboardManagerService manager,
+         DtoService dtoService, 
+         SecurityService securityService, 
+         EntityClonerService entityClonerService,
+         KeyNameGeneratorService keyGeneratorService
+         ) {
+      super(manager, 
+            dtoService, 
+            securityService, 
+            entityClonerService,
+            keyGeneratorService);
    }
 
    @Override
@@ -48,7 +58,7 @@ public class DashboardTreeRpcServiceImpl extends TreeDBManagerTreeHandler<Abstra
    }
 
    @Override
-   protected void nodeCloned(AbstractDashboardManagerNode clonedNode) {
+   protected void nodeCloned(AbstractDashboardManagerNode clonedNode, AbstractDashboardManagerNode realNode) {
       if (!(clonedNode instanceof AbstractDashboardManagerNode))
          throw new IllegalArgumentException();
 

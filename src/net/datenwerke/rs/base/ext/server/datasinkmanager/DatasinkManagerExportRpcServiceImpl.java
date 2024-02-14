@@ -50,7 +50,7 @@ public class DatasinkManagerExportRpcServiceImpl extends SecuredRemoteServiceSer
    public void quickExport(AbstractDatasinkManagerNodeDto nodeDto) throws ServerCallFailedException {
       AbstractDatasinkManagerNode node = (AbstractDatasinkManagerNode) dtoService.loadPoso(nodeDto);
 
-      String exportXML = exportHelper.export(node, true, DatasinkManagerExporter.EXPORTER_NAME, false);
+      String exportXML = exportHelper.export(node, true, DatasinkManagerExporter.EXPORTER_NAME, false, false);
 
       httpExportServiceProvider.get().storeExport(exportXML, node.getName());
    }

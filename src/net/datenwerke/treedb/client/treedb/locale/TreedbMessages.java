@@ -19,4 +19,6 @@ public interface TreedbMessages extends Messages {
 
    String moved();
 
+   String moveTo();
+
 }

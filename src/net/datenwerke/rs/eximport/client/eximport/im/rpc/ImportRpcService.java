@@ -17,6 +17,8 @@ public interface ImportRpcService extends RemoteService {
 
    public Collection<String> uploadXML(String xmldata) throws ServerCallFailedException;
 
+   public void setUseMergeImporter(boolean value) throws ServerCallFailedException;
+
    public void reset() throws ServerCallFailedException;
 
    public void invalidateConfig() throws ServerCallFailedException;

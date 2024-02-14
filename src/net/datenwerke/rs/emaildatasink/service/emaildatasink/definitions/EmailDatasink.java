@@ -16,6 +16,7 @@ import com.google.inject.Provider;
 import net.datenwerke.dtoservices.dtogenerator.annotations.AdditionalField;
 import net.datenwerke.dtoservices.dtogenerator.annotations.ExposeToClient;
 import net.datenwerke.dtoservices.dtogenerator.annotations.GenerateDto;
+import net.datenwerke.eximport.ex.annotations.ExportableField;
 import net.datenwerke.gf.base.service.annotations.Field;
 import net.datenwerke.gf.base.service.annotations.Indexed;
 import net.datenwerke.rs.core.service.datasinkmanager.BasicDatasinkService;
@@ -25,6 +26,7 @@ import net.datenwerke.rs.emaildatasink.service.emaildatasink.EmailDatasinkServic
 import net.datenwerke.rs.emaildatasink.service.emaildatasink.configs.DatasinkEmailConfig;
 import net.datenwerke.rs.emaildatasink.service.emaildatasink.definitions.dtogen.EmailDatasink2DtoPostProcessor;
 import net.datenwerke.rs.emaildatasink.service.emaildatasink.locale.EmailDatasinkMessages;
+import net.datenwerke.rs.utils.entitymerge.service.annotations.EntityMergeField;
 import net.datenwerke.rs.utils.instancedescription.annotations.InstanceDescription;
 import net.datenwerke.rs.utils.misc.DateUtils;
 import net.datenwerke.security.service.authenticator.AuthenticatorService;
@@ -75,45 +77,57 @@ public class EmailDatasink extends DatasinkDefinition {
    @ExposeToClient
    @Field
    @Column(length = 1024)
+   @EntityMergeField
    private String host = "smtp.host.net";
 
    @ExposeToClient
    @Field
+   @EntityMergeField
    private int port = 25;
 
    @ExposeToClient
    @Field
+   @EntityMergeField
    private String username;
 
    @ExposeToClient(exposeValueToClient = false, mergeDtoValueBack = true)
+   @EntityMergeField
+   @ExportableField(exportField = false)
    private String password;
 
    @ExposeToClient
    @Field
+   @EntityMergeField
    private boolean sslEnable;
 
    @ExposeToClient
    @Field
+   @EntityMergeField
    private boolean tlsEnable;
 
    @ExposeToClient
    @Field
+   @EntityMergeField
    private boolean tlsRequire;
 
    @ExposeToClient
    @Field
+   @EntityMergeField
    private String sender;
 
    @ExposeToClient
    @Field
+   @EntityMergeField
    private String senderName;
 
    @ExposeToClient
    @Field
+   @EntityMergeField
    private boolean forceSender;
 
    @ExposeToClient
    @Field
+   @EntityMergeField
    private String encryptionPolicy = "allow_mixed";
 
    public String getHost() {
@@ -217,8 +231,10 @@ public class EmailDatasink extends DatasinkDefinition {
     * @param password the password to encrypt and set
     */
    public void setPassword(String password) {
-      if (null == password)
-         password = "";
+      if (null == password) {
+         this.password = null;
+         return;
+      }
 
       EncryptionService encryptionService = pbeServiceProvider.get().getEncryptionService();
       byte[] encrypted = encryptionService.encrypt(password);

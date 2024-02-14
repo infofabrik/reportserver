@@ -26,7 +26,8 @@ public class UserExportConfigHooker implements ExportConfigHook {
       if (!(node instanceof AbstractUserManagerNode))
          throw new IllegalArgumentException("node not an AbstractUserManagerNode");
       
-      return exportHelper.createExportConfig(node, true, UserManagerExporter.EXPORTER_NAME, false);
+      return exportHelper.createExportConfig(node, true, UserManagerExporter.EXPORTER_NAME, false, options.flatten(),
+            n -> true);
    }
 
    @Override

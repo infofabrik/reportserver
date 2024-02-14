@@ -13,6 +13,7 @@ import com.google.inject.Provider;
 import net.datenwerke.dtoservices.dtogenerator.annotations.AdditionalField;
 import net.datenwerke.dtoservices.dtogenerator.annotations.ExposeToClient;
 import net.datenwerke.dtoservices.dtogenerator.annotations.GenerateDto;
+import net.datenwerke.eximport.ex.annotations.ExportableField;
 import net.datenwerke.gf.base.service.annotations.Field;
 import net.datenwerke.gf.base.service.annotations.Indexed;
 import net.datenwerke.rs.core.service.datasinkmanager.BasicDatasinkService;
@@ -24,6 +25,7 @@ import net.datenwerke.rs.core.service.datasinkmanager.entities.DatasinkDefinitio
 import net.datenwerke.rs.ftp.service.ftp.FtpsService;
 import net.datenwerke.rs.ftp.service.ftp.definitions.dtogen.FtpsDatasink2DtoPostProcessor;
 import net.datenwerke.rs.ftp.service.ftp.locale.FtpMessages;
+import net.datenwerke.rs.utils.entitymerge.service.annotations.EntityMergeField;
 import net.datenwerke.rs.utils.instancedescription.annotations.InstanceDescription;
 import net.datenwerke.rs.utils.misc.DateUtils;
 import net.datenwerke.security.service.crypto.pbe.PbeService;
@@ -73,25 +75,32 @@ public class FtpsDatasink extends DatasinkDefinition implements HostDatasink, Fo
    @ExposeToClient
    @Field
    @Column(length = 1024)
+   @EntityMergeField
    private String host = "ftps://ftps.host.net";
 
    @ExposeToClient
    @Field
+   @EntityMergeField
    private int port = 21;
 
    @ExposeToClient
    @Field
+   @EntityMergeField
    private String username;
 
    @ExposeToClient
+   @EntityMergeField
    private String authenticationType;
 
    @ExposeToClient(exposeValueToClient = false, mergeDtoValueBack = true)
+   @EntityMergeField
+   @ExportableField(exportField = false)
    private String password;
 
    @ExposeToClient
    @Field
    @Column(length = 1024)
+   @EntityMergeField
    private String folder = "./";
 
    /**
@@ -99,10 +108,12 @@ public class FtpsDatasink extends DatasinkDefinition implements HostDatasink, Fo
     */
    @ExposeToClient
    @Field
+   @EntityMergeField
    private String ftpMode;
 
    @ExposeToClient
    @Field
+   @EntityMergeField
    private String dataChannelProtectionLevel;
 
    @Override
@@ -179,8 +190,10 @@ public class FtpsDatasink extends DatasinkDefinition implements HostDatasink, Fo
     * @param password the password to encrypt and set.
     */
    public void setPassword(String password) {
-      if (null == password)
-         password = "";
+      if (null == password) {
+         this.password = null;
+         return;
+      }
 
       EncryptionService encryptionService = pbeServiceProvider.get().getEncryptionService();
       byte[] encrypted = encryptionService.encrypt(password);

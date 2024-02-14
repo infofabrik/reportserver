@@ -103,10 +103,11 @@ public class TransportDescribeSubcommand implements TransportSubCommandHook {
          commandResult.addResultTable(metadata);
          
          Map<String, List<Map<String,String>>> elements = transportService.getElements(transport);
-         elements.keySet().stream().map(key -> {
-            return terminalService.convertSimpleMapListToTableModel("No properties", elements.get(key),
-                  Collections.emptyList(), Collections.emptyMap());
-         }).forEach(commandResult::addResultTable);
+         elements.keySet().stream().forEach(key -> {
+            commandResult.addResultLine(key);
+            commandResult.addResultTable(terminalService.convertSimpleMapListToTableModel("No properties",
+                  elements.get(key), Collections.emptyList(), Collections.emptyMap()));
+         });
 
          return commandResult;
       } catch (VFSException e) {

@@ -10,7 +10,7 @@ import net.datenwerke.rs.core.service.datasourcemanager.entities.DatasourceFolde
 import net.datenwerke.treedb.service.treedb.TreeDBManager;
 
 public interface DatasourceService extends TreeDBManager<AbstractDatasourceManagerNode> {
-
+   
    Set<Class<? extends DatasourceDefinition>> getInstalledDataSourceDefinitions();
 
    DatasourceDefinition getDatasourceByName(String name);
@@ -30,5 +30,5 @@ public interface DatasourceService extends TreeDBManager<AbstractDatasourceManag
    long getDatasourceIdFromKey(String key);
    
    DatasourceDefinition getDatasourceByKey(String key);
-
+   
 }

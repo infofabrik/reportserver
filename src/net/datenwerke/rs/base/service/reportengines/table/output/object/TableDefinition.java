@@ -15,6 +15,7 @@ import net.datenwerke.gxtdto.client.utils.SqlTypes;
 import net.datenwerke.rs.base.service.dbhelper.DatabaseHelper;
 import net.datenwerke.rs.base.service.dbhelper.querybuilder.QueryBuilder;
 import net.datenwerke.rs.base.service.reportengines.table.entities.Column;
+import net.datenwerke.rs.terminal.service.terminal.TerminalService;
 
 /**
  * 
@@ -62,8 +63,11 @@ public class TableDefinition implements Serializable {
 
       /* initialize display sizes */
       List<Integer> displaySizes = new ArrayList<Integer>();
-      for (int i = 0; i < columnNames.size(); i++)
-         displaySizes.add(0);
+      for (int i = 0; i < columnNames.size(); i++) {
+         if (columnNames.size() > 5) {
+            displaySizes.add(getColumnWidth(columnNames.get(i), 5, 180));
+         } else displaySizes.add(0);
+      }
 
       this.columnNames = columnNames;
       this.originalColumnNames = originalColumnNames;
@@ -72,6 +76,12 @@ public class TableDefinition implements Serializable {
       this.sqlColumnTypes = sqlColumnTypes;
 
       buildColumnIndex();
+   }
+   
+   private static int getColumnWidth(String text, int minWidth, int maxWidth) {
+      int length = minWidth;
+      if (text.length() <= 0) return length;
+      return (int) Math.max(Math.min(Math.ceil(text.length() * TerminalService.CHAR_WIDTH), maxWidth), minWidth);
    }
 
    private TableDefinition(List<String> columnNames, List<String> originalColumnNames, List<Class<?>> columnTypes,
@@ -101,7 +111,7 @@ public class TableDefinition implements Serializable {
       List<Integer> displaySizes = new ArrayList<Integer>();
 
       for (int i = 1; i <= metaData.getColumnCount(); i++) {
-         displaySizes.add(metaData.getColumnDisplaySize(i));
+         displaySizes.add(getColumnWidth(metaData.getColumnLabel(i), metaData.getColumnDisplaySize(i), 180));
          names.add(metaData.getColumnLabel(i));
          types.add(DatabaseHelper.mapSQLTypeToJava(metaData.getColumnType(i)));
          sqlColumnTypes.add(metaData.getColumnType(i));
@@ -124,7 +134,7 @@ public class TableDefinition implements Serializable {
          if (null != columns && columns.get(colIdx - 1).isHidden())
             continue;
 
-         displaySizes.add(metaData.getColumnDisplaySize(i));
+         displaySizes.add(getColumnWidth(metaData.getColumnLabel(i), metaData.getColumnDisplaySize(i), 180));
          names.add(metaData.getColumnLabel(i));
          types.add(DatabaseHelper.mapSQLTypeToJava(metaData.getColumnType(i)));
          sqlColumnTypes.add(metaData.getColumnType(i));

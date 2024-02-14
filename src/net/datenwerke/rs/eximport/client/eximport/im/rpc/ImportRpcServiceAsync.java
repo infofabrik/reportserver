@@ -21,4 +21,6 @@ public interface ImportRpcServiceAsync {
 
    void uploadXML(String xmldata, AsyncCallback<Collection<String>> callback);
 
+   void setUseMergeImporter(boolean value, AsyncCallback<Void> callback);
+
 }

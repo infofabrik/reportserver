@@ -17,6 +17,7 @@ import net.datenwerke.gf.base.service.annotations.Indexed;
 import net.datenwerke.gxtdto.client.dtomanager.DtoView;
 import net.datenwerke.rs.dashboard.client.dashboard.locale.DashboardMessages;
 import net.datenwerke.rs.utils.entitycloner.annotation.EnclosedEntity;
+import net.datenwerke.rs.utils.entitymerge.service.annotations.EntityMergeField;
 import net.datenwerke.rs.utils.instancedescription.annotations.Description;
 import net.datenwerke.rs.utils.instancedescription.annotations.Title;
 
@@ -36,6 +37,7 @@ public class DashboardNode extends AbstractDashboardManagerNode {
    @Column(length = 128)
    @Field
    @Title
+   @EntityMergeField
    private String name;
 
    @ExposeToClient(view = DtoView.MINIMAL)
@@ -43,11 +45,13 @@ public class DashboardNode extends AbstractDashboardManagerNode {
    @Type(type = "net.datenwerke.rs.utils.hibernate.RsClobType")
    @Field
    @Description
+   @EntityMergeField
    private String description;
 
    @ExposeToClient
    @EnclosedEntity
    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+   @EntityMergeField(toClone = true)
    private Dashboard dashboard;
 
    public String getName() {

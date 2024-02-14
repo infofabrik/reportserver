@@ -6,8 +6,13 @@ import java.util.List;
 
 import com.google.inject.Inject;
 
+import net.datenwerke.rs.base.ext.service.datasinkmanager.vfs.DatasinkManagerVFS;
+import net.datenwerke.rs.base.ext.service.datasourcemanager.vfs.DatasourceManagerVFS;
+import net.datenwerke.rs.base.ext.service.reportmanager.vfs.ReportManagerVFS;
 import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
 import net.datenwerke.rs.core.service.reportmanager.interfaces.ReportVariant;
+import net.datenwerke.rs.fileserver.service.fileserver.vfs.FileServerVfs;
+import net.datenwerke.rs.remoteserver.service.remoteservermanager.vfs.RemoteServerManagerVFS;
 import net.datenwerke.rs.terminal.service.terminal.TerminalSession;
 import net.datenwerke.rs.terminal.service.terminal.helpers.AutocompleteHelper;
 import net.datenwerke.rs.terminal.service.terminal.helpers.CommandParser;
@@ -19,6 +24,7 @@ import net.datenwerke.rs.terminal.service.terminal.obj.CommandResult;
 import net.datenwerke.rs.terminal.service.terminal.vfs.VFSLocation;
 import net.datenwerke.rs.terminal.service.terminal.vfs.VirtualFileSystemDeamon;
 import net.datenwerke.rs.terminal.service.terminal.vfs.exceptions.VFSException;
+import net.datenwerke.rs.terminal.service.terminal.vfs.hooks.VirtualFileSystemManagerHook;
 import net.datenwerke.rs.terminal.service.terminal.vfs.locale.VfsMessages;
 import net.datenwerke.security.service.security.SecurityService;
 import net.datenwerke.security.service.security.SecurityTarget;
@@ -110,7 +116,8 @@ public class VfsCommandCp implements TerminalCommandHook {
             boolean deepCopy = parser.hasOption("r");
 
             /* perform copy */
-            List<VFSLocation> copiedFileLocations = target.getFilesystemManager().copyFilesTo(sourceLocation, target,
+            VirtualFileSystemManagerHook filesystemManager = target.getFilesystemManager();
+            List<VFSLocation> copiedFileLocations = filesystemManager.copyFilesTo(sourceLocation, target,
                   deepCopy);
 
             if (null != targetFileName && copiedFileLocations.size() != 1)
@@ -120,7 +127,12 @@ public class VfsCommandCp implements TerminalCommandHook {
                VFSLocation copiedFile = copiedFileLocations.get(0);
                copiedFile.rename(targetFileName);
             } else {
-               if (target.equals(workingDirectory)) {
+               if (target.equals(workingDirectory) && !(filesystemManager instanceof DatasinkManagerVFS 
+                     || filesystemManager instanceof DatasourceManagerVFS
+                     || filesystemManager instanceof RemoteServerManagerVFS
+                     || filesystemManager instanceof FileServerVfs
+                     || filesystemManager instanceof ReportManagerVFS
+                     )) {
                   for (VFSLocation loc : copiedFileLocations) {
                      String name = loc.getFilesystemManager().getNameFor(loc);
                      loc.rename(name + " (copy)");

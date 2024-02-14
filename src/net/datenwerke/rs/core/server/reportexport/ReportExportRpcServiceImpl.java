@@ -1,14 +1,7 @@
 package net.datenwerke.rs.core.server.reportexport;
 
-import static java.util.stream.Collectors.toList;
-
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-
-import javax.mail.internet.InternetAddress;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
@@ -24,13 +17,10 @@ import net.datenwerke.rs.configservice.service.configservice.ConfigService;
 import net.datenwerke.rs.core.client.reportexporter.dto.ReportExecutionConfigDto;
 import net.datenwerke.rs.core.client.reportexporter.rpc.ReportExporterRpcService;
 import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
-import net.datenwerke.rs.core.server.reportexport.events.ExportReportViaMailFailedEvent;
 import net.datenwerke.rs.core.server.reportexport.helper.ReportSessionCache;
 import net.datenwerke.rs.core.server.reportexport.helper.ReportSessionCacheEntry;
 import net.datenwerke.rs.core.server.reportexport.hooks.ReportExportViaSessionHook;
 import net.datenwerke.rs.core.service.mail.MailService;
-import net.datenwerke.rs.core.service.mail.SimpleAttachment;
-import net.datenwerke.rs.core.service.mail.SimpleMail;
 import net.datenwerke.rs.core.service.reportmanager.ReportDtoService;
 import net.datenwerke.rs.core.service.reportmanager.ReportExecutorService;
 import net.datenwerke.rs.core.service.reportmanager.ReportService;
@@ -43,13 +33,11 @@ import net.datenwerke.rs.core.service.reportserver.ReportServerService;
 import net.datenwerke.rs.utils.eventbus.EventBus;
 import net.datenwerke.rs.utils.filename.FileNameService;
 import net.datenwerke.rs.utils.zip.ZipUtilsService;
-import net.datenwerke.security.client.usermanager.dto.ie.StrippedDownUser;
 import net.datenwerke.security.server.SecuredRemoteServiceServlet;
 import net.datenwerke.security.service.authenticator.AuthenticatorService;
 import net.datenwerke.security.service.security.SecurityService;
 import net.datenwerke.security.service.security.rights.Execute;
 import net.datenwerke.security.service.usermanager.UserManagerService;
-import net.datenwerke.security.service.usermanager.entities.User;
 
 /**
  * 
@@ -152,83 +140,6 @@ public class ReportExportRpcServiceImpl extends SecuredRemoteServiceServlet impl
       entry.setExecutorConfigs(reportExecutorConfigs);
 
       sessionCacheProvider.get().put(executorToken, entry);
-   }
-
-   @Override
-   @Transactional(rollbackOn = { Exception.class })
-   public void exportViaMail(@Named("report") ReportDto reportDto, String executorToken, final String format,
-         List<ReportExecutionConfigDto> configs, String subject, String message, boolean compressed,
-         List<StrippedDownUser> recipients) throws ServerCallFailedException, ExpectedException {
-      final ReportExecutionConfig[] configArray = getConfigArray(executorToken, configs);
-
-      /* get a clean and unmanaged report from the database */
-      Report referenceReport = reportDtoService.getReferenceReport(reportDto);
-      Report orgReport = (Report) reportService.getUnmanagedReportById(reportDto.getId());
-
-      /* check rights */
-      securityService.assertRights(referenceReport, Execute.class);
-
-      /* create variant */
-      Report adjustedReport = (Report) dtoService.createUnmanagedPoso(reportDto);
-      final Report toExecute = orgReport.createTemporaryVariant(adjustedReport);
-
-      for (ReportExportViaSessionHook hooker : hookHandlerService.getHookers(ReportExportViaSessionHook.class)) {
-         hooker.adjustReport(toExecute, configArray);
-      }
-
-      CompiledReport cReport;
-      try {
-         cReport = reportExecutorService.execute(toExecute, format, configArray);
-
-         SimpleMail mail = mailService.newSimpleMail();
-         mail.setSubject(subject);
-
-         String reportFileExtension = cReport.getFileExtension();
-
-         if (compressed) {
-            try (ByteArrayOutputStream os = new ByteArrayOutputStream()) {
-               Object reportObj = cReport.getReport();
-
-               try {
-                  zipUtilsService.createZip(Collections.singletonMap(
-                        toExecute.getName().replace(":", "_").replace("/", "_").replace("\\", "_").replace(" ", "_")
-                              + "." + reportFileExtension,
-                        reportObj), os);
-               } catch (IOException e) {
-                  throw new ServerCallFailedException(e);
-               }
-
-               SimpleAttachment attachement = new SimpleAttachment(os.toByteArray(), "application/zip",
-                     makeExportFilename(referenceReport) + ".zip");
-               /* set content */
-               mail.setContent(message, attachement);
-            }
-         } else {
-            SimpleAttachment attachement = new SimpleAttachment(cReport.getReport(), cReport.getMimeType(),
-                  makeExportFilename(referenceReport) + "." + cReport.getFileExtension() //$NON-NLS-1$
-            );
-            /* set content */
-            mail.setContent(message, attachement);
-         }
-
-         mail.setToRecipients(recipients.stream().map(sUser -> (User) userManagerService.getNodeById(sUser.getId()))
-               .filter(user -> null != user.getEmail() && !"".equals(user.getEmail())).map(User::getEmail)
-               .collect(toList()));
-
-         User currentUser = authenticatorServiceProvider.get().getCurrentUser();
-         if (null != currentUser.getEmail() && !"".equals(currentUser.getEmail())) {
-            InternetAddress mailFrom = new InternetAddress(currentUser.getEmail());
-            mail.setFrom(mailFrom, true);
-         }
-
-         mailService.sendMail(mail);
-      } catch (Exception e) {
-         eventBus.fireEvent(new ExportReportViaMailFailedEvent(reportDto, executorToken, format, configs, subject,
-               message, recipients));
-
-         throw new ExpectedException("Could not export report via mail: " + e.getMessage(), e);
-      }
-
    }
 
    private ReportExecutionConfig[] getConfigArray(String executorToken, List<ReportExecutionConfigDto> configs)

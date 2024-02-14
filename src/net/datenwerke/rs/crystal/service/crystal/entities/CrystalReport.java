@@ -17,6 +17,7 @@ import net.datenwerke.rs.crystal.client.crystal.locale.CrystalMessages;
 import net.datenwerke.rs.crystal.service.crystal.CrystalReportService;
 import net.datenwerke.rs.crystal.service.crystal.locale.CrystalEngineMessages;
 import net.datenwerke.rs.utils.entitycloner.annotation.EnclosedEntity;
+import net.datenwerke.rs.utils.entitymerge.service.annotations.EntityMergeField;
 import net.datenwerke.rs.utils.instancedescription.annotations.InstanceDescription;
 import net.datenwerke.treedb.service.treedb.annotation.TreeDBAllowedChildren;
 
@@ -47,6 +48,7 @@ public class CrystalReport extends Report {
    @EnclosedEntity
    @ExposeToClient
    @OneToOne(cascade = { CascadeType.ALL })
+   @EntityMergeField
    private CrystalReportFile reportFile;
 
    public void setReportFile(CrystalReportFile reportFile) {

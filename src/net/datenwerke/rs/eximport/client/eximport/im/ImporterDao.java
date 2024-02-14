@@ -21,6 +21,10 @@ public class ImporterDao extends Dao {
       /* store objects */
       this.rpcService = rpcService;
    }
+   
+   public void setUseMergeImporter(boolean value, AsyncCallback<Void> callback) {
+      rpcService.setUseMergeImporter(value, callback);
+   }
 
    public void uploadXML(String xmldata, AsyncCallback<Collection<String>> callback) {
       rpcService.uploadXML(xmldata, transformAndKeepCallback(callback));

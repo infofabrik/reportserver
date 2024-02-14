@@ -25,7 +25,7 @@ public interface TableReportUtilityServiceAsync {
    Request getReturnedColumns(TableReportDto tableReport, String executeToken,
          AsyncCallback<ListLoadResult<ColumnDto>> callback);
 
-   Request getSpecialParameter(TableReportDto tableReport, String executeToken,
+   Request getSpecialParameter(ReportDto report, String executeToken,
          AsyncCallback<Map<String, List<String>>> callback);
 
    Request getReportInformation(TableReportDto tableReport, String executeToken,

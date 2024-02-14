@@ -11,6 +11,7 @@ public abstract class TableDatasink_ extends net.datenwerke.rs.core.service.data
 
 	public static volatile SingularAttribute<TableDatasink, String> primaryKeys;
 	public static volatile SingularAttribute<TableDatasink, DatasourceContainer> datasourceContainer;
+	public static volatile SingularAttribute<TableDatasink, Boolean> truncateTable;
 	public static volatile SingularAttribute<TableDatasink, Integer> batchSize;
 	public static volatile SingularAttribute<TableDatasink, String> tableName;
 	public static volatile SingularAttribute<TableDatasink, Boolean> copyPrimaryKeys;

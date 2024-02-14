@@ -10,6 +10,12 @@ public class Transport2DtoPostProcessor implements Poso2DtoPostProcessor<Transpo
    public void dtoCreated(Transport transport, TransportDto transportDto) {
       transportDto.setShortKey(transport.getShortKey());
       transportDto.setCreatedOnStr(transport.getCreatedOnStr());
+      transportDto.setImportedOnStr(transport.getImportedOnStr());
+      transportDto.setAppliedOnStr(transport.getAppliedOnStr());
+      transportDto.setImportedByStr(transport.getImportedByStr());
+      transportDto.setAppliedByStr(transport.getAppliedByStr());
+      transportDto.setAppliedProtocol(transport.getAppliedProtocol());
+      transportDto.setXml(transport.getXml());
    }
 
    @Override

@@ -242,6 +242,7 @@ public class ParameterRpcServiceImpl extends SecuredRemoteServiceServlet impleme
          if (null == definition)
             throw new ExpectedException("Parameter has been deleted");
 
+         definition.cleanDuplicated();
          parameterService.persist(definition);
 
          /* update key */

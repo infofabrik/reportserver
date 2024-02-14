@@ -12,6 +12,7 @@ public abstract class FileServerFile_ extends net.datenwerke.rs.fileserver.servi
 	public static volatile SingularAttribute<FileServerFile, String> name;
 	public static volatile SingularAttribute<FileServerFile, String> description;
 	public static volatile SingularAttribute<FileServerFile, String> contentType;
+	public static volatile SingularAttribute<FileServerFile, String> key;
 
 }
 

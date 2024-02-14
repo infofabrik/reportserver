@@ -25,6 +25,7 @@ import net.datenwerke.eximport.obj.ItemProperty;
 import net.datenwerke.eximport.obj.ReferenceItemProperty;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.annotations.CommitFlushMode;
+import net.datenwerke.rs.core.server.transport.TransportApplyNodeException;
 import net.datenwerke.rs.utils.exception.shared.LambdaExceptionUtil;
 import net.datenwerke.treedb.ext.service.eximport.TreeNodeImportItemConfig;
 import net.datenwerke.treedb.service.treedb.AbstractNode;
@@ -39,6 +40,8 @@ public class ImportServiceImpl implements ImportService {
    private final HookHandlerService hookHandler;
    private final ImportSupervisorFactory importSupervisorFactory;
 
+   private boolean useMergeImporter = false;
+   
    @Inject
    public ImportServiceImpl(
          ExportDataAnalyzerService dataAnalizer, 
@@ -50,6 +53,11 @@ public class ImportServiceImpl implements ImportService {
       this.dataAnalizer = dataAnalizer;
       this.hookHandler = hookHandler;
       this.importSupervisorFactory = importSupervisorFactory;
+   }
+   
+   @Override
+   public void setUseMergeImporter(boolean value) {
+      this.useMergeImporter = value;
    }
 
    /*
@@ -65,8 +73,11 @@ public class ImportServiceImpl implements ImportService {
       List<Importer> importers = getImporters();
       ImportSupervisor supervisor = importSupervisorFactory.create(config, importers);
       try {
+         supervisor.setUseMergeImporter(useMergeImporter);
          ImportResult importedData = supervisor.importData();
          return importedData;
+      } catch(TransportApplyNodeException e) {
+         throw e;
       } catch (Exception e) {
          throw new ImportException(e);
       }

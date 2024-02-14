@@ -18,8 +18,6 @@ import com.sencha.gxt.widget.core.client.Component;
 import com.sencha.gxt.widget.core.client.Dialog.PredefinedButton;
 import com.sencha.gxt.widget.core.client.TabItemConfig;
 import com.sencha.gxt.widget.core.client.box.ConfirmMessageBox;
-import com.sencha.gxt.widget.core.client.event.DialogHideEvent;
-import com.sencha.gxt.widget.core.client.event.DialogHideEvent.DialogHideHandler;
 
 import net.datenwerke.gxtdto.client.baseex.widget.DwTabPanel;
 import net.datenwerke.gxtdto.client.baseex.widget.mb.DwConfirmMessageBox;
@@ -157,12 +155,9 @@ public class ReportExecuteAreaMainWidget extends DwTabPanel {
       else {
          ConfirmMessageBox cmb = new DwConfirmMessageBox(ReportexecutorMessages.INSTANCE.closeChangedReportTitle(),
                ReportexecutorMessages.INSTANCE.closeChangedReportMessage());
-         cmb.addDialogHideHandler(new DialogHideHandler() {
-            @Override
-            public void onDialogHide(DialogHideEvent event) {
-               if (event.getHideButton() == PredefinedButton.YES) {
-                  forceClose(item);
-               }
+         cmb.addDialogHideHandler(event -> {
+            if (event.getHideButton() == PredefinedButton.YES) {
+               forceClose(item);
             }
          });
          cmb.show();

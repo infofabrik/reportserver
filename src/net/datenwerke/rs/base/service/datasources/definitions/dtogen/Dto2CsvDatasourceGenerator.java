@@ -351,7 +351,7 @@ public class Dto2CsvDatasourceGenerator implements Dto2PosoGenerator<CsvDatasour
 		if(! java.lang.String.class.isAssignableFrom(propertyValue.getClass()))
 			throw new ValidationFailedException("String validation failed for key", "expected a String");
 
-		if(! ((String)propertyValue).matches("^[a-zA-Z0-9_\\-]*$"))
+		if(! ((String)propertyValue).matches("^[a-zA-Z0-9_\\-]+$"))
 			throw new ValidationFailedException("String validation failed for key", " Regex test failed.");
 
 		/* all went well */

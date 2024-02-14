@@ -22,6 +22,6 @@ public class CsvDatasourceForm extends FormatBasedDatasourceForm {
       form.addField(Integer.class, CsvDatasourceDtoPA.INSTANCE.databaseCache(),
             BaseDatasourceMessages.INSTANCE.csvDatabaseCacheLabel());
       form.setFieldWidth(1);
+      
    }
-
 }

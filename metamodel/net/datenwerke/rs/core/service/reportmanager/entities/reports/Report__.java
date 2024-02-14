@@ -15,6 +15,7 @@ public class Report__ extends net.datenwerke.rs.core.service.reportmanager.entit
 	public static final String entityDiffService = "entityDiffService";
 	public static final String hookHandlerServiceProvider = "hookHandlerServiceProvider";
 	public static final String key = "key";
+	public static final String keyGeneratorServiceProvider = "keyGeneratorServiceProvider";
 	public static final String name = "name";
 	public static final String parameterDefinitions = "parameterDefinitions";
 	public static final String parameterInstances = "parameterInstances";

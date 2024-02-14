@@ -7,6 +7,7 @@ import java.util.Set;
 
 import com.google.inject.Inject;
 import com.google.inject.Provides;
+import com.google.inject.assistedinject.FactoryModuleBuilder;
 
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.core.service.guice.AbstractReportServerModule;
@@ -18,6 +19,7 @@ import net.datenwerke.rs.core.service.reportmanager.annotations.ReportServerRepo
 import net.datenwerke.rs.core.service.reportmanager.engine.ReportEngine;
 import net.datenwerke.rs.core.service.reportmanager.engine.ReportEngines;
 import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
+import net.datenwerke.rs.core.service.reportmanager.hookers.factory.ReportDefaultMergeHookerFactory;
 import net.datenwerke.rs.core.service.reportmanager.hooks.ParameterProviderHook;
 import net.datenwerke.rs.core.service.reportmanager.hooks.ParameterSetReplacementProviderHook;
 import net.datenwerke.rs.core.service.reportmanager.hooks.ReportEngineProviderHook;
@@ -38,6 +40,9 @@ public class ReportManagerModule extends AbstractReportServerModule {
       bind(ReportDtoService.class).to(ReportDtoServiceImpl.class);
       bind(ReportExecutorService.class).to(ReportExecutorServiceImpl.class);
       bind(ReportParameterService.class).to(ReportParameterServiceImpl.class);
+      
+      /* entity merge */
+      install(new FactoryModuleBuilder().build(ReportDefaultMergeHookerFactory.class));
 
       /* static injection */
       requestStaticInjection(ParameterDefinition.class, ParameterInstance.class, ParameterSet.class, Report.class);

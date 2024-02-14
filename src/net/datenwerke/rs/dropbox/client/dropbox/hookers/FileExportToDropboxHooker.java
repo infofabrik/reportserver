@@ -9,11 +9,11 @@ import com.google.inject.Provider;
 import com.sencha.gxt.widget.core.client.menu.Menu;
 
 import net.datenwerke.gf.client.treedb.UITree;
-import net.datenwerke.gf.client.treedb.helper.menu.FileSendToMenuItem;
 import net.datenwerke.gxtdto.client.servercommunication.callback.NotamCallback;
 import net.datenwerke.rs.core.client.datasinkmanager.DatasinkUIModule;
 import net.datenwerke.rs.core.client.datasinkmanager.DatasinkUIService;
 import net.datenwerke.rs.core.client.datasinkmanager.dto.DatasinkDefinitionDto;
+import net.datenwerke.rs.core.client.datasinkmanager.helper.menu.FileSendToMenuItem;
 import net.datenwerke.rs.dropbox.client.dropbox.DropboxDao;
 import net.datenwerke.rs.dropbox.client.dropbox.DropboxUiModule;
 import net.datenwerke.rs.dropbox.client.dropbox.DropboxUiService;

@@ -7,17 +7,14 @@ import java.util.Map;
 import com.sencha.gxt.widget.core.client.menu.Menu;
 import com.sencha.gxt.widget.core.client.menu.MenuItem;
 
-import net.datenwerke.gf.client.managerhelper.mainpanel.SimpleFormView;
-import net.datenwerke.gf.client.validator.KeyValidator;
 import net.datenwerke.gxtdto.client.baseex.widget.menu.DwMenu;
 import net.datenwerke.gxtdto.client.baseex.widget.menu.DwMenuItem;
 import net.datenwerke.gxtdto.client.forms.simpleform.SimpleForm;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCPasswordField;
-import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCStringValidatorRegex;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.impl.SFFCStaticDropdownList;
-import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.impl.SFFCTextAreaImpl;
 import net.datenwerke.gxtdto.client.locale.BaseMessages;
 import net.datenwerke.rs.core.client.datasinkmanager.locale.DatasinksMessages;
+import net.datenwerke.rs.core.client.datasinkmanager.ui.forms.DatasinkSimpleForm;
 import net.datenwerke.rs.ftp.client.ftp.dto.FtpDatasinkDto;
 import net.datenwerke.rs.ftp.client.ftp.dto.pa.FtpDatasinkDtoPA;
 import net.datenwerke.rs.ftp.client.ftp.hookers.FtpDatasinkConfigProviderHooker;
@@ -26,35 +23,12 @@ import net.datenwerke.rs.ftp.client.ftp.hookers.FtpDatasinkConfigProviderHooker;
  * 
  *
  */
-public class FtpDatasinkForm extends SimpleFormView {
+public class FtpDatasinkForm extends DatasinkSimpleForm {
 
-   public void configureSimpleForm(SimpleForm form) {
-      /* configure form */
-      form.setHeading(DatasinksMessages.INSTANCE.editDatasink()
-            + (getSelectedNode() == null ? "" : " (" + getSelectedNode().getId() + ")"));
-
-      form.beginFloatRow();
-      form.setFieldWidth(600);
-      
-      /* name */
-      form.addField(String.class, FtpDatasinkDtoPA.INSTANCE.name(), BaseMessages.INSTANCE.name());
-      
-      form.setFieldWidth(500);
-      /* key */
-      form.addField(String.class, FtpDatasinkDtoPA.INSTANCE.key(), BaseMessages.INSTANCE.key(),
-            new SFFCStringValidatorRegex(KeyValidator.KEY_REGEX, BaseMessages.INSTANCE.invalidKey()));
-      
-      form.endRow();
-      
-      form.setFieldWidth(1);
-
-      form.addField(String.class, FtpDatasinkDtoPA.INSTANCE.description(), BaseMessages.INSTANCE.description(),
-            new SFFCTextAreaImpl());
-
+   protected void configureSimpleFormCustomFields(SimpleForm form) {
+      /* host */
       form.setFieldWidth(750);
       form.beginFloatRow();
-
-      /* host */
       form.addField(String.class, FtpDatasinkDtoPA.INSTANCE.host(), BaseMessages.INSTANCE.host());
 
       form.setFieldWidth(50);
@@ -109,7 +83,5 @@ public class FtpDatasinkForm extends SimpleFormView {
 
       /* folder */
       form.addField(String.class, FtpDatasinkDtoPA.INSTANCE.folder(), BaseMessages.INSTANCE.folder());
-
    }
-
 }

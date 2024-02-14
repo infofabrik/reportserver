@@ -42,7 +42,7 @@ public class RemoteRsRestServerTesterToolbarConfigurator implements MainPanelVie
          return;
       if (!(selectedNode instanceof RemoteRsRestServerDto))
          return;
-      DwTextButton testBtn = toolbarUtils.createSmallButtonLeft("Test remote RS REST server",
+      DwTextButton testBtn = toolbarUtils.createSmallButtonLeft(RemoteServerMessages.INSTANCE.testingTitle(),
             BaseIcon.LINK);
       testBtn.addSelectHandler(event -> {
          ModalAsyncCallback<Boolean> callback = new ModalAsyncCallback<Boolean>(BaseMessages.INSTANCE.error(),

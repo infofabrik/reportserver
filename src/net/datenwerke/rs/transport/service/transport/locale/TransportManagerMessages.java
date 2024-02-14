@@ -28,9 +28,17 @@ public interface TransportManagerMessages extends Messages {
    
    String commandTransportAdd_desc();
    
+   String commandTransportImport_desc();
+
+   String commandTransportClose_desc();
+   
    String commandTransportAdd_target();
    
+   String commandTransportImport_target();
+   
    String commandTransportAdd_element();
+
+   String commandTransportClose();
    
    String commandTransportAdd_sub_flagV();
    
@@ -39,4 +47,24 @@ public interface TransportManagerMessages extends Messages {
    String commandTransportDescribe_transport();
    
    String transportFolderTypeName();
+   
+   String commandTransportRpull_desc();
+   
+   String commandTransportRpull_remoteServer();
+   
+   String commandTransportRpull_target();
+   
+   String commandTransportRemove_desc();
+   
+   String commandTransportRemove_transport();
+   
+   String commandTransportRemove_type();
+   
+   String commandTransportRemove_key();
+   
+   String commandTransportApply_desc();
+   
+   String commandTransportApply_target();
+   
+   String commandTransportApply_flagC();
 }

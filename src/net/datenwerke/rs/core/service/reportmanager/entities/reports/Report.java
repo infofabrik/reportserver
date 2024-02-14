@@ -55,14 +55,18 @@ import net.datenwerke.rs.core.service.reportmanager.entities.reports.supervisor.
 import net.datenwerke.rs.core.service.reportmanager.hooks.VariantCreatorHook;
 import net.datenwerke.rs.core.service.reportmanager.interfaces.ReportVariant;
 import net.datenwerke.rs.core.service.reportmanager.parameters.ParameterContainerNode;
+import net.datenwerke.rs.keyutils.service.keyutils.KeyNameGeneratorService;
 import net.datenwerke.rs.utils.entitycloner.EntityClonerService;
 import net.datenwerke.rs.utils.entitycloner.annotation.EnclosedEntity;
 import net.datenwerke.rs.utils.entitycloner.annotation.EntityClonerIgnore;
 import net.datenwerke.rs.utils.entitydiff.EntityDiffService;
 import net.datenwerke.rs.utils.entitydiff.annotations.EntityDiffGuide;
 import net.datenwerke.rs.utils.entitydiff.annotations.EntityDiffGuides;
+import net.datenwerke.rs.utils.entitymerge.service.annotations.EntityMergeCollection;
+import net.datenwerke.rs.utils.entitymerge.service.annotations.EntityMergeField;
 import net.datenwerke.rs.utils.instancedescription.annotations.Description;
 import net.datenwerke.rs.utils.instancedescription.annotations.Title;
+import net.datenwerke.rs.utils.validator.shared.SharedRegex;
 import net.datenwerke.treedb.service.treedb.AbstractNode;
 
 /**
@@ -136,23 +140,29 @@ abstract public class Report extends AbstractReportManagerNode
 
    @Inject
    protected static Provider<HookHandlerService> hookHandlerServiceProvider;
+   
+   @Inject
+   protected static Provider<KeyNameGeneratorService> keyGeneratorServiceProvider;
 
    @JoinTable(name = "REPORT_2_METADATA")
    @ExposeToClient(mergeDtoValueBack = false)
    @EnclosedEntity
    @OneToMany(cascade = CascadeType.ALL)
+   @EntityMergeCollection(defaultMerge = false)
    private Set<ReportMetadata> reportMetadata = new HashSet<ReportMetadata>();
 
    @JoinTable(name = "REPORT_2_PROPERTY")
    @ExposeToClient(mergeDtoValueBack = false)
    @EnclosedEntity
    @OneToMany(cascade = CascadeType.ALL)
+   @EntityMergeCollection(defaultMerge = false)
    private Set<ReportProperty> reportProperties = new HashSet<ReportProperty>();
 
    @ExposeToClient(displayTitle = true, view = DtoView.LIST)
    @Field
    @Column(length = 128)
    @Title
+   @EntityMergeField
    private String name;
 
    @ExposeToClient(view = DtoView.MINIMAL)
@@ -160,23 +170,29 @@ abstract public class Report extends AbstractReportManagerNode
    @Type(type = "net.datenwerke.rs.utils.hibernate.RsClobType")
    @Field
    @Description
+   @EntityMergeField
    private String description;
 
    @ExposeToClient(
          view = DtoView.LIST, 
          validateDtoProperty = @PropertyValidator(
                string = @StringValidator(
-                     regex = "^[a-zA-Z0-9_\\-]*$"
+                     regex = SharedRegex.KEY_REGEX
                )
          )
    )
    @Field
-   @Column(length = 40)
+   @Column(
+         length = KeyNameGeneratorService.KEY_LENGTH,
+         unique = true,
+         nullable = false
+   )
    private String key;
 
    @ExposeToClient
    @EnclosedEntity
    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+   @EntityMergeField(toClone = true)
    private DatasourceContainer datasourceContainer = new DatasourceContainer();
 
    @JoinTable(name = "REPORT_2_PARAM_DEF")
@@ -184,15 +200,18 @@ abstract public class Report extends AbstractReportManagerNode
    @OneToMany(cascade = { CascadeType.ALL }, orphanRemoval = true)
    @OrderBy("n")
    @EnclosedEntity
+   @EntityMergeCollection(defaultMerge = false)
    private List<ParameterDefinition> parameterDefinitions = new ArrayList<>();
 
    @JoinTable(name = "REPORT_2_PARAM_INST")
    @ExposeToClient
    @EnclosedEntity
    @OneToMany(cascade = { CascadeType.ALL }, orphanRemoval = true)
+   @EntityMergeCollection(defaultMerge = false)
    private Set<ParameterInstance> parameterInstances = new HashSet<>();
 
    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+   @EntityMergeField(defaultMerge = false)
    private PreviewImage previewImage;
 
    @ExposeToClient(view = DtoView.LIST, mergeDtoValueBack = false)
@@ -480,6 +499,7 @@ abstract public class Report extends AbstractReportManagerNode
       /* base properties */
       ((Report) variant).setName(adjustedReport.getName());
       ((Report) variant).setDescription(adjustedReport.getDescription());
+      ((Report) variant).setKey(keyGeneratorServiceProvider.get().generateDefaultKey());
 
       /* handle parameters */
       Set<ParameterInstance> clonedParameterInstances = new HashSet<ParameterInstance>();

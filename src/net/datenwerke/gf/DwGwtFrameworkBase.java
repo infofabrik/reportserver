@@ -53,7 +53,7 @@ public abstract class DwGwtFrameworkBase extends GuiceServletContextListener imp
    }
 
    @Override
-   public void contextInitialized(ServletContextEvent servletContextEvent) {
+   public void contextInitialized(final ServletContextEvent servletContextEvent) {
       super.contextInitialized(servletContextEvent);
 
       try {
@@ -66,15 +66,14 @@ public abstract class DwGwtFrameworkBase extends GuiceServletContextListener imp
             eventBus.fireEvent(new StartupEvent("system_user", systemUser));
 
          if (null != hookHandler)
-            for (ContextHook hook : hookHandler.getHookers(ContextHook.class))
-               hook.contextInitialized(servletContextEvent);
+            hookHandler.getHookers(ContextHook.class).forEach(hook -> hook.contextInitialized(servletContextEvent));
       } catch (Exception e) {
          logger.info("context initialization error", e);
       }
    }
 
    @Override
-   public void contextDestroyed(ServletContextEvent servletContextEvent) {
+   public void contextDestroyed(final ServletContextEvent servletContextEvent) {
       try {
          if (null == eventBus) {
             logger.debug("context destroy before init");
@@ -89,8 +88,7 @@ public abstract class DwGwtFrameworkBase extends GuiceServletContextListener imp
          eventBus.fireEvent(new ShutdownEvent("system_user", systemUser));
 
          if (null != hookHandler)
-            for (ContextHook hook : hookHandler.getHookers(ContextHook.class))
-               hook.contextDestroyed(servletContextEvent);
+            hookHandler.getHookers(ContextHook.class).forEach(hook -> hook.contextDestroyed(servletContextEvent));
       } catch (Exception e) {
          logger.info("error on context destroy", e);
       } finally {

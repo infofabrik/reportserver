@@ -505,9 +505,10 @@ public class DatasourceEditComponentForInstance {
       });
 
       /* load data */
-      if (!initial )
+      if (!initial || (instance.isStillDefault()
+            && (null == definition.getDependsOn() || definition.getDependsOn().isEmpty()))) {
          loader.load();
-      else {
+      } else {
          comboBox.setValue(instance.getSingleValue(), true);
 
          /* http://www.sencha.com/forum/showthread.php?185967 */

@@ -70,6 +70,7 @@ public class PackagedScriptHelperServiceImpl implements PackagedScriptHelperServ
    private Provider<ServletContext> servletContext;
 
    private BasepathZipExtractConfigFactory zipExtractConfigFactory;
+   
 
    @Inject
    public PackagedScriptHelperServiceImpl(
@@ -200,7 +201,7 @@ public class PackagedScriptHelperServiceImpl implements PackagedScriptHelperServ
          AbstractFileServerNode dstNode = fileServerService.getNodeByPath(dstPath);
          VFSLocation dstLocation = fs.getLocationFor(dstNode);
 
-         dstLocation.getFilesystemManager().copyFilesTo(srcLocation, dstLocation, true);
+         List<VFSLocation> copiedNodes = dstLocation.getFilesystemManager().copyFilesTo(srcLocation, dstLocation, true, true);
       } catch (VFSException e) {
          logger.info("Could not copy file during package execution.", e);
          throw new IllegalStateException(e);

@@ -2,6 +2,8 @@
 package net.datenwerke.rs.base.server.table;
 
 import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toSet;
+import static net.datenwerke.rs.utils.exception.shared.LambdaExceptionUtil.rethrowFunction;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -51,11 +53,13 @@ import net.datenwerke.rs.base.service.reportengines.table.entities.TableReport;
 import net.datenwerke.rs.base.service.reportengines.table.output.object.RSTableModel;
 import net.datenwerke.rs.base.service.reportengines.table.output.object.RSTableRow;
 import net.datenwerke.rs.core.client.datasourcemanager.dto.DatasourceContainerDto;
+import net.datenwerke.rs.core.client.parameters.dto.ParameterInstanceDto;
 import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
 import net.datenwerke.rs.core.service.datasourcemanager.entities.DatasourceContainer;
 import net.datenwerke.rs.core.service.datasourcemanager.entities.DatasourceDefinition;
 import net.datenwerke.rs.core.service.datasourcemanager.entities.DatasourceDefinitionConfig;
 import net.datenwerke.rs.core.service.i18ntools.I18nToolsService;
+import net.datenwerke.rs.core.service.parameters.entities.ParameterInstance;
 import net.datenwerke.rs.core.service.reportmanager.ReportDtoService;
 import net.datenwerke.rs.core.service.reportmanager.ReportService;
 import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
@@ -140,7 +144,7 @@ public class TableReportUtilityServiceImpl extends SecuredRemoteServiceServlet i
 
    @Transactional(rollbackOn = { Exception.class })
    @Override
-   public Map<String, List<String>> getSpecialParameter(@Named("report") TableReportDto tableReportDto,
+   public Map<String, List<String>> getSpecialParameter(@Named("report") ReportDto reportDto,
          String executeToken) throws ExpectedException {
       Map<String, List<String>> result = new HashMap<>();
       Set<String> keySet = parameterSetFactory.create().getParameterMap().keySet();
@@ -177,7 +181,7 @@ public class TableReportUtilityServiceImpl extends SecuredRemoteServiceServlet i
       }
 
       /* get reference report */
-      TableReport referenceReport = (TableReport) reportDtoService.getReferenceReport(tableReportDto);
+      Report referenceReport = reportDtoService.getReferenceReport(reportDto);
 
       /* check rights */
       securityService.assertRights(referenceReport, Read.class);
@@ -350,6 +354,11 @@ public class TableReportUtilityServiceImpl extends SecuredRemoteServiceServlet i
       /* get real report and validate it */
       Report realReport = (Report) reportService.getReportById((Long) referenceReportDto.getDtoId());
       DatasourceContainer container = (DatasourceContainer) dtoService.createUnmanagedPoso(containerDto);
+      Set<ParameterInstanceDto> parametersInstancesDto = referenceReportDto.getParameterInstances();
+      Set<ParameterInstance> parameterInstances = parametersInstancesDto
+            .stream()
+            .map(rethrowFunction(p -> (ParameterInstance) dtoService.createUnmanagedPoso(p)))
+            .collect(toSet());
 
       DatasourceDefinitionConfig dsConfig = container.getDatasourceConfig();
       DatasourceDefinition ds = container.getDatasource();
@@ -368,6 +377,7 @@ public class TableReportUtilityServiceImpl extends SecuredRemoteServiceServlet i
           * report. These were already checked in the current method.
           */
          realReport = new TableReport();
+         realReport.setParameterInstances(parameterInstances);
       }
 
       realReport.setDatasourceContainer(container);

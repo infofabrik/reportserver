@@ -2,8 +2,6 @@ package net.datenwerke.gf.client.treedb.helper.menu;
 
 import com.sencha.gxt.widget.core.client.Dialog.PredefinedButton;
 import com.sencha.gxt.widget.core.client.box.ConfirmMessageBox;
-import com.sencha.gxt.widget.core.client.event.DialogHideEvent;
-import com.sencha.gxt.widget.core.client.event.DialogHideEvent.DialogHideHandler;
 import com.sencha.gxt.widget.core.client.info.Info;
 
 import net.datenwerke.gf.client.treedb.UITree;
@@ -24,45 +22,38 @@ public class DeleteMenuItem extends TreeMenuItem {
 
       setIcon(BaseIcon.DELETE);
       setText(BaseMessages.INSTANCE.remove());
-      addMenuSelectionListener(new TreeMenuSelectionEvent() {
+      addMenuSelectionListener((final UITree tree, final AbstractNodeDto node) -> {
+         /* confirm delete */
+         ConfirmMessageBox cmb = new DwConfirmMessageBox(BaseMessages.INSTANCE.confirmDeleteTitle(),
+               BaseMessages.INSTANCE.confirmDeleteMsg(node.toDisplayTitle()));
 
-         public void menuItemSelected(final UITree tree, final AbstractNodeDto node) {
-            /* confirm delete */
-            ConfirmMessageBox cmb = new DwConfirmMessageBox(BaseMessages.INSTANCE.confirmDeleteTitle(),
-                  BaseMessages.INSTANCE.confirmDeleteMsg(node.toDisplayTitle()));
-
-            cmb.addDialogHideHandler(new DialogHideHandler() {
-
-               @Override
-               public void onDialogHide(DialogHideEvent event) {
-                  if (event.getHideButton() == PredefinedButton.YES) {
-                     /* delete */
-                     treeManager.deleteNodeAndAskForMoreForce(node, new RsAsyncCallback<Boolean>() {
-                        @Override
-                        public void onSuccess(Boolean result) {
-                           if (Boolean.TRUE.equals(result)) {
-                              tree.getStore().remove(node);
-                              Info.display(BaseMessages.INSTANCE.changesApplied(), TreedbMessages.INSTANCE.deleted());
-                           }
-                        }
-                     });
-
-                     /* select parent */
-                     final AbstractNodeDto parent = tree.getStore().getParent(node);
-                     if (null != parent) {
-                        /*
-                         * https://www.sencha.com/forum/showthread.php?308983-GXT-3.1.4.-
-                         * TreeSelectionModel-RightClick-sets-mousdown-flag&p=1128504#post1128504
-                         */
-                        tree.releaseMouseDownFlag();
-                        tree.getSelectionModel().select(parent, false);
+         cmb.addDialogHideHandler(event -> {
+            if (event.getHideButton() == PredefinedButton.YES) {
+               /* delete */
+               treeManager.deleteNodeAndAskForMoreForce(node, new RsAsyncCallback<Boolean>() {
+                  @Override
+                  public void onSuccess(Boolean result) {
+                     if (Boolean.TRUE.equals(result)) {
+                        tree.getStore().remove(node);
+                        Info.display(BaseMessages.INSTANCE.changesApplied(), TreedbMessages.INSTANCE.deleted());
                      }
                   }
-               }
-            });
+               });
 
-            cmb.show();
-         }
+               /* select parent */
+               final AbstractNodeDto parent = tree.getStore().getParent(node);
+               if (null != parent) {
+                  /*
+                   * https://www.sencha.com/forum/showthread.php?308983-GXT-3.1.4.-
+                   * TreeSelectionModel-RightClick-sets-mousdown-flag&p=1128504#post1128504
+                   */
+                  tree.releaseMouseDownFlag();
+                  tree.getSelectionModel().select(parent, false);
+               }
+            }
+         });
+
+         cmb.show();
       });
    }
 

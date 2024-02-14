@@ -17,10 +17,12 @@ import net.datenwerke.rs.dashboard.service.dashboard.eventhandler.HandleReportRe
 import net.datenwerke.rs.dashboard.service.dashboard.eventhandler.HandleReportReferenceRemoveEventHandler;
 import net.datenwerke.rs.dashboard.service.dashboard.eventhandler.HandleReportRemoveEventHandler;
 import net.datenwerke.rs.dashboard.service.dashboard.eventhandler.HandleUserRemoveEventHandler;
+import net.datenwerke.rs.dashboard.service.dashboard.hookers.factory.DashboardDefaultMergeHookerFactory;
 import net.datenwerke.rs.terminal.service.terminal.hookers.DashboardOpenTerminalHooker;
 import net.datenwerke.rs.terminal.service.terminal.hooks.OpenTerminalHandlerHook;
 import net.datenwerke.rs.tsreportarea.service.tsreportarea.entities.AbstractTsDiskNode;
 import net.datenwerke.rs.tsreportarea.service.tsreportarea.entities.TsDiskReportReference;
+import net.datenwerke.rs.utils.entitymerge.service.hooks.EntityMergeHook;
 import net.datenwerke.rs.utils.eventbus.EventBus;
 import net.datenwerke.security.service.eventlogger.jpa.ForceRemoveEntityEvent;
 import net.datenwerke.security.service.eventlogger.jpa.RemoveEntityEvent;
@@ -46,7 +48,8 @@ public class DashboardStartup {
          HandleDashboardNodeRemoveEventHandler handleDashboardNodeRemoveEvents,
          HandleDashboardNodeForceRemoveEventHandler handleDashboardNodeForceRemoveEvents,
          
-         final Provider<DashboardOpenTerminalHooker> dashboardOpenTerminalHooker
+         final Provider<DashboardOpenTerminalHooker> dashboardOpenTerminalHooker,
+         final Provider<DashboardDefaultMergeHookerFactory> dashboardFactory
 
    ) {
 
@@ -66,6 +69,10 @@ public class DashboardStartup {
       eventBus.attachObjectEventHandler(RemoveEntityEvent.class, DashboardNode.class, handleDashboardNodeRemoveEvents);
       eventBus.attachObjectEventHandler(ForceRemoveEntityEvent.class, DashboardNode.class,
             handleDashboardNodeForceRemoveEvents);
+      
+      /* entity merge */
+      hookHandler.attachHooker(EntityMergeHook.class, dashboardFactory.get().create(DashboardNode.class));
+      hookHandler.attachHooker(EntityMergeHook.class, dashboardFactory.get().create(DadgetNode.class));
 
       /* register security targets */
       securityServiceProvider.get().registerSecurityTarget(DadgetNode.class);

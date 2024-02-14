@@ -34,7 +34,6 @@ import net.datenwerke.dtoservices.dtogenerator.annotations.StringValidator;
 import net.datenwerke.gxtdto.client.dtomanager.DtoView;
 import net.datenwerke.rs.core.service.i18ntools.I18nToolsService;
 import net.datenwerke.rs.core.service.reportmanager.locale.ReportManagerMessages;
-import net.datenwerke.rs.utils.entitycloner.annotation.ClonePostProcessor;
 import net.datenwerke.rs.utils.entitycloner.annotation.TransientID;
 import net.datenwerke.rs.utils.localization.LocalizationServiceImpl;
 
@@ -291,6 +290,13 @@ abstract public class ParameterDefinition<I extends ParameterInstance> implement
       this.displayInline = displayInline;
    }
 
+   /**
+    * Removes references to other parameters, base report, or what have you.
+    */
+   public void cleanDuplicated() {
+      setDependsOn(new ArrayList<ParameterDefinition>());
+   }
+   
    public boolean isDisplayInline() {
       return displayInline;
    }
@@ -313,11 +319,6 @@ abstract public class ParameterDefinition<I extends ParameterInstance> implement
 
    public boolean isSeparator() {
       return false;
-   }
-   
-   @ClonePostProcessor
-   public void guideCloningProcess(Object report) {
-      setDependsOn(new ArrayList<ParameterDefinition>());
    }
    
    @Override

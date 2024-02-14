@@ -703,9 +703,9 @@ public class XLSStreamOutputGenerator extends TableOutputGeneratorImpl {
       try {
          /* date */
          if (cType.equals(java.util.Date.class) || cType.equals(java.sql.Date.class)) {
-            addDate((java.util.Date) content, (java.util.Date) originalContent, workbook, sheet, column, cell, styles);
+            addDate((java.util.Date) content, originalContent, workbook, sheet, column, cell, styles);
          } else if (cType.equals(Time.class)) {
-            addTime((Time) content, (Time) originalContent, workbook, sheet, column, cell, styles);
+            addTime((Time) content, originalContent, workbook, sheet, column, cell, styles);
          } else if (cType.equals(Timestamp.class)) {
             /* special oracle handling */
             if (sos.isOracleTimestamp(content)) {
@@ -778,7 +778,7 @@ public class XLSStreamOutputGenerator extends TableOutputGeneratorImpl {
       }
    }
    
-   private void addTime(Time content, Time originalContent, Workbook workbook, Sheet sheet, int column, Cell cell, CellStyle[] styles) {
+   private void addTime(Time content, Object originalContent, Workbook workbook, Sheet sheet, int column, Cell cell, CellStyle[] styles) {
       CellStyle dateFormat = styles[column] == null ? getTimeFormat(workbook) : styles[column];
       cell.setCellStyle(dateFormat);
       if (null != originalContent)
@@ -787,7 +787,7 @@ public class XLSStreamOutputGenerator extends TableOutputGeneratorImpl {
          setBlank(cell, column);
    }
 
-   private void addDate(java.util.Date content, java.util.Date originalContent, Workbook workbook, Sheet sheet, int column, Cell cell,
+   private void addDate(java.util.Date content, Object originalContent, Workbook workbook, Sheet sheet, int column, Cell cell,
          CellStyle[] styles) {
       CellStyle dateFormat = styles[column] == null ? getFullDateFormat(workbook) : styles[column];
       cell.setCellStyle(dateFormat);
@@ -797,7 +797,7 @@ public class XLSStreamOutputGenerator extends TableOutputGeneratorImpl {
          setBlank(cell, column);
    }
 
-   private void addString(String content, String originalContent, Sheet sheet, int column, Cell cell, CellStyle[] styles) {
+   private void addString(String content, Object originalContent, Sheet sheet, int column, Cell cell, CellStyle[] styles) {
       if (null != styles[column]) {
          CellStyle format = styles[column];
          cell.setCellStyle(format);
@@ -808,7 +808,7 @@ public class XLSStreamOutputGenerator extends TableOutputGeneratorImpl {
          setBlank(cell, column);
    }
 
-   private void addDouble(Double content, Double originalContent, Sheet sheet, int column, Cell cell, CellStyle[] styles) {
+   private void addDouble(Double content, Object originalContent, Sheet sheet, int column, Cell cell, CellStyle[] styles) {
       if (null != styles[column]) {
          CellStyle format = styles[column];
          cell.setCellStyle(format);
@@ -819,7 +819,7 @@ public class XLSStreamOutputGenerator extends TableOutputGeneratorImpl {
          setBlank(cell, column);
    }
 
-   private void addInteger(int content, Integer originalContent, Sheet sheet, int column, Cell cell, CellStyle[] styles) {
+   private void addInteger(int content, Object originalContent, Sheet sheet, int column, Cell cell, CellStyle[] styles) {
       if (null != styles[column]) {
          CellStyle format = styles[column];
          cell.setCellStyle(format);

@@ -41,7 +41,7 @@ public class GoogleDriveModule extends AbstractModule {
    @DefaultGoogleDriveDatasink
    public Optional<GoogleDriveDatasink> provideDefaultDatasink(DatasinkTreeService datasinkService) {
       return datasinkService.getDefaultDatasink(GoogleDriveDatasink.class, PROPERTY_DEFAULT_GOOGLEDRIVE_DATASINK_ID,
-            PROPERTY_DEFAULT_GOOGLEDRIVE_DATASINK_NAME, PROPERTY_DEFAULT_GOOGLEDRIVE_DATASINK_KEY);
+            PROPERTY_DEFAULT_GOOGLEDRIVE_DATASINK_NAME, PROPERTY_DEFAULT_GOOGLEDRIVE_DATASINK_KEY, PROPERTY_GOOGLEDRIVE_DISABLED);
    }
 
 }

@@ -9,11 +9,10 @@ import com.sencha.gxt.widget.core.client.form.Validator;
 import com.sencha.gxt.widget.core.client.form.error.DefaultEditorError;
 
 import net.datenwerke.gxtdto.client.locale.BaseMessages;
+import net.datenwerke.rs.utils.validator.shared.SharedRegex;
 
 public class KeyValidator implements Validator<String> {
 
-   public static final String KEY_REGEX = "^[a-zA-Z0-9_\\-]*$";
-   
    private final String msg;
    
    public KeyValidator(String msg) {
@@ -22,7 +21,7 @@ public class KeyValidator implements Validator<String> {
 
    @Override
    public List<EditorError> validate(Editor<String> editor, String value) {
-      if (null == value || value.matches(KEY_REGEX))
+      if (value.matches(SharedRegex.KEY_REGEX))
          return null;
       return Collections
             .singletonList(new DefaultEditorError(editor, null == msg? BaseMessages.INSTANCE.alphaNumericErrorMsg(): msg, value));

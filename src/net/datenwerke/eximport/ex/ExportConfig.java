@@ -95,6 +95,5 @@ public class ExportConfig {
    public void setIncludePathToRoot(boolean includePathToRoot) {
       this.includePathToRoot = includePathToRoot;
    }
-
    
 }

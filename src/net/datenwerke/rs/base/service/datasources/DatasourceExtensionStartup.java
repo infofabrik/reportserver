@@ -7,6 +7,7 @@ import net.datenwerke.dbpool.hooks.DbPoolConnectionHook;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.adminutils.service.systemconsole.generalinfo.hooks.GeneralInfoCategoryProviderHook;
 import net.datenwerke.rs.base.service.datasources.definitions.CsvDatasource;
+import net.datenwerke.rs.base.service.datasources.definitions.DatabaseDatasource;
 import net.datenwerke.rs.base.service.datasources.eventhandler.HandleCsvDatasourceMergeEvents;
 import net.datenwerke.rs.base.service.datasources.hooker.BaseDatasourceProviderHooker;
 import net.datenwerke.rs.base.service.datasources.hooker.DatabaseDatasourceCategoryProviderHooker;
@@ -40,10 +41,12 @@ import net.datenwerke.rs.base.service.datasources.transformers.database.Database
 import net.datenwerke.rs.base.service.datasources.transformers.database.Database2JdbcConnectionTransformer;
 import net.datenwerke.rs.base.service.datasources.transformers.database.Database2JdbcDatasourceTransformer;
 import net.datenwerke.rs.base.service.datasources.transformers.database.Database2TableTransformer;
+import net.datenwerke.rs.core.service.datasourcemanager.hookers.factory.DatasourceDefaultMergeHookerFactory;
 import net.datenwerke.rs.core.service.datasourcemanager.hooks.DatasourceProviderHook;
 import net.datenwerke.rs.core.service.datasourcemanager.hooks.UsageStatisticsDatasourceEntryProviderHook;
 import net.datenwerke.rs.terminal.service.terminal.basecommands.CopySubCommandHook;
 import net.datenwerke.rs.terminal.service.terminal.hooks.TerminalCommandHook;
+import net.datenwerke.rs.utils.entitymerge.service.hooks.EntityMergeHook;
 import net.datenwerke.rs.utils.eventbus.EventBus;
 import net.datenwerke.security.service.eventlogger.jpa.MergeEntityEvent;
 
@@ -86,7 +89,9 @@ public class DatasourceExtensionStartup {
          final Provider<UsageStatisticsRelationalDatasourceProviderHooker> usageStatsRelationalDatasourceProvider,
          final Provider<UsageStatisticsCsvDatasourceProviderHooker> usageStatsCsvDatasourceProvider,
          final Provider<DatabaseDatasourceCategoryProviderHooker> usageStatistics,
-         final Provider<UsageStatisticsAllRelationalDatabasesProviderHooker> allDatabasesStatistics
+         final Provider<UsageStatisticsAllRelationalDatabasesProviderHooker> allDatabasesStatistics,
+         
+         final Provider<DatasourceDefaultMergeHookerFactory> datasourceFactory
          ) {
 
       hookHandler.attachHooker(DatasourceProviderHook.class, databaseProvider);
@@ -111,6 +116,10 @@ public class DatasourceExtensionStartup {
       hookHandler.attachHooker(DataSourceDefinitionTransformer.class, database2TableTransformer);
 
       eventBus.attachObjectEventHandler(MergeEntityEvent.class, CsvDatasource.class, csvDatasourceMergeHandler);
+      
+      /* entity merge */
+      hookHandler.attachHooker(EntityMergeHook.class, datasourceFactory.get().create(DatabaseDatasource.class));
+      hookHandler.attachHooker(EntityMergeHook.class, datasourceFactory.get().create(CsvDatasource.class));
       
       /* commands */
       hookHandler.attachHooker(TerminalCommandHook.class, sqlCommand);

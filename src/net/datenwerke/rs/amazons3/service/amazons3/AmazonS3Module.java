@@ -41,7 +41,7 @@ public class AmazonS3Module extends AbstractModule {
    @DefaultAmazonS3Datasink
    public Optional<AmazonS3Datasink> provideDefaultDatasink(DatasinkTreeService datasinkService) {
       return datasinkService.getDefaultDatasink(AmazonS3Datasink.class, PROPERTY_DEFAULT_AMAZONS3_DATASINK_ID,
-            PROPERTY_DEFAULT_AMAZONS3_DATASINK_NAME, PROPERTY_DEFAULT_AMAZONS3_DATASINK_KEY);
+            PROPERTY_DEFAULT_AMAZONS3_DATASINK_NAME, PROPERTY_DEFAULT_AMAZONS3_DATASINK_KEY, PROPERTY_AMAZONS3_DISABLED);
    }
 
 }

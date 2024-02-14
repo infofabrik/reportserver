@@ -19,6 +19,7 @@ import net.datenwerke.gxtdto.client.servercommunication.exceptions.ExpectedExcep
 import net.datenwerke.gxtdto.client.servercommunication.exceptions.ServerCallFailedException;
 import net.datenwerke.gxtdto.server.dtomanager.DtoService;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
+import net.datenwerke.rs.keyutils.service.keyutils.KeyNameGeneratorService;
 import net.datenwerke.rs.utils.entitycloner.EntityClonerService;
 import net.datenwerke.security.client.usermanager.dto.UserDto;
 import net.datenwerke.security.ext.client.usermanager.rpc.UserManagerTreeLoader;
@@ -59,11 +60,20 @@ public class UserManagerTreeHandlerImpl extends TreeDBManagerTreeHandler<Abstrac
    private final HookHandlerService hookHandlerService;
 
    @Inject
-   public UserManagerTreeHandlerImpl(UserManagerService userManager, DtoService dtoGenerator,
-         SecurityService securityService, EntityClonerService entityClonerService,
-         HookHandlerService hookHandlerService) {
+   public UserManagerTreeHandlerImpl(
+         UserManagerService userManager, 
+         DtoService dtoGenerator,
+         SecurityService securityService, 
+         EntityClonerService entityClonerService,
+         HookHandlerService hookHandlerService,
+         KeyNameGeneratorService keyGeneratorService
+         ) {
 
-      super(userManager, dtoGenerator, securityService, entityClonerService);
+      super(userManager, 
+            dtoGenerator, 
+            securityService, 
+            entityClonerService,
+            keyGeneratorService);
 
       this.userManager = userManager;
       this.hookHandlerService = hookHandlerService;
@@ -74,7 +84,10 @@ public class UserManagerTreeHandlerImpl extends TreeDBManagerTreeHandler<Abstrac
       if (inserted instanceof User) {
          ((User) inserted).setFirstname(DwSecurityMessages.INSTANCE.firstname());
          ((User) inserted).setLastname(DwSecurityMessages.INSTANCE.lastname());
-         ((User) inserted).setUsername(DwSecurityMessages.INSTANCE.username());
+         /* getNextFreeUsername queries db -> we will get not-null hibernate error if username is not set */
+         ((User) inserted).setUsername(keyGeneratorService.generateDefaultKey());
+         String username = getNextFreeUserName(DwSecurityMessages.INSTANCE.username());
+         ((User) inserted).setUsername(username);
       } else if (inserted instanceof Group) {
          ((Group) inserted).setName(DwSecurityMessages.INSTANCE.unnamed());
       } else if (inserted instanceof OrganisationalUnit) {
@@ -239,5 +252,20 @@ public class UserManagerTreeHandlerImpl extends TreeDBManagerTreeHandler<Abstrac
       }
 
       return nodeCounter + addedNodes;
+   }
+   
+   private String getNextFreeUserName(String username) {
+      if(userManager.getUserOrNull(username) == null)
+         return username;
+      int counter = 1;
+      boolean freeUsernameFound = false;
+      String nextUsername = "";
+      while(!freeUsernameFound) {
+         nextUsername = username + counter;
+         if(userManager.getUserOrNull(nextUsername) == null)
+            freeUsernameFound = true;
+         counter++;
+      }
+      return nextUsername;
    }
 }

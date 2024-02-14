@@ -218,14 +218,14 @@ public class TerminalWindow extends DwWindow {
    }
 
    private native String getSelection() /*-{
-	     var text = "";
-	     if ($wnd.getSelection) {
-	         text = $wnd.getSelection().toString();
-	     } else if ($doc.selection && $doc.selection.type != "Control") {
-	         text = $doc.selection.createRange().text;
-	     }
-	     return text;
- 	}-*/;
+         var text = "";
+         if ($wnd.getSelection) {
+             text = $wnd.getSelection().toString();
+         } else if ($doc.selection && $doc.selection.type != "Control") {
+             text = $doc.selection.createRange().text;
+         }
+         return text;
+    }-*/;
 
    protected void initInputPanel() {
       inputPanel = DwContentPanel.newInlineInstance();

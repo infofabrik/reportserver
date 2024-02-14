@@ -16,6 +16,7 @@ import net.datenwerke.rs.base.service.reportengines.table.hookers.BinaryColumnFi
 import net.datenwerke.rs.base.service.reportengines.table.hookers.CSVExecutionConfigFromPropertyMapHooker;
 import net.datenwerke.rs.base.service.reportengines.table.hookers.ExecuteAsTableReportPreviewHooker;
 import net.datenwerke.rs.base.service.reportengines.table.hookers.PagingExecutionConfigFromPropertyMapHooker;
+import net.datenwerke.rs.base.service.reportengines.table.hookers.TableReportMergeHooker;
 import net.datenwerke.rs.base.service.reportengines.table.hooks.TableOutputGeneratorProviderHook;
 import net.datenwerke.rs.base.service.reportengines.table.maintenance.TableReportIntegrityValidator;
 import net.datenwerke.rs.core.service.datasourcemanager.entities.DatasourceDefinition;
@@ -23,6 +24,7 @@ import net.datenwerke.rs.core.service.reportmanager.engine.hooks.ReportExecution
 import net.datenwerke.rs.core.service.reportmanager.eventhandler.HandleDatasourceRemoveEventHandler;
 import net.datenwerke.rs.core.service.reportmanager.hooks.ReportExecutorExecuteAsHooker;
 import net.datenwerke.rs.core.service.reportmanager.hooks.VariantToBeEditedHook;
+import net.datenwerke.rs.utils.entitymerge.service.hooks.EntityMergeHook;
 import net.datenwerke.rs.utils.eventbus.EventBus;
 import net.datenwerke.security.service.eventlogger.jpa.JpaEvent;
 import net.datenwerke.security.service.eventlogger.jpa.RemoveEntityEvent;
@@ -30,21 +32,27 @@ import net.datenwerke.security.service.eventlogger.jpa.RemoveEntityEvent;
 public class TableReportStartup {
 
    @Inject
-   public TableReportStartup(HookHandlerService hookHandler, EventBus eventBus,
-         CSVExecutionConfigFromPropertyMapHooker csvFromProperty,
-         PagingExecutionConfigFromPropertyMapHooker pagingFromProperty,
+   public TableReportStartup(
+         final HookHandlerService hookHandler, 
+         final EventBus eventBus,
+         final CSVExecutionConfigFromPropertyMapHooker csvFromProperty,
+         final PagingExecutionConfigFromPropertyMapHooker pagingFromProperty,
 
-         Provider<ExecuteAsTableReportPreviewHooker> executeTablePreview,
-         Provider<BinaryColumnFilterExecutorHooker> binaryColumnFilterExecutor,
+         final Provider<ExecuteAsTableReportPreviewHooker> executeTablePreview,
+         final Provider<BinaryColumnFilterExecutorHooker> binaryColumnFilterExecutor,
 
-         Provider<BaseTableOutputGeneratorProvider> baseExporters,
+         final Provider<BaseTableOutputGeneratorProvider> baseExporters,
 
-         HandleDatasourceRemoveEventHandler handleDatasourceRemoveEventHandler,
-         HandleTableReportStoredEventHandler handleTableReportStoredEventHandler,
+         final HandleDatasourceRemoveEventHandler handleDatasourceRemoveEventHandler,
+         final HandleTableReportStoredEventHandler handleTableReportStoredEventHandler,
 
-         RemoveAdditionalColumnSpecEventHandler handleAdditionalColumnSepcRemoveHandler,
+         final RemoveAdditionalColumnSpecEventHandler handleAdditionalColumnSepcRemoveHandler,
 
-         TableReportIntegrityValidator tableReportIntegrity, TableFilterAdjustVariantHooker adjustVariantHooker) {
+         final TableReportIntegrityValidator tableReportIntegrity, 
+         final TableFilterAdjustVariantHooker adjustVariantHooker,
+         
+         final Provider<TableReportMergeHooker> tableReportMergeHooker
+         ) {
 
       eventBus.attachObjectEventHandler(RemoveEntityEvent.class, DatasourceDefinition.class,
             handleDatasourceRemoveEventHandler);
@@ -56,6 +64,9 @@ public class TableReportStartup {
 
       /* maintenance */
       hookHandler.attachHooker(MaintenanceTask.class, tableReportIntegrity);
+      
+      /* entity merge */
+      hookHandler.attachHooker(EntityMergeHook.class, tableReportMergeHooker);
 
       hookHandler.attachHooker(ReportExecutionConfigFromPropertyMapHook.class, csvFromProperty);
       hookHandler.attachHooker(ReportExecutionConfigFromPropertyMapHook.class, pagingFromProperty);

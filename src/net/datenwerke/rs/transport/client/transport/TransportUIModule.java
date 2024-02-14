@@ -31,6 +31,8 @@ public class TransportUIModule extends AbstractGinModule {
             .in(Singleton.class);
       bind(UITree.class).annotatedWith(TransportTreeFolders.class).toProvider(FolderTreeProvider.class);
 
+      bind(TransportUiService.class).to(TransportUiServiceImpl.class);
+      
       /* bind startup */
       bind(TransportUIStartup.class).asEagerSingleton();
    }

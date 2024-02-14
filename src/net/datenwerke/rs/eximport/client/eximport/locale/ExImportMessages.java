@@ -74,4 +74,12 @@ public interface ExImportMessages extends Messages {
    String exportWait();
 
    String exportWaitTitle();
+
+   String deleteAllSelectedObjects();
+
+   String deleteSuccess();
+
+   String mergeOptions();
+
+   String merge();
 }

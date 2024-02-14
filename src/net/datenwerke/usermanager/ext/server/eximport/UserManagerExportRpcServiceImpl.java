@@ -66,7 +66,7 @@ public class UserManagerExportRpcServiceImpl extends SecuredRemoteServiceServlet
    public void quickExport(AbstractUserManagerNodeDto nodeDto) throws ServerCallFailedException {
       AbstractUserManagerNode node = (AbstractUserManagerNode) dtoService.loadPoso(nodeDto);
 
-      String exportXML = exportHelper.export(node, true, UserManagerExporter.EXPORTER_NAME, false);
+      String exportXML = exportHelper.export(node, true, UserManagerExporter.EXPORTER_NAME, false, false);
 
       httpExportServiceProvider.get().storeExport(exportXML, node.getName());
    }

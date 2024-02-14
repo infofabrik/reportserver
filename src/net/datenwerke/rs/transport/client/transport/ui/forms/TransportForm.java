@@ -5,7 +5,6 @@ import net.datenwerke.gxtdto.client.forms.simpleform.SimpleForm;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCReadOnly;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.impl.SFFCTextAreaImpl;
 import net.datenwerke.gxtdto.client.locale.BaseMessages;
-import net.datenwerke.rs.license.client.locale.LicenseMessages;
 import net.datenwerke.rs.transport.client.transport.dto.pa.TransportDtoPA;
 import net.datenwerke.rs.transport.client.transport.locale.TransportMessages;
 
@@ -21,6 +20,10 @@ public class TransportForm extends SimpleFormView {
 
       /* key */
       form.addField(String.class, TransportDtoPA.INSTANCE.key(), BaseMessages.INSTANCE.key(), SFFCReadOnly.TRUE);
+      
+      form.setFieldWidth(500);
+      form.addField(String.class, TransportDtoPA.INSTANCE.status(), TransportMessages.INSTANCE.status(),
+            SFFCReadOnly.TRUE);
 
       form.addField(Boolean.class, TransportDtoPA.INSTANCE.closed(), TransportMessages.INSTANCE.closed());
       form.endRow();
@@ -63,18 +66,45 @@ public class TransportForm extends SimpleFormView {
 
       form.beginFloatRow();
       form.setFieldWidth(600);
-      form.addField(String.class, TransportDtoPA.INSTANCE.serverId(), LicenseMessages.INSTANCE.serverIdLabel(),
+      form.addField(String.class, TransportDtoPA.INSTANCE.serverId(), TransportMessages.INSTANCE.serverIdLabel(),
             SFFCReadOnly.TRUE);
       form.endRow();
 
       form.beginFloatRow();
       form.setFieldWidth(600);
-      form.addField(String.class, TransportDtoPA.INSTANCE.rsVersion(), BaseMessages.INSTANCE.reportServerVersion(),
+      form.addField(String.class, TransportDtoPA.INSTANCE.rsVersion(), TransportMessages.INSTANCE.reportServerVersion(),
             SFFCReadOnly.TRUE);
       form.setFieldWidth(500);
-      form.addField(String.class, TransportDtoPA.INSTANCE.rsSchemaVersion(), BaseMessages.INSTANCE.schemaVersion(),
+      form.addField(String.class, TransportDtoPA.INSTANCE.rsSchemaVersion(), TransportMessages.INSTANCE.schemaVersion(),
             SFFCReadOnly.TRUE);
       form.endRow();
+      
+      form.beginFloatRow();
+      form.setFieldWidth(600);
+      form.addField(String.class, TransportDtoPA.INSTANCE.importedOnStr(), TransportMessages.INSTANCE.importedOn(),
+            SFFCReadOnly.TRUE);
+      form.setFieldWidth(500);
+      form.addField(String.class, TransportDtoPA.INSTANCE.importedByStr(), TransportMessages.INSTANCE.importedBy(),
+            SFFCReadOnly.TRUE);
+      form.endRow();
+
+      form.beginFloatRow();
+      form.setFieldWidth(600);
+      form.addField(String.class, TransportDtoPA.INSTANCE.appliedOnStr(), TransportMessages.INSTANCE.appliedOn(),
+            SFFCReadOnly.TRUE);
+      form.setFieldWidth(500);
+      form.addField(String.class, TransportDtoPA.INSTANCE.appliedByStr(), TransportMessages.INSTANCE.appliedBy(),
+            SFFCReadOnly.TRUE);
+      form.endRow();
+      
+      form.setFieldWidth(1);
+
+      /* description */
+      form.addField(String.class, TransportDtoPA.INSTANCE.appliedProtocol(), TransportMessages.INSTANCE.appliedLog(),
+            new SFFCTextAreaImpl(), SFFCReadOnly.TRUE);
+
+      form.beginFloatRow();
+      form.setFieldWidth(600);
    }
 
 }

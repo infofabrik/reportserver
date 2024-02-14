@@ -8,54 +8,25 @@ import java.util.function.Function;
 
 import javax.inject.Inject;
 
-import net.datenwerke.gf.client.managerhelper.mainpanel.SimpleFormView;
-import net.datenwerke.gf.client.validator.KeyValidator;
 import net.datenwerke.gxtdto.client.forms.simpleform.SimpleForm;
-import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCStringValidatorRegex;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.impl.SFFCStaticDropdownList;
-import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.impl.SFFCTextAreaImpl;
-import net.datenwerke.gxtdto.client.locale.BaseMessages;
 import net.datenwerke.rs.core.client.datasinkmanager.locale.DatasinksMessages;
+import net.datenwerke.rs.core.client.datasinkmanager.ui.forms.DatasinkSimpleForm;
 import net.datenwerke.rs.printer.client.printer.PrinterUiService;
 import net.datenwerke.rs.printer.client.printer.dto.pa.PrinterDatasinkDtoPA;
 
-public class PrinterDatasinkForm extends SimpleFormView {
+public class PrinterDatasinkForm extends DatasinkSimpleForm {
 
    final PrinterUiService printerUiService; 
    
    @Inject
-   public PrinterDatasinkForm(
-         PrinterUiService printerUiService
-         ) {
+   public PrinterDatasinkForm(PrinterUiService printerUiService) {
+      super();
       this.printerUiService = printerUiService;
    }
-   @Override
-   protected void configureSimpleForm(SimpleForm form) {
-      /* configure form */
-      form.setHeading(DatasinksMessages.INSTANCE.editDatasink()
-            + (getSelectedNode() == null ? "" : " (" + getSelectedNode().getId() + ")"));
 
-      form.beginFloatRow();
-      form.setFieldWidth(600);
-      
-      /* name */
-      form.addField(String.class, PrinterDatasinkDtoPA.INSTANCE.name(), BaseMessages.INSTANCE.name());
-      
-      form.setFieldWidth(500);
-      /* key */
-      form.addField(String.class, PrinterDatasinkDtoPA.INSTANCE.key(), BaseMessages.INSTANCE.key(),
-            new SFFCStringValidatorRegex(KeyValidator.KEY_REGEX, BaseMessages.INSTANCE.invalidKey()));
-      
-      form.endRow();
-      
-      form.setFieldWidth(1);
-
-      /* description */
-      form.addField(String.class, PrinterDatasinkDtoPA.INSTANCE.description(), BaseMessages.INSTANCE.description(),
-            new SFFCTextAreaImpl());
-
+   protected void configureSimpleFormCustomFields(SimpleForm form) {
       form.setFieldWidth(750);
-
       /* printer name */
       form.addField(List.class, PrinterDatasinkDtoPA.INSTANCE.printerName(),
             DatasinksMessages.INSTANCE.printerName(), new SFFCStaticDropdownList<String>() {
@@ -65,7 +36,5 @@ public class PrinterDatasinkForm extends SimpleFormView {
                         .collect(toMap(Function.identity(), Function.identity()));
                }
             });
-
    }
-
 }

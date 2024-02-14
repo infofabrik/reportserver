@@ -41,18 +41,18 @@ class RemoteEntityImporterServiceImpl implements RemoteEntityImporterService {
    
    @Override
    public ImportResult importRemoteEntities(RemoteRsRestServer remoteRsServer, String remoteEntityPath, String localTarget,
-         boolean includeVariants) {
-      return doImportRemoteEntities(remoteRsServer, remoteEntityPath, localTarget, includeVariants, false, [:])
+         boolean includeVariants, boolean flatten) {
+      return doImportRemoteEntities(remoteRsServer, remoteEntityPath, localTarget, includeVariants, flatten, false, [:])
    }
    
    @Override
    public Map<String, Object> checkImportRemoteEntities(RemoteRsRestServer remoteRsServer, String remoteEntityPath,
-         String localTarget, boolean includeVariants, Map<String, Object> errors) {
-      return doImportRemoteEntities(remoteRsServer, remoteEntityPath, localTarget, includeVariants, true, errors)
+         String localTarget, boolean includeVariants, boolean flatten, Map<String, Object> errors) {
+      return doImportRemoteEntities(remoteRsServer, remoteEntityPath, localTarget, includeVariants, flatten, true, errors)
    }
    
    private doImportRemoteEntities(RemoteRsRestServer remoteRsServer, String remoteEntityPath, String localTarget,
-         boolean includeVariants, check, Map<String,Object> results) {
+         boolean includeVariants, boolean flatten, boolean check, Map<String,Object> results) {
       checkPreconditions localTarget, remoteEntityPath, results, check
       
       def restUrl = remoteRsServer.url
@@ -73,7 +73,7 @@ class RemoteEntityImporterServiceImpl implements RemoteEntityImporterService {
       if (remoteEntityPath.endsWith('/'))
          remoteEntityPath = remoteEntityPath[0..remoteEntityPath.size()-2]
       def requestedRemoteEntity = remoteEntityPath[remoteEntityPath.lastIndexOf('/')+1..remoteEntityPath.size()-1]
-      def remoteUrl = "$restUrl/node-exporter$encodedRemoteEntityPath${(includeVariants?';includeVariants=true':'')}?user=$user&apikey=${remoteRsServer.apikey}"
+      def remoteUrl = "$restUrl/node-exporter$encodedRemoteEntityPath${(includeVariants?';includeVariants=true':'')}${(flatten?';flatten=true':'')}?user=$user&apikey=${remoteRsServer.apikey}"
       def httpConnection = new URL(remoteUrl).openConnection()
       if (httpConnection.responseCode != HttpURLConnection.HTTP_OK) {
          handleError(check, "Connection response code: ${httpConnection.responseCode}", results, IllegalStateException)
@@ -110,7 +110,7 @@ class RemoteEntityImporterServiceImpl implements RemoteEntityImporterService {
             results, requestedRemoteEntity)
       } else
          return importers[0].importRemoteEntity(config, terminalServiceProvider.get().getObjectByQuery(localTarget), 
-            requestedRemoteEntity)
+            requestedRemoteEntity, exportXml)
    }
    
    private checkPreconditions(String localTarget, String remoteEntityPath, results, check) {

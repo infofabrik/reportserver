@@ -16,6 +16,8 @@ import net.datenwerke.security.service.security.rights.Right;
 
 public interface TerminalService {
 
+   final static double CHAR_WIDTH = 6.4;
+
    /**
     * Initializes a new {@link TerminalSession}.
     * 
@@ -126,6 +128,15 @@ public interface TerminalService {
    CommandResult convertSimpleMapToCommandResult(List<String> headlines, Map<String, Object> map);
 
    RSTableModel convertSimpleMapToTableModel(Map<String, Object> map);
+   
+   /**
+    * Gets the width of the given <i>text</i> in pixels if its rendered in the terminal
+    * 
+    * @param text The text
+    * 
+    * @return the width in pixels.
+    */
+   int getWidthForText(String text);
 
    RSTableModel convertSimpleListToTableModel(String headline, List<String> list);
    
@@ -155,7 +166,7 @@ public interface TerminalService {
    
    RSTableModel convertSimpleMapListToTableModel(String emptyTableMessage,
          List<Map<String, String>> mapList, List<String> firstKeys, Map<String, String> keyToText);
-
+   
    /**
     * Joins the list with ", ". If sort is true, sorts the given list
     * alphabetically

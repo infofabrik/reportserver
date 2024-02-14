@@ -65,7 +65,8 @@ public class NodeExporterResource extends RsRestResource {
    @GET
    @Path("/{path:.+}")
    @Produces(MediaType.APPLICATION_JSON)
-   public Response getExportedNode(@PathParam("path") String path, @MatrixParam("includeVariants") final boolean includeVariants) {
+   public Response getExportedNode(@PathParam("path") String path,
+         @MatrixParam("includeVariants") final boolean includeVariants, @MatrixParam("flatten") final boolean flatten) {
       if (!securityServiceProvider.get().checkRights(ExportSecurityTarget.class, Execute.class)) 
          return Response.status(Status.UNAUTHORIZED).build();
       
@@ -78,7 +79,7 @@ public class NodeExporterResource extends RsRestResource {
          if (!securityServiceProvider.get().checkRights(node, Read.class))
             return Response.status(Status.UNAUTHORIZED).build();
          
-         final Optional<ExportConfig> exportConfig = exportServiceProvider.get().configureExport(node, includeVariants);
+         final Optional<ExportConfig> exportConfig = exportServiceProvider.get().configureExport(node, includeVariants, flatten);
 
          if (!exportConfig.isPresent()) {
             String err = "no exporter found";

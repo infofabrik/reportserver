@@ -1,98 +1,97 @@
 
-function SaikuTableRenderer(data, options) {
-    this._data = data;
-    this._options = _.extend({}, SaikuRendererOptions, options);
-}
+var SaikuTableRenderer = _.extend(SaikuRenderer, {
 
+    key: "table"
+});
 
-SaikuTableRenderer.prototype.render = function(data, options) {
-        var self = this;
-        if (data) {
-            this._data = data;
-        }
-        if (options) {
-            this._options = _.extend({}, SaikuRendererOptions, options);
-        }
+SaikuTableRenderer.prototype._render = function(data, options) {
+    var self = this;
+    if (data) {
+        this._data = data;
+    }
+    if (options) {
+        this._options = _.extend({}, SaikuRendererOptions, options);
+    }
 
-        if (typeof this._data == "undefined") {
-            return;
-        }
+    if (typeof this._data == "undefined") {
+        return;
+    }
 
-        if (this._data != null && this._data.error != null) {
-            return;
-        }        
-        if (this._data == null || (this._data.cellset && this._data.cellset.length === 0)) {
-            return;
-        }
-        if (this._options.htmlObject) {
+    if (this._data != null && this._data.error != null) {
+        return;
+    }
+    if (this._data == null || (this._data.cellset && this._data.cellset.length === 0)) {
+        return;
+    }
+    if (this._options.htmlObject) {
 //            $(this._options.htmlObject).stickyTableHeaders("destroy");
 
-            // in case we have some left over scrollers
-            if (self._options.hasOwnProperty('batch')) {
-                $(self._options.htmlObject).parent().parent().unbind('scroll');
+        // in case we have some left over scrollers
+        if (self._options.hasOwnProperty('batch')) {
+            $(self._options.htmlObject).parent().parent().unbind('scroll');
+        }
+
+        _.defer(function(that) {
+            if (self._options.hasOwnProperty('batch') && !self._options.hasOwnProperty('batchSize')) {
+                self._options['batchSize'] = 1000;
             }
 
-            _.defer(function(that) {
-                if (self._options.hasOwnProperty('batch') && !self._options.hasOwnProperty('batchSize')) {
-                    self._options['batchSize'] = 1000;
-                }
-
-                var html =  self.internalRender(self._data, self._options);
-                $(self._options.htmlObject).html(html);
+            var html =  self.internalRender(self._data, self._options);
+            $(self._options.htmlObject).html(html);
 //                $(self._options.htmlObject).stickyTableHeaders( { container: self._options.htmlObject.parent().parent(), fixedOffset: self._options.htmlObject.parent().parent().offset().top });
 
-                _.defer(function(that) {
-                    if (self._options.hasOwnProperty('batch') && self._options.hasBatchResult) {                        
-                        var batchRow = 0;
-                        var batchIsRunning = false;
-                        var batchIntervalSize = self._options.hasOwnProperty('batchIntervalSize') ? self._options.batchIntervalSize : 20;
-                        var batchIntervalTime = self._options.hasOwnProperty('batchIntervalTime') ? self._options.batchIntervalTime : 20;
+            _.defer(function(that) {
+                if (self._options.hasOwnProperty('batch') && self._options.hasBatchResult) {
+                    var batchRow = 0;
+                    var batchIsRunning = false;
+                    var batchIntervalSize = self._options.hasOwnProperty('batchIntervalSize') ? self._options.batchIntervalSize : 20;
+                    var batchIntervalTime = self._options.hasOwnProperty('batchIntervalTime') ? self._options.batchIntervalTime : 20;
 
-                        var len = self._options.batchResult.length;
-                        
-                        var batchInsert = function() {
-                            // maybe add check for reach table bottom - ($('.workspace_results').scrollTop() , $('.workspace_results table').height()
-                            if (!batchIsRunning && len > 0 && batchRow < len) {
-                                batchIsRunning = true;
-                                var batchContent = "";
-                                var startb = batchRow;
-                                for (var i = 0;  batchRow < len && i < batchIntervalSize ; i++, batchRow++) {
-                                    batchContent += self._options.batchResult[batchRow];
-                                }
-                                if (batchRow > startb) {
-                                    $(self._options.htmlObject).append( $(batchContent));
-                                }
-                                batchIsRunning = false;
-                            }
-                            if (batchRow >= len) {
-                                $(self._options.htmlObject).parent().parent().unbind('scroll');
-                            }
-                        };
+                    var len = self._options.batchResult.length;
 
-                        var lazyBatchInsert = _.debounce(batchInsert, batchIntervalTime);
-                        $(self._options.htmlObject).parent().parent().scroll(function () { 
-                            lazyBatchInsert();
-                        });
-                    }
-                });
-                return html;
+                    var batchInsert = function() {
+                        // maybe add check for reach table bottom - ($('.workspace_results').scrollTop() , $('.workspace_results table').height()
+                        if (!batchIsRunning && len > 0 && batchRow < len) {
+                            batchIsRunning = true;
+                            var batchContent = "";
+                            var startb = batchRow;
+                            for (var i = 0;  batchRow < len && i < batchIntervalSize ; i++, batchRow++) {
+                                batchContent += self._options.batchResult[batchRow];
+                            }
+                            if (batchRow > startb) {
+                                $(self._options.htmlObject).append( $(batchContent));
+                            }
+                            batchIsRunning = false;
+                        }
+                        if (batchRow >= len) {
+                            $(self._options.htmlObject).parent().parent().unbind('scroll');
+                        }
+                    };
+
+                    var lazyBatchInsert = _.debounce(batchInsert, batchIntervalTime);
+                    $(self._options.htmlObject).parent().parent().scroll(function () {
+                        lazyBatchInsert();
+                    });
+                }
             });
-        } else {
-            var html =  this.internalRender(this._data, self._options);
             return html;
-        }
-        
+        });
+    } else {
+        var html =  this.internalRender(this._data, self._options);
+        return html;
+    }
+
 };
 
 SaikuTableRenderer.prototype.clear = function(data, options) {
     var self = this;
-    if (this._options && this._options.htmlObject && this._options.hasOwnProperty('batch')) {
+    if (this._options.htmlObject && this._options.hasOwnProperty('batch')) {
         $(self._options.htmlObject).parent().parent().unbind('scroll');
     }
 
 };
 
-SaikuTableRenderer.prototype.processData = function(data, options) {
+SaikuTableRenderer.prototype._processData = function(data, options) {
     this._hasProcessed = true;
 };
 
@@ -125,7 +124,7 @@ function genTotalHeaderCells(currentIndex, bottom, scanSums, scanIndexes, lists,
             else if (i == bottom - 1 && currentListNode.captions)
                 cssClass = "col_total_first";
             else cssClass = "col_null";
-            
+
             for (var m = 0; m < currentListNode.cells.length; m++) {
                 var text = '&nbsp;';
                 if (bottom == lists.length - 1) {
@@ -140,7 +139,7 @@ function genTotalHeaderCells(currentIndex, bottom, scanSums, scanIndexes, lists,
                     }
                 }
                 contents += '<th class="' + cssClass + '">'
-                  + (wrapContent ? '<div>' + text + '</div>' : text ) + '</th>';
+                + (wrapContent ? '<div>' + text + '</div>' : text ) + '</th>';
             }
             scanIndexes[i]++;
             if (scanIndexes[i] < lists[i].length)
@@ -183,7 +182,7 @@ function genTotalHeaderRowCells(currentIndex, scanSums, scanIndexes, totalsLists
                     var text = '&nbsp;';
                     if (i == 0 && j == 0)
                         cssClass = 'row';
-                    else if (i == j + 1) 
+                    else if (i == j + 1)
                         cssClass = 'row_total_corner';
                     else if (i == j && colLists[i][colScanIndexes[i]].captions) {
                         cssClass = 'row_total_first';
@@ -203,10 +202,10 @@ function genTotalHeaderRowCells(currentIndex, scanSums, scanIndexes, totalsLists
                         }
                     }
                     contents += '<th class="' + cssClass + '">'
-                                + (wrapContent ? '<div>' + text + '</div>' : text ) + '</th>';
+                    + (wrapContent ? '<div>' + text + '</div>' : text ) + '</th>';
 
                 }
-                
+
                 var scanIndexes = {};
                 var scanSums = {};
                 for (var z = 0; z < totalsLists[ROWS].length; z++) {
@@ -269,17 +268,17 @@ SaikuTableRenderer.prototype.internalRender = function(allData, options) {
     var wrapContent = true;
     if (options) {
         batchSize = options.hasOwnProperty('batchSize') ? options.batchSize : null;
-        wrapContent = options.hasOwnProperty('wrapContent') ? options.wrapContent : true;
+        wrapContent = options.hasOwnProperty('wrapContent') ? options.wrapContent : false;
     }
     var totalsLists = {};
     totalsLists[COLUMNS] = allData.rowTotalsLists;
     totalsLists[ROWS] = allData.colTotalsLists;
-    
+
     var scanSums = {};
     var scanIndexes = {};
-    
+
     var dirs = [ROWS, COLUMNS];
-    
+
     for (var i = 0; i < dirs.length; i++) {
         scanSums[dirs[i]] = new Array();
         scanIndexes[dirs[i]] = new Array();
@@ -338,14 +337,14 @@ SaikuTableRenderer.prototype.internalRender = function(allData, options) {
                         if (totalsLists[ROWS])
                             colSpan = totalsLists[ROWS][row + 1][scanIndexes[ROWS][row + 1]].span;
                         rowContent += '<th class="col" style="text-align: center;" colspan="' + colSpan + '" title="' + header.value + '">'
-                            + (wrapContent ? '<div rel="' + row + ":" + col +'">' + header.value + '</div>' : header.value)
-                            + '</th>';    
+                        + (wrapContent ? '<div rel="' + row + ":" + col +'">' + header.value + '</div>' : header.value)
+                        + '</th>';
                     }
-                    
+
                 } else {
                     // All the rest...
                     var groupChange = (col > 1 && row > 1 && !isHeaderLowestLvl && col > firstColumn) ?
-                        data[row-1][col+1].value != data[row-1][col].value || data[row-1][col+1].properties.uniquename != data[row-1][col].properties.uniquename
+                    data[row-1][col+1].value != data[row-1][col].value || data[row-1][col+1].properties.uniquename != data[row-1][col].properties.uniquename
                         : false;
 
                     var maxColspan = colSpan > 999 ? true : false;
@@ -357,7 +356,7 @@ SaikuTableRenderer.prototype.internalRender = function(allData, options) {
                                 colSpan = totalsLists[ROWS][row + 1][scanIndexes[ROWS][row + 1]].span;
                             rowContent += '<th class="col" style="text-align: center;" colspan="' + (colSpan == 0 ? 1 : colSpan) + '" title="' + header.value + '">'
                             + (wrapContent ? '<div rel="' + row + ":" + col +'">' + header.value + '</div>' : header.value)
-                            + '</th>';    
+                            + '</th>';
                         }
                         colSpan = 1;
                     } else {
@@ -386,15 +385,15 @@ SaikuTableRenderer.prototype.internalRender = function(allData, options) {
                 }
                 var tipsy = "";
                 /* var tipsy = ' original-title="';
-                if (!same && header.metaproperties) {
-                    for (key in header.metaproperties) {
-                        if (key.substring(0,1) != "$" && key.substring(1,2).toUpperCase() != key.substring(1,2)) {
-                            tipsy += "<b>" + safe_tags_replace(key) + "</b> : " + safe_tags_replace(header.metaproperties[key]) + "<br>";
-                        }
-                    }
-                }
-                tipsy += '"';
-                */
+                 if (!same && header.metaproperties) {
+                 for (key in header.metaproperties) {
+                 if (key.substring(0,1) != "$" && key.substring(1,2).toUpperCase() != key.substring(1,2)) {
+                 tipsy += "<b>" + safe_tags_replace(key) + "</b> : " + safe_tags_replace(header.metaproperties[key]) + "<br>";
+                 }
+                 }
+                 }
+                 tipsy += '"';
+                 */
                 var cssclass = (same ? "row_null" : "row");
                 var colspan = 0;
 
@@ -445,9 +444,9 @@ SaikuTableRenderer.prototype.internalRender = function(allData, options) {
                 }
 
                 rowContent += '<td class="data" ' + color + '>'
-                        + (wrapContent ? '<div class="datadiv" alt="' + header.properties.raw + '" rel="' + header.properties.position + '">' : "")
-                        + val + arrow 
-                        + (wrapContent ? '</div>' : '') + '</td>';
+                + (wrapContent ? '<div class="datadiv" alt="' + header.properties.raw + '" rel="' + header.properties.position + '">' : "")
+                + val + arrow
+                + (wrapContent ? '</div>' : '') + '</td>';
                 if (totalsLists[ROWS])
                     rowContent += genTotalDataCells(colShifted + 1, rowShifted, scanSums[ROWS], scanIndexes[ROWS], totalsLists, wrapContent);
             }
@@ -458,30 +457,30 @@ SaikuTableRenderer.prototype.internalRender = function(allData, options) {
             totals += genTotalHeaderRowCells(rowShifted + 1, scanSums, scanIndexes, totalsLists, wrapContent);
         }
         if (batchStarted && batchSize) {
-                if (row <= batchSize) {
-                    if (!isColHeader && !isColHeaderDone) {
-                        tableContent += "</thead><tbody>";
-                        isColHeaderDone = true;
-                    }
-                    tableContent += rowContent;
-                    if (totals.length > 0) {
-                        tableContent += totals;
-                    }
-                    
-                } else {
-                    resultRows.push(rowContent);
-                    if (totals.length > 0) {
-                        resultRows.push(totals);
-                    }
-                        
+            if (row <= batchSize) {
+                if (!isColHeader && !isColHeaderDone) {
+                    tableContent += "</thead><tbody>";
+                    isColHeaderDone = true;
                 }
+                tableContent += rowContent;
+                if (totals.length > 0) {
+                    tableContent += totals;
+                }
+
+            } else {
+                resultRows.push(rowContent);
+                if (totals.length > 0) {
+                    resultRows.push(totals);
+                }
+
+            }
         } else {
             if (!isColHeader && !isColHeaderDone) {
                 tableContent += "</thead><tbody>";
                 isColHeaderDone = true;
             }
             tableContent += rowContent;
-            if (totals.length > 0) { 
+            if (totals.length > 0) {
                 tableContent += totals;
             }
         }
@@ -491,4 +490,4 @@ SaikuTableRenderer.prototype.internalRender = function(allData, options) {
         options['hasBatchResult'] = resultRows.length > 0;
     }
     return "<table>" + tableContent + "</tbody></table>";
-};
+}

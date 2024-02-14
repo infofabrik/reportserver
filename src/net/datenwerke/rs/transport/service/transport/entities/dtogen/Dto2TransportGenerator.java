@@ -20,6 +20,8 @@ import net.datenwerke.rs.transport.service.transport.entities.Transport;
 import net.datenwerke.rs.transport.service.transport.entities.dtogen.Dto2TransportGenerator;
 import net.datenwerke.rs.utils.entitycloner.annotation.TransientID;
 import net.datenwerke.rs.utils.reflection.ReflectionService;
+import net.datenwerke.security.client.usermanager.dto.UserDto;
+import net.datenwerke.security.service.usermanager.entities.User;
 
 /**
  * Dto2PosoGenerator for Transport
@@ -105,6 +107,27 @@ public class Dto2TransportGenerator implements Dto2PosoGenerator<TransportDto,Tr
 	}
 
 	protected void mergePlainDto2Poso(TransportDto dto, final Transport poso)  throws ExpectedException {
+		/*  set appliedBy */
+		UserDto tmpDto_appliedBy = dto.getAppliedBy();
+		if(null != tmpDto_appliedBy && null != tmpDto_appliedBy.getId()){
+			if(null != poso.getAppliedBy() && null != poso.getAppliedBy().getId() && poso.getAppliedBy().getId().equals(tmpDto_appliedBy.getId()))
+				poso.setAppliedBy((User)dtoServiceProvider.get().loadAndMergePoso(tmpDto_appliedBy));
+			else
+				throw new IllegalArgumentException("enclosed dto should not have non matching id (appliedBy)");
+		} else if(null != poso.getAppliedBy()){
+			User newPropertyValue = (User)dtoServiceProvider.get().createPoso(tmpDto_appliedBy);
+			dto2PosoSupervisor.enclosedObjectRemoved(dto, poso, poso.getAppliedBy(), newPropertyValue, "appliedBy");
+			poso.setAppliedBy(newPropertyValue);
+		} else {
+			poso.setAppliedBy((User)dtoServiceProvider.get().createPoso(tmpDto_appliedBy));
+		}
+
+		/*  set appliedOn */
+		poso.setAppliedOn(dto.getAppliedOn() );
+
+		/*  set appliedProtocol */
+		poso.setAppliedProtocol(dto.getAppliedProtocol() );
+
 		/*  set closed */
 		try{
 			poso.setClosed(dto.isClosed() );
@@ -132,6 +155,24 @@ public class Dto2TransportGenerator implements Dto2PosoGenerator<TransportDto,Tr
 		} catch(NullPointerException e){
 		}
 
+		/*  set importedBy */
+		UserDto tmpDto_importedBy = dto.getImportedBy();
+		if(null != tmpDto_importedBy && null != tmpDto_importedBy.getId()){
+			if(null != poso.getImportedBy() && null != poso.getImportedBy().getId() && poso.getImportedBy().getId().equals(tmpDto_importedBy.getId()))
+				poso.setImportedBy((User)dtoServiceProvider.get().loadAndMergePoso(tmpDto_importedBy));
+			else
+				throw new IllegalArgumentException("enclosed dto should not have non matching id (importedBy)");
+		} else if(null != poso.getImportedBy()){
+			User newPropertyValue = (User)dtoServiceProvider.get().createPoso(tmpDto_importedBy);
+			dto2PosoSupervisor.enclosedObjectRemoved(dto, poso, poso.getImportedBy(), newPropertyValue, "importedBy");
+			poso.setImportedBy(newPropertyValue);
+		} else {
+			poso.setImportedBy((User)dtoServiceProvider.get().createPoso(tmpDto_importedBy));
+		}
+
+		/*  set importedOn */
+		poso.setImportedOn(dto.getImportedOn() );
+
 		/*  set key */
 		if(validateKeyProperty(dto, poso)){
 			poso.setKey(dto.getKey() );
@@ -146,12 +187,42 @@ public class Dto2TransportGenerator implements Dto2PosoGenerator<TransportDto,Tr
 		/*  set serverId */
 		poso.setServerId(dto.getServerId() );
 
+		/*  set status */
+		poso.setStatus(dto.getStatus() );
+
 		/*  set xml */
 		poso.setXml(dto.getXml() );
 
 	}
 
 	protected void mergeProxy2Poso(TransportDto dto, final Transport poso)  throws ExpectedException {
+		/*  set appliedBy */
+		if(dto.isAppliedByModified()){
+			UserDto tmpDto_appliedBy = dto.getAppliedBy();
+			if(null != tmpDto_appliedBy && null != tmpDto_appliedBy.getId()){
+				if(null != poso.getAppliedBy() && null != poso.getAppliedBy().getId() && poso.getAppliedBy().getId().equals(tmpDto_appliedBy.getId()))
+					poso.setAppliedBy((User)dtoServiceProvider.get().loadAndMergePoso(tmpDto_appliedBy));
+				else
+					throw new IllegalArgumentException("enclosed dto should not have non matching id (appliedBy)");
+			} else if(null != poso.getAppliedBy()){
+				User newPropertyValue = (User)dtoServiceProvider.get().createPoso(tmpDto_appliedBy);
+				dto2PosoSupervisor.enclosedObjectRemoved(dto, poso, poso.getAppliedBy(), newPropertyValue, "appliedBy");
+				poso.setAppliedBy(newPropertyValue);
+			} else {
+				poso.setAppliedBy((User)dtoServiceProvider.get().createPoso(tmpDto_appliedBy));
+			}
+		}
+
+		/*  set appliedOn */
+		if(dto.isAppliedOnModified()){
+			poso.setAppliedOn(dto.getAppliedOn() );
+		}
+
+		/*  set appliedProtocol */
+		if(dto.isAppliedProtocolModified()){
+			poso.setAppliedProtocol(dto.getAppliedProtocol() );
+		}
+
 		/*  set closed */
 		if(dto.isClosedModified()){
 			try{
@@ -193,6 +264,28 @@ public class Dto2TransportGenerator implements Dto2PosoGenerator<TransportDto,Tr
 			}
 		}
 
+		/*  set importedBy */
+		if(dto.isImportedByModified()){
+			UserDto tmpDto_importedBy = dto.getImportedBy();
+			if(null != tmpDto_importedBy && null != tmpDto_importedBy.getId()){
+				if(null != poso.getImportedBy() && null != poso.getImportedBy().getId() && poso.getImportedBy().getId().equals(tmpDto_importedBy.getId()))
+					poso.setImportedBy((User)dtoServiceProvider.get().loadAndMergePoso(tmpDto_importedBy));
+				else
+					throw new IllegalArgumentException("enclosed dto should not have non matching id (importedBy)");
+			} else if(null != poso.getImportedBy()){
+				User newPropertyValue = (User)dtoServiceProvider.get().createPoso(tmpDto_importedBy);
+				dto2PosoSupervisor.enclosedObjectRemoved(dto, poso, poso.getImportedBy(), newPropertyValue, "importedBy");
+				poso.setImportedBy(newPropertyValue);
+			} else {
+				poso.setImportedBy((User)dtoServiceProvider.get().createPoso(tmpDto_importedBy));
+			}
+		}
+
+		/*  set importedOn */
+		if(dto.isImportedOnModified()){
+			poso.setImportedOn(dto.getImportedOn() );
+		}
+
 		/*  set key */
 		if(dto.isKeyModified()){
 			if(validateKeyProperty(dto, poso)){
@@ -213,6 +306,11 @@ public class Dto2TransportGenerator implements Dto2PosoGenerator<TransportDto,Tr
 		/*  set serverId */
 		if(dto.isServerIdModified()){
 			poso.setServerId(dto.getServerId() );
+		}
+
+		/*  set status */
+		if(dto.isStatusModified()){
+			poso.setStatus(dto.getStatus() );
 		}
 
 		/*  set xml */
@@ -230,6 +328,16 @@ public class Dto2TransportGenerator implements Dto2PosoGenerator<TransportDto,Tr
 	}
 
 	protected void mergePlainDto2UnmanagedPoso(TransportDto dto, final Transport poso)  throws ExpectedException {
+		/*  set appliedBy */
+		UserDto tmpDto_appliedBy = dto.getAppliedBy();
+		poso.setAppliedBy((User)dtoServiceProvider.get().createUnmanagedPoso(tmpDto_appliedBy));
+
+		/*  set appliedOn */
+		poso.setAppliedOn(dto.getAppliedOn() );
+
+		/*  set appliedProtocol */
+		poso.setAppliedProtocol(dto.getAppliedProtocol() );
+
 		/*  set closed */
 		try{
 			poso.setClosed(dto.isClosed() );
@@ -257,6 +365,13 @@ public class Dto2TransportGenerator implements Dto2PosoGenerator<TransportDto,Tr
 		} catch(NullPointerException e){
 		}
 
+		/*  set importedBy */
+		UserDto tmpDto_importedBy = dto.getImportedBy();
+		poso.setImportedBy((User)dtoServiceProvider.get().createUnmanagedPoso(tmpDto_importedBy));
+
+		/*  set importedOn */
+		poso.setImportedOn(dto.getImportedOn() );
+
 		/*  set key */
 		if(validateKeyProperty(dto, poso)){
 			poso.setKey(dto.getKey() );
@@ -271,12 +386,31 @@ public class Dto2TransportGenerator implements Dto2PosoGenerator<TransportDto,Tr
 		/*  set serverId */
 		poso.setServerId(dto.getServerId() );
 
+		/*  set status */
+		poso.setStatus(dto.getStatus() );
+
 		/*  set xml */
 		poso.setXml(dto.getXml() );
 
 	}
 
 	protected void mergeProxy2UnmanagedPoso(TransportDto dto, final Transport poso)  throws ExpectedException {
+		/*  set appliedBy */
+		if(dto.isAppliedByModified()){
+			UserDto tmpDto_appliedBy = dto.getAppliedBy();
+			poso.setAppliedBy((User)dtoServiceProvider.get().createUnmanagedPoso(tmpDto_appliedBy));
+		}
+
+		/*  set appliedOn */
+		if(dto.isAppliedOnModified()){
+			poso.setAppliedOn(dto.getAppliedOn() );
+		}
+
+		/*  set appliedProtocol */
+		if(dto.isAppliedProtocolModified()){
+			poso.setAppliedProtocol(dto.getAppliedProtocol() );
+		}
+
 		/*  set closed */
 		if(dto.isClosedModified()){
 			try{
@@ -318,6 +452,17 @@ public class Dto2TransportGenerator implements Dto2PosoGenerator<TransportDto,Tr
 			}
 		}
 
+		/*  set importedBy */
+		if(dto.isImportedByModified()){
+			UserDto tmpDto_importedBy = dto.getImportedBy();
+			poso.setImportedBy((User)dtoServiceProvider.get().createUnmanagedPoso(tmpDto_importedBy));
+		}
+
+		/*  set importedOn */
+		if(dto.isImportedOnModified()){
+			poso.setImportedOn(dto.getImportedOn() );
+		}
+
 		/*  set key */
 		if(dto.isKeyModified()){
 			if(validateKeyProperty(dto, poso)){
@@ -338,6 +483,11 @@ public class Dto2TransportGenerator implements Dto2PosoGenerator<TransportDto,Tr
 		/*  set serverId */
 		if(dto.isServerIdModified()){
 			poso.setServerId(dto.getServerId() );
+		}
+
+		/*  set status */
+		if(dto.isStatusModified()){
+			poso.setStatus(dto.getStatus() );
 		}
 
 		/*  set xml */
@@ -387,7 +537,7 @@ public class Dto2TransportGenerator implements Dto2PosoGenerator<TransportDto,Tr
 		if(! java.lang.String.class.isAssignableFrom(propertyValue.getClass()))
 			throw new ValidationFailedException("String validation failed for key", "expected a String");
 
-		if(! ((String)propertyValue).matches("^[a-zA-Z0-9_\\-]*$"))
+		if(! ((String)propertyValue).matches("^[a-zA-Z0-9_\\-]+$"))
 			throw new ValidationFailedException("String validation failed for key", " Regex test failed.");
 
 		/* all went well */

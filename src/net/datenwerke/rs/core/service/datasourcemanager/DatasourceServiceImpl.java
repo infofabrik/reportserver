@@ -4,12 +4,12 @@ import java.util.List;
 import java.util.Set;
 
 import javax.persistence.EntityManager;
-import javax.persistence.NonUniqueResultException;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.name.Named;
 
+import groovy.lang.Closure;
 import net.datenwerke.rs.core.service.datasourcemanager.annotations.DefaultDatasource;
 import net.datenwerke.rs.core.service.datasourcemanager.annotations.ReportServerDatasourceDefinitions;
 import net.datenwerke.rs.core.service.datasourcemanager.entities.AbstractDatasourceManagerNode;
@@ -36,13 +36,16 @@ public class DatasourceServiceImpl extends SecuredTreeDBManagerImpl<AbstractData
       implements DatasourceService {
 
    private final Provider<Set<Class<? extends DatasourceDefinition>>> installedDataSourceDefinitions;
+   
    private final Provider<String> defaultDatasourceProvider;
    private final Provider<EntityManager> entityManagerProvider;
 
    @Inject
-   public DatasourceServiceImpl(Provider<EntityManager> entityManagerProvider,
+   public DatasourceServiceImpl(
+         Provider<EntityManager> entityManagerProvider,
          @ReportServerDatasourceDefinitions Provider<Set<Class<? extends DatasourceDefinition>>> installedDataSourceDefinitions,
-         @DefaultDatasource Provider<String> defaultDatasourceProvider) {
+         @DefaultDatasource Provider<String> defaultDatasourceProvider
+         ) {
 
       /* store objects */
       this.entityManagerProvider = entityManagerProvider;
@@ -92,6 +95,25 @@ public class DatasourceServiceImpl extends SecuredTreeDBManagerImpl<AbstractData
 
       return null;
    }
+   
+   @Override
+   protected void afterNodeCopy(AbstractDatasourceManagerNode copiedNode, AbstractDatasourceManagerNode parent) {
+      if (copiedNode instanceof DatasourceDefinition) {
+         DatasourceDefinition clone = (DatasourceDefinition) copiedNode;
+
+         Closure getAllNodes = new Closure(null) {
+            public List<AbstractDatasourceManagerNode> doCall() {
+               return parent.getChildren();
+            }
+         };
+         clone.setName(clone.getName() == null
+               ? keyNameGeneratorService.getNextCopyName("", getAllNodes)
+               : keyNameGeneratorService.getNextCopyName(clone.getName(), getAllNodes));
+         clone.setKey(keyNameGeneratorService.getNextCopyKey(clone.getKey(), this));
+      }
+   }
+   
+
 
    @Override
    @QueryByAttribute(where = AbstractDatasourceManagerNode__.parent, type = PredicateType.IS_NULL)
@@ -140,23 +162,16 @@ public class DatasourceServiceImpl extends SecuredTreeDBManagerImpl<AbstractData
    }
 
    @Override
-   public DatasourceDefinition getDatasourceByKey(String key) {
-      try {
-         return doGetDatasourceByKey(key);
-      } catch (NonUniqueResultException e) {
-         throw new IllegalArgumentException("There seem to be multiple datasources with the same key: " + key, e);
-      } catch (IllegalStateException e) {
-         if (null != e.getCause() && e.getCause() instanceof NonUniqueResultException)
-            throw new IllegalArgumentException("There seem to be multiple datasources with the same key: " + key, e);
-         throw e;
-      }
-   }
-   
    @QueryByAttribute(
          where = DatasourceDefinition__.key
    )
-   public DatasourceDefinition doGetDatasourceByKey(String key) {
-      return null; // by magic, must be public for AOP interception to work
+   public DatasourceDefinition getDatasourceByKey(String key) {
+      return null; // by magic
+   }
+   
+   @Override
+   public AbstractDatasourceManagerNode getNodeByKey(String key) {
+      return getDatasourceByKey(key);
    }
 
 }

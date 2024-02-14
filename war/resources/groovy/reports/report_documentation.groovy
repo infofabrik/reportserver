@@ -134,7 +134,6 @@ import org.apache.commons.lang3.StringEscapeUtils
 	def variantsTemplate = ''
 	if (! (report instanceof ReportVariant)) {
 		List<Report> variants = report.getChildren();
-		System.out.println("Variants: " + variants)
 		if (! variants.isEmpty()) {
 			variantsTemplate = '<div class="headlineSeparator">' + getLocalText("variants") + '</div>'
 			variantsTemplate += '<ol>'

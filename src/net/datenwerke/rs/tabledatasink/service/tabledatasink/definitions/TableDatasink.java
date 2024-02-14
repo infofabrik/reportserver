@@ -24,6 +24,7 @@ import net.datenwerke.rs.core.service.datasourcemanager.entities.DatasourceConta
 import net.datenwerke.rs.tabledatasink.service.tabledatasink.TableDatasinkService;
 import net.datenwerke.rs.tabledatasink.service.tabledatasink.locale.TableDatasinkMessages;
 import net.datenwerke.rs.utils.entitycloner.annotation.EnclosedEntity;
+import net.datenwerke.rs.utils.entitymerge.service.annotations.EntityMergeField;
 import net.datenwerke.rs.utils.instancedescription.annotations.InstanceDescription;
 
 /**
@@ -60,28 +61,34 @@ public class TableDatasink extends DatasinkDefinition implements DatasourceConta
          cascade = CascadeType.ALL, 
          orphanRemoval = true
          )
+   @EntityMergeField(toClone = true)
    private DatasourceContainer datasourceContainer = new DatasourceContainer();
    
    @ExposeToClient
    @Field
    @Column(length = 1024)
+   @EntityMergeField
    private String tableName;
    
    @ExposeToClient
    @Field
    @Column(length = 2048)
+   @EntityMergeField
    private String primaryKeys;
    
    @ExposeToClient
    @Field
+   @EntityMergeField
    private boolean copyPrimaryKeys;
    
    @ExposeToClient
    @Field
+   @EntityMergeField
    private boolean truncateTable;
    
    @ExposeToClient
    @Field
+   @EntityMergeField
    private int batchSize = 100;
    
    public int getBatchSize() {

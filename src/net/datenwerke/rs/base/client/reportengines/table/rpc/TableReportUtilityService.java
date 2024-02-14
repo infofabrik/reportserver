@@ -31,7 +31,7 @@ public interface TableReportUtilityService extends RemoteService {
    TableReportInformation getReportInformation(TableReportDto tableReport, String executeToken)
          throws ServerCallFailedException, NonFatalException;
 
-   Map<String, List<String>> getSpecialParameter(TableReportDto tableReportDto, String executeToken)
+   Map<String, List<String>> getSpecialParameter(ReportDto reportDto, String executeToken)
          throws ServerCallFailedException, NonFatalException;
 
    PagingLoadResult<StringBaseModel> getDistinctValuesPaged(SelectorPanelLoadConfig pagingLoadConfig,

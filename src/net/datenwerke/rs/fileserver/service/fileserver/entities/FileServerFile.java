@@ -14,19 +14,26 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Type;
 import org.hibernate.envers.Audited;
 
+import com.google.common.base.MoreObjects;
+
 import net.datenwerke.dtoservices.dtogenerator.annotations.AdditionalField;
 import net.datenwerke.dtoservices.dtogenerator.annotations.ExposeToClient;
 import net.datenwerke.dtoservices.dtogenerator.annotations.GenerateDto;
+import net.datenwerke.dtoservices.dtogenerator.annotations.PropertyValidator;
+import net.datenwerke.dtoservices.dtogenerator.annotations.StringValidator;
 import net.datenwerke.gf.base.service.annotations.Field;
 import net.datenwerke.gf.base.service.annotations.Indexed;
 import net.datenwerke.gxtdto.client.dtomanager.DtoView;
 import net.datenwerke.rs.fileserver.client.fileserver.locale.FileServerMessages;
 import net.datenwerke.rs.fileserver.service.fileserver.entities.post.File2DtoPostProcessor;
 import net.datenwerke.rs.fileserver.service.fileserver.locale.FileserverMessages;
+import net.datenwerke.rs.keyutils.service.keyutils.KeyNameGeneratorService;
 import net.datenwerke.rs.utils.entitycloner.annotation.EnclosedEntity;
+import net.datenwerke.rs.utils.entitymerge.service.annotations.EntityMergeField;
 import net.datenwerke.rs.utils.instancedescription.annotations.Description;
 import net.datenwerke.rs.utils.instancedescription.annotations.InstanceDescription;
 import net.datenwerke.rs.utils.instancedescription.annotations.Title;
+import net.datenwerke.rs.utils.validator.shared.SharedRegex;
 
 @Entity
 @Table(name = "FILE_SERVER_FILE")
@@ -48,21 +55,41 @@ public class FileServerFile extends AbstractFileServerNode {
    @Column(length = 128)
    @Field
    @Title
+   @EntityMergeField
    private String name;
+   
+   @ExposeToClient(
+         view = DtoView.LIST, 
+         validateDtoProperty = @PropertyValidator(
+               string = @StringValidator(
+                     regex = SharedRegex.KEY_REGEX
+               )
+         )
+   )
+   @Field
+   @Column(
+         length = KeyNameGeneratorService.KEY_LENGTH,
+         unique = true,
+         nullable = false
+   )
+   private String key;
 
    @ExposeToClient(view = DtoView.MINIMAL)
    @Lob
    @Type(type = "net.datenwerke.rs.utils.hibernate.RsClobType")
    @Field
    @Description
+   @EntityMergeField
    private String description;
 
    @ExposeToClient
    @Column(length = 128)
+   @EntityMergeField
    private String contentType;
 
    @EnclosedEntity
    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+   @EntityMergeField(toClone = true)
    private FileServerFileData fileData = new FileServerFileData();
 
    public String getName() {
@@ -72,6 +99,14 @@ public class FileServerFile extends AbstractFileServerNode {
    public void setName(String name) {
       this.name = name;
    }
+   
+   public String getKey() {
+      return key;
+   }
+   public void setKey(String key) {
+      this.key = key;
+   }
+
 
    public void setDescription(String description) {
       this.description = description;
@@ -110,6 +145,15 @@ public class FileServerFile extends AbstractFileServerNode {
    @Override
    public boolean hasChildren() {
       return false;
+   }
+   
+   @Override
+   public String toString() {
+       return MoreObjects.toStringHelper(getClass())
+             .add("ID", getIdOrOldTransient())
+             .add("Key", key)
+             .add("Name", name)
+             .toString();
    }
 
 }

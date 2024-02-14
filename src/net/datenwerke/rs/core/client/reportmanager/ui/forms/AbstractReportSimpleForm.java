@@ -4,6 +4,7 @@ import com.sencha.gxt.widget.core.client.container.MarginData;
 
 import net.datenwerke.gf.client.managerhelper.mainpanel.SimpleFormView;
 import net.datenwerke.gxtdto.client.forms.simpleform.SimpleForm;
+import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCAllowBlank;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.impl.SFFCTextAreaImpl;
 import net.datenwerke.gxtdto.client.locale.BaseMessages;
 import net.datenwerke.rs.core.client.datasourcemanager.dto.DatasourceContainerDto;
@@ -24,7 +25,13 @@ public abstract class AbstractReportSimpleForm extends SimpleFormView {
 
       /* key */
       form.beginColumn(1, new MarginData(0, 0, 0, 0));
-      form.addField(String.class, ReportDtoPA.INSTANCE.key(), ReportmanagerMessages.INSTANCE.key());
+      form.addField(String.class, ReportDtoPA.INSTANCE.key(), ReportmanagerMessages.INSTANCE.key(), 
+            new SFFCAllowBlank() {
+         @Override
+         public boolean allowBlank() {
+            return false;
+         }
+      }); // $NON-NLS-1$
       form.endColumn();
 
       form.endRow();

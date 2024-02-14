@@ -104,6 +104,42 @@ abstract public class FileServerFileDto extends AbstractFileServerNodeDto {
 		}
 	};
 
+	private String key;
+	private  boolean key_m;
+	public static final String PROPERTY_KEY = "dpi-fileserverfile-key";
+
+	private transient static PropertyAccessor<FileServerFileDto, String> key_pa = new PropertyAccessor<FileServerFileDto, String>() {
+		@Override
+		public void setValue(FileServerFileDto container, String object) {
+			container.setKey(object);
+		}
+
+		@Override
+		public String getValue(FileServerFileDto container) {
+			return container.getKey();
+		}
+
+		@Override
+		public Class<?> getType() {
+			return String.class;
+		}
+
+		@Override
+		public String getPath() {
+			return "key";
+		}
+
+		@Override
+		public void setModified(FileServerFileDto container, boolean modified) {
+			container.key_m = modified;
+		}
+
+		@Override
+		public boolean isModified(FileServerFileDto container) {
+			return container.isKeyModified();
+		}
+	};
+
 	private String name;
 	private  boolean name_m;
 	public static final String PROPERTY_NAME = "dpi-fileserverfile-name";
@@ -279,6 +315,55 @@ abstract public class FileServerFileDto extends AbstractFileServerNodeDto {
 	}
 
 
+	public String getKey()  {
+		if(! isDtoProxy()){
+			return this.key;
+		}
+
+		if(isKeyModified())
+			return this.key;
+
+		if(! GWT.isClient())
+			return null;
+
+		String _value = dtoManager.getProperty(this, instantiatePropertyAccess().key());
+
+		return _value;
+	}
+
+
+	public void setKey(String key)  {
+		/* old value */
+		String oldValue = null;
+		if(GWT.isClient())
+			oldValue = getKey();
+
+		/* set new value */
+		this.key = key;
+
+		if(! GWT.isClient())
+			return;
+
+		if(isTrackChanges())
+			addChange(new ChangeTracker(key_pa, oldValue, key, this.key_m));
+
+		/* set indicator */
+		this.key_m = true;
+
+		this.fireObjectChangedEvent(FileServerFileDtoPA.INSTANCE.key(), oldValue);
+	}
+
+
+	public boolean isKeyModified()  {
+		return key_m;
+	}
+
+
+	public static PropertyAccessor<FileServerFileDto, String> getKeyPropertyAccessor()  {
+		return key_pa;
+	}
+
+
 	public String getName()  {
 		if(! isDtoProxy()){
 			return this.name;
@@ -428,6 +513,8 @@ abstract public class FileServerFileDto extends AbstractFileServerNodeDto {
 		this.contentType_m = false;
 		this.description = null;
 		this.description_m = false;
+		this.key = null;
+		this.key_m = false;
 		this.name = null;
 		this.name_m = false;
 		this.size = null;
@@ -442,6 +529,8 @@ abstract public class FileServerFileDto extends AbstractFileServerNodeDto {
 			return true;
 		if(description_m)
 			return true;
+		if(key_m)
+			return true;
 		if(name_m)
 			return true;
 		if(size_m)
@@ -454,6 +543,7 @@ abstract public class FileServerFileDto extends AbstractFileServerNodeDto {
 		List<PropertyAccessor> list = super.getPropertyAccessors();
 		list.add(contentType_pa);
 		list.add(description_pa);
+		list.add(key_pa);
 		list.add(name_pa);
 		list.add(size_pa);
 		return list;
@@ -466,6 +556,8 @@ abstract public class FileServerFileDto extends AbstractFileServerNodeDto {
 			list.add(contentType_pa);
 		if(description_m)
 			list.add(description_pa);
+		if(key_m)
+			list.add(key_pa);
 		if(name_m)
 			list.add(name_pa);
 		if(size_m)
@@ -480,6 +572,9 @@ abstract public class FileServerFileDto extends AbstractFileServerNodeDto {
 			list.add(description_pa);
 			list.add(name_pa);
 			list.add(size_pa);
+		}
+		if(view.compareTo(DtoView.LIST) >= 0){
+			list.add(key_pa);
 		}
 		if(view.compareTo(DtoView.NORMAL) >= 0){
 			list.add(contentType_pa);

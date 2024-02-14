@@ -15,8 +15,8 @@ import net.datenwerke.gf.client.treedb.helper.menu.DeleteMenuItem;
 import net.datenwerke.gf.client.treedb.helper.menu.DuplicateMenuItem;
 import net.datenwerke.gf.client.treedb.helper.menu.InfoMenuItem;
 import net.datenwerke.gf.client.treedb.helper.menu.InsertMenuItem;
+import net.datenwerke.gf.client.treedb.helper.menu.MoveToFolderMenuItem;
 import net.datenwerke.gf.client.treedb.helper.menu.ReloadMenuItem;
-import net.datenwerke.gf.client.treedb.helper.menu.TerminalMenuItem;
 import net.datenwerke.gf.client.treedb.helper.menu.TreeDBUIMenuProvider;
 import net.datenwerke.gf.client.treedb.helper.menu.TreeMenuItem;
 import net.datenwerke.gf.client.treedb.helper.menu.TreeMenuSelectionEvent;
@@ -32,9 +32,14 @@ import net.datenwerke.rs.core.client.reportmanager.dto.ReportFolderDto;
 import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
 import net.datenwerke.rs.core.client.reportmanager.hooks.ReportTypeConfigHook;
 import net.datenwerke.rs.core.client.reportmanager.locale.ReportmanagerMessages;
+import net.datenwerke.rs.core.client.reportmanager.provider.annotations.ReportManagerTreeFolders;
 import net.datenwerke.rs.terminal.client.terminal.TerminalUIService;
+import net.datenwerke.rs.terminal.client.terminal.helper.menu.TerminalMenuItem;
 import net.datenwerke.rs.terminal.client.terminal.security.TerminalGenericTargetIdentifier;
 import net.datenwerke.rs.theme.client.icon.BaseIcon;
+import net.datenwerke.rs.transport.client.transport.TransportDao;
+import net.datenwerke.rs.transport.client.transport.provider.annotations.TransportTreeBasic;
+import net.datenwerke.rs.transport.client.transport.ui.AddToTransportMenuItem;
 import net.datenwerke.security.client.security.SecurityUIService;
 import net.datenwerke.security.client.security.dto.ExecuteDto;
 import net.datenwerke.treedb.client.treedb.dto.AbstractNodeDto;
@@ -46,6 +51,9 @@ public class ReportManagerTreeConfigurationHooker implements TreeConfiguratorHoo
    private final ReportExecutorUIService reportExecutorService;
    private final Provider<TerminalUIService> terminalUIServiceProvider; 
    private final Provider<SecurityUIService> securityServiceProvider;
+   private final Provider<UITree> transportTreeProvider;
+   private final TransportDao transportDao;
+   private final Provider<UITree> reportManagerTreeProvider;
 
    @Inject
    public ReportManagerTreeConfigurationHooker(
@@ -53,7 +61,10 @@ public class ReportManagerTreeConfigurationHooker implements TreeConfiguratorHoo
          ReportManagerTreeManagerDao treeHandler,
          ReportExecutorUIService reportExecutorService, 
          Provider<TerminalUIService> terminalUIServiceProvider,
-         Provider<SecurityUIService> securityServiceProvider
+         Provider<SecurityUIService> securityServiceProvider,
+         TransportDao transportDao,
+         @TransportTreeBasic Provider<UITree> transportTreeProvider,
+         @ReportManagerTreeFolders Provider<UITree> reportManagerTreeProvider
          ) {
 
       /* store objects */
@@ -62,6 +73,9 @@ public class ReportManagerTreeConfigurationHooker implements TreeConfiguratorHoo
       this.reportExecutorService = reportExecutorService;
       this.terminalUIServiceProvider = terminalUIServiceProvider;
       this.securityServiceProvider = securityServiceProvider;
+      this.transportTreeProvider = transportTreeProvider;
+      this.transportDao = transportDao;
+      this.reportManagerTreeProvider = reportManagerTreeProvider;
    }
 
    @Override
@@ -84,6 +98,7 @@ public class ReportManagerTreeConfigurationHooker implements TreeConfiguratorHoo
       MenuItem insertItem = generateInsertMenu();
       folderMenu.add(insertItem);
       folderMenu.add(new DeleteMenuItem(treeHandler));
+      folderMenu.add(new AddToTransportMenuItem(transportTreeProvider.get(), transportDao));
       if (securityServiceProvider.get().hasRight(TerminalGenericTargetIdentifier.class, ExecuteDto.class))
          folderMenu.add(new TerminalMenuItem(terminalUIServiceProvider));
       folderMenu.add(new SeparatorMenuItem());
@@ -100,7 +115,9 @@ public class ReportManagerTreeConfigurationHooker implements TreeConfiguratorHoo
          reportMenu.add(new SeparatorMenuItem());
          reportMenu.add(insertItem);
          reportMenu.add(new DuplicateMenuItem(treeHandler));
+         reportMenu.add(new MoveToFolderMenuItem(treeHandler, reportManagerTreeProvider));
          reportMenu.add(new DeleteMenuItem(treeHandler));
+         reportMenu.add(new AddToTransportMenuItem(transportTreeProvider.get(), transportDao));
          if (securityServiceProvider.get().hasRight(TerminalGenericTargetIdentifier.class, ExecuteDto.class))
             reportMenu.add(new TerminalMenuItem(terminalUIServiceProvider));
          reportMenu.add(new SeparatorMenuItem());

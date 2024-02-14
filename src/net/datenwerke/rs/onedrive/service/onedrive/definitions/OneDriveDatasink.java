@@ -17,6 +17,7 @@ import com.google.inject.Provider;
 import net.datenwerke.dtoservices.dtogenerator.annotations.AdditionalField;
 import net.datenwerke.dtoservices.dtogenerator.annotations.ExposeToClient;
 import net.datenwerke.dtoservices.dtogenerator.annotations.GenerateDto;
+import net.datenwerke.eximport.ex.annotations.ExportableField;
 import net.datenwerke.gf.base.service.annotations.Field;
 import net.datenwerke.gf.base.service.annotations.Indexed;
 import net.datenwerke.rs.core.service.datasinkmanager.BasicDatasinkService;
@@ -28,6 +29,7 @@ import net.datenwerke.rs.oauth.service.oauth.OAuthAuthenticatable;
 import net.datenwerke.rs.onedrive.service.onedrive.OneDriveService;
 import net.datenwerke.rs.onedrive.service.onedrive.definitions.dtogen.OneDriveDatasink2DtoPostProcessor;
 import net.datenwerke.rs.onedrive.service.onedrive.locale.OneDriveDatasinkMessages;
+import net.datenwerke.rs.utils.entitymerge.service.annotations.EntityMergeField;
 import net.datenwerke.rs.utils.instancedescription.annotations.InstanceDescription;
 import net.datenwerke.rs.utils.misc.DateUtils;
 import net.datenwerke.security.service.crypto.pbe.PbeService;
@@ -76,28 +78,35 @@ public class OneDriveDatasink extends DatasinkDefinition implements OAuthAuthent
    @ExposeToClient
    @Field
    @Type(type = "net.datenwerke.rs.utils.hibernate.RsClobType")
+   @EntityMergeField
    private String appKey;
 
    @ExposeToClient(exposeValueToClient = false, mergeDtoValueBack = true)
    @Type(type = "net.datenwerke.rs.utils.hibernate.RsClobType")
+   @EntityMergeField
+   @ExportableField(exportField = false)
    private String secretKey;
 
    @ExposeToClient(exposeValueToClient = false, mergeDtoValueBack = true)
    @Type(type = "net.datenwerke.rs.utils.hibernate.RsClobType")
+   @EntityMergeField
    private String refreshToken;
 
    @ExposeToClient
    @Field
+   @EntityMergeField
    private String tenantId = "common";
 
    @ExposeToClient
    @Field
    @Type(type = "net.datenwerke.rs.utils.hibernate.RsClobType")
+   @EntityMergeField
    private String baseRoot = "/me/drive/items/root:";
 
    @ExposeToClient
    @Field
    @Column(length = 1024)
+   @EntityMergeField
    private String folder = "/";
 
    @Override
@@ -188,8 +197,10 @@ public class OneDriveDatasink extends DatasinkDefinition implements OAuthAuthent
     */
 
    public void setSecretKey(String secretKey) {
-      if (null == secretKey)
-         secretKey = "";
+      if (null == secretKey) {
+         this.secretKey = null;
+         return;
+      }
 
       EncryptionService encryptionService = pbeServiceProvider.get().getEncryptionService();
       byte[] encrypted = encryptionService.encrypt(secretKey);

@@ -12,6 +12,7 @@ import net.datenwerke.rs.transport.client.transport.dto.decorator.TransportDtoDe
 import net.datenwerke.rs.transport.service.transport.entities.Transport;
 import net.datenwerke.rs.transport.service.transport.entities.dtogen.Transport2DtoGenerator;
 import net.datenwerke.rs.utils.misc.StringEscapeUtils;
+import net.datenwerke.security.client.usermanager.dto.UserDto;
 import org.apache.commons.lang3.StringUtils;
 
 /**
@@ -74,6 +75,20 @@ public class Transport2DtoGenerator implements Poso2DtoGenerator<Transport,Trans
 
 		}
 		if(here.compareTo(DtoView.NORMAL) >= 0){
+			/*  set appliedBy */
+			Object tmpDtoUserDtogetAppliedBy = dtoServiceProvider.get().createDto(poso.getAppliedBy(), here, referenced);
+			dto.setAppliedBy((UserDto)tmpDtoUserDtogetAppliedBy);
+			/* ask for a dto with higher view if generated */
+			((DtoMainService)dtoServiceProvider.get()).getCreationHelper().onDtoCreation(tmpDtoUserDtogetAppliedBy, poso.getAppliedBy(), new net.datenwerke.gxtdto.server.dtomanager.CallbackOnDtoCreation(){
+				public void callback(Object refDto){
+					if(null != refDto)
+						dto.setAppliedBy((UserDto)refDto);
+				}
+			});
+
+			/*  set appliedOn */
+			dto.setAppliedOn(poso.getAppliedOn() );
+
 			/*  set closed */
 			dto.setClosed(poso.isClosed() );
 
@@ -95,6 +110,20 @@ public class Transport2DtoGenerator implements Poso2DtoGenerator<Transport,Trans
 			/*  set flags */
 			dto.setFlags(poso.getFlags() );
 
+			/*  set importedBy */
+			Object tmpDtoUserDtogetImportedBy = dtoServiceProvider.get().createDto(poso.getImportedBy(), here, referenced);
+			dto.setImportedBy((UserDto)tmpDtoUserDtogetImportedBy);
+			/* ask for a dto with higher view if generated */
+			((DtoMainService)dtoServiceProvider.get()).getCreationHelper().onDtoCreation(tmpDtoUserDtogetImportedBy, poso.getImportedBy(), new net.datenwerke.gxtdto.server.dtomanager.CallbackOnDtoCreation(){
+				public void callback(Object refDto){
+					if(null != refDto)
+						dto.setImportedBy((UserDto)refDto);
+				}
+			});
+
+			/*  set importedOn */
+			dto.setImportedOn(poso.getImportedOn() );
+
 			/*  set rsSchemaVersion */
 			dto.setRsSchemaVersion(StringEscapeUtils.escapeXml(StringUtils.left(poso.getRsSchemaVersion(),8192)));
 
@@ -103,6 +132,9 @@ public class Transport2DtoGenerator implements Poso2DtoGenerator<Transport,Trans
 
 			/*  set serverId */
 			dto.setServerId(StringEscapeUtils.escapeXml(StringUtils.left(poso.getServerId(),8192)));
+
+			/*  set status */
+			dto.setStatus(StringEscapeUtils.escapeXml(StringUtils.left(poso.getStatus(),8192)));
 
 		}
 

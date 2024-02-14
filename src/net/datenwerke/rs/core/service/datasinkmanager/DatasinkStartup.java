@@ -89,7 +89,7 @@ public class DatasinkStartup {
       hookHandler.attachHooker(ExportAllHook.class, exportAllDatasinks);
       hookHandler.attachHooker(ExportConfigHook.class, datasinkExportConfigHooker);
       hookHandler.attachHooker(RemoteEntityImporterHook.class, remoteDatasinkImporterHooker);
-
+      
       /* register security targets */
       hookHandler.attachHooker(ConfigDoneHook.class, () -> {
          /* secure folder */

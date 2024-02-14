@@ -8,60 +8,35 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.sencha.gxt.widget.core.client.container.MarginData;
 
-import net.datenwerke.gf.client.managerhelper.mainpanel.SimpleFormView;
-import net.datenwerke.gf.client.validator.KeyValidator;
 import net.datenwerke.gxtdto.client.baseex.widget.DwContentPanel;
 import net.datenwerke.gxtdto.client.forms.simpleform.SimpleForm;
 import net.datenwerke.gxtdto.client.forms.simpleform.actions.SimpleFormAction;
 import net.datenwerke.gxtdto.client.forms.simpleform.conditions.FieldChanged;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCCustomComponent;
-import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCStringValidatorRegex;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.impl.SFFCStaticDropdownList;
-import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.impl.SFFCTextAreaImpl;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.dummy.CustomComponent;
-import net.datenwerke.gxtdto.client.locale.BaseMessages;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.base.client.datasources.dto.DatasourceConnectorDto;
 import net.datenwerke.rs.base.client.datasources.dto.FormatBasedDatasourceDefinitionDto;
 import net.datenwerke.rs.base.client.datasources.dto.pa.FormatBasedDatasourceDefinitionDtoPA;
 import net.datenwerke.rs.base.client.datasources.hooks.DatasourceConnectorConfiguratorHook;
 import net.datenwerke.rs.base.client.datasources.locale.BaseDatasourceMessages;
-import net.datenwerke.rs.core.client.datasourcemanager.locale.DatasourcesMessages;
+import net.datenwerke.rs.core.client.datasourcemanager.ui.forms.DatasourceSimpleForm;
 
-public abstract class FormatBasedDatasourceForm extends SimpleFormView {
+public abstract class FormatBasedDatasourceForm extends DatasourceSimpleForm {
 
    @Inject
    protected HookHandlerService hookHandler;
 
    private Widget connectorForm;
 
-   public void configureSimpleForm(SimpleForm form) {
-      form.setHeading(DatasourcesMessages.INSTANCE.editDataSource()
-            + (getSelectedNode() == null ? "" : " (" + getSelectedNode().getId() + ")"));
-
-      form.beginFloatRow();
-      form.setFieldWidth(600);
-      /* name */
-      form.addField(String.class, FormatBasedDatasourceDefinitionDtoPA.INSTANCE.name(), BaseMessages.INSTANCE.name());
-      
-      form.setFieldWidth(500);
-      /* key */
-      form.addField(String.class, FormatBasedDatasourceDefinitionDtoPA.INSTANCE.key(),
-            BaseMessages.INSTANCE.key(), new SFFCStringValidatorRegex(KeyValidator.KEY_REGEX, BaseMessages.INSTANCE.invalidKey()));
-      
-      form.endRow();
-      
-      form.setFieldWidth(1);
-
-      form.addField(String.class, FormatBasedDatasourceDefinitionDtoPA.INSTANCE.description(),
-            BaseMessages.INSTANCE.description(), new SFFCTextAreaImpl());
-
+   @Override
+   protected void configureSimpleFormCustomFields(SimpleForm form) {
       addSpecificFields(form);
-
       addConnector(form);
    }
 
-   private void addConnector(SimpleForm form) {
+   protected void addConnector(SimpleForm form) {
       final List<DatasourceConnectorConfiguratorHook> configs = hookHandler
             .getHookers(DatasourceConnectorConfiguratorHook.class);
 
@@ -128,8 +103,6 @@ public abstract class FormatBasedDatasourceForm extends SimpleFormView {
       });
    }
 
-   protected void addSpecificFields(SimpleForm form) {
-
-   }
+   abstract protected void addSpecificFields(SimpleForm form);
 
 }

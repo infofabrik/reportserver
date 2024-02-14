@@ -147,6 +147,8 @@ public class ReportSelectionTeamspaceRepositoryProvider implements ReportSelecti
             String title = item.getName();
             if (null != title && title.toLowerCase().contains(filter.toLowerCase()))
                return true;
+            if (Long.toString(item.getReport().getId()).contains(filter))
+               return true;
 
             return false;
          }

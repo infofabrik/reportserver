@@ -19,12 +19,11 @@ import net.datenwerke.rs.base.service.parameterreplacements.provider.ReportForJu
 import net.datenwerke.rs.base.service.parameterreplacements.provider.ReportJobForJuel;
 import net.datenwerke.rs.base.service.parameterreplacements.provider.UserForJuel;
 import net.datenwerke.rs.base.service.parameterreplacements.provider.UserListForJuelPrinter;
-import net.datenwerke.rs.core.service.mail.MailModule;
 import net.datenwerke.rs.core.service.mail.MailService;
 import net.datenwerke.rs.core.service.mail.SimpleMail;
-import net.datenwerke.rs.core.service.mail.annotations.MailModuleProperties;
 import net.datenwerke.rs.core.service.reportmanager.ReportExecutorService;
 import net.datenwerke.rs.core.service.reportmanager.exceptions.ReportExecutorException;
+import net.datenwerke.rs.emaildatasink.service.emaildatasink.definitions.EmailDatasink;
 import net.datenwerke.rs.scheduler.service.scheduler.annotations.SchedulerModuleProperties;
 import net.datenwerke.rs.scheduler.service.scheduler.jobs.report.ReportExecuteJob;
 import net.datenwerke.rs.utils.juel.SimpleJuel;
@@ -45,17 +44,18 @@ public class SchedulerMailHelper {
 
    private ReportExecutorService reportExecutorService;
    private Provider<Configuration> config;
-   private Provider<Configuration> mailConfig;
 
    @Inject
-   public SchedulerMailHelper(MailService mailService, Provider<SimpleJuel> simpleJuelProvider,
-         ReportExecutorService reportExecutorService, @SchedulerModuleProperties Provider<Configuration> config,
-         @MailModuleProperties Provider<Configuration> mailConfig) {
+   public SchedulerMailHelper(
+         MailService mailService, 
+         Provider<SimpleJuel> simpleJuelProvider,
+         ReportExecutorService reportExecutorService, 
+         @SchedulerModuleProperties Provider<Configuration> config
+         ) {
       this.mailService = mailService;
       this.simpleJuelProvider = simpleJuelProvider;
       this.reportExecutorService = reportExecutorService;
       this.config = config;
-      this.mailConfig = mailConfig;
    }
 
    public SimpleMail prepareSimpleMail(ReportExecuteJob job) {
@@ -84,9 +84,10 @@ public class SchedulerMailHelper {
       User sender = job.getExecutor();
       String mailFrom = ((User) sender).getEmail();
 
-      if (null == mailFrom || "".equals(mailFrom)) {
-         mailFrom = mailConfig.get().getString(MailModule.PROPERTY_MAIL_SENDER, null);
-      }
+      EmailDatasink defaultEmailDatasink = mailService.loadDefaultEmailDatasink();
+      
+      if (null == mailFrom || "".equals(mailFrom)) 
+         mailFrom = defaultEmailDatasink.getSender();
 
       if (null == mailFrom || "".equals(mailFrom)) {
          IllegalArgumentException ex = new IllegalArgumentException(

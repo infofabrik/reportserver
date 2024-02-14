@@ -1,29 +1,22 @@
 package net.datenwerke.rs.core.client.reportmanager.ui.forms;
 
+import com.google.inject.Inject;
 import com.google.inject.Provider;
-import com.sencha.gxt.core.client.util.Margins;
-import com.sencha.gxt.widget.core.client.container.BoxLayoutContainer.BoxLayoutData;
 import com.sencha.gxt.widget.core.client.container.Container;
-import com.sencha.gxt.widget.core.client.container.HBoxLayoutContainer;
-import com.sencha.gxt.widget.core.client.container.HBoxLayoutContainer.HBoxLayoutAlign;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
-import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer.VerticalLayoutData;
-import com.sencha.gxt.widget.core.client.form.FieldLabel;
 import com.sencha.gxt.widget.core.client.form.FormPanel;
 import com.sencha.gxt.widget.core.client.form.TextArea;
 import com.sencha.gxt.widget.core.client.form.TextField;
 
 import net.datenwerke.gf.client.managerhelper.mainpanel.FormView;
+import net.datenwerke.gf.client.managerhelper.mainpanel.FormViewUtil;
 import net.datenwerke.gf.client.treedb.UITree;
-import net.datenwerke.gf.client.validator.KeyValidator;
 import net.datenwerke.gxtdto.client.forms.binding.FormBinding;
-import net.datenwerke.gxtdto.client.locale.BaseMessages;
 import net.datenwerke.rs.core.client.datasourcemanager.DatasourceUIService;
 import net.datenwerke.rs.core.client.datasourcemanager.dto.DatasourceContainerProviderDto;
 import net.datenwerke.rs.core.client.datasourcemanager.helper.forms.DatasourceSelectionField;
 import net.datenwerke.rs.core.client.datasourcemanager.provider.annotations.DatasourceTreeBasic;
 import net.datenwerke.rs.core.client.reportmanager.dto.reports.pa.ReportDtoPA;
-import net.datenwerke.rs.core.client.reportmanager.locale.ReportmanagerMessages;
 import net.datenwerke.treedb.client.treedb.dto.AbstractNodeDto;
 
 public abstract class AbstractReportForm extends FormView {
@@ -37,6 +30,9 @@ public abstract class AbstractReportForm extends FormView {
    protected DatasourceSelectionField datasourceFieldCreator;
 
    private final Provider<UITree> datasourceTreeProvider;
+   
+   @Inject
+   private FormViewUtil helper;
 
    public AbstractReportForm(DatasourceUIService datasourceService,
          @DatasourceTreeBasic Provider<UITree> datasourceTreeProvider) {
@@ -50,32 +46,12 @@ public abstract class AbstractReportForm extends FormView {
    protected void initializeForm(FormPanel form, VerticalLayoutContainer fieldWrapper) {
       form.setLabelWidth(120);
 
-      HBoxLayoutContainer firstRow = new HBoxLayoutContainer();
-      firstRow.setHBoxLayoutAlign(HBoxLayoutAlign.STRETCHMAX);
-      fieldWrapper.add(firstRow, new VerticalLayoutData(1, -1));
+      nameField = helper.createNameField();
+      keyField = helper.createKeyField();
+      descriptionField = helper.createDescriptionField();
 
-      /* name */
-      nameField = new TextField();
-      nameField.setWidth(-1);
-      BoxLayoutData nameData = new BoxLayoutData(new Margins(0, 5, 0, 0));
-      nameData.setFlex(2);
-      nameData.setMinSize(54);
-      firstRow.add(new FieldLabel(nameField, BaseMessages.INSTANCE.name()), nameData);
-
-      /* key */
-      keyField = new TextField();
-      keyField.setWidth(-1);
-      keyField.addValidator(new KeyValidator(BaseMessages.INSTANCE.invalidKey()));
-      BoxLayoutData keyData = new BoxLayoutData(new Margins(0, 0, 0, 5));
-      keyData.setFlex(1);
-      keyData.setMinSize(54);
-      firstRow.add(new FieldLabel(keyField, ReportmanagerMessages.INSTANCE.key()), keyData);
-
-      /* description */
-      descriptionField = new TextArea();
-      descriptionField.setWidth(-1);
-      fieldWrapper.add(new FieldLabel(descriptionField, BaseMessages.INSTANCE.propertyDescription()),
-            new VerticalLayoutData(1, 150));
+      helper.addNameAndKey(fieldWrapper, nameField, keyField);
+      helper.addDescription(fieldWrapper, descriptionField);
 
       /* datasource */
       addDatasourceField(fieldWrapper, isDisplayOptionalAdditionalConfigFieldsForDatasource());

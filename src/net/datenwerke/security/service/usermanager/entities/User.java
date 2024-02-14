@@ -106,7 +106,11 @@ public class User extends AbstractUserManagerNode {
    private String email;
 
    @ExposeToClient
-   @Column(length = 128)
+   @Column(
+         length = 128, 
+         unique = true, 
+         nullable = false
+         )
    @Field
    private String username;
 

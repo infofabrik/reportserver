@@ -11,6 +11,9 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
+import javax.mail.MessagingException;
+import javax.mail.internet.InternetAddress;
+
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.assistedinject.Assisted;
@@ -56,6 +59,7 @@ public class MailBuilder {
    private final String subject;
    private final String body;
    private final List<User> recipients;
+   private final InternetAddress from;
 
    private final Provider<MailService> mailServiceProvider;
    private final Provider<TempFileService> tempFileServiceProvider;
@@ -72,7 +76,7 @@ public class MailBuilder {
    @Inject
    public MailBuilder(Provider<MailService> mailServiceProvider, Provider<TempFileService> tempFileServiceProvider,
          Provider<ZipUtilsService> zipServiceProvider, Provider<MimeUtils> mimeUtilsProvider,
-         @Assisted("subject") String subject, @Assisted("body") String body, @Assisted List<User> recipients) {
+         @Assisted("subject") String subject, @Assisted("body") String body, @Assisted List<User> recipients, @Assisted InternetAddress from) {
       this.mailServiceProvider = mailServiceProvider;
       this.tempFileServiceProvider = tempFileServiceProvider;
       this.zipServiceProvider = zipServiceProvider;
@@ -81,6 +85,7 @@ public class MailBuilder {
       this.subject = subject;
       this.body = body;
       this.recipients = recipients;
+      this.from = from;
    }
 
    /**
@@ -152,8 +157,9 @@ public class MailBuilder {
     * 
     * @return the constructed email.
     * @throws IOException if an I/O error occurs
+    * @throws MessagingException if sender can not be set
     */
-   public SimpleMail build() throws IOException {
+   public SimpleMail build() throws IOException, MessagingException {
       if (recipients.isEmpty())
          throw new IllegalArgumentException("Recipient list is empty");
 
@@ -178,34 +184,38 @@ public class MailBuilder {
       return mailTemplate;
    }
 
-   private SimpleMail buildMailWithoutAttachments() throws IOException {
+   private SimpleMail buildMailWithoutAttachments() throws IOException, MessagingException {
 
       SimpleMail mail = null;
 
       if (template) {
          MailTemplate mailTemplate = createMailTemplate();
          mail = mailServiceProvider.get().newTemplateMail(emailDatasink, mailTemplate);
+         mail.setFrom(from, true);
       } else {
          mail = mailServiceProvider.get().newSimpleMail(emailDatasink);
          mail.setSubject(subject);
          mail.setText(body);
+         mail.setFrom(from, true);
       }
 
       configureRecipients(mail);
       return mail;
    }
 
-   private SimpleMail buildMailWithAttachments() throws IOException {
+   private SimpleMail buildMailWithAttachments() throws IOException, MessagingException {
       SimpleMail mail = null;
 
       if (template) {
          MailTemplate mailTemplate = createMailTemplate();
          mail = mailServiceProvider.get().newTemplateMail(emailDatasink, mailTemplate,
                attachments.orElseThrow(IllegalStateException::new).toArray(new SimpleAttachment[] {}));
+         mail.setFrom(from, true);
       } else {
          mail = mailServiceProvider.get().newSimpleMail(emailDatasink);
          mail.setSubject(subject);
          mail.setContent(body, attachments.orElseThrow(IllegalStateException::new).toArray(new SimpleAttachment[] {}));
+         mail.setFrom(from, true);
       }
 
       configureRecipients(mail);
@@ -213,7 +223,7 @@ public class MailBuilder {
       return mail;
    }
 
-   private SimpleMail buildMailWithZippedAttachments() throws IOException {
+   private SimpleMail buildMailWithZippedAttachments() throws IOException, MessagingException {
       final Path tmpFile = tempFileServiceProvider.get().createTempFile();
 
       try (final OutputStream out = Files.newOutputStream(tmpFile)) {
@@ -227,10 +237,12 @@ public class MailBuilder {
          if (template) {
             MailTemplate mailTemplate = createMailTemplate();
             mail = mailServiceProvider.get().newTemplateMail(emailDatasink, mailTemplate, attachment);
+            mail.setFrom(from, true);
          } else {
             mail = mailServiceProvider.get().newSimpleMail(emailDatasink);
             mail.setSubject(subject);
             mail.setContent(body, attachment);
+            mail.setFrom(from, true);
          }
 
          configureRecipients(mail);

@@ -41,7 +41,7 @@ public class DropboxModule extends AbstractModule {
    @DefaultDropboxDatasink
    public Optional<DropboxDatasink> provideDefaultDatasink(DatasinkTreeService datasinkService) {
       return datasinkService.getDefaultDatasink(DropboxDatasink.class, PROPERTY_DEFAULT_DROPBOX_DATASINK_ID,
-            PROPERTY_DEFAULT_DROPBOX_DATASINK_NAME, PROPERTY_DEFAULT_DROPBOX_DATASINK_KEY);
+            PROPERTY_DEFAULT_DROPBOX_DATASINK_NAME, PROPERTY_DEFAULT_DROPBOX_DATASINK_KEY, PROPERTY_DROPBOX_DISABLED);
    }
 
 }

@@ -14,12 +14,13 @@ import com.google.inject.Provider;
 import net.datenwerke.dtoservices.dtogenerator.annotations.AdditionalField;
 import net.datenwerke.dtoservices.dtogenerator.annotations.ExposeToClient;
 import net.datenwerke.dtoservices.dtogenerator.annotations.GenerateDto;
+import net.datenwerke.eximport.ex.annotations.ExportableField;
 import net.datenwerke.gf.base.service.annotations.Indexed;
-import net.datenwerke.gxtdto.client.dtomanager.DtoView;
 import net.datenwerke.rs.core.service.datasourcemanager.entities.DatasourceDefinition;
 import net.datenwerke.rs.core.service.datasourcemanager.entities.DatasourceDefinitionConfig;
 import net.datenwerke.rs.saiku.service.datasource.dtogen.MondrianDatasource2DtoPostProcessor;
 import net.datenwerke.rs.saiku.service.locale.SaikuMessages;
+import net.datenwerke.rs.utils.entitymerge.service.annotations.EntityMergeField;
 import net.datenwerke.rs.utils.instancedescription.annotations.InstanceDescription;
 import net.datenwerke.security.service.crypto.pbe.PbeService;
 import net.datenwerke.security.service.crypto.pbe.encrypt.EncryptionService;
@@ -39,23 +40,29 @@ public class MondrianDatasource extends DatasourceDefinition {
    protected static Provider<PbeService> pbeServiceProvider;
 
    @ExposeToClient
+   @EntityMergeField
    private String url = "jdbc:mondrian:Jdbc=jdbc:mysql://localhost/foodmart";
 
    @ExposeToClient
+   @EntityMergeField
    private String username;
 
    @ExposeToClient(exposeValueToClient = false, mergeDtoValueBack = true)
+   @EntityMergeField
+   @ExportableField(exportField = false)
    private String password;
 
    @ExposeToClient(disableHtmlEncode = true)
    @Lob
    @Type(type = "net.datenwerke.rs.utils.hibernate.RsClobType")
+   @EntityMergeField
    private String properties = "type=OLAP\n" + "name=\n" + "driver=mondrian.olap4j.MondrianOlap4jDriver\n"
          + "jdbcDrivers=com.mysql.jdbc.Driver";
 
    @ExposeToClient(allowArbitraryLobSize = true, disableHtmlEncode = true)
    @Lob
    @Type(type = "net.datenwerke.rs.utils.hibernate.RsClobType")
+   @EntityMergeField
    private String mondrianSchema;
 
    @Override

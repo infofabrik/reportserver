@@ -9,12 +9,12 @@ import com.sencha.gxt.widget.core.client.menu.SeparatorMenuItem;
 
 import net.datenwerke.gf.client.managerhelper.hooks.TreeConfiguratorHook;
 import net.datenwerke.gf.client.managerhelper.tree.ManagerHelperTree;
+import net.datenwerke.gf.client.treedb.UITree;
 import net.datenwerke.gf.client.treedb.helper.menu.DeleteMenuItem;
 import net.datenwerke.gf.client.treedb.helper.menu.DuplicateMenuItem;
 import net.datenwerke.gf.client.treedb.helper.menu.InfoMenuItem;
 import net.datenwerke.gf.client.treedb.helper.menu.InsertMenuItem;
 import net.datenwerke.gf.client.treedb.helper.menu.ReloadMenuItem;
-import net.datenwerke.gf.client.treedb.helper.menu.TerminalMenuItem;
 import net.datenwerke.gf.client.treedb.helper.menu.TreeDBUIMenuProvider;
 import net.datenwerke.gf.client.treedb.icon.IconMapping;
 import net.datenwerke.gf.client.treedb.icon.TreeDBUIIconProvider;
@@ -27,8 +27,12 @@ import net.datenwerke.rs.core.client.datasourcemanager.dto.DatasourceFolderDto;
 import net.datenwerke.rs.core.client.datasourcemanager.hooks.DatasourceDefinitionConfigProviderHook;
 import net.datenwerke.rs.core.client.datasourcemanager.locale.DatasourcesMessages;
 import net.datenwerke.rs.terminal.client.terminal.TerminalUIService;
+import net.datenwerke.rs.terminal.client.terminal.helper.menu.TerminalMenuItem;
 import net.datenwerke.rs.terminal.client.terminal.security.TerminalGenericTargetIdentifier;
 import net.datenwerke.rs.theme.client.icon.BaseIcon;
+import net.datenwerke.rs.transport.client.transport.TransportDao;
+import net.datenwerke.rs.transport.client.transport.provider.annotations.TransportTreeBasic;
+import net.datenwerke.rs.transport.client.transport.ui.AddToTransportMenuItem;
 import net.datenwerke.security.client.security.SecurityUIService;
 import net.datenwerke.security.client.security.dto.ExecuteDto;
 import net.datenwerke.treedb.client.treedb.dto.AbstractNodeDto;
@@ -39,13 +43,17 @@ public class DatasourceManagerTreeConfigurationHooker implements TreeConfigurato
    private final DatasourceTreeManagerDao treeHandler;
    private final Provider<TerminalUIService> terminalUIServiceProvider;
    private final Provider<SecurityUIService> securityServiceProvider;
+   private final Provider<UITree> transportTreeProvider;
+   private final TransportDao transportDao;
 
    @Inject
    public DatasourceManagerTreeConfigurationHooker(
          HookHandlerService hookHandler,
          DatasourceTreeManagerDao treeHandler, 
          Provider<TerminalUIService> terminalUIServiceProvider,
-         Provider<SecurityUIService> securityServiceProvider
+         Provider<SecurityUIService> securityServiceProvider,
+         @TransportTreeBasic Provider<UITree> transportTreeProvider,
+         TransportDao transportDao
          ) {
 
       /* store objects */
@@ -53,6 +61,8 @@ public class DatasourceManagerTreeConfigurationHooker implements TreeConfigurato
       this.treeHandler = treeHandler;
       this.terminalUIServiceProvider = terminalUIServiceProvider;
       this.securityServiceProvider = securityServiceProvider;
+      this.transportTreeProvider = transportTreeProvider;
+      this.transportDao = transportDao;
    }
 
    @Override
@@ -74,6 +84,7 @@ public class DatasourceManagerTreeConfigurationHooker implements TreeConfigurato
       MenuItem insertItem = generateInsertMenu();
       folderMenu.add(insertItem);
       folderMenu.add(new DeleteMenuItem(treeHandler));
+      folderMenu.add(new AddToTransportMenuItem(transportTreeProvider.get(), transportDao));
       if (securityServiceProvider.get().hasRight(TerminalGenericTargetIdentifier.class, ExecuteDto.class))
          folderMenu.add(new TerminalMenuItem(terminalUIServiceProvider));
       folderMenu.add(new SeparatorMenuItem());
@@ -89,6 +100,7 @@ public class DatasourceManagerTreeConfigurationHooker implements TreeConfigurato
          dsMenu.add(insertItem);
          dsMenu.add(new DuplicateMenuItem(treeHandler));
          dsMenu.add(new DeleteMenuItem(treeHandler));
+         dsMenu.add(new AddToTransportMenuItem(transportTreeProvider.get(), transportDao));
          if (securityServiceProvider.get().hasRight(TerminalGenericTargetIdentifier.class, ExecuteDto.class))
             dsMenu.add(new TerminalMenuItem(terminalUIServiceProvider));
          dsMenu.add(new SeparatorMenuItem());

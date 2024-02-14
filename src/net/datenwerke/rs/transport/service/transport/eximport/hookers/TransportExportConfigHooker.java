@@ -5,7 +5,10 @@ import javax.inject.Inject;
 import net.datenwerke.eximport.ex.ExportConfig;
 import net.datenwerke.rs.base.ext.service.ExportOptions;
 import net.datenwerke.rs.base.ext.service.hooks.ExportConfigHook;
+import net.datenwerke.rs.transport.service.transport.TransportService;
 import net.datenwerke.rs.transport.service.transport.entities.AbstractTransportManagerNode;
+import net.datenwerke.rs.transport.service.transport.entities.Transport;
+import net.datenwerke.rs.transport.service.transport.entities.TransportFolder;
 import net.datenwerke.rs.transport.service.transport.eximport.TransportManagerExporter;
 import net.datenwerke.treedb.ext.service.eximport.helper.TreeNodeExportHelperService;
 import net.datenwerke.treedb.service.treedb.AbstractNode;
@@ -26,7 +29,10 @@ public class TransportExportConfigHooker implements ExportConfigHook {
       if (!(node instanceof AbstractTransportManagerNode))
          throw new IllegalArgumentException("node not an AbstractTransportManagerNode");
       
-      return exportHelper.createExportConfig(node, true, TransportManagerExporter.EXPORTER_NAME, false);
+      return exportHelper.createExportConfig(node, true, TransportManagerExporter.EXPORTER_NAME, false,
+            options.flatten(),
+            n -> n instanceof TransportFolder || (n instanceof Transport) && ((Transport) n).isClosed()
+                  && ((Transport) n).getStatus().equals(TransportService.Status.CLOSED.name()));
    }
 
    @Override
