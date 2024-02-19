@@ -42,7 +42,7 @@ public class HttpDatasinkManagerImportConfigurationHooker extends
          TreeImportConfigDto<AbstractDatasinkManagerNodeDto> treeConfig) {
       DatasinkManagerImportConfigDto rmConfig = (DatasinkManagerImportConfigDto) treeConfig;
 
-      if (rmConfig.isRemoveKey())
+      if (rmConfig.isGenerateRandomKey())
          ((ImportItemWithKeyConfig) realConfigNode).setCleanKeys(true);
    }
 

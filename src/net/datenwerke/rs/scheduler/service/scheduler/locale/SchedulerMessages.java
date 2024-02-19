@@ -57,4 +57,8 @@ public interface SchedulerMessages extends Messages {
 
    String inactiveScriptJobs();
 
+   String serverRestarted();
+
+   String missedFireTime();
+
 }

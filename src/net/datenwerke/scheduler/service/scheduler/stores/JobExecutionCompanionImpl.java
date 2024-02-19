@@ -5,6 +5,7 @@ import java.util.Date;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 
+import net.datenwerke.rs.scheduler.service.scheduler.locale.SchedulerMessages;
 import net.datenwerke.scheduler.service.scheduler.entities.AbstractAction;
 import net.datenwerke.scheduler.service.scheduler.entities.AbstractJob;
 import net.datenwerke.scheduler.service.scheduler.entities.JobExecutionStatus;
@@ -62,13 +63,13 @@ public class JobExecutionCompanionImpl implements JobExecutionCompanion {
          if (Outcome.EXECUTING.equals(logEntry.getOutcome())) {
             JobEntry jobEntry = initJobEntry(logEntry);
             jobEntry.setOutcome(Outcome.FAILURE);
-            jobEntry.setErrorDescription("Server restarted while job was still running");
+            jobEntry.setErrorDescription(SchedulerMessages.INSTANCE.serverRestarted());
             job.adjustJobEntryForFailure(jobEntry);
 
             logEntry.setJobEntry(jobEntry);
             logEntry.setOutcome(Outcome.FAILURE);
             logEntry.setEnd(new Date());
-            logEntry.setBadErrorDescription("Server restarted while job was still running");
+            logEntry.setBadErrorDescription(SchedulerMessages.INSTANCE.serverRestarted());
          }
       }
 

@@ -5,6 +5,7 @@ import com.google.inject.Provider;
 
 import net.datenwerke.gf.client.treedb.UITree;
 import net.datenwerke.gf.client.treedb.simpleform.SFFCGenericTreeNode;
+import net.datenwerke.gxtdto.client.locale.BaseMessages;
 import net.datenwerke.rs.base.ext.client.datasourcemanager.eximport.im.dto.DatasourceManagerImportConfigDto;
 import net.datenwerke.rs.core.client.datasourcemanager.dto.DatasourceContainerDto;
 import net.datenwerke.rs.core.client.datasourcemanager.dto.DatasourceFolderDto;
@@ -21,7 +22,7 @@ public class DatasourceImporterMainPropertiesPanel
 
    protected String parentKey;
    protected String defaultDatasource;
-   private String removeKeyFieldsKey;
+   private String createRandomKeyFieldKey;
 
    @Inject
    public DatasourceImporterMainPropertiesPanel(@DatasourceTreeFolders Provider<UITree> treeProvider) {
@@ -44,8 +45,8 @@ public class DatasourceImporterMainPropertiesPanel
       if (null != dsContainer)
          config.setDefaultDatasource(dsContainer.getDatasource());
       
-      boolean removeKeys = (Boolean) form.getValue(removeKeyFieldsKey);
-      config.setRemoveKey(removeKeys);
+      boolean createRandomKey = (Boolean) form.getValue(createRandomKeyFieldKey);
+      config.setGenerateRandomKey(createRandomKey);
    }
 
    @Override
@@ -70,7 +71,7 @@ public class DatasourceImporterMainPropertiesPanel
             new SFFCDatasourceSuppressConfig() {
             });
       
-      removeKeyFieldsKey = form.addField(Boolean.class, DatasourcesMessages.INSTANCE.importRemoveKeyFieldLabel());
+      createRandomKeyFieldKey = form.addField(Boolean.class, BaseMessages.INSTANCE.createRandomKey());
    }
 
    @Override

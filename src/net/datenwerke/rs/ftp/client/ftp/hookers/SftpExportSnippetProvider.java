@@ -21,6 +21,7 @@ import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCBoole
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCDatasinkDao;
 import net.datenwerke.gxtdto.client.locale.BaseMessages;
 import net.datenwerke.rs.core.client.datasinkmanager.DatasinkTreeManagerDao;
+import net.datenwerke.rs.core.client.datasinkmanager.DatasinkUIModule;
 import net.datenwerke.rs.core.client.datasinkmanager.HasDefaultDatasink;
 import net.datenwerke.rs.core.client.datasinkmanager.helper.forms.DatasinkSelectionField;
 import net.datenwerke.rs.core.client.reportexecutor.ui.ReportViewConfiguration;
@@ -164,7 +165,7 @@ public class SftpExportSnippetProvider implements ScheduleExportSnippetProviderH
       final SingleTreeSelectionField sftpField = extractSingleTreeSelectionField(form.getField(sftpKey));
 
       if (null != definition) {
-         form.setValue(nameKey, "${now} - " + definition.getTitle());
+         form.setValue(nameKey, DatasinkUIModule.DEFAULT_FILE_NAME);
          ScheduleAsSftpFileInformation info = definition.getAdditionalInfo(ScheduleAsSftpFileInformation.class);
          if (null != info) {
             form.setValue(isExportAsSftpKey, true);
@@ -201,11 +202,7 @@ public class SftpExportSnippetProvider implements ScheduleExportSnippetProviderH
       if (!(page instanceof JobMetadataConfigurationForm))
          return;
 
-      JobMetadataConfigurationForm metadataForm = (JobMetadataConfigurationForm) page;
-
-      String jobTitle = metadataForm.getTitleValue();
-
-      form.setValue(nameKey, "${now} - " + jobTitle);
+      form.setValue(nameKey, DatasinkUIModule.DEFAULT_FILE_NAME);
       if (null != definition) {
          ScheduleAsSftpFileInformation info = definition.getAdditionalInfo(ScheduleAsSftpFileInformation.class);
          if (null != info)

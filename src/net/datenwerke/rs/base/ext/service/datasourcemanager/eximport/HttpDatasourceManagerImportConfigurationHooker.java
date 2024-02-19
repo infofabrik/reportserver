@@ -85,7 +85,7 @@ public class HttpDatasourceManagerImportConfigurationHooker extends
          TreeImportConfigDto<AbstractDatasourceManagerNodeDto> treeConfig) {
       DatasourceManagerImportConfigDto rmConfig = (DatasourceManagerImportConfigDto) treeConfig;
 
-      if (rmConfig.isRemoveKey())
+      if (rmConfig.isGenerateRandomKey())
          ((ImportItemWithKeyConfig) realConfigNode).setCleanKeys(true);
    }
 

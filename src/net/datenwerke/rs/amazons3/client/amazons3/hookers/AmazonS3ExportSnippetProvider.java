@@ -26,6 +26,7 @@ import net.datenwerke.rs.amazons3.client.amazons3.dto.AmazonS3DatasinkDto;
 import net.datenwerke.rs.amazons3.client.amazons3.dto.ScheduleAsAmazonS3FileInformation;
 import net.datenwerke.rs.amazons3.client.amazons3.provider.annotations.DatasinkTreeAmazonS3;
 import net.datenwerke.rs.core.client.datasinkmanager.DatasinkTreeManagerDao;
+import net.datenwerke.rs.core.client.datasinkmanager.DatasinkUIModule;
 import net.datenwerke.rs.core.client.datasinkmanager.HasDefaultDatasink;
 import net.datenwerke.rs.core.client.datasinkmanager.helper.forms.DatasinkSelectionField;
 import net.datenwerke.rs.core.client.reportexecutor.ui.ReportViewConfiguration;
@@ -157,7 +158,7 @@ public class AmazonS3ExportSnippetProvider implements ScheduleExportSnippetProvi
       final SingleTreeSelectionField amazonS3Field = extractSingleTreeSelectionField(form.getField(amazonS3Key));
 
       if (null != definition) {
-         form.setValue(nameKey, "${now} - " + definition.getTitle());
+         form.setValue(nameKey, DatasinkUIModule.DEFAULT_FILE_NAME);
          ScheduleAsAmazonS3FileInformation info = definition.getAdditionalInfo(ScheduleAsAmazonS3FileInformation.class);
          if (null != info) {
             form.setValue(isExportAsFileKey, true);
@@ -195,10 +196,7 @@ public class AmazonS3ExportSnippetProvider implements ScheduleExportSnippetProvi
       if (!(page instanceof JobMetadataConfigurationForm))
          return;
 
-      JobMetadataConfigurationForm metadataForm = (JobMetadataConfigurationForm) page;
-
-      String jobTitle = metadataForm.getTitleValue();
-      form.setValue(nameKey, "${now} - " + jobTitle);
+      form.setValue(nameKey, DatasinkUIModule.DEFAULT_FILE_NAME);
       if (null != definition) {
          ScheduleAsAmazonS3FileInformation info = definition.getAdditionalInfo(ScheduleAsAmazonS3FileInformation.class);
          if (null != info)

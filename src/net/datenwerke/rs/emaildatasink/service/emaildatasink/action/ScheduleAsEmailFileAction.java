@@ -1,7 +1,5 @@
 package net.datenwerke.rs.emaildatasink.service.emaildatasink.action;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -16,7 +14,6 @@ import javax.persistence.Transient;
 import org.hibernate.annotations.Type;
 
 import com.google.inject.Inject;
-import com.google.inject.Provider;
 
 import net.datenwerke.rs.core.service.datasinkmanager.DatasinkService;
 import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
@@ -25,6 +22,7 @@ import net.datenwerke.rs.emaildatasink.service.emaildatasink.definitions.EmailDa
 import net.datenwerke.rs.scheduler.service.scheduler.jobs.report.ReportExecuteJob;
 import net.datenwerke.rs.utils.entitycloner.annotation.EnclosedEntity;
 import net.datenwerke.rs.utils.juel.SimpleJuel;
+import net.datenwerke.scheduler.service.scheduler.SchedulerHelperService;
 import net.datenwerke.scheduler.service.scheduler.entities.AbstractAction;
 import net.datenwerke.scheduler.service.scheduler.entities.AbstractJob;
 import net.datenwerke.scheduler.service.scheduler.exceptions.ActionExecutionException;
@@ -40,7 +38,7 @@ public class ScheduleAsEmailFileAction extends AbstractAction {
 
    @Transient
    @Inject
-   private Provider<SimpleJuel> simpleJuelProvider;
+   private SchedulerHelperService schedulerHelperService;
 
    @Transient
    @Inject
@@ -91,8 +89,7 @@ public class ScheduleAsEmailFileAction extends AbstractAction {
 
       report = rJob.getReport();
 
-      SimpleJuel juel = simpleJuelProvider.get();
-      juel.addReplacement("now", new SimpleDateFormat("yyyyMMddhhmm").format(Calendar.getInstance().getTime()));
+      SimpleJuel juel = schedulerHelperService.getConfiguredJuel(rJob);
       juel.addReplacement(PROPERTY_SUBJECT, getSubject());
       juel.addReplacement(PROPERTY_MESSAGE, getMessage());
 

@@ -44,7 +44,7 @@ public class LogSetupHelper {
          try {
             /* filename without version, refer to commend below. */
             cphelper.addUrl(cphelper.getClassloader(),
-                  LogSetupHelper.class.getResource("/resources/optlib/slf4j-jdk14.jar"));
+                  LogSetupHelper.class.getResource("/resources/optlib/slf4j-jdk14-2.0.12.jar"));
 
             LogManager lm = LogManager.getLogManager();
 
@@ -80,15 +80,10 @@ public class LogSetupHelper {
                   /* only use classloaders that have slf4j (devmode hack) */
                   classloader.loadClass(LoggerFactory.class.getCanonicalName());
 
-                  /*
-                   * we get null if the filename contains the version maybe because of multiple
-                   * dots e.g. logback-core-1.2.10.jar, so we remove the version number from
-                   * filename. The version can be found in the MANIFEST.MF file.
-                   */
-                  cphelper.addUrl(classloader, LogSetupHelper.class.getResource("/resources/optlib/jul-to-slf4j.jar"));
+                  cphelper.addUrl(classloader, LogSetupHelper.class.getResource("/resources/optlib/jul-to-slf4j-2.0.12.jar"));
                   cphelper.addUrl(classloader,
-                        LogSetupHelper.class.getResource("/resources/optlib/logback-classic.jar"));
-                  cphelper.addUrl(classloader, LogSetupHelper.class.getResource("/resources/optlib/logback-core.jar"));
+                        LogSetupHelper.class.getResource("/resources/optlib/logback-classic-1.3.14.jar"));
+                  cphelper.addUrl(classloader, LogSetupHelper.class.getResource("/resources/optlib/logback-core-1.3.14.jar"));
                } catch (Exception e) {
                }
 
@@ -128,8 +123,7 @@ public class LogSetupHelper {
          try {
             for (ClassLoader classloader : classloaders) {
                try {
-                  /* filename without version, refer to commend above. */
-                  cphelper.addUrl(classloader, LogSetupHelper.class.getResource("/resources/optlib/jul-to-slf4j.jar"));
+                  cphelper.addUrl(classloader, LogSetupHelper.class.getResource("/resources/optlib/jul-to-slf4j-2.0.12.jar"));
                } catch (Exception e) {
                }
             }

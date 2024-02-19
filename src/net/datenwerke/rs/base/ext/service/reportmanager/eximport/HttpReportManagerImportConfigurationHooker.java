@@ -49,7 +49,7 @@ public class HttpReportManagerImportConfigurationHooker
          TreeImportConfigDto<AbstractReportManagerNodeDto> treeConfig) {
       ReportManagerImportConfigDto rmConfig = (ReportManagerImportConfigDto) treeConfig;
 
-      if (rmConfig.isRemoveKey())
+      if (rmConfig.isGenerateRandomKey())
          ((ImportItemWithKeyConfig) realConfigNode).setCleanKeys(true);
 
       /* always ignore uuids */

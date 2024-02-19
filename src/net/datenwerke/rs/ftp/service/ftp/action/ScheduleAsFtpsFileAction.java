@@ -12,7 +12,6 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import com.google.inject.Inject;
-import com.google.inject.Provider;
 
 import net.datenwerke.rs.core.service.datasinkmanager.DatasinkService;
 import net.datenwerke.rs.core.service.datasinkmanager.configs.DatasinkFilenameFolderConfig;
@@ -21,6 +20,7 @@ import net.datenwerke.rs.ftp.service.ftp.definitions.FtpsDatasink;
 import net.datenwerke.rs.scheduler.service.scheduler.jobs.report.ReportExecuteJob;
 import net.datenwerke.rs.utils.entitycloner.annotation.EnclosedEntity;
 import net.datenwerke.rs.utils.juel.SimpleJuel;
+import net.datenwerke.scheduler.service.scheduler.SchedulerHelperService;
 import net.datenwerke.scheduler.service.scheduler.entities.AbstractAction;
 import net.datenwerke.scheduler.service.scheduler.entities.AbstractJob;
 import net.datenwerke.scheduler.service.scheduler.exceptions.ActionExecutionException;
@@ -32,7 +32,7 @@ public class ScheduleAsFtpsFileAction extends AbstractAction {
 
    @Transient
    @Inject
-   private Provider<SimpleJuel> simpleJuelProvider;
+   private SchedulerHelperService schedulerHelperService;
 
    @Transient
    @Inject
@@ -78,7 +78,7 @@ public class ScheduleAsFtpsFileAction extends AbstractAction {
 
       report = rJob.getReport();
 
-      SimpleJuel juel = simpleJuelProvider.get();
+      SimpleJuel juel = schedulerHelperService.getConfiguredJuel(rJob);
       juel.addReplacement("now", new SimpleDateFormat("yyyyMMddhhmm").format(Calendar.getInstance().getTime()));
       filename = null == name ? "" : juel.parse(name);
 

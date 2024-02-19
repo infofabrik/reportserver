@@ -21,6 +21,7 @@ import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCDatas
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCShowTwinButton;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.impl.SFFCTextAreaImpl;
 import net.datenwerke.gxtdto.client.locale.BaseMessages;
+import net.datenwerke.rs.core.client.datasinkmanager.DatasinkUIModule;
 import net.datenwerke.rs.core.client.datasinkmanager.HasDefaultDatasink;
 import net.datenwerke.rs.core.client.datasinkmanager.helper.forms.DatasinkSelectionField;
 import net.datenwerke.rs.core.client.reportexecutor.ui.ReportViewConfiguration;
@@ -168,7 +169,7 @@ public class EmailDatasinkExportSnippetProvider implements ScheduleExportSnippet
       final SingleTreeSelectionField emailField = extractSingleTreeSelectionField(form.getField(emailKey));
 
       if (null != definition) {
-         form.setValue(nameKey, "${now} - " + definition.getTitle());
+         form.setValue(nameKey, DatasinkUIModule.DEFAULT_FILE_NAME);
          ScheduleAsEmailDatasinkFileInformation info = definition
                .getAdditionalInfo(ScheduleAsEmailDatasinkFileInformation.class);
          if (null != info) {
@@ -188,11 +189,7 @@ public class EmailDatasinkExportSnippetProvider implements ScheduleExportSnippet
       if (!(page instanceof JobMetadataConfigurationForm))
          return;
 
-      JobMetadataConfigurationForm metadataForm = (JobMetadataConfigurationForm) page;
-
-      String jobTitle = metadataForm.getTitleValue();
-
-      form.setValue(nameKey, "${now} - " + jobTitle);
+      form.setValue(nameKey, DatasinkUIModule.DEFAULT_FILE_NAME);
       if (null != definition) {
          ScheduleAsEmailDatasinkFileInformation info = definition
                .getAdditionalInfo(ScheduleAsEmailDatasinkFileInformation.class);

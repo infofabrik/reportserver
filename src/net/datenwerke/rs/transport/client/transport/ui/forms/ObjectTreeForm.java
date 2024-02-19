@@ -13,7 +13,9 @@ import com.sencha.gxt.data.shared.TreeStore;
 import com.sencha.gxt.widget.core.client.Dialog.PredefinedButton;
 import com.sencha.gxt.widget.core.client.box.ConfirmMessageBox;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
+import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer.VerticalLayoutData;
 import com.sencha.gxt.widget.core.client.info.Info;
+import com.sencha.gxt.widget.core.client.toolbar.ToolBar;
 import com.sencha.gxt.widget.core.client.tree.Tree;
 import com.sencha.gxt.widget.core.client.tree.Tree.CheckCascade;
 import com.sencha.gxt.widget.core.client.tree.Tree.CheckState;
@@ -41,7 +43,10 @@ import net.datenwerke.treedb.ext.client.eximport.im.dto.ImportTreeModel;
 public class ObjectTreeForm extends SimpleFormView {
 
    @CssClassConstant
+   public static final String CSS_IMPORT_VIEW_NAV = "rs-import-view-nav";
    public static final String CSS_IMPORT_MAIN_TREE = "rs-transport-items-tree";
+   public static final String CSS_IMPORT_MAIN_TREE_BUTTON = "rs-transport-items-tree-button";
+   public static final String CSS_IMPORT_MAIN_TREE_PANEL = "rs-transport-items-tree-panel";
 
    private final TransportDao transportDao;
    private final HookHandlerService hookHandler;
@@ -80,7 +85,7 @@ public class ObjectTreeForm extends SimpleFormView {
    private void init(final List<ImportTreeModel> importTreeModelList) {
       importerNavPanel.unmask();
       importerMainPanel.unmask();
-      buttonMainPanel.unmask();
+      buttonMainPanel.unmask();      
       loadImporters(importTreeModelList);
 
       /* display modules in tree */
@@ -157,7 +162,26 @@ public class ObjectTreeForm extends SimpleFormView {
       importerNavPanel.add(objectTree);
       importerMainPanel.add(tree);
 
+      instatiateContainer();
       container.add(importerMainPanel);
+      
+      ToolBar toolbar = new ToolBar();
+      toolbar.setStyleName(CSS_IMPORT_MAIN_TREE_PANEL);
+      
+      /* expand all button */
+      DwTextButton expandAllButton = new DwTextButton(BaseIcon.EXPAND_ALL);
+      expandAllButton.setStyleName(CSS_IMPORT_MAIN_TREE_BUTTON);
+      expandAllButton.setToolTip(BaseMessages.INSTANCE.expandAll());
+      expandAllButton.addSelectHandler(event -> objectTree.expandAll());
+      toolbar.add(expandAllButton);
+
+      /* collapse all button */
+      DwTextButton collapseAllButton = new DwTextButton(BaseIcon.COLLAPSE_ALL);
+      collapseAllButton.setStyleName(CSS_IMPORT_MAIN_TREE_BUTTON);
+      collapseAllButton.setToolTip(BaseMessages.INSTANCE.collapseAll());
+      collapseAllButton.addSelectHandler(event -> objectTree.collapseAll());
+      toolbar.add(collapseAllButton);
+      container.add(toolbar, new VerticalLayoutData(1, -1));
       container.add(importerNavPanel);
       
       if (!((TransportDto) getSelectedNode()).isClosed()) {
@@ -238,25 +262,25 @@ public class ObjectTreeForm extends SimpleFormView {
 
    private void instatiateContainer() {
       container = new VerticalLayoutContainer();
-      container.addStyleName("rs-import-view-nav");
+      container.addStyleName(CSS_IMPORT_VIEW_NAV);
       container.setVisible(true);
    }
 
    private void instantiateImporterNavPanel() {
       importerNavPanel = DwContentPanel.newInlineInstance();
-      importerNavPanel.addClassName("rs-import-view-nav");
+      importerNavPanel.addClassName(CSS_IMPORT_VIEW_NAV);
       container.add(importerNavPanel);
    }
 
    private void instantiateImporterMainPanel() {
       importerMainPanel = DwContentPanel.newInlineInstance();
-      importerMainPanel.addClassName("rs-import-view-nav");
+      importerMainPanel.addClassName(CSS_IMPORT_VIEW_NAV);
       container.add(importerMainPanel);
    }
    
    private void instantiateButtonMainPanel() {
       buttonMainPanel = DwContentPanel.newInlineInstance();
-      buttonMainPanel.addClassName("rs-import-view-nav");
+      buttonMainPanel.addClassName(CSS_IMPORT_VIEW_NAV);
       container.add(buttonMainPanel);
    }
    

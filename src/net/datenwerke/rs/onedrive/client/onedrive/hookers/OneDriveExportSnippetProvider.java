@@ -21,6 +21,7 @@ import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCBoole
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCDatasinkDao;
 import net.datenwerke.gxtdto.client.locale.BaseMessages;
 import net.datenwerke.rs.core.client.datasinkmanager.DatasinkTreeManagerDao;
+import net.datenwerke.rs.core.client.datasinkmanager.DatasinkUIModule;
 import net.datenwerke.rs.core.client.datasinkmanager.HasDefaultDatasink;
 import net.datenwerke.rs.core.client.datasinkmanager.helper.forms.DatasinkSelectionField;
 import net.datenwerke.rs.core.client.reportexecutor.ui.ReportViewConfiguration;
@@ -156,7 +157,7 @@ public class OneDriveExportSnippetProvider implements ScheduleExportSnippetProvi
       final SingleTreeSelectionField oneDriveField = extractSingleTreeSelectionField(form.getField(oneDriveKey));
 
       if (null != definition) {
-         form.setValue(nameKey, "${now} - " + definition.getTitle());
+         form.setValue(nameKey, DatasinkUIModule.DEFAULT_FILE_NAME);
          ScheduleAsOneDriveFileInformation info = definition.getAdditionalInfo(ScheduleAsOneDriveFileInformation.class);
          if (null != info) {
             form.setValue(isExportAsFileKey, true);
@@ -194,10 +195,7 @@ public class OneDriveExportSnippetProvider implements ScheduleExportSnippetProvi
       if (!(page instanceof JobMetadataConfigurationForm))
          return;
 
-      JobMetadataConfigurationForm metadataForm = (JobMetadataConfigurationForm) page;
-
-      String jobTitle = metadataForm.getTitleValue();
-      form.setValue(nameKey, "${now} - " + jobTitle);
+      form.setValue(nameKey, DatasinkUIModule.DEFAULT_FILE_NAME);
       if (null != definition) {
          ScheduleAsOneDriveFileInformation info = definition.getAdditionalInfo(ScheduleAsOneDriveFileInformation.class);
          if (null != info)

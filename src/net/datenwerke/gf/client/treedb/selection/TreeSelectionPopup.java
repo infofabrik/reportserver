@@ -25,8 +25,6 @@ import com.sencha.gxt.widget.core.client.container.BorderLayoutContainer.BorderL
 import com.sencha.gxt.widget.core.client.container.NorthSouthContainer;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer.VerticalLayoutData;
-import com.sencha.gxt.widget.core.client.event.SelectEvent;
-import com.sencha.gxt.widget.core.client.event.SelectEvent.SelectHandler;
 import com.sencha.gxt.widget.core.client.grid.ColumnConfig;
 import com.sencha.gxt.widget.core.client.grid.ColumnModel;
 import com.sencha.gxt.widget.core.client.grid.Grid;
@@ -50,7 +48,6 @@ import net.datenwerke.gxtdto.client.forms.selection.SelectionMode;
 import net.datenwerke.gxtdto.client.locale.BaseMessages;
 import net.datenwerke.gxtdto.client.ui.helper.grid.DeletableRowsGrid;
 import net.datenwerke.gxtdto.client.utilityservices.toolbar.DwToolBar;
-import net.datenwerke.gxtdto.client.utilityservices.toolbar.ToolbarService;
 import net.datenwerke.gxtdto.client.utils.modelkeyprovider.DtoIdModelKeyProvider;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.theme.client.icon.BaseIcon;
@@ -61,9 +58,6 @@ import net.datenwerke.treedb.client.treedb.dto.AbstractNodeDto;
  *
  */
 public class TreeSelectionPopup extends DwWindow {
-
-   @Inject
-   private static ToolbarService toolbarService;
 
    @Inject
    private static HookHandlerService hookHandler;
@@ -102,23 +96,11 @@ public class TreeSelectionPopup extends DwWindow {
 
       /* create buttons */
       DwTextButton cnlButton = new DwTextButton(BaseMessages.INSTANCE.cancel());
-      cnlButton.addSelectHandler(new SelectHandler() {
-
-         @Override
-         public void onSelect(SelectEvent event) {
-            hide();
-         }
-      });
+      cnlButton.addSelectHandler(event -> hide());
       addButton(cnlButton);
 
       DwTextButton okButton = new DwTextButton(BaseMessages.INSTANCE.apply());
-      okButton.addSelectHandler(new SelectHandler() {
-
-         @Override
-         public void onSelect(SelectEvent event) {
-            onValueSelected();
-         }
-      });
+      okButton.addSelectHandler(event -> onValueSelected());
       addButton(okButton);
 
       /* create components */
@@ -184,26 +166,16 @@ public class TreeSelectionPopup extends DwWindow {
       nsContainer.setNorthWidget(toolbar);
 
       DwTextButton removeButton = new DwTextButton(BaseMessages.INSTANCE.remove(), BaseIcon.DELETE);
-      removeButton.addSelectHandler(new SelectHandler() {
-
-         @Override
-         public void onSelect(SelectEvent event) {
-            List<AbstractNodeDto> selectedItems = grid.getSelectionModel().getSelectedItems();
-            for (AbstractNodeDto node : selectedItems)
-               if (null != selectedItemsStore.findModel(node))
-                  selectedItemsStore.remove(node);
-         }
+      removeButton.addSelectHandler(event -> {
+         List<AbstractNodeDto> selectedItems = grid.getSelectionModel().getSelectedItems();
+         for (AbstractNodeDto node : selectedItems)
+            if (null != selectedItemsStore.findModel(node))
+               selectedItemsStore.remove(node);
       });
       toolbar.add(removeButton);
 
       DwTextButton removeAllButton = new DwTextButton(BaseMessages.INSTANCE.removeAll(), BaseIcon.DELETE);
-      removeAllButton.addSelectHandler(new SelectHandler() {
-
-         @Override
-         public void onSelect(SelectEvent event) {
-            selectedItemsStore.clear();
-         }
-      });
+      removeAllButton.addSelectHandler(event -> selectedItemsStore.clear());
       toolbar.add(removeAllButton);
 
       /* drop target */

@@ -31,6 +31,8 @@ public class DatasinkUIModule extends AbstractGinModule {
    public static final String DATASINK_COMPRESSED_KEY = "compressed_key";
 
    public static final String REPORT_FORMAT_KEY = "datasink_report_format_key";
+   
+   public static final String DEFAULT_FILE_NAME = "${report.getName()}-${now}";
 
    @Override
    protected void configure() {

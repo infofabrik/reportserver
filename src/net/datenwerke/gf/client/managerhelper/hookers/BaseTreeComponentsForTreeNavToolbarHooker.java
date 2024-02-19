@@ -1,7 +1,5 @@
 package net.datenwerke.gf.client.managerhelper.hookers;
 
-import com.sencha.gxt.widget.core.client.event.SelectEvent;
-import com.sencha.gxt.widget.core.client.event.SelectEvent.SelectHandler;
 import com.sencha.gxt.widget.core.client.toolbar.ToolBar;
 
 import net.datenwerke.gf.client.managerhelper.hooks.ManagerHelperTreeToolbarEnhancerHook;
@@ -26,34 +24,19 @@ public class BaseTreeComponentsForTreeNavToolbarHooker
       /* expand all button */
       DwTextButton expandAllButton = new DwTextButton(BaseIcon.EXPAND_ALL);
       expandAllButton.setToolTip(BaseMessages.INSTANCE.expandAll());
-      expandAllButton.addSelectHandler(new SelectHandler() {
-         @Override
-         public void onSelect(SelectEvent event) {
-            tree.expandAll();
-         }
-      });
+      expandAllButton.addSelectHandler(event -> tree.expandAll());
       toolbar.add(expandAllButton);
 
       /* collapse all button */
       DwTextButton collapseAllButton = new DwTextButton(BaseIcon.COLLAPSE_ALL);
       collapseAllButton.setToolTip(BaseMessages.INSTANCE.collapseAll());
-      collapseAllButton.addSelectHandler(new SelectHandler() {
-         @Override
-         public void onSelect(SelectEvent event) {
-            tree.collapseAll();
-         }
-      });
+      collapseAllButton.addSelectHandler(event -> tree.collapseAll());
       toolbar.add(collapseAllButton);
 
       /* reload button */
       DwTextButton reloadButton = new DwTextButton(BaseIcon.REFRESH);
       reloadButton.setToolTip(BaseMessages.INSTANCE.refresh());
-      reloadButton.addSelectHandler(new SelectHandler() {
-         @Override
-         public void onSelect(SelectEvent event) {
-            tree.reload();
-         }
-      });
+      reloadButton.addSelectHandler(event -> tree.reload());
       toolbar.add(reloadButton);
    }
 

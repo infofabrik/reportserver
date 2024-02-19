@@ -21,6 +21,7 @@ import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCBoole
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCDatasinkDao;
 import net.datenwerke.gxtdto.client.locale.BaseMessages;
 import net.datenwerke.rs.core.client.datasinkmanager.DatasinkTreeManagerDao;
+import net.datenwerke.rs.core.client.datasinkmanager.DatasinkUIModule;
 import net.datenwerke.rs.core.client.datasinkmanager.HasDefaultDatasink;
 import net.datenwerke.rs.core.client.datasinkmanager.helper.forms.DatasinkSelectionField;
 import net.datenwerke.rs.core.client.reportexecutor.ui.ReportViewConfiguration;
@@ -157,7 +158,7 @@ public class DropboxExportSnippetProvider implements ScheduleExportSnippetProvid
       final SingleTreeSelectionField dropboxField = extractSingleTreeSelectionField(form.getField(dropboxKey));
 
       if (null != definition) {
-         form.setValue(nameKey, "${now} - " + definition.getTitle());
+         form.setValue(nameKey, DatasinkUIModule.DEFAULT_FILE_NAME);
          ScheduleAsDropboxFileInformation info = definition.getAdditionalInfo(ScheduleAsDropboxFileInformation.class);
          if (null != info) {
             form.setValue(isExportAsFileKey, true);
@@ -195,10 +196,7 @@ public class DropboxExportSnippetProvider implements ScheduleExportSnippetProvid
       if (!(page instanceof JobMetadataConfigurationForm))
          return;
 
-      JobMetadataConfigurationForm metadataForm = (JobMetadataConfigurationForm) page;
-
-      String jobTitle = metadataForm.getTitleValue();
-      form.setValue(nameKey, "${now} - " + jobTitle);
+      form.setValue(nameKey, DatasinkUIModule.DEFAULT_FILE_NAME);
       if (null != definition) {
          ScheduleAsDropboxFileInformation info = definition.getAdditionalInfo(ScheduleAsDropboxFileInformation.class);
          if (null != info)

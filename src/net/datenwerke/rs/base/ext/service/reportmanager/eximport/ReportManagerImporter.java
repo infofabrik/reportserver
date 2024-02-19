@@ -13,6 +13,7 @@ import net.datenwerke.rs.core.service.parameters.entities.ParameterInstance;
 import net.datenwerke.rs.core.service.reportmanager.ReportService;
 import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
 import net.datenwerke.rs.core.service.reportmanager.interfaces.ReportVariant;
+import net.datenwerke.rs.keyutils.service.keyutils.KeyNameGeneratorService;
 import net.datenwerke.treedb.ext.service.eximport.TreeNodeImportItemConfig;
 import net.datenwerke.treedb.ext.service.eximport.TreeNodeImporter;
 import net.datenwerke.treedb.service.treedb.AbstractNode;
@@ -27,12 +28,15 @@ public class ReportManagerImporter extends TreeNodeImporter {
    public static final String IMPORTER_ID = "ReportManagerImporter";
 
    private final ReportService reportService;
+   
+   private final KeyNameGeneratorService keyNameGeneratorService;
 
    @Inject
-   public ReportManagerImporter(ReportService reportService) {
+   public ReportManagerImporter(ReportService reportService, KeyNameGeneratorService keyNameGeneratorService) {
 
       /* store objects */
       this.reportService = reportService;
+      this.keyNameGeneratorService = keyNameGeneratorService;
    }
 
    @Override
@@ -61,7 +65,7 @@ public class ReportManagerImporter extends TreeNodeImporter {
             Report reportByKey = reportService.getReportByKey(key);
             if (null != reportByKey) {
                if (itemConfig instanceof ImportItemWithKeyConfig && ((ImportItemWithKeyConfig) itemConfig).isCleanKeys())
-                  ((Report) node).setKey(null);
+                  ((Report) node).setKey(keyNameGeneratorService.generateDefaultKey());
                else
                   throw new IllegalStateException("A report with key '" + key + "' already exists");
             }

@@ -1,8 +1,5 @@
 package net.datenwerke.rs.scheduleasfile.service.scheduleasfile.action;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-
 import javax.persistence.Entity;
 import javax.persistence.EntityManager;
 import javax.persistence.Inheritance;
@@ -28,6 +25,7 @@ import net.datenwerke.rs.tsreportarea.service.tsreportarea.entities.AbstractTsDi
 import net.datenwerke.rs.tsreportarea.service.tsreportarea.entities.TsDiskFolder;
 import net.datenwerke.rs.tsreportarea.service.tsreportarea.entities.TsDiskRoot;
 import net.datenwerke.rs.utils.juel.SimpleJuel;
+import net.datenwerke.scheduler.service.scheduler.SchedulerHelperService;
 import net.datenwerke.scheduler.service.scheduler.entities.AbstractAction;
 import net.datenwerke.scheduler.service.scheduler.entities.AbstractJob;
 import net.datenwerke.scheduler.service.scheduler.exceptions.ActionExecutionException;
@@ -41,18 +39,23 @@ public class ScheduleAsFileAction extends AbstractAction {
    @Transient
    @Inject
    private HookHandlerService hookHandler;
+   
    @Transient
    @Inject
-   private Provider<SimpleJuel> simpleJuelProvider;
+   private SchedulerHelperService schedulerHelperService;
+   
    @Transient
    @Inject
    private TsDiskService tsDiskService;
+   
    @Transient
    @Inject
    private TeamSpaceService tsService;
+   
    @Transient
    @Inject
    private CompiledReportStoreService compiledReportService;
+   
    @Transient
    @Inject
    private Provider<EntityManager> entityManagerProvider;
@@ -89,8 +92,7 @@ public class ScheduleAsFileAction extends AbstractAction {
       reference.setOutputFormat(rJob.getOutputFormat());
       reference.setDescription(description);
 
-      SimpleJuel juel = simpleJuelProvider.get();
-      juel.addReplacement("now", new SimpleDateFormat("yyyyMMddhhmm").format(Calendar.getInstance().getTime()));
+      SimpleJuel juel = schedulerHelperService.getConfiguredJuel(rJob);
       String parsedName = null == name ? "" : juel.parse(name);
       reference.setName(parsedName);
 

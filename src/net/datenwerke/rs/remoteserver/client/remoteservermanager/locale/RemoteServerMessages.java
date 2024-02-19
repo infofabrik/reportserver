@@ -25,8 +25,6 @@ public interface RemoteServerMessages extends Messages {
    
    String newRemoteRsServer();
    
-   String importRemoveKeyFieldLabel();
-
    String testFailed();
 
    String success();

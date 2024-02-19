@@ -3,6 +3,7 @@ package net.datenwerke.rs.remoteserver.service.remoteservermanager.eximport;
 import com.google.inject.Inject;
 
 import net.datenwerke.eximport.im.ImportItemWithKeyConfig;
+import net.datenwerke.rs.keyutils.service.keyutils.KeyNameGeneratorService;
 import net.datenwerke.rs.remoteserver.service.remoteservermanager.RemoteServerTreeService;
 import net.datenwerke.rs.remoteserver.service.remoteservermanager.entities.RemoteServerDefinition;
 import net.datenwerke.treedb.ext.service.eximport.TreeNodeImportItemConfig;
@@ -15,12 +16,15 @@ public class RemoteServerManagerImporter extends TreeNodeImporter {
    public static final String IMPORTER_ID = "RemoteServerManagerImporter";
 
    private final RemoteServerTreeService remoteServerService;
+   
+   private final KeyNameGeneratorService keyNameGeneratorService;
 
    @Inject
-   public RemoteServerManagerImporter(RemoteServerTreeService remoteServerService) {
+   public RemoteServerManagerImporter(RemoteServerTreeService remoteServerService, KeyNameGeneratorService keyNameGeneratorService) {
 
       /* store objects */
       this.remoteServerService = remoteServerService;
+      this.keyNameGeneratorService = keyNameGeneratorService;
    }
 
    @Override
@@ -49,7 +53,7 @@ public class RemoteServerManagerImporter extends TreeNodeImporter {
             RemoteServerDefinition remoteServerByKey = remoteServerService.getRemoteServerByKey(key);
             if (null != remoteServerByKey) {
                if (itemConfig instanceof ImportItemWithKeyConfig && ((ImportItemWithKeyConfig) itemConfig).isCleanKeys())
-                  ((RemoteServerDefinition) node).setKey(null);
+                  ((RemoteServerDefinition) node).setKey(keyNameGeneratorService.generateDefaultKey());
                else
                   throw new IllegalStateException("A remote server with key '" + key + "' already exists");
             }
