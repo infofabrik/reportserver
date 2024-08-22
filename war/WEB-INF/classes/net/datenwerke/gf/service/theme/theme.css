@@ -394,6 +394,25 @@ div.rs-login-flag {
   background: none !important;
 }
 
+.rs-transport-items-tree-button > div > div {
+	border: none !important;
+    background-color: #EEEEEE !important;
+    color: #000000 !important;
+  	font-weight: normal !important;
+}
+
+.rs-transport-items-tree-button > div {
+	border: none !important;
+    background: #EEEEEE !important;
+}
+
+.rs-transport-items-tree-panel {
+	padding: 0px 0px 0px 10px;
+    background-color: #EEEEEE !important;
+    margin-bottom: -8px;
+}
+
+
 .rs-sf .rs-bbar .rs-btn > div,
 .rs-cp .rs-bbar .rs-btn > div {
   background: #FFFFFF /*col:bg.light*/ !important;
