@@ -45,7 +45,7 @@ public class FolderAndReportTreeProvider implements Provider<ManagerHelperTree> 
       List<Dto2PosoMapper> blFilters = new ArrayList<Dto2PosoMapper>();
       blFilters.add(new ReportVariantDto2PosoMap());
       EnhancedTreeStore store = treeDBUIService.getUITreeStore(AbstractReportManagerNodeDto.class, reportLoaderDao,
-            false, wlFilters, blFilters);
+            true, wlFilters, blFilters);
 
       /* build tree */
       final ManagerHelperTree tree = treeFactory.create(ReportManagerUIModule.class, store, reportLoaderDao,

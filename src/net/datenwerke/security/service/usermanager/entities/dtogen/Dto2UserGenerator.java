@@ -15,6 +15,7 @@ import net.datenwerke.dtoservices.dtogenerator.annotations.GeneratedType;
 import net.datenwerke.dtoservices.dtogenerator.dto2posogenerator.interfaces.Dto2PosoGenerator;
 import net.datenwerke.dtoservices.dtogenerator.dto2posogenerator.validator.DtoPropertyValidator;
 import net.datenwerke.gxtdto.client.servercommunication.exceptions.ExpectedException;
+import net.datenwerke.gxtdto.client.servercommunication.exceptions.ValidationFailedException;
 import net.datenwerke.gxtdto.server.dtomanager.DtoMainService;
 import net.datenwerke.gxtdto.server.dtomanager.DtoService;
 import net.datenwerke.rs.utils.entitycloner.annotation.TransientID;
@@ -215,7 +216,9 @@ public class Dto2UserGenerator implements Dto2PosoGenerator<UserDto,User> {
 		poso.setTitle(dto.getTitle() );
 
 		/*  set username */
-		poso.setUsername(dto.getUsername() );
+		if(validateUsernameProperty(dto, poso)){
+			poso.setUsername(dto.getUsername() );
+		}
 
 	}
 
@@ -349,7 +352,9 @@ public class Dto2UserGenerator implements Dto2PosoGenerator<UserDto,User> {
 
 		/*  set username */
 		if(dto.isUsernameModified()){
-			poso.setUsername(dto.getUsername() );
+			if(validateUsernameProperty(dto, poso)){
+				poso.setUsername(dto.getUsername() );
+			}
 		}
 
 	}
@@ -431,7 +436,9 @@ public class Dto2UserGenerator implements Dto2PosoGenerator<UserDto,User> {
 		poso.setTitle(dto.getTitle() );
 
 		/*  set username */
-		poso.setUsername(dto.getUsername() );
+		if(validateUsernameProperty(dto, poso)){
+			poso.setUsername(dto.getUsername() );
+		}
 
 	}
 
@@ -532,7 +539,9 @@ public class Dto2UserGenerator implements Dto2PosoGenerator<UserDto,User> {
 
 		/*  set username */
 		if(dto.isUsernameModified()){
-			poso.setUsername(dto.getUsername() );
+			if(validateUsernameProperty(dto, poso)){
+				poso.setUsername(dto.getUsername() );
+			}
 		}
 
 	}
@@ -565,6 +574,24 @@ public class Dto2UserGenerator implements Dto2PosoGenerator<UserDto,User> {
 	public void postProcessInstantiate(User poso)  {
 	}
 
+
+	public boolean validateUsernameProperty(UserDto dto, User poso)  throws ExpectedException {
+		Object propertyValue = dto.getUsername();
+
+		/* allow null */
+		if(null == propertyValue)
+			return true;
+
+		/* make sure property is string */
+		if(! java.lang.String.class.isAssignableFrom(propertyValue.getClass()))
+			throw new ValidationFailedException("String validation failed for username", "expected a String");
+
+		if(! ((String)propertyValue).matches("^\\S+$"))
+			throw new ValidationFailedException("String validation failed for username", " Regex test failed.");
+
+		/* all went well */
+		return true;
+	}
 
 
 }

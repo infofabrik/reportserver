@@ -23,6 +23,7 @@ import net.datenwerke.rs.core.service.datasinkmanager.annotations.ReportServerDa
 import net.datenwerke.rs.core.service.datasinkmanager.entities.DatasinkDefinition;
 import net.datenwerke.rs.core.service.datasinkmanager.entities.DatasinkFolder;
 import net.datenwerke.rs.core.service.datasinkmanager.eventhandlers.HandleDatasinkForceRemoveEventHandler;
+import net.datenwerke.rs.core.service.datasinkmanager.genrights.DatasinkManagerAdminViewSecurityTarget;
 import net.datenwerke.rs.core.service.datasinkmanager.history.DatasinkManagerHistoryUrlBuilderHooker;
 import net.datenwerke.rs.core.service.datasinkmanager.hookers.DatasinkCategoryProviderHooker;
 import net.datenwerke.rs.core.service.datasinkmanager.hookers.UsageStatisticsDatasinkFoldersProviderHooker;
@@ -98,6 +99,8 @@ public class DatasinkStartup {
          /* secure datasink definition entities */
          installedDatasinkDefinitions.get()
             .forEach(securityServiceProvider.get()::registerSecurityTarget);
+         
+         securityServiceProvider.get().registerSecurityTarget(DatasinkManagerAdminViewSecurityTarget.class);
       });
       
       hookHandler.attachHooker(OpenTerminalHandlerHook.class, datasinkOpenTerminalHooker);

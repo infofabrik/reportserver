@@ -4,6 +4,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Optional;
 
 import javax.inject.Inject;
 import javax.inject.Provider;
@@ -13,6 +14,8 @@ import guru.nidi.graphviz.engine.Graphviz;
 import guru.nidi.graphviz.model.Graph;
 import guru.nidi.graphviz.parse.Parser;
 import net.datenwerke.rs.adminutils.service.systemconsole.generalinfo.GeneralInfoService;
+import net.datenwerke.rs.base.service.renderer.BinaryFormat;
+import net.datenwerke.rs.base.service.renderer.TextFormat;
 import net.datenwerke.rs.utils.file.RsFileUtils;
 
 public class DotServiceImpl implements DotService {
@@ -26,22 +29,6 @@ public class DotServiceImpl implements DotService {
       this.generalInfoServiceProvider = generalInfoServiceProvider;
    }
 
-   @Override
-   public ByteArrayOutputStream render(BinaryFormat format, String dot, int width) throws IOException {
-      renderPreconditions();
-      ByteArrayOutputStream os = new ByteArrayOutputStream();
-      Graph g = new Parser().read(dot).toImmutable();
-      Graphviz.fromGraph(g).width(width).render(convertFormat(format)).toOutputStream(os);
-      return os;
-   }
-
-   @Override
-   public String render(TextFormat format, String dot, int width) throws IOException {
-      renderPreconditions();
-      Graph g = new Parser().read(dot).toImmutable();
-      return Graphviz.fromGraph(g).width(width).render(convertFormat(format)).toString();
-   }
-   
    private Format convertFormat(BinaryFormat format) {
       switch (format) {
       case PNG:
@@ -82,6 +69,45 @@ public class DotServiceImpl implements DotService {
          throw new IllegalArgumentException("'" + userHome + "' is not readable!");
       if (! RsFileUtils.checkWritable(userHomePath))
          throw new IllegalArgumentException("'" + userHome + "' is not writable!");
+   }
+
+   @Override
+   public ByteArrayOutputStream render(BinaryFormat format, String dot, Optional<Integer> width,
+         Optional<Integer> height) throws IOException {
+      renderPreconditions();
+      ByteArrayOutputStream os = new ByteArrayOutputStream();
+      Graph g = new Parser().read(dot).toImmutable();
+      configureSize(g, width, height)
+         .render(convertFormat(format))
+         .toOutputStream(os);
+      return os;
+   }
+
+   @Override
+   public String render(TextFormat format, String dot, Optional<Integer> width,
+         Optional<Integer> height) throws IOException {
+      renderPreconditions();
+      Graph g = new Parser().read(dot).toImmutable();
+      return configureSize(g, width, height)
+         .render(convertFormat(format))
+         .toString();
+   }
+   
+   private Graphviz configureSize(Graph g, Optional<Integer> width,
+         Optional<Integer> height) {
+      if (width.isPresent() && height.isPresent()) {
+         return Graphviz.fromGraph(g)
+            .width(width.get())
+            .height(height.get());
+      } else if (width.isPresent()) {
+         return Graphviz.fromGraph(g)
+            .width(width.get());
+      } else if (height.isPresent()) {
+         return Graphviz.fromGraph(g)
+            .height(height.get());
+      } else {
+         return Graphviz.fromGraph(g);
+      }
    }
 
 }

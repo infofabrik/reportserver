@@ -1,8 +1,5 @@
 package net.datenwerke.rs.emaildatasink.service.emaildatasink.hooker;
 
-import java.io.ByteArrayOutputStream;
-import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,19 +10,17 @@ import javax.mail.MessagingException;
 
 import org.apache.commons.configuration2.Configuration;
 
-import net.datenwerke.gf.service.localization.RemoteMessageService;
-import net.datenwerke.rs.base.service.parameterreplacements.provider.ReportForJuel;
-import net.datenwerke.rs.base.service.parameterreplacements.provider.ReportJobForJuel;
-import net.datenwerke.rs.base.service.parameterreplacements.provider.UserForJuel;
-import net.datenwerke.rs.base.service.parameterreplacements.provider.UserListForJuelPrinter;
+import com.google.inject.Provider;
+
+import net.datenwerke.rs.core.service.datasinkmanager.DatasinkModule;
 import net.datenwerke.rs.core.service.mail.MailService;
 import net.datenwerke.rs.core.service.mail.MailTemplate;
 import net.datenwerke.rs.core.service.mail.SimpleMail;
 import net.datenwerke.rs.emaildatasink.service.emaildatasink.action.ScheduleAsEmailFileAction;
-import net.datenwerke.rs.scheduler.client.scheduler.locale.SchedulerMessages;
 import net.datenwerke.rs.scheduler.service.scheduler.annotations.SchedulerModuleProperties;
 import net.datenwerke.rs.scheduler.service.scheduler.jobs.report.ReportExecuteJob;
-import net.datenwerke.rs.utils.localization.LocalizationServiceImpl;
+import net.datenwerke.rs.utils.juel.SimpleJuel;
+import net.datenwerke.scheduler.service.scheduler.SchedulerHelperService;
 import net.datenwerke.scheduler.service.scheduler.entities.AbstractAction;
 import net.datenwerke.scheduler.service.scheduler.entities.AbstractJob;
 import net.datenwerke.scheduler.service.scheduler.entities.history.ExecutionLogEntry;
@@ -34,35 +29,33 @@ import net.datenwerke.security.service.usermanager.entities.User;
 
 public class ScheduleAsEmailDatasinkEmailNotificationHooker extends SchedulerExecutionHookAdapter {
 
-   private static final String PROPERTY_NAME = "name";
-   private static final String PROPERTY_REPORT = "report";
-   private static final String PROPERTY_JOB = "job";
-   private static final String PROPERTY_FILENAME = "filename";
-   private static final String PROPERTY_EXECUTOR = "executor";
-   private static final String PROPERTY_SCHEDULED_BY = "scheduledBy";
-   private static final String PROPERTY_OWNERS = "owners";
+   private static final Map<String, String> PROPERTIES = new HashMap<String, String>() {
+      private static final long serialVersionUID = -4530850796051224912L;
+      {
+         put(DatasinkModule.PROPERTY_SUBJECT, "scheduler.fileactionEmailDatasink.subject");
+         put(DatasinkModule.PROPERTY_TEXT, "scheduler.fileactionEmailDatasink.text");
+         put(DatasinkModule.PROPERTY_DISABLED, "scheduler.fileactionEmailDatasink[@disabled]");
+         put(DatasinkModule.PROPERTY_HTML, "scheduler.fileactionEmailDatasink[@html]");
+         put(DatasinkModule.PROPERTY_TRANSLATIONS_SUBJECT, "fileactionEmailDatasinkMsgSubject");
+         put(DatasinkModule.PROPERTY_TRANSLATIONS_TEXT, "fileactionEmailDatasinkMsgText");
+      }
+   };
+   
+   private final Configuration config;
+   private final MailService mailService;
 
-   public static final String PROPERTY_EXCEPTION = "exception";
-   public static final String PROPERTY_EXCEPTIONST = "trace";
-
-   public static final String PROPERTY_EMAIL_DATASINK_NOTIFICATION_SUBJECT_SUCCESS = "scheduler.fileactionEmailDatasink.subject";
-   public static final String PROPERTY_EMAIL_DATASINK_NOTIFICATION_TEXT_SUCCESS = "scheduler.fileactionEmailDatasink.text";
-
-   private static final String PROPERTY_EMAIL_DATASINK_NOTIFICATION_DISABLED = "scheduler.fileactionEmailDatasink[@disabled]";
-   private static final String PROPERTY_EMAIL_DATASINK_NOTIFICATION_HTML = "scheduler.fileactionEmailDatasink[@html]";
-
-   private Configuration config;
-   private MailService mailService;
-
-   private RemoteMessageService remoteMessageService;
+   private final Provider<SchedulerHelperService> schedulerHelperServiceProvider;
 
    @Inject
-   public ScheduleAsEmailDatasinkEmailNotificationHooker(@SchedulerModuleProperties Configuration config,
-         MailService mailService, RemoteMessageService remoteMessageService) {
+   public ScheduleAsEmailDatasinkEmailNotificationHooker(
+         @SchedulerModuleProperties Configuration config,
+         MailService mailService, 
+         Provider<SchedulerHelperService> schedulerHelperServiceProvider
+         ) {
 
       this.config = config;
       this.mailService = mailService;
-      this.remoteMessageService = remoteMessageService;
+      this.schedulerHelperServiceProvider = schedulerHelperServiceProvider;
    }
 
    @Override
@@ -86,54 +79,19 @@ public class ScheduleAsEmailDatasinkEmailNotificationHooker extends SchedulerExe
 
    private void sendmail(ScheduleAsEmailFileAction action, ReportExecuteJob job, Exception e)
          throws MessagingException {
-      if (config.getBoolean(PROPERTY_EMAIL_DATASINK_NOTIFICATION_DISABLED, false))
+      if (config.getBoolean(PROPERTIES.get(DatasinkModule.PROPERTY_DISABLED), false))
          return;
 
-      List<User> recipients = ((ReportExecuteJob) job).getRecipients();
+      List<User> recipients = job.getRecipients();
       if (null == recipients || recipients.isEmpty())
          return;
-
-      Map<String, Object> datamap = new HashMap<String, Object>();
-
-      datamap.put(PROPERTY_REPORT, new ReportForJuel(action.getReport()));
-      datamap.put(PROPERTY_JOB, new ReportJobForJuel(job));
-      UserForJuel executor = UserForJuel.createInstance(job.getExecutor());
-      datamap.put("user", executor);
-      datamap.put(PROPERTY_EXECUTOR, executor);
-      datamap.put(PROPERTY_SCHEDULED_BY, UserForJuel.createInstance(job.getScheduledBy()));
-
-      datamap.put(PROPERTY_OWNERS, UserListForJuelPrinter.createInstance(new ArrayList<>(job.getOwners()),
-            config.getBoolean(PROPERTY_EMAIL_DATASINK_NOTIFICATION_HTML, false)));
-
-      datamap.put(PROPERTY_NAME, action.getFilename());
-      datamap.put(PROPERTY_FILENAME, action.getFilename());
-      datamap.put("subject", action.getSubject());
-      datamap.put("message", action.getMessage());
-
-      if (null != e) {
-         datamap.put(PROPERTY_EXCEPTION, e);
-         ByteArrayOutputStream bos = new ByteArrayOutputStream();
-         PrintWriter pw = new PrintWriter(bos);
-         e.printStackTrace(pw);
-         pw.close();
-         datamap.put(PROPERTY_EXCEPTIONST, bos.toString());
-      }
-
-      String currentLanguage = LocalizationServiceImpl.getLocale().getLanguage();
-
-      HashMap<String, HashMap<String, String>> msgs = remoteMessageService.getMessages(currentLanguage);
-      datamap.put("msgs", msgs);
-
-      String subjectTemplate = config.getString(PROPERTY_EMAIL_DATASINK_NOTIFICATION_SUBJECT_SUCCESS,
-            msgs.get(SchedulerMessages.class.getCanonicalName()).get("fileactionEmailDatasinkMsgSubject"));
-      String messageTemplate = config.getString(PROPERTY_EMAIL_DATASINK_NOTIFICATION_TEXT_SUCCESS,
-            msgs.get(SchedulerMessages.class.getCanonicalName()).get("fileactionEmailDatasinkMsgText"));
-
-      MailTemplate mailTemplate = new MailTemplate();
-      mailTemplate.setHtml(config.getBoolean(PROPERTY_EMAIL_DATASINK_NOTIFICATION_HTML, false));
-      mailTemplate.setSubjectTemplate(subjectTemplate);
-      mailTemplate.setMessageTemplate(messageTemplate);
-      mailTemplate.setDataMap(datamap);
+      
+      SimpleJuel juel = schedulerHelperServiceProvider.get().getConfiguredJuel(job);
+      
+      MailTemplate mailTemplate = schedulerHelperServiceProvider.get().getMailTemplate(job, action, PROPERTIES, e);
+      
+      mailTemplate.getDataMap().put("subject", juel.parse(action.getSubject()));
+      mailTemplate.getDataMap().put("message", juel.parse(action.getMessage()));
 
       SimpleMail simpleMail = mailService.newTemplateMail(mailTemplate);
       simpleMail.setRecipients(javax.mail.Message.RecipientType.BCC,

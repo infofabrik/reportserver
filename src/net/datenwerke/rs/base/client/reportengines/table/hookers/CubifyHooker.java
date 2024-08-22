@@ -3,10 +3,6 @@ package net.datenwerke.rs.base.client.reportengines.table.hookers;
 import com.google.inject.Inject;
 import com.sencha.gxt.widget.core.client.Dialog.PredefinedButton;
 import com.sencha.gxt.widget.core.client.box.ConfirmMessageBox;
-import com.sencha.gxt.widget.core.client.event.DialogHideEvent;
-import com.sencha.gxt.widget.core.client.event.DialogHideEvent.DialogHideHandler;
-import com.sencha.gxt.widget.core.client.event.SelectEvent;
-import com.sencha.gxt.widget.core.client.event.SelectEvent.SelectHandler;
 import com.sencha.gxt.widget.core.client.toolbar.ToolBar;
 
 import net.datenwerke.gxtdto.client.baseex.widget.btn.DwTextButton;
@@ -48,23 +44,16 @@ public class CubifyHooker implements ReportExecutorViewToolbarHook {
             BaseIcon.CUBES);
       toolbar.add(cubifyBtn);
 
-      cubifyBtn.addSelectHandler(new SelectHandler() {
-
-         @Override
-         public void onSelect(SelectEvent event) {
-            ConfirmMessageBox cmb = new DwConfirmMessageBox(TableMessages.INSTANCE.cubifyLabel(),
-                  TableMessages.INSTANCE.cubifyExplanation());
-            cmb.addDialogHideHandler(new DialogHideHandler() {
-               @Override
-               public void onDialogHide(DialogHideEvent event) {
-                  if (event.getHideButton() == PredefinedButton.YES) {
-                     list.setCubeFlag(true);
-                     mainPanel.reload();
-                  }
-               }
-            });
-            cmb.show();
-         }
+      cubifyBtn.addSelectHandler(selectEvent -> {
+         ConfirmMessageBox cmb = new DwConfirmMessageBox(TableMessages.INSTANCE.cubifyLabel(),
+               TableMessages.INSTANCE.cubifyExplanation());
+         cmb.addDialogHideHandler(dialogHideEvent -> {
+            if (dialogHideEvent.getHideButton() == PredefinedButton.YES) {
+               list.setCubeFlag(true);
+               mainPanel.reload();
+            }
+         });
+         cmb.show();
       });
 
       return false;

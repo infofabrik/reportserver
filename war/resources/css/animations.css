@@ -1,0 +1,158 @@
+.nf-fa-lg {
+  font-size: 1.33333333em;
+  line-height: 0.75em;
+  vertical-align: -15%;
+}
+.nf-fa-2x {
+  font-size: 2em;
+}
+.nf-fa-3x {
+  font-size: 3em;
+}
+.nf-fa-4x {
+  font-size: 4em;
+}
+.nf-fa-5x {
+  font-size: 5em;
+}
+.nf-fa-fw {
+  width: 1.28571429em;
+  text-align: center;
+}
+.nf-fa-ul {
+  padding-left: 0;
+  margin-left: 2.14285714em;
+  list-style-type: none;
+}
+.nf-fa-ul > li {
+  position: relative;
+}
+.nf-fa-li {
+  position: absolute;
+  left: -2.14285714em;
+  width: 2.14285714em;
+  top: 0.14285714em;
+  text-align: center;
+}
+.nf-fa-li.nf-fa-lg {
+  left: -1.85714286em;
+}
+.nf-fa-border {
+  padding: .2em .25em .15em;
+  border: solid 0.08em #eeeeee;
+  border-radius: .1em;
+}
+.nf-fa-pull_left {
+  float: left;
+}
+.nf-fa-pull_right {
+  float: right;
+}
+.nf.nf-fa-pull_left {
+  margin-right: .3em;
+}
+.nf.nf-fa-pull_right {
+  margin-left: .3em;
+}
+/* Deprecated as of 4.4.0 */
+.pull-right {
+  float: right;
+}
+.pull-left {
+  float: left;
+}
+.nf.pull-left {
+  margin-right: .3em;
+}
+.nf.pull-right {
+  margin-left: .3em;
+}
+.nf-fa-spin {
+  -webkit-animation: nf-fa-spin 2s infinite linear;
+  animation: nf-fa-spin 2s infinite linear;
+}
+.nf-fa-pulse {
+  -webkit-animation: nf-fa-spin 1s infinite steps(8);
+  animation: nf-fa-spin 1s infinite steps(8);
+}
+@-webkit-keyframes nf-fa-spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(359deg);
+    transform: rotate(359deg);
+  }
+}
+@keyframes nf-fa-spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(359deg);
+    transform: rotate(359deg);
+  }
+}
+.nf-fa-rotate_90 {
+  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=1);
+  -webkit-transform: rotate(90deg);
+  -ms-transform: rotate(90deg);
+  transform: rotate(90deg);
+}
+.nf-fa-rotate_180 {
+  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=2);
+  -webkit-transform: rotate(180deg);
+  -ms-transform: rotate(180deg);
+  transform: rotate(180deg);
+}
+.nf-fa-rotate_270 {
+  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
+  -webkit-transform: rotate(270deg);
+  -ms-transform: rotate(270deg);
+  transform: rotate(270deg);
+}
+.nf-fa-flip_horizontal {
+  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=0, mirror=1);
+  -webkit-transform: scale(-1, 1);
+  -ms-transform: scale(-1, 1);
+  transform: scale(-1, 1);
+}
+.nf-fa-flip_vertical {
+  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=2, mirror=1);
+  -webkit-transform: scale(1, -1);
+  -ms-transform: scale(1, -1);
+  transform: scale(1, -1);
+}
+:root .nf-fa-rotate_90,
+:root .nf-fa-rotate_180,
+:root .nf-fa-rotate_270,
+:root .nf-fa-flip_horizontal,
+:root .nf-fa-flip_vertical {
+  filter: none;
+}
+.nf-fa-stack {
+  position: relative;
+  display: inline-block;
+  width: 2em;
+  height: 2em;
+  line-height: 2em;
+  vertical-align: middle;
+}
+.nf-fa-stack_1x,
+.nf-fa-stack_2x {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  text-align: center;
+}
+.nf-fa-stack_1x {
+  line-height: inherit;
+}
+.nf-fa-stack_2x {
+  font-size: 2em;
+}
+.nf-fa-inverse {
+  color: #ffffff;
+}

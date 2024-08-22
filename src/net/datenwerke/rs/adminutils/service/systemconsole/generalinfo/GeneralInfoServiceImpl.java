@@ -1,5 +1,6 @@
 package net.datenwerke.rs.adminutils.service.systemconsole.generalinfo;
 
+import static java.util.stream.Collectors.toList;
 import static net.datenwerke.rs.adminutils.client.systemconsole.generalinfo.Memory.FREE;
 import static net.datenwerke.rs.adminutils.client.systemconsole.generalinfo.Memory.FREE_FORMATTED;
 import static net.datenwerke.rs.adminutils.client.systemconsole.generalinfo.Memory.FREE_IN_MB;
@@ -15,12 +16,15 @@ import static net.datenwerke.rs.adminutils.client.systemconsole.generalinfo.Memo
 import static net.datenwerke.rs.utils.file.RsFileUtils.byteCountToDisplaySize;
 
 import java.awt.GraphicsEnvironment;
+import java.io.IOException;
 import java.lang.management.ManagementFactory;
 import java.lang.management.RuntimeMXBean;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.ZoneId;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -205,10 +209,20 @@ public class GeneralInfoServiceImpl implements GeneralInfoService {
          return "Not Configured";
       
       Path configDir = configDirService.getConfigDir().toPath();
-      if (appendFileCheck)
-         return RsFileUtils.appendFileCheck(configDir);
+      return printPath(configDir, appendFileCheck);
+   }
+   
+   @Override
+   public String getIOTmpDir(boolean appendFileCheck) {
+      String ioTmpDir = readSystemProperty("java.io.tmpdir");
+      if (null == ioTmpDir)
+         return "not set";
       
-      return configDir.toAbsolutePath().toString(); 
+      Path dir = Paths.get(ioTmpDir);
+      if (appendFileCheck)
+         return RsFileUtils.appendFileCheck(dir);
+      
+      return dir.toAbsolutePath().toString();
    }
    
    @Override
@@ -292,13 +306,13 @@ public class GeneralInfoServiceImpl implements GeneralInfoService {
    }
 
    @Override
-   public String getCatalinaHome() {
-      return readSystemProperty("catalina.home");
+   public String getCatalinaHome(boolean appendFileCheck) {
+      return printPath(readSystemProperty("catalina.home"), appendFileCheck);
    }
 
    @Override
-   public String getCatalinaBase() {
-      return readSystemProperty("catalina.base");
+   public String getCatalinaBase(boolean appendFileCheck) {
+      return printPath(readSystemProperty("catalina.base"), appendFileCheck);
    }
 
    @Override
@@ -317,8 +331,8 @@ public class GeneralInfoServiceImpl implements GeneralInfoService {
    }
 
    @Override
-   public String getJavaHome() {
-      return readSystemProperty("java.home");
+   public String getJavaHome(boolean appendFileCheck) {
+      return printPath(readSystemProperty("java.home"), appendFileCheck);
    }
 
    @Override
@@ -338,20 +352,27 @@ public class GeneralInfoServiceImpl implements GeneralInfoService {
    @Override
    public String getLogFilesDirectory(boolean appendFileCheck) {
       Path logDir = Paths.get(logFilesServiceProvider.get().getLogDirectory());
-      if (appendFileCheck)
-         return RsFileUtils.appendFileCheck(logDir);
+      return printPath(logDir, appendFileCheck);
+   }
+   
+   private String printPath(String path, boolean appendFileCheck) {
+      if (null == path)
+         return "not set";
       
-      return logDir.toAbsolutePath().toString(); 
+      Path p = Paths.get(path);
+      return printPath(p, appendFileCheck);
+   }
+   
+   private String printPath(Path path, boolean appendFileCheck) {
+      if (appendFileCheck)
+         return RsFileUtils.appendFileCheck(path);
+      
+      return path.toAbsolutePath().toString(); 
    }
    
    @Override
    public String getUserHome(boolean appendFileCheck) {
-      String userHome = readSystemProperty("user.home");
-      if (appendFileCheck) {
-         Path userHomeDir = Paths.get(userHome);
-         return RsFileUtils.appendFileCheck(userHomeDir);
-      }
-      return userHome;
+      return printPath(readSystemProperty("user.home"), appendFileCheck);
    }
 
    @Override
@@ -367,6 +388,44 @@ public class GeneralInfoServiceImpl implements GeneralInfoService {
    @Override
    public List<String> getAvailableFonts() {
       return Arrays.asList(GraphicsEnvironment.getLocalGraphicsEnvironment().getAvailableFontFamilyNames());
+   }
+
+   @Override
+   public List<String> getExternalJars() {
+      ConfigDirService configDirService = configDirServiceProvider.get();
+      if (!configDirService.isEnabled())
+         return Collections.singletonList("Not configured");
+      
+      Path configDir = configDirService.getConfigDir().toPath();
+      Path externalDir = configDir.resolve("lib");
+      try {
+         return listFiles(externalDir);
+      } catch (Exception e) {
+         return Collections.singletonList(ExceptionUtils.getRootCauseMessage(e));
+      }
+   }
+
+   @Override
+   public List<String> getInternalJars() {
+      Path internalDir = Paths.get(servletContextProvider.get().getRealPath("/WEB-INF/lib"));
+      try {
+         return listFiles(internalDir);
+      } catch (Exception e) {
+         return Collections.singletonList(ExceptionUtils.getRootCauseMessage(e));
+      }
+   }
+   
+   private List<String> listFiles(Path dir) throws IOException {
+      return Files.list(dir)
+      .map(p -> p.getFileName().toString())
+      .sorted()
+      .collect(toList());
+   }
+
+   @Override
+   public String getInstallationPath(boolean appendFileCheck) {
+      Path dir = Paths.get(servletContextProvider.get().getRealPath("/"));
+      return printPath(dir, appendFileCheck);
    }
 
 }

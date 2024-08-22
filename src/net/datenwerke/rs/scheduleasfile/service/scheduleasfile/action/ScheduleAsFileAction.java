@@ -1,14 +1,13 @@
 package net.datenwerke.rs.scheduleasfile.service.scheduleasfile.action;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-
 import javax.persistence.Entity;
 import javax.persistence.EntityManager;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+
+import org.hibernate.proxy.HibernateProxy;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
@@ -28,6 +27,7 @@ import net.datenwerke.rs.tsreportarea.service.tsreportarea.entities.AbstractTsDi
 import net.datenwerke.rs.tsreportarea.service.tsreportarea.entities.TsDiskFolder;
 import net.datenwerke.rs.tsreportarea.service.tsreportarea.entities.TsDiskRoot;
 import net.datenwerke.rs.utils.juel.SimpleJuel;
+import net.datenwerke.scheduler.service.scheduler.SchedulerHelperService;
 import net.datenwerke.scheduler.service.scheduler.entities.AbstractAction;
 import net.datenwerke.scheduler.service.scheduler.entities.AbstractJob;
 import net.datenwerke.scheduler.service.scheduler.exceptions.ActionExecutionException;
@@ -41,18 +41,23 @@ public class ScheduleAsFileAction extends AbstractAction {
    @Transient
    @Inject
    private HookHandlerService hookHandler;
+   
    @Transient
    @Inject
-   private Provider<SimpleJuel> simpleJuelProvider;
+   private SchedulerHelperService schedulerHelperService;
+   
    @Transient
    @Inject
    private TsDiskService tsDiskService;
+   
    @Transient
    @Inject
    private TeamSpaceService tsService;
+   
    @Transient
    @Inject
    private CompiledReportStoreService compiledReportService;
+   
    @Transient
    @Inject
    private Provider<EntityManager> entityManagerProvider;
@@ -89,15 +94,16 @@ public class ScheduleAsFileAction extends AbstractAction {
       reference.setOutputFormat(rJob.getOutputFormat());
       reference.setDescription(description);
 
-      SimpleJuel juel = simpleJuelProvider.get();
-      juel.addReplacement("now", new SimpleDateFormat("yyyyMMddhhmm").format(Calendar.getInstance().getTime()));
+      SimpleJuel juel = schedulerHelperService.getConfiguredJuel(rJob);
       String parsedName = null == name ? "" : juel.parse(name);
       reference.setName(parsedName);
 
       folder = tsDiskService.getNodeById(folderId);
       if (null == folder)
          throw new ActionExecutionException("could not load folder with id: " + folderId + ". Was it deleted?");
-
+      if (folder instanceof HibernateProxy)
+         folder = (AbstractTsDiskNode) ((HibernateProxy) folder).getHibernateLazyInitializer().getImplementation();
+      
 //			EntityManager em = entityManagerProvider.get();
 //			em.lock(folder, LockModeType.PESSIMISTIC_WRITE);	
       teamspace = tsDiskService.getTeamSpaceFor(folder);
@@ -109,8 +115,8 @@ public class ScheduleAsFileAction extends AbstractAction {
          throw new ViolatedSecurityException("user " + rJob.getExecutor().getId()
                + " has insufficient rights to writ to teamspace " + teamspace.getId());
 
-      if (null == folder || (!(folder instanceof TsDiskRoot) && !(folder instanceof TsDiskFolder)))
-         throw new ActionExecutionException("could not load folder with id: " + folderId);
+      if (!(folder instanceof TsDiskRoot) && !(folder instanceof TsDiskFolder))
+         throw new ActionExecutionException("Entity with id: " + folderId + " is not a TeamSpace folder. Type: " + folder.getClass());
 
       folder.addChild(reference);
 

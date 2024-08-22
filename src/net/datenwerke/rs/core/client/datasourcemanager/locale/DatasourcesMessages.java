@@ -78,7 +78,4 @@ public interface DatasourcesMessages extends Messages {
    String objectInfoFuncstionsSection();
    
    String objectInfoSupportsSection();
-   
-   String importRemoveKeyFieldLabel();
-
 }

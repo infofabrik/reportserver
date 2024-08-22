@@ -25,6 +25,7 @@ import net.datenwerke.rs.terminal.service.terminal.vfs.exceptions.VFSException;
 import net.datenwerke.rs.transport.service.transport.TransportService;
 import net.datenwerke.rs.transport.service.transport.entities.Transport;
 import net.datenwerke.rs.transport.service.transport.locale.TransportManagerMessages;
+import net.datenwerke.rs.utils.string.Emoji;
 import net.datenwerke.treedb.service.treedb.AbstractNode;
 
 public class TransportDescribeSubcommand implements TransportSubCommandHook {
@@ -69,25 +70,25 @@ public class TransportDescribeSubcommand implements TransportSubCommandHook {
    public CommandResult execute(CommandParser parser, TerminalSession session) throws TerminalException {
       List<String> arguments = parser.getNonOptionArguments();
       if (1 != arguments.size())
-         throw new IllegalArgumentException("Exactly one argument expected");
+         throw new IllegalArgumentException(Emoji.exceptionEmoji().getEmoji(" ") + "Exactly one argument expected");
       
       final VirtualFileSystemDeamon vfs = session.getFileSystem();
       
       try {
          Collection<VFSLocation> resolvedTarget = vfs.getLocation(arguments.get(0)).resolveWildcards(vfs);
          if (resolvedTarget.size()!=1)
-            throw new IllegalArgumentException("Exactly one transport expected.");
+            throw new IllegalArgumentException(Emoji.exceptionEmoji().getEmoji(" ") + "Exactly one transport expected.");
          VFSLocation target = resolvedTarget.iterator().next();
          
          AbstractNode<?> transportTarget = target.getFilesystemManager().getNodeByLocation(target);
          if (! (transportTarget instanceof Transport))
-            throw new IllegalArgumentException(
+            throw new IllegalArgumentException(Emoji.exceptionEmoji().getEmoji(" ") + 
                   "Target is not a transport or transport not found: '" + arguments.get(0) + "'");
          
          if (!target.exists())
-            throw new IllegalArgumentException("Transport does not exist: '" + arguments.get(0) + "'");
+            throw new IllegalArgumentException(Emoji.exceptionEmoji().getEmoji(" ") + "Transport does not exist: '" + arguments.get(0) + "'");
          if (target.isFolder())
-            throw new IllegalArgumentException("Target is a folder.");
+            throw new IllegalArgumentException(Emoji.exceptionEmoji().getEmoji(" ") + "Target is a folder.");
          
          Transport transport = (Transport) transportTarget;
          

@@ -3,6 +3,7 @@ package net.datenwerke.rs.fileserver.server.fileserver;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import javax.persistence.NoResultException;
 
@@ -241,19 +242,35 @@ public class FileServerRpcServiceImpl extends TreeDBManagerTreeHandler<AbstractF
    @Transactional(rollbackOn = { Exception.class })
    public AbstractNodeDto updateNode(@Named("node") AbstractNodeDto node, Dto state) throws ServerCallFailedException {
       /* check if there already is a file with the same key */
-      if (node instanceof FileServerFileDto) {
-         String key = ((FileServerFileDto) node).getKey();
-         if (null != key && !"".equals(key.trim())) {
-            try {
-               long id = fileService.getFileIdFromKey(((FileServerFileDto) node).getKey());
-               if (id != node.getId())
-                  throw new ExpectedException("There is already a file with the same key: " + id);
-               /*
-                * if the file id is the same as the id of the file to be changed do nothing
-                * because this is ok
-                */
-            } catch (NoResultException e) {
-               /* do nothing because this is good */
+      if (node instanceof FileServerFileDto || node instanceof FileServerFolderDto) {
+         if (node instanceof FileServerFileDto) {
+            FileServerFileDto file = (FileServerFileDto) node;
+            String key = file.getKey();
+            if (null != key && !"".equals(key.trim())) {
+               try {
+                  long id = fileService.getFileIdFromKey(key);
+                  if (id != node.getId())
+                     throw new ExpectedException("There is already a file with the same key: " + id);
+                  /*
+                   * if the file id is the same as the id of the file to be changed do nothing
+                   * because this is ok
+                   */
+               } catch (NoResultException e) {
+                  /* do nothing because this is good */
+               }
+            }
+         }
+         AbstractFileServerNode serverNode = (AbstractFileServerNode) dtoService.loadPoso(node);
+         String name = node instanceof FileServerFileDto ? ((FileServerFileDto) node).getName() : ((FileServerFolderDto) node).getName();
+         
+         if (name != null) {
+            Optional<AbstractFileServerNode> existingItem = serverNode.getParent().getChildren().stream()
+                  .filter(c -> c.getNodeName().contentEquals(name) && serverNode.isFolder() == c.isFolder()).findAny();
+            
+            if (existingItem.isPresent()) {
+               AbstractFileServerNode item = existingItem.get();
+               if (item.getId() != node.getId())
+                  throw new ExpectedException("There is already a " + (item.isFolder() ? "folder" : "file") + " with the same name: " + name);
             }
          }
       }
@@ -262,9 +279,34 @@ public class FileServerRpcServiceImpl extends TreeDBManagerTreeHandler<AbstractF
    
    @Override
    protected void doSetInitialProperties(AbstractFileServerNode inserted) {
-      if (inserted instanceof FileServerFile) {
-         ((FileServerFile)inserted).setKey(keyGeneratorService.generateDefaultKey(fileService));
+      if (inserted instanceof FileServerFile || inserted instanceof FileServerFolder) {
+         if (inserted instanceof FileServerFile) {
+            FileServerFile file = (FileServerFile) inserted;
+   
+            file.setKey(keyGeneratorService.generateDefaultKey(fileService));
+         }
+                  
+         AbstractFileServerNode parent = inserted.getParent();
+         
+         String fileName = inserted.getName() == null ? "unnamed" : inserted.getName();
+         
+         Optional<AbstractFileServerNode> existingItem = parent.getChildren().stream()
+               .filter(c -> c.getId() != null && c.getNodeName().contentEquals(fileName) && c.isFolder() == inserted.isFolder()).findAny();
+
+         int i = 1;
+         String name = fileName;
+         while (existingItem.isPresent()) {
+            boolean hasFileending = !inserted.isFolder() && fileName.lastIndexOf(".") != -1;
+            name = hasFileending
+                  ? fileName.substring(0, fileName.lastIndexOf(".")) 
+                        + "_" + (i++)
+                        + fileName.substring(fileName.lastIndexOf("."))
+                  : fileName + "_" + (i++);
+            final String newName = name;
+            existingItem = parent.getChildren().stream().filter(c -> c.getNodeName().contentEquals(newName) && c.isFolder() == inserted.isFolder()).findAny();
+         }
+         
+         inserted.setName(name);
       }
    }
-
 }

@@ -21,6 +21,7 @@ import com.google.inject.Provider;
 
 import net.datenwerke.gf.service.properties.PropertiesService;
 import net.datenwerke.rs.core.service.reportmanager.ReportService;
+import net.datenwerke.rs.enterprise.client.EnterpriseCheckUiModule;
 import net.datenwerke.rs.license.service.exceptions.LicenseValidationFailedException;
 import net.datenwerke.security.service.crypto.pbe.PbeService;
 import net.datenwerke.security.service.crypto.pbe.encrypt.EncryptionService;
@@ -37,8 +38,6 @@ public class LicenseServiceImpl implements LicenseService {
    protected static final String SERVER_ID_PASS = "PasswordToProtectTheServerId";
    protected static final String SALT = "i solemnly swear that i am up to no good";
 
-   public static final String COMMUNITY_LICENSE = "Community Edition";
-   public static final String ENTERPRISE_LICENSE = "Enterprise Edition";
    public static final String EVALUATION_LICENSE = " (Evaluation)";
 
    private final Logger logger = LoggerFactory.getLogger(getClass().getName());
@@ -131,12 +130,12 @@ public class LicenseServiceImpl implements LicenseService {
 
    @Override
    public String getLicenseType() {
-      return COMMUNITY_LICENSE;
+      return EnterpriseCheckUiModule.COMMUNITY_LICENSE;
    }
 
    @Override
    public boolean isCustomLicenseType() {
-      return !COMMUNITY_LICENSE.equals(getLicenseType());
+      return !EnterpriseCheckUiModule.COMMUNITY_LICENSE.equals(getLicenseType());
    }
 
    @Override

@@ -3,6 +3,7 @@ package net.datenwerke.rs.utils.simplequery.byatt;
 import java.lang.reflect.ParameterizedType;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.persistence.Entity;
 import javax.persistence.EntityManager;
@@ -22,6 +23,8 @@ import com.google.inject.Provider;
 import net.datenwerke.rs.utils.reflection.ReflectionService;
 import net.datenwerke.rs.utils.simplequery.SimpleQueryHelper;
 import net.datenwerke.rs.utils.simplequery.annotations.QueryByAttribute;
+import net.datenwerke.security.service.security.SecurityService;
+import net.datenwerke.security.service.security.rights.Right;
 
 /**
  * 
@@ -30,15 +33,17 @@ import net.datenwerke.rs.utils.simplequery.annotations.QueryByAttribute;
 public class QueryByAttProcessor {
 
    private final Provider<EntityManager> entityManagerProvider;
+   private final Provider<SecurityService> securityServiceProvider;
    private final ReflectionService reflectionService;
    private final SimpleQueryHelper queryHelper;
 
    @Inject
-   public QueryByAttProcessor(Provider<EntityManager> entityManagerProvider, ReflectionService reflectionService,
+   public QueryByAttProcessor(Provider<EntityManager> entityManagerProvider, Provider<SecurityService> securityServiceProvider, ReflectionService reflectionService,
          SimpleQueryHelper queryHelper) {
 
       /* store objects */
       this.entityManagerProvider = entityManagerProvider;
+      this.securityServiceProvider = securityServiceProvider;
       this.reflectionService = reflectionService;
       this.queryHelper = queryHelper;
    }
@@ -96,6 +101,15 @@ public class QueryByAttProcessor {
          Class<?> returnType = invocation.getMethod().getReturnType();
          if (reflectionService.isCollection(returnType)) {
             List result = q.getResultList();
+            
+            if (Right.class.isAssignableFrom(metadata.wherePermissions())) {
+               Class<? extends Right> permissionClass = (Class<? extends Right>) metadata.wherePermissions();
+               
+               result = (List) result.stream()
+                     .filter(object -> securityServiceProvider.get().checkRights(object, permissionClass))
+                     .collect(Collectors.toList());
+            }
+            
             if (reflectionService.isList(returnType))
                return result;
             Collection<?> resultCol = reflectionService.createCollection(returnType);
@@ -104,6 +118,14 @@ public class QueryByAttProcessor {
          }
 
          Object result = q.getSingleResult();
+
+         if (Right.class.isAssignableFrom(metadata.wherePermissions())) {
+            Class<? extends Right> permissionClass = (Class<? extends Right>) metadata.wherePermissions();
+            
+           if (!securityServiceProvider.get().checkRights(result, permissionClass))
+              throw new NoResultException("Missing permissions on Entity");
+         }
+         
          return result;
       } catch (NoResultException e) {
          if (metadata.throwNoResultException())

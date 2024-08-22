@@ -25,7 +25,8 @@ public class ReportServerInstallationModule extends AbstractReportServerModule {
          Provider<DemoDataInstallTask> demoDbInstallTask, 
          Provider<DemoContentInstallTask> demoContentInstallTask,
          Provider<InitConfigTask> initConfigTask, 
-         Provider<InstallMissingEntitiesTask> installMissingEntitiesTask
+         Provider<InstallMissingEntitiesTask> installMissingEntitiesTask,
+         Provider<EmailDatasinkMigrationTask> emailMigrationTask
          ) {
       List<DbInstallationTask> tasks = new ArrayList<>();
 
@@ -42,6 +43,7 @@ public class ReportServerInstallationModule extends AbstractReportServerModule {
 
       tasks.add(initConfigTask.get());
       tasks.add(installMissingEntitiesTask.get());
+      tasks.add(emailMigrationTask.get());
 
       return tasks;
    }

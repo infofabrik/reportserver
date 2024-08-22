@@ -11,12 +11,12 @@ import net.datenwerke.gf.client.managerhelper.tree.ManagerHelperTreeFactory;
 import net.datenwerke.gf.client.treedb.TreeDBUIService;
 import net.datenwerke.gf.client.treedb.stores.EnhancedTreeStore;
 import net.datenwerke.gxtdto.client.dtomanager.Dto2PosoMapper;
-import net.datenwerke.rs.printer.client.printer.dto.posomap.PrinterDatasinkDto2PosoMap;
 import net.datenwerke.rs.core.client.datasinkmanager.DatasinkTreeLoaderDao;
 import net.datenwerke.rs.core.client.datasinkmanager.DatasinkTreeManagerDao;
 import net.datenwerke.rs.core.client.datasinkmanager.DatasinkUIModule;
 import net.datenwerke.rs.core.client.datasinkmanager.dto.AbstractDatasinkManagerNodeDto;
 import net.datenwerke.rs.core.client.datasinkmanager.dto.posomap.DatasinkFolderDto2PosoMap;
+import net.datenwerke.rs.printer.client.printer.dto.posomap.PrinterDatasinkDto2PosoMap;
 
 public class PrinterTreeProvider implements Provider<ManagerHelperTree> {
 
@@ -41,7 +41,7 @@ public class PrinterTreeProvider implements Provider<ManagerHelperTree> {
       List<Dto2PosoMapper> filters = Arrays.asList(new DatasinkFolderDto2PosoMap(), new PrinterDatasinkDto2PosoMap());
 
       EnhancedTreeStore store = treeDBUIService.getUITreeStore(AbstractDatasinkManagerNodeDto.class, datasinkTreeLoader,
-            false, filters);
+            true, filters);
 
       /* build tree */
       final ManagerHelperTree tree = treeFactory.create(DatasinkUIModule.class, store, datasinkTreeLoader,

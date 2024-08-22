@@ -16,11 +16,14 @@ import net.datenwerke.gf.client.treedb.helper.menu.DeleteMenuItem;
 import net.datenwerke.gf.client.treedb.helper.menu.DuplicateMenuItem;
 import net.datenwerke.gf.client.treedb.helper.menu.InfoMenuItem;
 import net.datenwerke.gf.client.treedb.helper.menu.InsertMenuItem;
+import net.datenwerke.gf.client.treedb.helper.menu.MoveToFolderMenuItem;
 import net.datenwerke.gf.client.treedb.helper.menu.ReloadMenuItem;
+import net.datenwerke.gf.client.treedb.helper.menu.TerminalNewWindowMenuItem;
 import net.datenwerke.gf.client.treedb.helper.menu.TreeDBUIMenuProvider;
 import net.datenwerke.gf.client.treedb.icon.TreeDBUIIconProvider;
 import net.datenwerke.gxtdto.client.baseex.widget.menu.DwMenu;
 import net.datenwerke.gxtdto.client.baseex.widget.menu.DwMenuItem;
+import net.datenwerke.gxtdto.client.utilityservices.UtilsUIService;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.core.client.reportexporter.locale.ReportExporterMessages;
 import net.datenwerke.rs.fileserver.client.fileserver.FileServerTreeManagerDao;
@@ -29,10 +32,12 @@ import net.datenwerke.rs.fileserver.client.fileserver.dto.FileServerFileDto;
 import net.datenwerke.rs.fileserver.client.fileserver.dto.FileServerFolderDto;
 import net.datenwerke.rs.fileserver.client.fileserver.dto.decorator.FileServerFileDtoDec;
 import net.datenwerke.rs.fileserver.client.fileserver.locale.FileServerMessages;
+import net.datenwerke.rs.fileserver.client.fileserver.provider.annotations.FileServerTreeFolders;
 import net.datenwerke.rs.fileserver.client.fileserver.provider.helper.FileIconMapping;
 import net.datenwerke.rs.fileserver.client.fileserver.provider.helper.menu.DownloadMenuItem;
 import net.datenwerke.rs.fileserver.client.fileserver.provider.helper.menu.DownloadMenuItem.DownloadMenuUrlGenerator;
 import net.datenwerke.rs.fileserver.client.fileserver.provider.treehooks.FileExportExternalEntryProviderHook;
+import net.datenwerke.rs.terminal.client.terminal.TerminalDao;
 import net.datenwerke.rs.terminal.client.terminal.TerminalUIService;
 import net.datenwerke.rs.terminal.client.terminal.helper.menu.TerminalMenuItem;
 import net.datenwerke.rs.terminal.client.terminal.security.TerminalGenericTargetIdentifier;
@@ -52,6 +57,9 @@ public class FileServerManagerTreeConfigurationHooker implements TreeConfigurato
    private final Provider<SecurityUIService> securityServiceProvider;
    private final Provider<UITree> transportTreeProvider;
    private final TransportDao transportDao;
+   private final Provider<UITree> fileServerManagerTreeProvider;
+   private final Provider<UtilsUIService> utilsUIServiceProvider;
+   private final TerminalDao terminalDao;
 
    class DownloadHelper implements DownloadMenuUrlGenerator {
 
@@ -74,7 +82,10 @@ public class FileServerManagerTreeConfigurationHooker implements TreeConfigurato
          Provider<TerminalUIService> terminalUIServiceProvider,
          Provider<SecurityUIService> securityServiceProvider,
          @TransportTreeBasic Provider<UITree> transportTreeProvider,
-         TransportDao transportDao
+         TransportDao transportDao,
+         @FileServerTreeFolders Provider<UITree> fileServerManagerTreeProvider,
+         Provider<UtilsUIService> utilsUIServiceProvider, 
+         TerminalDao terminalDao
          ) {
 
       /* store objects */
@@ -84,6 +95,9 @@ public class FileServerManagerTreeConfigurationHooker implements TreeConfigurato
       this.securityServiceProvider = securityServiceProvider;
       this.transportTreeProvider = transportTreeProvider;
       this.transportDao = transportDao;
+      this.fileServerManagerTreeProvider = fileServerManagerTreeProvider;
+      this.utilsUIServiceProvider = utilsUIServiceProvider;
+      this.terminalDao = terminalDao;
    }
 
    @Override
@@ -104,8 +118,10 @@ public class FileServerManagerTreeConfigurationHooker implements TreeConfigurato
       folderMenu.add(insertItem);
       folderMenu.add(new DeleteMenuItem(treeHandler));
       folderMenu.add(new AddToTransportMenuItem(transportTreeProvider.get(), transportDao));
-      if (securityServiceProvider.get().hasRight(TerminalGenericTargetIdentifier.class, ExecuteDto.class))
+      if (securityServiceProvider.get().hasRight(TerminalGenericTargetIdentifier.class, ExecuteDto.class)) {
          folderMenu.add(new TerminalMenuItem(terminalUIServiceProvider));
+         folderMenu.add(new TerminalNewWindowMenuItem(utilsUIServiceProvider, terminalDao));         
+      }
       folderMenu.add(new SeparatorMenuItem());
       folderMenu.add(new ReloadMenuItem());
       folderMenu.add(new SeparatorMenuItem());
@@ -120,10 +136,13 @@ public class FileServerManagerTreeConfigurationHooker implements TreeConfigurato
       insertItem.disable();
       fileMenu.add(insertItem);
       fileMenu.add(new DuplicateMenuItem(treeHandler));
+      fileMenu.add(new MoveToFolderMenuItem(treeHandler, fileServerManagerTreeProvider));
       fileMenu.add(new DeleteMenuItem(treeHandler));
       fileMenu.add(new AddToTransportMenuItem(transportTreeProvider.get(), transportDao));
-      if (securityServiceProvider.get().hasRight(TerminalGenericTargetIdentifier.class, ExecuteDto.class))
+      if (securityServiceProvider.get().hasRight(TerminalGenericTargetIdentifier.class, ExecuteDto.class)) {
          fileMenu.add(new TerminalMenuItem(terminalUIServiceProvider));
+         fileMenu.add(new TerminalNewWindowMenuItem(utilsUIServiceProvider, terminalDao));         
+      }
       fileMenu.add(new SeparatorMenuItem());
       fileMenu.add(new InfoMenuItem());
       fileMenu.add(new DownloadMenuItem(new DownloadHelper()));

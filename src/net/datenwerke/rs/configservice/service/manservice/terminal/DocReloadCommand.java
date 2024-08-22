@@ -11,6 +11,7 @@ import net.datenwerke.rs.terminal.service.terminal.helpmessenger.annotations.Cli
 import net.datenwerke.rs.terminal.service.terminal.obj.CommandResult;
 import net.datenwerke.rs.terminal.service.terminal.objresolver.exceptions.ObjectResolverException;
 import net.datenwerke.rs.utils.man.ManPageService;
+import net.datenwerke.rs.utils.string.Emoji;
 
 public class DocReloadCommand implements DocSubCommandHook {
 
@@ -38,7 +39,7 @@ public class DocReloadCommand implements DocSubCommandHook {
    public CommandResult execute(CommandParser parser, TerminalSession session) throws ObjectResolverException {
       manPageService.clearCache();
 
-      return new CommandResult(ConfigMessages.INSTANCE.configReloaded());
+      return new CommandResult(Emoji.BEER_MUG.getEmoji(" ") + ConfigMessages.INSTANCE.configReloaded());
    }
 
    @Override

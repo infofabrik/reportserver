@@ -5,7 +5,7 @@ import com.google.inject.Singleton;
 import com.google.inject.name.Named;
 import com.google.inject.persist.Transactional;
 
-import net.datenwerke.gxtdto.client.servercommunication.exceptions.ExpectedException;
+import net.datenwerke.gxtdto.client.servercommunication.exceptions.ServerCallFailedException;
 import net.datenwerke.rs.passwordpolicy.client.activateuser.rpc.ActivateUserRpcService;
 import net.datenwerke.rs.passwordpolicy.service.activateuser.ActivateUserService;
 import net.datenwerke.security.client.usermanager.dto.UserDto;
@@ -43,9 +43,13 @@ public class ActivateUserRpcServiceImpl extends SecuredRemoteServiceServlet impl
    @Transactional(rollbackOn = { Exception.class })
    @SecurityChecked(argumentVerification = {
          @ArgumentVerification(name = "user", isDto = true, verify = @RightsVerification(rights = Write.class)) })
-   public void activateAccount(@Named("user") UserDto user, boolean force) throws ExpectedException {
-      User u = (User) userManagerService.getNodeById(user.getId());
-      activateUserService.activateAccount(u, force);
+   public void activateAccount(@Named("user") UserDto user, boolean force) throws ServerCallFailedException {
+      try {
+         User u = (User) userManagerService.getNodeById(user.getId());
+         activateUserService.activateAccount(u, force);
+      } catch (Exception e) {
+         throw new ServerCallFailedException(e);
+      }
    }
 
 }

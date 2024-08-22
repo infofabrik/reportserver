@@ -6,6 +6,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+
 import net.datenwerke.rs.utils.simplequery.PredicateType;
 
 @Documented
@@ -15,7 +16,7 @@ public @interface QueryByAttribute {
 
    Class<?> from() default Void.class;
 
-   String where();
+   String where() default "";
 
    PredicateType type() default PredicateType.EQUAL;
 
@@ -28,6 +29,8 @@ public @interface QueryByAttribute {
    int limit() default -1;
 
    int offset() default -1;
+   
+   Class<?> wherePermissions() default Void.class;
 
    boolean throwNoResultException() default false;
 }

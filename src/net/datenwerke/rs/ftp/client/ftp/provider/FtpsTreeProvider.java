@@ -41,7 +41,7 @@ public class FtpsTreeProvider implements Provider<ManagerHelperTree> {
       List<Dto2PosoMapper> filters = Arrays.asList(new DatasinkFolderDto2PosoMap(), new FtpsDatasinkDto2PosoMap());
 
       EnhancedTreeStore store = treeDBUIService.getUITreeStore(AbstractDatasinkManagerNodeDto.class, datasinkTreeLoader,
-            false, filters);
+            true, filters);
 
       /* build tree */
       final ManagerHelperTree tree = treeFactory.create(DatasinkUIModule.class, store, datasinkTreeLoader,

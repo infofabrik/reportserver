@@ -6,8 +6,11 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import javax.persistence.NoResultException;
+
 import com.google.inject.Inject;
 
+import net.datenwerke.rs.core.service.datasourcemanager.DatasourceService;
 import net.datenwerke.rs.keyutils.service.keyutils.KeyMatchService;
 import net.datenwerke.rs.transport.service.transport.PreconditionResult;
 import net.datenwerke.rs.transport.service.transport.TransportService;
@@ -18,16 +21,19 @@ import net.datenwerke.rs.transport.service.transport.hooks.ApplyPreconditionHook
 public class TransportMappingsPreconditionHooker implements ApplyPreconditionHook {
 
    private final PreconditionHelper preconditionHelper;
+   private final DatasourceService datasourceService;
    private final TransportService transportService;
    private final KeyMatchService keyMatchService;
    
    @Inject
    public TransportMappingsPreconditionHooker(
          PreconditionHelper preconditionHelper,
+         DatasourceService datasourceService,
          TransportService transportService,
          KeyMatchService keyMatchService
          ) {
       this.preconditionHelper = preconditionHelper;
+      this.datasourceService = datasourceService;
       this.transportService = transportService;
       this.keyMatchService = keyMatchService;
    }
@@ -50,6 +56,14 @@ public class TransportMappingsPreconditionHooker implements ApplyPreconditionHoo
       Set<String> missingMappings = remoteKeys
          .stream()
          .filter(remoteKey -> !definedRemoteKeys.contains(remoteKey))
+         .filter(key -> {
+               try {
+                  datasourceService.getDatasourceIdFromKey(key);
+                  return false;
+               } catch (NoResultException e) {
+                  return true;
+               }
+            })
          .collect(toSet());
       
       if (!missingMappings.isEmpty())

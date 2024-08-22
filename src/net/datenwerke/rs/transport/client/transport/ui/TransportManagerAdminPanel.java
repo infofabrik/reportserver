@@ -21,13 +21,16 @@ import com.sencha.gxt.widget.core.client.grid.Grid;
 
 import net.datenwerke.gxtdto.client.baseex.widget.DwContentPanel;
 import net.datenwerke.gxtdto.client.baseex.widget.btn.DwTextButton;
+import net.datenwerke.gxtdto.client.baseex.widget.mb.DwAlertMessageBox;
 import net.datenwerke.gxtdto.client.dialog.error.DetailErrorDialog;
+import net.datenwerke.gxtdto.client.dialog.error.SimpleErrorDialog;
 import net.datenwerke.gxtdto.client.dtomanager.callback.RsAsyncCallback;
 import net.datenwerke.gxtdto.client.locale.BaseMessages;
 import net.datenwerke.gxtdto.client.servercommunication.callback.ModalAsyncCallback;
 import net.datenwerke.gxtdto.client.servercommunication.callback.NotamCallback;
 import net.datenwerke.gxtdto.client.ui.helper.wrapper.ToolbarWrapperPanel;
 import net.datenwerke.gxtdto.client.utilityservices.toolbar.ToolbarService;
+import net.datenwerke.rs.enterprise.client.EnterpriseUiService;
 import net.datenwerke.rs.theme.client.icon.BaseIcon;
 import net.datenwerke.rs.transport.client.transport.TransportDao;
 import net.datenwerke.rs.transport.client.transport.TransportUiService;
@@ -47,17 +50,20 @@ public class TransportManagerAdminPanel extends DwContentPanel {
    private ListStore<TransportDto> transportStore;
    private TransportDtoPA transportManagerProps;
    private final Provider<TransportUiService> transportUiServiceProvider;
+   private final Provider<EnterpriseUiService> enterpriseServiceProvider;
 
    @Inject
    public TransportManagerAdminPanel(
          TransportDao transportDao, 
          ToolbarService toolbarService,
-         Provider<TransportUiService> transportUiServiceProvider
+         Provider<TransportUiService> transportUiServiceProvider,
+         Provider<EnterpriseUiService> enterpriseServiceProvider
          ) {
 
       /* store objects */
       this.transportDao = transportDao;
       this.transportUiServiceProvider = transportUiServiceProvider;
+      this.enterpriseServiceProvider = enterpriseServiceProvider;
       
       /* initialize ui */
       initializeUI();
@@ -130,6 +136,7 @@ public class TransportManagerAdminPanel extends DwContentPanel {
       grid.getView().setAutoExpandColumn(shortKeyConfig);
       grid.getView().setAutoExpandColumn(createdOnConfig);
       grid.getView().setAutoExpandColumn(descriptionConfig);
+      grid.getView().setAutoExpandMax(1000);
       grid.getView().setShowDirtyCells(false);
 
       ToolbarWrapperPanel wrapper = new ToolbarWrapperPanel(grid) {};
@@ -143,6 +150,7 @@ public class TransportManagerAdminPanel extends DwContentPanel {
             @Override
             public void doOnSuccess(Void result) {
                unmask();
+               loadTransports();
             }
 
             @Override
@@ -153,6 +161,29 @@ public class TransportManagerAdminPanel extends DwContentPanel {
          });
       });
       wrapper.getToolbar().add(rpullBtn);
+      
+      /* apply */
+      DwTextButton applyBtn = new DwTextButton(TransportMessages.INSTANCE.applyTransport());
+      
+      applyBtn.setIcon(BaseIcon.ADJUST);
+      applyBtn.addSelectHandler(event -> {
+         if (null != grid.getSelectionModel().getSelectedItem()) {
+            ModalAsyncCallback<Void> callback = new ModalAsyncCallback<Void>(null,
+                  null, TransportMessages.INSTANCE.success(),
+                  TransportMessages.INSTANCE.applySuccess(), TransportMessages.INSTANCE.pleaseWait(),
+                  TransportMessages.INSTANCE.applyingTitle(), TransportMessages.INSTANCE.applyingProgressMessage()) {
+            };
+            Request request = transportDao.apply((TransportDto) grid.getSelectionModel().getSelectedItem(), callback);
+            callback.setRequest(request);
+            
+            
+         } else {
+            new DwAlertMessageBox(TransportMessages.INSTANCE.transports(), TransportMessages.INSTANCE.selectTransport())
+                  .show();
+         }
+      });
+      if (enterpriseServiceProvider.get().isEnterprise())
+         wrapper.getToolbar().add(applyBtn);
       
       /* check preconditions */
       DwTextButton checkBtn = new DwTextButton(TransportMessages.INSTANCE.checkApplyPreconditions(), BaseIcon.BOOKMARK);
@@ -173,28 +204,13 @@ public class TransportManagerAdminPanel extends DwContentPanel {
                         new DetailErrorDialog(caught).show();
                      }
                   });
+         } else {
+            unmask();
+            new DwAlertMessageBox(TransportMessages.INSTANCE.transports(), TransportMessages.INSTANCE.selectTransport())
+                  .show();
          }
       });
       wrapper.getToolbar().add(checkBtn);
-      
-      /* apply */
-      DwTextButton applyBtn = new DwTextButton(TransportMessages.INSTANCE.applyTransport());
-      applyBtn.setIcon(BaseIcon.ADJUST);
-      applyBtn.addSelectHandler(event -> {
-         if (null != grid.getSelectionModel().getSelectedItem()) {
-            ModalAsyncCallback<Void> callback = new ModalAsyncCallback<Void>(null,
-                  null, TransportMessages.INSTANCE.success(),
-                  TransportMessages.INSTANCE.applySuccess(), TransportMessages.INSTANCE.pleaseWait(),
-                  TransportMessages.INSTANCE.applyingTitle(), TransportMessages.INSTANCE.applyingProgressMessage()) {
-            };
-            Request request = transportDao.apply((TransportDto) grid.getSelectionModel().getSelectedItem(), callback);
-            callback.setRequest(request);
-            
-            
-         }
-      });
-      
-      wrapper.getToolbar().add(applyBtn);
       
       return wrapper;
    }

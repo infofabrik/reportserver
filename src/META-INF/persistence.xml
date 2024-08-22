@@ -185,6 +185,7 @@
           <class>net.datenwerke.rs.base.service.reportengines.table.entities.filters.Filter</class>
           <class>net.datenwerke.rs.globalconstants.service.globalconstants.entities.GlobalConstant</class>
           <class>net.datenwerke.rs.tsreportarea.service.tsreportarea.entities.TsDiskFileReference</class>
+          <class>net.datenwerke.rs.ldapserver.service.ldapserver.entities.LdapServer</class>
           <class>net.datenwerke.rs.core.service.reportmanager.entities.ReportFolder</class>
           <class>net.datenwerke.rs.base.ext.service.parameters.fileselection.UploadedParameterFile</class>
           <class>net.datenwerke.rs.tabletemplate.service.tabletemplate.entities.TableReportStringTemplate</class>

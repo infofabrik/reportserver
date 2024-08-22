@@ -7,18 +7,14 @@ import net.datenwerke.rs.adminutils.service.su.genrights.SuSecurityTarget;
 import net.datenwerke.rs.adminutils.service.systemconsole.genrights.SystemConsoleSecurityTarget;
 import net.datenwerke.rs.core.service.datasinkmanager.DatasinkTreeService;
 import net.datenwerke.rs.core.service.datasinkmanager.entities.DatasinkFolder;
+import net.datenwerke.rs.core.service.datasinkmanager.genrights.DatasinkManagerAdminViewSecurityTarget;
 import net.datenwerke.rs.core.service.datasourcemanager.DatasourceService;
 import net.datenwerke.rs.core.service.datasourcemanager.entities.DatasourceFolder;
+import net.datenwerke.rs.core.service.datasourcemanager.genrights.DatasourceManagerAdminViewSecurityTarget;
 import net.datenwerke.rs.core.service.genrights.access.AccessRsSecurityTarget;
-import net.datenwerke.rs.core.service.genrights.datasinks.DatasinkManagerAdminViewSecurityTarget;
-import net.datenwerke.rs.core.service.genrights.datasources.DatasourceManagerAdminViewSecurityTarget;
-import net.datenwerke.rs.core.service.genrights.remoteservers.RemoteServerManagerAdminViewSecurityTarget;
-import net.datenwerke.rs.core.service.genrights.reportmanager.ReportManagerAdminViewSecurityTarget;
-import net.datenwerke.rs.core.service.genrights.transport.TransportManagerAdminViewSecurityTarget;
-import net.datenwerke.rs.remoteserver.service.remoteservermanager.RemoteServerTreeService;
-import net.datenwerke.rs.remoteserver.service.remoteservermanager.entities.RemoteServerFolder;
 import net.datenwerke.rs.core.service.reportmanager.ReportService;
 import net.datenwerke.rs.core.service.reportmanager.entities.ReportFolder;
+import net.datenwerke.rs.core.service.reportmanager.genrights.ReportManagerAdminViewSecurityTarget;
 import net.datenwerke.rs.dashboard.service.dashboard.DashboardManagerService;
 import net.datenwerke.rs.dashboard.service.dashboard.entities.DashboardFolder;
 import net.datenwerke.rs.dashboard.service.dashboard.genrights.DashboardAdminSecurityTarget;
@@ -31,10 +27,15 @@ import net.datenwerke.rs.fileserver.service.fileserver.genrights.FileServerManag
 import net.datenwerke.rs.globalconstants.service.globalconstants.genrights.GlobalConstantsAdminViewSecurityTarget;
 import net.datenwerke.rs.license.service.genrights.LicenseSecurityTarget;
 import net.datenwerke.rs.remoteaccess.service.sftp.genrights.SftpSecurityTarget;
+import net.datenwerke.rs.remoteserver.service.remoteservermanager.RemoteServerTreeService;
+import net.datenwerke.rs.remoteserver.service.remoteservermanager.entities.RemoteServerFolder;
+import net.datenwerke.rs.remoteserver.service.remoteservermanager.genrights.RemoteServerManagerAdminViewSecurityTarget;
 import net.datenwerke.rs.scheduler.service.scheduler.genrights.SchedulingAdminSecurityTarget;
 import net.datenwerke.rs.scheduler.service.scheduler.genrights.SchedulingBasicSecurityTarget;
 import net.datenwerke.rs.teamspace.service.teamspace.genrights.TeamSpaceSecurityTarget;
 import net.datenwerke.rs.terminal.service.terminal.genrights.TerminalSecurityTarget;
+import net.datenwerke.rs.transport.service.transport.genrights.TransportAdminViewSecurityTarget;
+import net.datenwerke.rs.transport.service.transport.genrights.TransportManagementAdminViewSecurityTarget;
 import net.datenwerke.rs.uservariables.service.genrights.UserVariableAdminViewSecurityTarget;
 import net.datenwerke.rs.utils.crypto.PasswordHasher;
 import net.datenwerke.security.service.genrights.security.GenericSecurityTargetAdminViewSecurityTarget;
@@ -293,11 +294,18 @@ public class PrepareDbForReportServer implements DbInstallationTask {
       
       /* transports */
       GenericSecurityTargetEntity transportEntity = securityService
-            .createGenericSecurityTargetEntity(TransportManagerAdminViewSecurityTarget.class);
+            .createGenericSecurityTargetEntity(TransportAdminViewSecurityTarget.class);
       
       Acl transportACL = new Acl();
       transportEntity.setAcl(transportACL);
       securityService.merge(transportEntity);
+      
+      GenericSecurityTargetEntity transportManagementEntity = securityService
+            .createGenericSecurityTargetEntity(TransportManagementAdminViewSecurityTarget.class);
+      
+      Acl transportManagementACL = new Acl();
+      transportManagementEntity.setAcl(transportManagementACL);
+      securityService.merge(transportManagementEntity);
    }
 
    private void prepareDatasourceTree() {

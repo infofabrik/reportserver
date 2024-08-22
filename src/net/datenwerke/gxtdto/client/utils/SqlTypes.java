@@ -315,6 +315,12 @@ public class SqlTypes {
    public final static String SQLXML_NAME = "SQLXML";
 
    /**
+    * Oracle Timestamp with Timezone
+    */
+   public static final int TIMESTAMPTZ = -101;
+   public static final String TIMESTAMPTZ_NAME = "TIMESTAMPTZ";
+   
+   /**
     * Oracle Timestamp with Local Timezone
     */
    public static final int TIMESTAMPLTZ = -102;
@@ -368,6 +374,7 @@ public class SqlTypes {
       typeToName.put(STRUCT, STRUCT_NAME);
       typeToName.put(TIME, TIME_NAME);
       typeToName.put(TIMESTAMP, TIMESTAMP_NAME);
+      typeToName.put(TIMESTAMPTZ, TIMESTAMPTZ_NAME);
       typeToName.put(TIMESTAMPLTZ, TIMESTAMPLTZ_NAME);
       typeToName.put(TINYINT, TINYINT_NAME);
       typeToName.put(VARBINARY, VARBINARY_NAME);
@@ -450,6 +457,7 @@ public class SqlTypes {
       case DATE:
       case TIME:
       case TIMESTAMP:
+      case TIMESTAMPTZ:
       case TIMESTAMPLTZ:
       case DATE_TIME_OFFSET:
          return true;
@@ -462,6 +470,7 @@ public class SqlTypes {
          return false;
       switch (type) {
       case TIMESTAMP:
+      case TIMESTAMPTZ:
       case TIMESTAMPLTZ:
       case DATE_TIME_OFFSET:
          return true;

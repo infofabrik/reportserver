@@ -1,5 +1,7 @@
 package net.datenwerke.rs.scheduler.service.scheduler.mail;
 
+import static net.datenwerke.rs.utils.misc.StringEscapeUtils.removeInvalidFilenameChars;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
@@ -33,11 +35,11 @@ import net.datenwerke.rs.scheduler.service.scheduler.jobs.report.ReportExecuteJo
 import net.datenwerke.rs.utils.juel.SimpleJuel;
 import net.datenwerke.rs.utils.localization.LocalizationServiceImpl;
 import net.datenwerke.rs.utils.zip.ZipUtilsService;
+import net.datenwerke.scheduler.service.scheduler.SchedulerHelperService;
 import net.datenwerke.scheduler.service.scheduler.entities.AbstractAction;
 import net.datenwerke.scheduler.service.scheduler.entities.AbstractJob;
 import net.datenwerke.scheduler.service.scheduler.entities.history.ActionEntry;
 import net.datenwerke.scheduler.service.scheduler.exceptions.ActionExecutionException;
-import static net.datenwerke.rs.utils.misc.StringEscapeUtils.removeInvalidFilenameChars;
 
 /**
  * 
@@ -75,6 +77,10 @@ public class MailReportAction extends AbstractAction {
    @Transient
    @Inject
    private SchedulerMailHelper mailHelper;
+   
+   @Transient
+   @Inject
+   private SchedulerHelperService schedulerHelper;
 
    @Transient
    @Inject
@@ -140,7 +146,7 @@ public class MailReportAction extends AbstractAction {
 
       /* start simplemail */
       SimpleMail mail = mailHelper.prepareSimpleMail(job);
-      SimpleJuel juel = mailHelper.getConfiguredJuel(job);
+      SimpleJuel juel = schedulerHelper.getConfiguredJuel(job);
       juel.addReplacement(PROPERTY_SUBJECT, getSubject());
       juel.addReplacement(PROPERTY_MESSAGE, getMessage());
 
@@ -160,7 +166,7 @@ public class MailReportAction extends AbstractAction {
       juel.addReplacement(PROPERTY_NAME, FilenameUtils.getBaseName(filename));
 
       /* set content */
-      if (mailHelper.isHTML())
+      if (schedulerHelper.isHTML())
          mail.setHtml(juel.parse(messageTemplate), attachment);
       else
          mail.setContent(juel.parse(messageTemplate), attachment);

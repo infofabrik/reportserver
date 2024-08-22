@@ -58,12 +58,12 @@ import net.datenwerke.security.service.crypto.pbe.encrypt.EncryptionService;
                   type = Boolean.class
                   ) 
             }, 
-            icon = "google"
+            icon = "google_drive"
             )
 @InstanceDescription(
       msgLocation = GoogleDriveDatasinkMessages.class, 
       objNameKey = "googleDriveDatasinkTypeName", 
-      icon = "google"
+      icon = "google_drive"
       )
 @Indexed
 public class GoogleDriveDatasink extends DatasinkDefinition implements OAuthAuthenticatable, FolderedDatasink {

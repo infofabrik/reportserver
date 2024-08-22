@@ -9,23 +9,29 @@ import com.sencha.gxt.widget.core.client.menu.SeparatorMenuItem;
 
 import net.datenwerke.gf.client.managerhelper.hooks.TreeConfiguratorHook;
 import net.datenwerke.gf.client.managerhelper.tree.ManagerHelperTree;
+import net.datenwerke.gf.client.treedb.UITree;
 import net.datenwerke.gf.client.treedb.helper.menu.DeleteMenuItem;
 import net.datenwerke.gf.client.treedb.helper.menu.DuplicateMenuItem;
 import net.datenwerke.gf.client.treedb.helper.menu.InfoMenuItem;
 import net.datenwerke.gf.client.treedb.helper.menu.InsertMenuItem;
+import net.datenwerke.gf.client.treedb.helper.menu.MoveToFolderMenuItem;
 import net.datenwerke.gf.client.treedb.helper.menu.ReloadMenuItem;
+import net.datenwerke.gf.client.treedb.helper.menu.TerminalNewWindowMenuItem;
 import net.datenwerke.gf.client.treedb.helper.menu.TreeDBUIMenuProvider;
 import net.datenwerke.gf.client.treedb.icon.IconMapping;
 import net.datenwerke.gf.client.treedb.icon.TreeDBUIIconProvider;
 import net.datenwerke.gxtdto.client.baseex.widget.menu.DwMenu;
 import net.datenwerke.gxtdto.client.baseex.widget.menu.DwMenuItem;
 import net.datenwerke.gxtdto.client.locale.BaseMessages;
+import net.datenwerke.gxtdto.client.utilityservices.UtilsUIService;
 import net.datenwerke.rs.dashboard.client.dashboard.DashboardTreeManagerDao;
 import net.datenwerke.rs.dashboard.client.dashboard.DashboardUiModule;
 import net.datenwerke.rs.dashboard.client.dashboard.dto.DadgetNodeDto;
 import net.datenwerke.rs.dashboard.client.dashboard.dto.DashboardFolderDto;
 import net.datenwerke.rs.dashboard.client.dashboard.dto.DashboardNodeDto;
 import net.datenwerke.rs.dashboard.client.dashboard.locale.DashboardMessages;
+import net.datenwerke.rs.dashboard.client.dashboard.provider.annotations.DashboardTreeFolders;
+import net.datenwerke.rs.terminal.client.terminal.TerminalDao;
 import net.datenwerke.rs.terminal.client.terminal.TerminalUIService;
 import net.datenwerke.rs.terminal.client.terminal.helper.menu.TerminalMenuItem;
 import net.datenwerke.rs.terminal.client.terminal.security.TerminalGenericTargetIdentifier;
@@ -39,18 +45,27 @@ public class DashboardManagerTreeConfigurationHooker implements TreeConfigurator
    private final DashboardTreeManagerDao treeHandler;
    private final Provider<TerminalUIService> terminalUIServiceProvider;
    private final Provider<SecurityUIService> securityServiceProvider;
+   private final Provider<UITree> dashboardManagerTreeProvider;
+   private final Provider<UtilsUIService> utilsUIServiceProvider;
+   private final TerminalDao terminalDao;
 
    @Inject
    public DashboardManagerTreeConfigurationHooker(
          DashboardTreeManagerDao treeHandler, 
          Provider<TerminalUIService> terminalUIServiceProvider,
-         Provider<SecurityUIService> securityServiceProvider
+         Provider<SecurityUIService> securityServiceProvider,
+         @DashboardTreeFolders Provider<UITree> dashboardManagerTreeProvider,
+         Provider<UtilsUIService> utilsUIServiceProvider, 
+         TerminalDao terminalDao
          ) {
 
       /* store objects */
       this.treeHandler = treeHandler;
       this.terminalUIServiceProvider = terminalUIServiceProvider;
       this.securityServiceProvider = securityServiceProvider;
+      this.dashboardManagerTreeProvider = dashboardManagerTreeProvider;
+      this.utilsUIServiceProvider = utilsUIServiceProvider;
+      this.terminalDao = terminalDao;
    }
 
    @Override
@@ -71,8 +86,10 @@ public class DashboardManagerTreeConfigurationHooker implements TreeConfigurator
       MenuItem insertItem = generateInsertMenu();
       folderMenu.add(insertItem);
       folderMenu.add(new DeleteMenuItem(treeHandler));
-      if (securityServiceProvider.get().hasRight(TerminalGenericTargetIdentifier.class, ExecuteDto.class))
+      if (securityServiceProvider.get().hasRight(TerminalGenericTargetIdentifier.class, ExecuteDto.class)) {
          folderMenu.add(new TerminalMenuItem(terminalUIServiceProvider));
+         folderMenu.add(new TerminalNewWindowMenuItem(utilsUIServiceProvider, terminalDao));         
+      }
       folderMenu.add(new SeparatorMenuItem());
       folderMenu.add(new InfoMenuItem());
       folderMenu.add(new ReloadMenuItem());
@@ -84,8 +101,10 @@ public class DashboardManagerTreeConfigurationHooker implements TreeConfigurator
       fileMenu.add(insertItem);
       fileMenu.add(new DuplicateMenuItem(treeHandler));
       fileMenu.add(new DeleteMenuItem(treeHandler));
-      if (securityServiceProvider.get().hasRight(TerminalGenericTargetIdentifier.class, ExecuteDto.class))
+      if (securityServiceProvider.get().hasRight(TerminalGenericTargetIdentifier.class, ExecuteDto.class)) {
          fileMenu.add(new TerminalMenuItem(terminalUIServiceProvider));
+         fileMenu.add(new TerminalNewWindowMenuItem(utilsUIServiceProvider, terminalDao));         
+      }
       fileMenu.add(new SeparatorMenuItem());
       fileMenu.add(new InfoMenuItem());
 
@@ -95,9 +114,12 @@ public class DashboardManagerTreeConfigurationHooker implements TreeConfigurator
       insertItem.disable();
       dashboardMenu.add(insertItem);
       dashboardMenu.add(new DuplicateMenuItem(treeHandler));
+      dashboardMenu.add(new MoveToFolderMenuItem(treeHandler, dashboardManagerTreeProvider));
       dashboardMenu.add(new DeleteMenuItem(treeHandler));
-      if (securityServiceProvider.get().hasRight(TerminalGenericTargetIdentifier.class, ExecuteDto.class))
+      if (securityServiceProvider.get().hasRight(TerminalGenericTargetIdentifier.class, ExecuteDto.class)) {
          dashboardMenu.add(new TerminalMenuItem(terminalUIServiceProvider));
+         dashboardMenu.add(new TerminalNewWindowMenuItem(utilsUIServiceProvider, terminalDao));          
+      }
       dashboardMenu.add(new SeparatorMenuItem());
       dashboardMenu.add(new InfoMenuItem());
    }

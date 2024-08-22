@@ -1263,6 +1263,9 @@ abstract public class UserDto extends AbstractUserManagerNodeDto {
 			list.add(sex_pa);
 			list.add(hasPassword_pa);
 		}
+		if(view.compareTo(DtoView.LIST) >= 0){
+			list.add(username_pa);
+		}
 		if(view.compareTo(DtoView.NORMAL) >= 0){
 			list.add(email_pa);
 			list.add(groups_pa);
@@ -1270,7 +1273,6 @@ abstract public class UserDto extends AbstractUserManagerNodeDto {
 			list.add(properties_pa);
 			list.add(superUser_pa);
 			list.add(title_pa);
-			list.add(username_pa);
 		}
 		return list;
 	}

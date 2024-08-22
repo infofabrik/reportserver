@@ -56,5 +56,14 @@ public class HistoryRpcServiceImpl extends SecuredRemoteServiceServlet implement
       
       return historyService.getFormattedObjectPaths(obj);
    }
+   
+   @Override
+   public List<String> getRealObjectPaths(Dto dto) {
+      Object obj = dtoService.loadPoso(dto);
+      
+      securityService.assertRights(obj, Read.class);
+      
+      return historyService.getRealObjectPaths(obj);
+   }
 
 }

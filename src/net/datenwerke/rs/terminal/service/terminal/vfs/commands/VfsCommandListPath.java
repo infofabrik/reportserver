@@ -18,6 +18,7 @@ import net.datenwerke.rs.terminal.service.terminal.objresolver.exceptions.Object
 import net.datenwerke.rs.terminal.service.terminal.vfs.VFSLocation;
 import net.datenwerke.rs.terminal.service.terminal.vfs.VirtualFileSystemDeamon;
 import net.datenwerke.rs.terminal.service.terminal.vfs.locale.VfsMessages;
+import net.datenwerke.rs.utils.string.Emoji;
 import net.datenwerke.security.service.security.rights.Read;
 
 public class VfsCommandListPath implements TerminalCommandHook {
@@ -39,7 +40,7 @@ public class VfsCommandListPath implements TerminalCommandHook {
 
       List<String> arguments = parser.getNonOptionArguments();
       if (arguments.isEmpty())
-         throw new IllegalArgumentException();
+         throw new IllegalArgumentException(Emoji.exceptionEmoji().getEmoji());
       String locationStr = arguments.get(0);
 
       Collection<Object> objects;

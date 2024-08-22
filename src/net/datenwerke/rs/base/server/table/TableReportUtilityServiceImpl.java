@@ -5,7 +5,6 @@ import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toSet;
 import static net.datenwerke.rs.utils.exception.shared.LambdaExceptionUtil.rethrowFunction;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -13,6 +12,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 import com.google.inject.Inject;
@@ -44,6 +44,7 @@ import net.datenwerke.rs.base.client.reportengines.table.ui.model.Expressions;
 import net.datenwerke.rs.base.client.reportengines.table.ui.model.SpecialParameters;
 import net.datenwerke.rs.base.service.datasources.definitions.DatabaseDatasource;
 import net.datenwerke.rs.base.service.datasources.definitions.DatabaseDatasourceConfig;
+import net.datenwerke.rs.base.service.renderer.TextFormat;
 import net.datenwerke.rs.base.service.reportengines.table.SimpleDataSupplier;
 import net.datenwerke.rs.base.service.reportengines.table.TableReportUtils;
 import net.datenwerke.rs.base.service.reportengines.table.dot.PrefilterDotService;
@@ -68,7 +69,6 @@ import net.datenwerke.rs.core.service.reportmanager.exceptions.ReportExecutorExc
 import net.datenwerke.rs.core.service.reportmanager.parameters.ParameterSet;
 import net.datenwerke.rs.core.service.reportmanager.parameters.ParameterSetFactory;
 import net.datenwerke.rs.dot.service.dot.DotService;
-import net.datenwerke.rs.dot.service.dot.TextFormat;
 import net.datenwerke.security.server.SecuredRemoteServiceServlet;
 import net.datenwerke.security.service.authenticator.AuthenticatorService;
 import net.datenwerke.security.service.security.SecurityService;
@@ -450,8 +450,8 @@ public class TableReportUtilityServiceImpl extends SecuredRemoteServiceServlet i
       User user = authenticatorServiceProvider.get().getCurrentUser();
       String dot = prefilterDotServiceProvider.get().createDotFile(user, reportDto, token);
       try {
-         return dotServiceProvider.get().render(TextFormat.SVG, dot, 1500);
-      } catch (IOException e) {
+         return dotServiceProvider.get().render(TextFormat.SVG, dot, Optional.of(1500), Optional.empty());
+      } catch (Exception e) {
          throw new ServerCallFailedException(e);
       }
    }

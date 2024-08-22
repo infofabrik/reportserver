@@ -11,7 +11,6 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyDownEvent;
-import com.google.gwt.event.dom.client.KeyDownHandler;
 import com.google.gwt.event.logical.shared.ResizeEvent;
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
@@ -22,11 +21,6 @@ import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Label;
 import com.google.inject.Inject;
 import com.sencha.gxt.core.client.dom.ScrollSupport.ScrollMode;
-import com.sencha.gxt.core.client.util.Margins;
-import com.sencha.gxt.widget.core.client.container.BoxLayoutContainer.BoxLayoutData;
-import com.sencha.gxt.widget.core.client.container.BoxLayoutContainer.BoxLayoutPack;
-import com.sencha.gxt.widget.core.client.container.HBoxLayoutContainer;
-import com.sencha.gxt.widget.core.client.container.HBoxLayoutContainer.HBoxLayoutAlign;
 import com.sencha.gxt.widget.core.client.container.MarginData;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
 import com.sencha.gxt.widget.core.client.form.TextField;
@@ -162,7 +156,21 @@ public class TerminalWindow extends DwWindow {
             mainPanel.unmask();
             isDisabled = false;
             inputField.focus();
-            enterPressed("cd " + terminalDao.getPathWay());
+            Scheduler.get().scheduleDeferred(() -> enterPressed("cd " + terminalDao.getPathWay()));
+         }
+      });
+   }
+
+   public void initSessionWithPath(String path) {
+      mainPanel.mask(TerminalMessages.INSTANCE.init());
+      isDisabled = true;
+      terminalDao.init(null, null, new RsAsyncCallback<HashMap<String, String>>() {
+         @Override
+         public void onSuccess(HashMap<String, String> result) {
+            mainPanel.unmask();
+            isDisabled = false;
+            inputField.focus();
+            Scheduler.get().scheduleDeferred(() -> enterPressed("cd " + path));
          }
       });
    }
@@ -231,9 +239,8 @@ public class TerminalWindow extends DwWindow {
       inputPanel = DwContentPanel.newInlineInstance();
       inputPanel.setHeight(25);
 
-      HBoxLayoutContainer layoutContainer = new HBoxLayoutContainer();
-      layoutContainer.setHBoxLayoutAlign(HBoxLayoutAlign.TOP);
-      layoutContainer.setPack(BoxLayoutPack.START);
+      TerminalContainer layoutContainer = new TerminalContainer();
+      layoutContainer.setStyleName("rs-terminal-input-box");
       inputPanel.setWidget(layoutContainer);
 
       inputPreTextPanel = DwContentPanel.newInlineInstance();
@@ -247,20 +254,14 @@ public class TerminalWindow extends DwWindow {
          }
       };
       inputField.addStyleName(resources.css().rsTerminalInputField() + " rs-terminal-input");
-      inputField.setWidth("100%");
 
-      inputField.addKeyDownHandler(new KeyDownHandler() {
-         @Override
-         public void onKeyDown(KeyDownEvent event) {
-            specialKeyPressed(event);
-            inputKeyPressed(event);
-         }
+      inputField.addKeyDownHandler(event -> {
+         specialKeyPressed(event);
+         inputKeyPressed(event);
       });
 
-      BoxLayoutData flex = new BoxLayoutData(new Margins(0, 0, 0, 0));
-      flex.setFlex(1);
       layoutContainer.add(inputPreTextPanel);
-      layoutContainer.add(inputField, flex);
+      layoutContainer.add(inputField);
    }
 
    @Override

@@ -32,7 +32,7 @@ public class BasicTreeProvider implements Provider<ManagerHelperTree> {
    public ManagerHelperTree get() {
       /* store */
       EnhancedTreeStore store = treeDBUIService.getUITreeStore(AbstractDatasinkManagerNodeDto.class, datasinkTreeLoader,
-            false);
+            true);
 
       /* build tree */
       final ManagerHelperTree tree = treeFactory.create(DatasinkUIModule.class, store, datasinkTreeLoader,

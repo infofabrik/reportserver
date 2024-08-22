@@ -2,7 +2,6 @@ package net.datenwerke.rs.adminutils.service.systemconsole.generalinfo.hookers;
 
 import static net.datenwerke.rs.adminutils.client.systemconsole.generalinfo.Memory.MAX_FORMATTED;
 
-import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -27,9 +26,11 @@ public class MainInfoCategoryProviderHooker implements GeneralInfoCategoryProvid
    private static final String CATALINA_HOME = "CATALINA_HOME";
    private static final String CATALINA_BASE = "CATALINA_BASE";
    private static final String LOG_FILES_DIRECTORY = "LOG_FILES_DIRECTORY";
+   private static final String INSTALLATION_DIRECTORY = "INSTALLATION_DIRECTORY";
    private static final String HEADLESS = "HEADLESS";
    private static final String MAX_MEMORY = "MAX_MEMORY";
    private static final String CONFIG_DIR = "CONFIG_DIR";
+   private static final String IO_TMP_DIR = "IO_TMP_DIR";
    private static final String GROOVY_VERSION = "GROOVY_VERSION";
    private static final String LOCALE = "LOCALE";
    private static final String JVM_LOCALE = "JVM_LOCALE";
@@ -49,6 +50,9 @@ public class MainInfoCategoryProviderHooker implements GeneralInfoCategoryProvid
    private static final String REQUEST_PROTOCOL = "REQUEST_PROTOCOL";
    private static final String FONTS = "FONTS";
    private static final String MAIN = "MAIN";
+   private static final String LIBRARIES = "LIBRARIES";
+   private static final String EXTERNAL_LIBRARIES = "EXTERNAL_LIBRARIES";
+   private static final String INTERNAL_LIBRARIES = "INTERNAL_LIBRARIES";
    
    @Inject
    public MainInfoCategoryProviderHooker(
@@ -59,27 +63,33 @@ public class MainInfoCategoryProviderHooker implements GeneralInfoCategoryProvid
    
    @Override
    public Map<ImmutablePair<String, String>, Map<ImmutablePair<String, String>, Object>> provideCategory() {
+      Map<ImmutablePair<String, String>, Map<ImmutablePair<String, String>, Object>> results = new LinkedHashMap<>();
+      
       final Map<ImmutablePair<String, String>, Object> props = new LinkedHashMap<>();
 
       props.put(ImmutablePair.of(RS_VERSION, GeneralInfoMessages.INSTANCE.reportServerVersion()),
             generalInfoService.getRsVersion());
       props.put(ImmutablePair.of(JAVA_VERSION, GeneralInfoMessages.INSTANCE.javaVersionLabel()),
             generalInfoService.getJavaVersion());
-      props.put(ImmutablePair.of(JAVA_HOME, "Java home"), generalInfoService.getJavaHome());
+      props.put(ImmutablePair.of(JAVA_HOME, "Java home"), generalInfoService.getJavaHome(true));
       props.put(ImmutablePair.of(JVM_ARGS, "JVM args"), generalInfoService.getVmArguments());
       props.put(ImmutablePair.of(USER_HOME, "User home"), generalInfoService.getUserHome(true));
       props.put(ImmutablePair.of(APPLICATION_SERVER, GeneralInfoMessages.INSTANCE.applicationServerLabel()),
             generalInfoService.getApplicationServer());
-      props.put(ImmutablePair.of(CATALINA_HOME, "Catalina home"), generalInfoService.getCatalinaHome());
-      props.put(ImmutablePair.of(CATALINA_BASE, "Catalina base"), generalInfoService.getCatalinaBase());
+      props.put(ImmutablePair.of(CATALINA_HOME, "Catalina home"), generalInfoService.getCatalinaHome(true));
+      props.put(ImmutablePair.of(CATALINA_BASE, "Catalina base"), generalInfoService.getCatalinaBase(true));
       props.put(ImmutablePair.of(LOG_FILES_DIRECTORY, GeneralInfoMessages.INSTANCE.logsDirectory()),
             generalInfoService.getLogFilesDirectory(true));
+      props.put(ImmutablePair.of(INSTALLATION_DIRECTORY, GeneralInfoMessages.INSTANCE.installationPath()),
+            generalInfoService.getInstallationPath(true));
       props.put(ImmutablePair.of(HEADLESS, "Headless"),
             generalInfoService.isHeadless());
       props.put(ImmutablePair.of(MAX_MEMORY, GeneralInfoMessages.INSTANCE.maxMemoryLabel()),
             generalInfoService.getMemoryValues().get(MAX_FORMATTED));
       props.put(ImmutablePair.of(CONFIG_DIR, GeneralInfoMessages.INSTANCE.configDirLabel()),
             generalInfoService.getConfigDirectory(true));
+      props.put(ImmutablePair.of(IO_TMP_DIR, GeneralInfoMessages.INSTANCE.ioTempDirectory()),
+            generalInfoService.getIOTmpDir(true));
       props.put(ImmutablePair.of(GROOVY_VERSION, GeneralInfoMessages.INSTANCE.groovyVersionLabel()),
             generalInfoService.getGroovyVersion());
       props.put(ImmutablePair.of(LOCALE, "Locale"), generalInfoService.getLocale());
@@ -113,8 +123,19 @@ public class MainInfoCategoryProviderHooker implements GeneralInfoCategoryProvid
             generalInfoService.getProtocol());
       props.put(ImmutablePair.of(FONTS, GeneralInfoMessages.INSTANCE.fonts()),
             generalInfoService.getAvailableFonts());
+      
+      results.put(ImmutablePair.of(MAIN, GeneralInfoMessages.INSTANCE.mainInfo()), props);
+      
+      final Map<ImmutablePair<String, String>, Object> libraryProps = new LinkedHashMap<>();
 
-      return Collections.singletonMap(ImmutablePair.of(MAIN, GeneralInfoMessages.INSTANCE.mainInfo()), props);
+      libraryProps.put(ImmutablePair.of(EXTERNAL_LIBRARIES, GeneralInfoMessages.INSTANCE.externalLibraries()),
+            generalInfoService.getExternalJars());
+      libraryProps.put(ImmutablePair.of(INTERNAL_LIBRARIES, GeneralInfoMessages.INSTANCE.internalLibraries()),
+            generalInfoService.getInternalJars());
+      
+      results.put(ImmutablePair.of(LIBRARIES, GeneralInfoMessages.INSTANCE.libraries()), libraryProps);
+      
+      return results;
    }
 
 }

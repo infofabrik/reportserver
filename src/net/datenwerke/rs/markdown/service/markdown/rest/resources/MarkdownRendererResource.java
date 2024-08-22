@@ -94,19 +94,25 @@ public class MarkdownRendererResource extends RsRestResource {
 
    
    private Response generateResponse(String md, Boolean wrapHtml) throws IOException {
-      ContentDisposition contentDisposition = ContentDisposition.type("inline").fileName("data.html")
-            .creationDate(new Date()).build();
-      String mdStr = mdServiceProvider.get().renderHtml(md);
-      if (wrapHtml) {
-         mdStr = new StringBuilder()
-               .append("<html>\n")
-               .append("<head></head>\n")
-               .append("<body>\n")
-               .append(mdStr)
-               .append("</body>")
-               .toString();
+      try {
+         ContentDisposition contentDisposition = ContentDisposition.type("inline").fileName("data.html")
+               .creationDate(new Date()).build();
+         String mdStr = mdServiceProvider.get().renderHtml(md);
+         if (wrapHtml) {
+            mdStr = new StringBuilder()
+                  .append("<html>\n")
+                  .append("<head></head>\n")
+                  .append("<body>\n")
+                  .append(mdStr)
+                  .append("</body>")
+                  .toString();
+         }
+         return Response.status(Status.OK).type("text/html").entity(mdStr)
+               .header("Content-Disposition", contentDisposition).build();
+      } catch (Exception e) {
+         logger.error(ExceptionUtils.getRootCauseMessage(e), e);
+         return Response.status(Status.INTERNAL_SERVER_ERROR.getStatusCode(), ExceptionUtils.getRootCauseMessage(e))
+               .build();
       }
-      return Response.status(Status.OK).type("text/html").entity(mdStr)
-            .header("Content-Disposition", contentDisposition).build();
    }
 }

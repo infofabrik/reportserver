@@ -25,8 +25,6 @@ public interface RemoteServerMessages extends Messages {
    
    String newRemoteRsServer();
    
-   String importRemoveKeyFieldLabel();
-
    String testFailed();
 
    String success();
@@ -38,4 +36,45 @@ public interface RemoteServerMessages extends Messages {
    String testingTitle();
 
    String testingProgressMessage();
+
+   String newLdapServer();
+
+   String editLdapServer();
+
+   String disabled();
+
+   String provider();
+
+   String security();
+
+   String encryption();
+
+   String base();
+
+   String filter();
+
+   String externalDirectory();
+
+   String writeProtection();
+
+   String logResultingTree();
+
+   String flattenTree();
+
+   String objectClass();
+
+   String attributes();
+
+   String name();
+
+   String member();
+
+   String additional();
+
+   String organizationalUnit();
+
+   String group();
+
+   String user();
+   
 }

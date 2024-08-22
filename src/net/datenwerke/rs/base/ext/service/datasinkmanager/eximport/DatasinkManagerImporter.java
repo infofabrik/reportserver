@@ -5,6 +5,7 @@ import com.google.inject.Inject;
 import net.datenwerke.eximport.im.ImportItemWithKeyConfig;
 import net.datenwerke.rs.core.service.datasinkmanager.DatasinkTreeService;
 import net.datenwerke.rs.core.service.datasinkmanager.entities.DatasinkDefinition;
+import net.datenwerke.rs.keyutils.service.keyutils.KeyNameGeneratorService;
 import net.datenwerke.treedb.ext.service.eximport.TreeNodeImportItemConfig;
 import net.datenwerke.treedb.ext.service.eximport.TreeNodeImporter;
 import net.datenwerke.treedb.service.treedb.AbstractNode;
@@ -15,12 +16,15 @@ public class DatasinkManagerImporter extends TreeNodeImporter {
    public static final String IMPORTER_ID = "DatasinkManagerImporter";
 
    private final DatasinkTreeService datasinkService;
+   
+   private final KeyNameGeneratorService keyNameGeneratorService;
 
    @Inject
-   public DatasinkManagerImporter(DatasinkTreeService datasinkService) {
+   public DatasinkManagerImporter(DatasinkTreeService datasinkService, KeyNameGeneratorService keyNameGeneratorService) {
 
       /* store objects */
       this.datasinkService = datasinkService;
+      this.keyNameGeneratorService = keyNameGeneratorService;
    }
 
    @Override
@@ -48,8 +52,8 @@ public class DatasinkManagerImporter extends TreeNodeImporter {
          if (null != key) {
             DatasinkDefinition datasinkByKey = datasinkService.getDatasinkByKey(key);
             if (null != datasinkByKey) {
-               if (itemConfig instanceof ImportItemWithKeyConfig && ((ImportItemWithKeyConfig) itemConfig).isCleanKeys())
-                  ((DatasinkDefinition) node).setKey(null);
+               if (itemConfig instanceof ImportItemWithKeyConfig && ((ImportItemWithKeyConfig) itemConfig).isCreateRandomKeys())
+                  ((DatasinkDefinition) node).setKey(keyNameGeneratorService.generateDefaultKey());
                else
                   throw new IllegalStateException("A datasink with key '" + key + "' already exists");
             }

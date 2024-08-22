@@ -27,6 +27,7 @@ public class TransportUiServiceImpl implements TransportUiService {
    public void displayAnalysisResult(List<TransportCheckEntryDto> result) {
       final DwWindow window = new DwWindow();
       window.setHeading(TransportMessages.INSTANCE.analysisResults());
+      window.setHeaderIcon(BaseIcon.BOOKMARK);
       window.setSize(960, 680);
       window.setMaximizable(true);
 

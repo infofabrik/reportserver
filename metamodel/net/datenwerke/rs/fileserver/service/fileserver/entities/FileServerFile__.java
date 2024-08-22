@@ -11,6 +11,7 @@ public class FileServerFile__ extends net.datenwerke.rs.fileserver.service.files
 	public static final String contentType = "contentType";
 	public static final String description = "description";
 	public static final String fileData = "fileData";
+	public static final String fileServerServiceProvider = "fileServerServiceProvider";
 	public static final String key = "key";
 	public static final String name = "name";
 	public static final String serialVersionUID = "serialVersionUID";

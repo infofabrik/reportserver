@@ -33,11 +33,13 @@ import net.datenwerke.rs.terminal.service.terminal.vfs.VFSLocation;
 import net.datenwerke.rs.terminal.service.terminal.vfs.VirtualFileSystemDeamon;
 import net.datenwerke.rs.terminal.service.terminal.vfs.exceptions.VFSException;
 import net.datenwerke.rs.transport.service.transport.PreconditionResult;
+import net.datenwerke.rs.transport.service.transport.TransportApplyService;
 import net.datenwerke.rs.transport.service.transport.TransportService;
 import net.datenwerke.rs.transport.service.transport.entities.Transport;
 import net.datenwerke.rs.transport.service.transport.locale.TransportManagerMessages;
 import net.datenwerke.rs.utils.file.RsFileTreeUtils;
 import net.datenwerke.rs.utils.misc.DateUtils;
+import net.datenwerke.rs.utils.string.Emoji;
 import net.datenwerke.security.service.security.SecurityService;
 import net.datenwerke.security.service.security.rights.Execute;
 import net.datenwerke.treedb.service.treedb.AbstractNode;
@@ -47,16 +49,19 @@ public class TransportApplySubcommand implements TransportSubCommandHook {
    public static final String BASE_COMMAND = "apply";
    
    private final Provider<TransportService> transportServiceProvider;
+   private final Provider<TransportApplyService> transportApplyServiceProvider;
    private final Provider<TerminalService> terminalServiceProvider;
    private final Provider<SecurityService> securityServiceProvider;
    
    @Inject
    public TransportApplySubcommand(
          Provider<TransportService> transportServiceProvider,
+         Provider<TransportApplyService> transportApplyServiceProvider,
          Provider<TerminalService> terminalServiceProvider,
          Provider<SecurityService> securityServiceProvider
          ) {
       this.transportServiceProvider = transportServiceProvider;
+      this.transportApplyServiceProvider = transportApplyServiceProvider;
       this.terminalServiceProvider = terminalServiceProvider;
       this.securityServiceProvider = securityServiceProvider;
    }
@@ -95,7 +100,7 @@ public class TransportApplySubcommand implements TransportSubCommandHook {
    public CommandResult execute(CommandParser parser, TerminalSession session) throws TerminalException {
       List<String> arguments = parser.getNonOptionArguments();
       if (1 != arguments.size())
-         throw new IllegalArgumentException("Exactly one argument expected");
+         throw new IllegalArgumentException(Emoji.exceptionEmoji().getEmoji(" ") + "Exactly one argument expected");
 
       final VirtualFileSystemDeamon vfs = session.getFileSystem();
       
@@ -105,18 +110,18 @@ public class TransportApplySubcommand implements TransportSubCommandHook {
       try {
          Collection<VFSLocation> resolvedTarget = vfs.getLocation(arguments.get(0)).resolveWildcards(vfs);
          if (resolvedTarget.size()!=1)
-            throw new IllegalArgumentException("Exactly one transport expected.");
+            throw new IllegalArgumentException(Emoji.exceptionEmoji().getEmoji(" ") + "Exactly one transport expected.");
          VFSLocation target = resolvedTarget.iterator().next();
          
          AbstractNode<?> transportTarget = target.getFilesystemManager().getNodeByLocation(target);
          if (!(transportTarget instanceof Transport))
-            throw new IllegalArgumentException(
+            throw new IllegalArgumentException(Emoji.exceptionEmoji().getEmoji(" ") + 
                   "Target is not a transport or transport not found: '" + arguments.get(0) + "'");
          
          if (!target.exists())
-            throw new IllegalArgumentException("Transport does not exist: '" + arguments.get(0) + "'");
+            throw new IllegalArgumentException(Emoji.exceptionEmoji().getEmoji(" ") + "Transport does not exist: '" + arguments.get(0) + "'");
          if (target.isFolder())
-            throw new IllegalArgumentException("Target is a folder.");
+            throw new IllegalArgumentException(Emoji.exceptionEmoji().getEmoji(" ") + "Target is a folder.");
          
          Transport transport = (Transport) transportTarget;
          
@@ -127,10 +132,10 @@ public class TransportApplySubcommand implements TransportSubCommandHook {
          
          Instant start = Instant.now();
          
-         Optional<ImmutablePair<ImportResult, Exception>> result = transportServiceProvider.get().applyTransport(transport);
+         Optional<ImmutablePair<ImportResult, Exception>> result = transportApplyServiceProvider.get().applyTransport(transport);
          
          if (!result.isPresent()) 
-            return new CommandResult("Preconditions are not met. Details can be found in the apply log.");
+            return new CommandResult(Emoji.SMILING_FACE_TEAR.getEmoji(" ") + "Preconditions are not met. Details can be found in the apply log.");
          
          Instant end = Instant.now();
          
@@ -155,9 +160,9 @@ public class TransportApplySubcommand implements TransportSubCommandHook {
             return commandResult;
             
          } else if (result.get().getRight() != null) {
-            return new CommandResult("Error while applying. Check transport logs for more information.");
+            return new CommandResult(Emoji.SMILING_FACE_TEAR.getEmoji(" ") + "Error while applying. Check transport logs for more information.");
          } else {
-            return new CommandResult("Something went wrong");
+            return new CommandResult(Emoji.SMILING_FACE_TEAR.getEmoji(" ") + "Something went wrong");
          }
       } catch (VFSException e) {
          throw new IllegalArgumentException(e);

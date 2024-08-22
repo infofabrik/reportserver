@@ -3,10 +3,11 @@ package net.datenwerke.rs.markdown.client.markdown.rpc;
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
+import net.datenwerke.gxtdto.client.servercommunication.exceptions.ServerCallFailedException;
 import net.datenwerke.rs.fileserver.client.fileserver.dto.FileServerFileDto;
 
 @RemoteServiceRelativePath("markdown")
 public interface MarkdownRpcService extends RemoteService{
 
-   public String loadMarkdownAsHtml(FileServerFileDto file);
+   public String loadMarkdownAsHtml(FileServerFileDto file) throws ServerCallFailedException;
 }

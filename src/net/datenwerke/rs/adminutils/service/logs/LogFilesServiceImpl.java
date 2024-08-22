@@ -69,7 +69,7 @@ public class LogFilesServiceImpl implements LogFilesService {
    @Override
    public String getLogDirectory() {
       return configServiceProvider.get().getConfigFailsafe(ReportServerService.CONFIG_FILE).getString("logdir",
-            generalInfoServiceProvider.get().getCatalinaHome() + "/logs");
+            generalInfoServiceProvider.get().getCatalinaHome(false) + "/logs");
    }
 
    @Override

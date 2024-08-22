@@ -257,24 +257,23 @@ public class TableDBDataSource implements TableDataSource {
       for (TableDbDatasourceOpenedHook hookers : hookHandler.getHookers(TableDbDatasourceOpenedHook.class)) {
          hookers.datasourceOpenend(this, executorToken);
       }
-
       /* handle plain */
-      try {
-         plainMQuery.setLimit(0);
-         plainMQuery.setIgnoreAnyColumnConfiguration(true);
-         PreparedStatement getColumnsStmt = plainMQuery.prepareStatement(connection);
-         getColumnsStmt.setMaxRows(0);
-
-         statementManagerService.registerStatement(executorToken, getColumnsStmt, connection);
-         ResultSetMetaData metaData = getColumnsStmt.executeQuery().getMetaData();
-
-         this.plainTableDefinition = TableDefinition.fromResultSetMetaData(metaData);
-         mQuery.setPlainColumnNames(plainTableDefinition.getColumnNames());
-      } catch (SQLException e) {
-         throw new ReportExecutorException(
-               DatasourcesMessages.INSTANCE.exceptionCouldNotExecuteStmt(e.getLocalizedMessage()), e);
-      } finally {
-         statementManagerService.unregisterStatement(executorToken);
+      if (mQuery.getColumns()!= null && !mQuery.getColumns().isEmpty()) {
+         try {
+            plainMQuery.setLimit(0);
+            plainMQuery.setIgnoreAnyColumnConfiguration(true);
+            PreparedStatement getColumnsStmt = plainMQuery.prepareStatement(connection);
+            getColumnsStmt.setMaxRows(0);
+            statementManagerService.registerStatement(executorToken, getColumnsStmt, connection);
+            ResultSetMetaData metaData = getColumnsStmt.executeQuery().getMetaData();
+            this.plainTableDefinition = TableDefinition.fromResultSetMetaData(metaData);
+            mQuery.setPlainColumnNames(plainTableDefinition.getColumnNames());
+         } catch (SQLException e) {
+            throw new ReportExecutorException(
+                  DatasourcesMessages.INSTANCE.exceptionCouldNotExecuteStmt(e.getLocalizedMessage()), e);
+         } finally {
+            statementManagerService.unregisterStatement(executorToken);
+         }
       }
 
       /* open connection and get resultset */
@@ -302,6 +301,10 @@ public class TableDBDataSource implements TableDataSource {
          statementManagerService.registerStatement(executorToken, stmt, connection);
 
          resultSet = stmt.executeQuery();
+         
+         ResultSetMetaData metaData = resultSet.getMetaData();
+         this.plainTableDefinition = TableDefinition.fromResultSetMetaData(metaData);
+         mQuery.setPlainColumnNames(plainTableDefinition.getColumnNames());
          resultSetHandler = dbHelper.createResultSetHandler(resultSet, connection);
 
          /* prepare indexMap */

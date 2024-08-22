@@ -17,6 +17,7 @@ import net.datenwerke.rs.terminal.service.terminal.helpers.CommandParser;
 import net.datenwerke.rs.terminal.service.terminal.helpmessenger.annotations.CliHelpMessage;
 import net.datenwerke.rs.terminal.service.terminal.helpmessenger.annotations.NonOptArgument;
 import net.datenwerke.rs.terminal.service.terminal.obj.CommandResult;
+import net.datenwerke.rs.utils.string.Emoji;
 import net.datenwerke.scheduler.service.scheduler.SchedulerHelperService;
 import net.datenwerke.security.service.security.rights.Read;
 import net.datenwerke.security.service.usermanager.entities.User;
@@ -68,7 +69,7 @@ public class SchedulerReplaceUserSubCommand implements SchedulerSubCommandHook {
    public CommandResult execute(CommandParser parser, TerminalSession session) throws TerminalException {
       List<String> arguments = parser.getNonOptionArguments();
       if (2 != arguments.size())
-         throw new IllegalArgumentException("Exactly two user arguments expected");
+         throw new IllegalArgumentException(Emoji.exceptionEmoji().getEmoji(" ") + "Exactly two user arguments expected");
       
       final TerminalService terminalService = terminalServiceProvider.get();
       final User oldUser = terminalService.getSingleObjectOfTypeByQuery(User.class, arguments.get(0), session, Read.class);
@@ -76,10 +77,10 @@ public class SchedulerReplaceUserSubCommand implements SchedulerSubCommandHook {
       try {
          schedulerHelperServiceProvider.get().replaceSchedulerUser(oldUser, newUser);
       } catch (Exception e) {
-         throw new TerminalException(ExceptionUtils.getRootCauseMessage(e), e);
+         throw new TerminalException(Emoji.exceptionEmoji().getEmoji(" ") + ExceptionUtils.getRootCauseMessage(e), e);
       }
       
-      return new CommandResult("User '" + oldUser + "' changed to '" + newUser + "' in all active scheduler jobs");
+      return new CommandResult(Emoji.CLINKING_BEER_MUGS.getEmoji(" ") + "User '" + oldUser + "' changed to '" + newUser + "' in all active scheduler jobs");
    }
 
    @Override

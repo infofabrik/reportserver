@@ -15,6 +15,7 @@ import net.datenwerke.rs.terminal.service.terminal.helpmessenger.annotations.Cli
 import net.datenwerke.rs.terminal.service.terminal.helpmessenger.annotations.NonOptArgument;
 import net.datenwerke.rs.terminal.service.terminal.obj.CommandResult;
 import net.datenwerke.rs.terminal.service.terminal.objresolver.exceptions.ObjectResolverException;
+import net.datenwerke.rs.utils.string.Emoji;
 import net.datenwerke.security.service.security.rights.Read;
 
 public class SetUuidCommand implements ReportModSubCommandHook {
@@ -46,7 +47,7 @@ public class SetUuidCommand implements ReportModSubCommandHook {
    public CommandResult execute(CommandParser parser, TerminalSession session) throws ObjectResolverException {
       List<String> arguments = parser.getNonOptionArguments();
       if (2 > arguments.size())
-         throw new IllegalArgumentException();
+         throw new IllegalArgumentException(Emoji.exceptionEmoji().getEmoji());
 
       String reportRef = arguments.get(0);
       String uuid = arguments.get(1);
@@ -54,14 +55,14 @@ public class SetUuidCommand implements ReportModSubCommandHook {
       try {
          Report report = (Report) session.getObjectResolver().getObject(reportRef, Read.class);
          if (null == report)
-            return new CommandResult("Coud not find report for " + reportRef);
+            return new CommandResult(Emoji.SMILING_FACE_TEAR.getEmoji(" ") + "Coud not find report for " + reportRef);
 
          report.setUuid(uuid);
          reportService.merge(report);
 
-         return new CommandResult("Set uuid to " + uuid);
+         return new CommandResult(Emoji.BEER_MUG.getEmoji(" ") + "Set uuid to " + uuid);
       } catch (Exception e) {
-         return new CommandResult("Coud not find report for " + reportRef);
+         return new CommandResult(Emoji.SMILING_FACE_TEAR.getEmoji(" ") + "Coud not find report for " + reportRef);
       }
    }
 

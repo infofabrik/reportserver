@@ -7,7 +7,6 @@ import java.util.Map;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
-import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.sencha.gxt.core.client.ValueProvider;
@@ -67,12 +66,7 @@ public class StrippedDownUserProvider extends FormFieldProviderHookImpl {
 
       SingleSelectionField<StrippedDownUser> selectionPanel = new SingleSelectionField<StrippedDownUser>(
             strippedUserStore, displayProperties);
-      selectionPanel.addValueChangeHandler(new ValueChangeHandler<StrippedDownUser>() {
-         @Override
-         public void onValueChange(ValueChangeEvent<StrippedDownUser> event) {
-            ValueChangeEvent.fire(StrippedDownUserProvider.this, event.getValue());
-         }
-      });
+      selectionPanel.addValueChangeHandler(event -> ValueChangeEvent.fire(StrippedDownUserProvider.this, event.getValue()));
 
       return selectionPanel;
    }

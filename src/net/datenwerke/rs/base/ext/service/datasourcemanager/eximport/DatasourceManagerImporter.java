@@ -5,6 +5,7 @@ import com.google.inject.Inject;
 import net.datenwerke.eximport.im.ImportItemWithKeyConfig;
 import net.datenwerke.rs.core.service.datasourcemanager.DatasourceService;
 import net.datenwerke.rs.core.service.datasourcemanager.entities.DatasourceDefinition;
+import net.datenwerke.rs.keyutils.service.keyutils.KeyNameGeneratorService;
 import net.datenwerke.treedb.ext.service.eximport.TreeNodeImportItemConfig;
 import net.datenwerke.treedb.ext.service.eximport.TreeNodeImporter;
 import net.datenwerke.treedb.service.treedb.AbstractNode;
@@ -19,12 +20,15 @@ public class DatasourceManagerImporter extends TreeNodeImporter {
    public static final String IMPORTER_ID = "DatasourceManagerImporter";
 
    private final DatasourceService datasourceService;
+   
+   private final KeyNameGeneratorService keyNameGeneratorService;
 
    @Inject
-   public DatasourceManagerImporter(DatasourceService datasourceService) {
+   public DatasourceManagerImporter(DatasourceService datasourceService, KeyNameGeneratorService keyNameGeneratorService) {
 
       /* store objects */
       this.datasourceService = datasourceService;
+      this.keyNameGeneratorService = keyNameGeneratorService;
    }
 
    @Override
@@ -52,8 +56,8 @@ public class DatasourceManagerImporter extends TreeNodeImporter {
          if (null != key) {
             DatasourceDefinition datasourceByKey = datasourceService.getDatasourceByKey(key);
             if (null != datasourceByKey) {
-               if (itemConfig instanceof ImportItemWithKeyConfig && ((ImportItemWithKeyConfig) itemConfig).isCleanKeys())
-                  ((DatasourceDefinition) node).setKey(null);
+               if (itemConfig instanceof ImportItemWithKeyConfig && ((ImportItemWithKeyConfig) itemConfig).isCreateRandomKeys())
+                  ((DatasourceDefinition) node).setKey(keyNameGeneratorService.generateDefaultKey());
                else
                   throw new IllegalStateException("A datasource with key '" + key + "' already exists");
             }

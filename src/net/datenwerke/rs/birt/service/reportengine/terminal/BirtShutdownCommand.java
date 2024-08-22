@@ -10,6 +10,7 @@ import net.datenwerke.rs.terminal.service.terminal.helpers.CommandParser;
 import net.datenwerke.rs.terminal.service.terminal.helpmessenger.annotations.CliHelpMessage;
 import net.datenwerke.rs.terminal.service.terminal.obj.CommandResult;
 import net.datenwerke.rs.terminal.service.terminal.objresolver.exceptions.ObjectResolverException;
+import net.datenwerke.rs.utils.string.Emoji;
 
 public class BirtShutdownCommand implements BirtSubCommandHook {
 
@@ -38,7 +39,7 @@ public class BirtShutdownCommand implements BirtSubCommandHook {
    public CommandResult execute(CommandParser parser, TerminalSession session) throws ObjectResolverException {
       birtService.shutdown();
 
-      return new CommandResult(BirtEngineMessages.INSTANCE.shutdownComplete());
+      return new CommandResult(Emoji.STOP_SIGN.getEmoji(" ") + BirtEngineMessages.INSTANCE.shutdownComplete());
    }
 
    @Override

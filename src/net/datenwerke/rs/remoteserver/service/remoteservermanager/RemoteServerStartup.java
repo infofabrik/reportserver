@@ -18,6 +18,7 @@ import net.datenwerke.rs.remoteserver.service.remoteservermanager.eximport.Remot
 import net.datenwerke.rs.remoteserver.service.remoteservermanager.eximport.RemoteServerManagerImporter;
 import net.datenwerke.rs.remoteserver.service.remoteservermanager.eximport.hookers.RemoteRemoteServerImporterHooker;
 import net.datenwerke.rs.remoteserver.service.remoteservermanager.eximport.hookers.RemoteServerExportConfigHooker;
+import net.datenwerke.rs.remoteserver.service.remoteservermanager.genrights.RemoteServerManagerAdminViewSecurityTarget;
 import net.datenwerke.rs.remoteserver.service.remoteservermanager.history.RemoteServerManagerHistoryUrlBuilderHooker;
 import net.datenwerke.rs.remoteserver.service.remoteservermanager.hookers.RemoteServerCategoryProviderHooker;
 import net.datenwerke.rs.remoteserver.service.remoteservermanager.hookers.UsageStatisticsRemoteServersFoldersProviderHooker;
@@ -71,6 +72,8 @@ public class RemoteServerStartup {
       hookHandler.attachHooker(ConfigDoneHook.class, () -> {
          /* secure folder */
          securityServiceProvider.get().registerSecurityTarget(RemoteServerFolder.class);
+         
+         securityServiceProvider.get().registerSecurityTarget(RemoteServerManagerAdminViewSecurityTarget.class);
       });
    }
 }

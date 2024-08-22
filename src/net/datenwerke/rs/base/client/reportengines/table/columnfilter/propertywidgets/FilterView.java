@@ -1228,4 +1228,8 @@ public class FilterView extends ReportExecutorMainPanelView implements Selection
       grid.getView().refresh(true);
    }
 
+   @Override
+   public void makeAwareOfSelectionNoPreview() {
+   }
+
 }

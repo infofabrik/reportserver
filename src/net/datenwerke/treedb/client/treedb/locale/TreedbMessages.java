@@ -21,4 +21,6 @@ public interface TreedbMessages extends Messages {
 
    String moveTo();
 
+   String selectVariants();
+
 }

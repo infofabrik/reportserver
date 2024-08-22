@@ -34,6 +34,8 @@ abstract public class AbstractFileServerNode extends SecuredAbstractNode<Abstrac
    private static final long serialVersionUID = -949128386736839307L;
 
    public abstract String getName();
+   
+   public abstract void setName(String name);
 
    @Override
    public String getNodeName() {

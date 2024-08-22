@@ -53,7 +53,7 @@ public class NoMondrianTreeProvider implements Provider<ManagerHelperTree> {
       filters.add(new ScriptDatasourceDto2PosoMap());
 
       EnhancedTreeStore store = treeDBUIService.getUITreeStore(AbstractDatasourceManagerNodeDto.class,
-            datasourceTreeLoader, false, filters);
+            datasourceTreeLoader, true, filters);
 
       /* build tree */
       final ManagerHelperTree tree = treeFactory.create(DatasourceUIModule.class, store, datasourceTreeLoader,

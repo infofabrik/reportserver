@@ -2,10 +2,10 @@ package net.datenwerke.rs.transport.service.transport.history;
 
 import com.google.inject.Inject;
 
-import net.datenwerke.rs.core.service.genrights.transport.TransportManagerAdminViewSecurityTarget;
 import net.datenwerke.rs.core.service.history.helper.TreePanelHistoryUrlBuilderHooker;
 import net.datenwerke.rs.transport.client.transport.TransportUIModule;
 import net.datenwerke.rs.transport.service.transport.entities.AbstractTransportManagerNode;
+import net.datenwerke.rs.transport.service.transport.genrights.TransportAdminViewSecurityTarget;
 import net.datenwerke.rs.transport.service.transport.locale.TransportManagerMessages;
 import net.datenwerke.rs.utils.localization.LocalizationServiceImpl;
 import net.datenwerke.security.service.security.SecurityService;
@@ -29,7 +29,7 @@ public class TransportManagerHistoryUrlBuilderHooker extends TreePanelHistoryUrl
    public boolean consumes(Object o) {
       if (!(o instanceof AbstractTransportManagerNode))
          return false;
-      if (securityService.checkRights(TransportManagerAdminViewSecurityTarget.class, Read.class))
+      if (securityService.checkRights(TransportAdminViewSecurityTarget.class, Read.class))
          return true;
       else {
          if (!(o instanceof SecurityTarget))

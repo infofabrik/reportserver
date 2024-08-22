@@ -20,11 +20,16 @@ public class Transport__ extends net.datenwerke.rs.transport.service.transport.e
 	public static final String importedBy = "importedBy";
 	public static final String importedOn = "importedOn";
 	public static final String key = "key";
+	public static final String lastRCache = "lastRCache";
+	public static final String lastWCache = "lastWCache";
+	public static final String readAccess = "readAccess";
 	public static final String rsSchemaVersion = "rsSchemaVersion";
 	public static final String rsVersion = "rsVersion";
+	public static final String securityServiceProvider = "securityServiceProvider";
 	public static final String serialVersionUID = "serialVersionUID";
 	public static final String serverId = "serverId";
 	public static final String status = "status";
+	public static final String writeAccess = "writeAccess";
 	public static final String xml = "xml";
 
 }

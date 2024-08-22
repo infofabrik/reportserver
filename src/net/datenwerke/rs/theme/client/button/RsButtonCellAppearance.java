@@ -198,7 +198,7 @@ public class RsButtonCellAppearance<M> extends Css3ButtonCellAppearance<M> {
       // CHANGE
       if (hasMenu || isSplitButton)
          builder.appendHtmlConstant(
-               "<span class=\"rs-btn-menu\"><span class=\"rs-btn-menu-sep\"></span><i class=\"fa fa-chevron-down\"></i></span>");
+               "<span class=\"rs-btn-menu\"><span class=\"rs-btn-menu-sep\"></span><i class=\"nf nf-fa-chevron_down\"></i></span>");
       // CHANGE END
 
       if (icon != null) {

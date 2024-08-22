@@ -21,6 +21,7 @@ import net.datenwerke.rs.terminal.service.terminal.helpmessenger.annotations.Non
 import net.datenwerke.rs.terminal.service.terminal.obj.CommandResult;
 import net.datenwerke.rs.terminal.service.terminal.objresolver.ObjectResolverDeamon;
 import net.datenwerke.rs.terminal.service.terminal.objresolver.exceptions.ObjectResolverException;
+import net.datenwerke.rs.utils.string.Emoji;
 import net.datenwerke.security.service.security.exceptions.ViolatedSecurityException;
 import net.datenwerke.security.service.security.rights.Read;
 import net.datenwerke.security.service.usermanager.entities.AbstractUserManagerNode;
@@ -57,7 +58,7 @@ public class SetRoleSubCommand implements TeamspaceModSubCommandHook {
    public CommandResult execute(CommandParser parser, TerminalSession session) throws ObjectResolverException {
       List<String> arguments = parser.getNonOptionArguments();
       if (2 > arguments.size())
-         throw new IllegalArgumentException();
+         throw new IllegalArgumentException(Emoji.exceptionEmoji().getEmoji());
 
       ObjectResolverDeamon objectResolver = session.getObjectResolver();
 
@@ -72,31 +73,31 @@ public class SetRoleSubCommand implements TeamspaceModSubCommandHook {
       else if ("guest".equals(roleStr))
          role = TeamSpaceRole.GUEST;
       else
-         throw new IllegalArgumentException("Unsupported role: " + roleStr);
+         throw new IllegalArgumentException(Emoji.exceptionEmoji().getEmoji(" ") + "Unsupported role: " + roleStr);
 
       /* locate teamspace */
       String teamspaceLocator = arguments.remove(0);
       Collection<Object> teamspaceCandidates = objectResolver.getObjects(teamspaceLocator, Read.class);
       if (teamspaceCandidates.size() != 1)
-         throw new IllegalArgumentException("Could not find teamspace single teamspace: " + teamspaceLocator);
+         throw new IllegalArgumentException(Emoji.exceptionEmoji().getEmoji(" ") + "Could not find teamspace single teamspace: " + teamspaceLocator);
       if (!(teamspaceCandidates.iterator().next() instanceof TeamSpace))
-         throw new IllegalArgumentException("Could not find teamspace single teamspace: " + teamspaceLocator);
+         throw new IllegalArgumentException(Emoji.exceptionEmoji().getEmoji(" ") + "Could not find teamspace single teamspace: " + teamspaceLocator);
       TeamSpace teamspace = (TeamSpace) teamspaceCandidates.iterator().next();
 
       /* check rights */
       if (!teamspaceService.isManager(teamspace))
-         throw new ViolatedSecurityException();
+         throw new ViolatedSecurityException(Emoji.securityEmoji().getEmoji());
 
       /* get users */
       Set<User> userList = new HashSet<User>();
       for (String locationStr : arguments) {
          Collection<Object> objectList = objectResolver.getObjects(locationStr, Read.class);
          if (objectList.isEmpty())
-            throw new IllegalArgumentException("No users selected");
+            throw new IllegalArgumentException(Emoji.exceptionEmoji().getEmoji(" ") + "No users selected");
 
          for (Object obj : objectList) {
             if (!(obj instanceof AbstractUserManagerNode))
-               throw new IllegalArgumentException("Found unknown objects in object selection: " + obj.getClass());
+               throw new IllegalArgumentException(Emoji.exceptionEmoji().getEmoji(" ") + "Found unknown objects in object selection: " + obj.getClass());
             if (obj instanceof User)
                userList.add((User) obj);
          }

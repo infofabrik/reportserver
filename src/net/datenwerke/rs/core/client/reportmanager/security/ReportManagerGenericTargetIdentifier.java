@@ -3,7 +3,7 @@
  */
 package net.datenwerke.rs.core.client.reportmanager.security;
 
-import net.datenwerke.rs.core.service.genrights.reportmanager.ReportManagerAdminViewSecurityTarget;
+import net.datenwerke.rs.core.service.reportmanager.genrights.ReportManagerAdminViewSecurityTarget;
 import net.datenwerke.security.client.security.GenericTargetIdentifier;
 import net.datenwerke.security.service.security.annotation.GenericTargetIdentifierMapper;
 

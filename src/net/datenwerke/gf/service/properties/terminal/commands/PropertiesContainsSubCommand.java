@@ -17,6 +17,7 @@ import net.datenwerke.rs.terminal.service.terminal.helpers.CommandParser;
 import net.datenwerke.rs.terminal.service.terminal.helpmessenger.annotations.CliHelpMessage;
 import net.datenwerke.rs.terminal.service.terminal.helpmessenger.annotations.NonOptArgument;
 import net.datenwerke.rs.terminal.service.terminal.obj.CommandResult;
+import net.datenwerke.rs.utils.string.Emoji;
 
 public class PropertiesContainsSubCommand implements PropertiesSubCommandHook {
 
@@ -57,10 +58,10 @@ public class PropertiesContainsSubCommand implements PropertiesSubCommandHook {
    public CommandResult execute(CommandParser parser, TerminalSession session) throws TerminalException {
       List<String> arguments = parser.getNonOptionArguments();
       if (1 != arguments.size())
-         throw new IllegalArgumentException("Exactly one argument expected");
+         throw new IllegalArgumentException(Emoji.exceptionEmoji().getEmoji(" ") + "Exactly one argument expected");
       
       String key = arguments.get(0);
-      return new CommandResult((isExternalKey(key) && propertiesServiceProvider.get().containsKey(key))+"");
+      return new CommandResult(Emoji.CLINKING_GLASSES.getEmoji(" ") + (isExternalKey(key) && propertiesServiceProvider.get().containsKey(key))+"");
    }
 
    @Override

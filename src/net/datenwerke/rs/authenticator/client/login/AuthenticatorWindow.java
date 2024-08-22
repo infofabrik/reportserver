@@ -151,7 +151,7 @@ public class AuthenticatorWindow extends VerticalLayoutContainer {
          loginButton = new DwTextButton(LoginMessages.INSTANCE.login());
 
       loginButton.addStyleName("rs-login-btn");
-      loginButton.setWidth(150);
+      loginButton.setWidth(350);
    }
 
    public void setViewPort(Viewport p) {

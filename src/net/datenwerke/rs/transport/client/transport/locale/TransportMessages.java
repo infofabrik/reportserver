@@ -103,4 +103,10 @@ public interface TransportMessages extends Messages {
    
    String duplicateAsOpen();
    
+   String transportManagementPermissionModuleDescription();
+
+   String close();
+   
+   String selectTransport();
+   
 }

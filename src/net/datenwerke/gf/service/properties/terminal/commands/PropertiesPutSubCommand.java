@@ -17,6 +17,7 @@ import net.datenwerke.rs.terminal.service.terminal.helpers.CommandParser;
 import net.datenwerke.rs.terminal.service.terminal.helpmessenger.annotations.CliHelpMessage;
 import net.datenwerke.rs.terminal.service.terminal.helpmessenger.annotations.NonOptArgument;
 import net.datenwerke.rs.terminal.service.terminal.obj.CommandResult;
+import net.datenwerke.rs.utils.string.Emoji;
 
 public class PropertiesPutSubCommand implements PropertiesSubCommandHook {
 
@@ -62,15 +63,15 @@ public class PropertiesPutSubCommand implements PropertiesSubCommandHook {
    public CommandResult execute(CommandParser parser, TerminalSession session) throws TerminalException {
       List<String> arguments = parser.getNonOptionArguments();
       if (2 != arguments.size())
-         throw new IllegalArgumentException("Exactly two arguments expected");
+         throw new IllegalArgumentException(Emoji.exceptionEmoji().getEmoji(" ") + "Exactly two arguments expected");
       
       String key = arguments.get(0);
       String value = arguments.get(1);
       
       if (isInternalKey(key))
-         throw new TerminalException("Cannot modify internal properties");
+         throw new TerminalException(Emoji.exceptionEmoji().getEmoji(" ") + "Cannot modify internal properties");
       propertiesServiceProvider.get().setProperty(key, value);
-      return new CommandResult("Entry '" + key + "' was put successfully");
+      return new CommandResult(Emoji.BEER_MUG.getEmoji(" ") + "Entry '" + key + "' was put successfully");
    }
 
    @Override

@@ -8,6 +8,9 @@ import javax.persistence.Table;
 import org.hibernate.annotations.Type;
 import org.hibernate.envers.Audited;
 
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+
 import net.datenwerke.dtoservices.dtogenerator.annotations.ExposeToClient;
 import net.datenwerke.dtoservices.dtogenerator.annotations.GenerateDto;
 import net.datenwerke.gf.base.service.annotations.Field;
@@ -15,10 +18,12 @@ import net.datenwerke.gf.base.service.annotations.Indexed;
 import net.datenwerke.gxtdto.client.dtomanager.DtoView;
 import net.datenwerke.gxtdto.client.dtomanager.FolderDto;
 import net.datenwerke.gxtdto.client.locale.BaseMessages;
+import net.datenwerke.rs.fileserver.service.fileserver.FileServerService;
 import net.datenwerke.rs.fileserver.service.fileserver.locale.FileserverMessages;
 import net.datenwerke.rs.utils.instancedescription.annotations.Description;
 import net.datenwerke.rs.utils.instancedescription.annotations.InstanceDescription;
 import net.datenwerke.rs.utils.instancedescription.annotations.Title;
+import net.datenwerke.treedb.service.treedb.AbstractNode;
 import net.datenwerke.treedb.service.treedb.annotation.TreeDBAllowedChildren;
 
 @Entity
@@ -34,6 +39,9 @@ public class FileServerFolder extends AbstractFileServerNode {
     * 
     */
    private static final long serialVersionUID = 5246206383961083936L;
+   
+   @Inject
+   protected static Provider<FileServerService> fileServerServiceProvider;
 
    @ExposeToClient(view = DtoView.MINIMAL, displayTitle = true)
    @Column(length = 128)
@@ -57,7 +65,7 @@ public class FileServerFolder extends AbstractFileServerNode {
 
    public FileServerFolder(String name) {
       super();
-      this.name = name;
+      this.setName(name);
    }
 
    public String getName() {
@@ -65,7 +73,17 @@ public class FileServerFolder extends AbstractFileServerNode {
    }
 
    public void setName(String name) {
+      if (this.name != null && this.name.contentEquals(name)) return;
+      if (!fileServerServiceProvider.get().checkNewName(name, this))
+         throw new IllegalArgumentException("File with same name already exists.");
       this.name = name;
+   }
+   
+   @Override
+   public void setParent(AbstractNode<AbstractFileServerNode> abstractNode) {
+      if (!fileServerServiceProvider.get().checkNewParent(abstractNode, this))
+         throw new IllegalArgumentException("File with same name already exists in new parent.");
+      super.setParent(abstractNode);
    }
 
    public void setDescription(String description) {

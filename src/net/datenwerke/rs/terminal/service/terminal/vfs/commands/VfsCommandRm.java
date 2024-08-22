@@ -15,6 +15,7 @@ import net.datenwerke.rs.terminal.service.terminal.vfs.VFSLocation;
 import net.datenwerke.rs.terminal.service.terminal.vfs.VirtualFileSystemDeamon;
 import net.datenwerke.rs.terminal.service.terminal.vfs.exceptions.VFSException;
 import net.datenwerke.rs.terminal.service.terminal.vfs.locale.VfsMessages;
+import net.datenwerke.rs.utils.string.Emoji;
 
 public class VfsCommandRm implements TerminalCommandHook {
 
@@ -36,7 +37,7 @@ public class VfsCommandRm implements TerminalCommandHook {
       try {
          List<String> arguments = parser.getNonOptionArguments();
          if (arguments.size() < 1)
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException(Emoji.exceptionEmoji().getEmoji());
 
          boolean recursive = parser.hasOption("r", "r?f?");
          boolean force = parser.hasOption("f", "r?f?");
@@ -45,7 +46,7 @@ public class VfsCommandRm implements TerminalCommandHook {
             VFSLocation locations = vfs.getLocation(arg);
 
             if (locations.isVirtualLocation())
-               throw new IllegalArgumentException("location is virtual");
+               throw new IllegalArgumentException(Emoji.exceptionEmoji().getEmoji(" ") + "location is virtual");
 
             Iterator<VFSLocation> locationIt = locations.resolveWildcards(vfs).iterator();
             while (locationIt.hasNext())
@@ -56,7 +57,7 @@ public class VfsCommandRm implements TerminalCommandHook {
          result.setCommitTransaction(true);
          return result;
       } catch (VFSException e) {
-         return new CommandResult(e.getMessage());
+         return new CommandResult(Emoji.exceptionEmoji().getEmoji(" ") + e.getMessage());
       }
    }
 

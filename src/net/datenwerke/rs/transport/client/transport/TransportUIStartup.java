@@ -24,8 +24,10 @@ import net.datenwerke.rs.transport.client.transport.objectinfo.TransportFolderOb
 import net.datenwerke.rs.transport.client.transport.objectinfo.TransportObjectInfo;
 import net.datenwerke.rs.transport.client.transport.provider.annotations.TransportManagerAdminViewTree;
 import net.datenwerke.rs.transport.client.transport.provider.treehooker.TransportManagerTreeConfigurationHooker;
-import net.datenwerke.rs.transport.client.transport.security.TransportManagerGenericTargetIdentifier;
-import net.datenwerke.rs.transport.client.transport.security.TransportManagerViewSecurityTargetDomainHooker;
+import net.datenwerke.rs.transport.client.transport.security.TransportGenericTargetIdentifier;
+import net.datenwerke.rs.transport.client.transport.security.TransportManagementGenericTargetIdentifier;
+import net.datenwerke.rs.transport.client.transport.security.TransportManagementViewSecurityTargetDomainHooker;
+import net.datenwerke.rs.transport.client.transport.security.TransportViewSecurityTargetDomainHooker;
 import net.datenwerke.rs.transport.client.transport.ui.TransportManagerPanel;
 import net.datenwerke.security.client.security.SecurityUIService;
 import net.datenwerke.security.client.security.dto.ReadDto;
@@ -38,10 +40,11 @@ public class TransportUIStartup {
    public TransportUIStartup(
          final HookHandlerService hookHandler,
          final WaitOnEventUIService waitOnEventService,
-         final TransportManagerViewSecurityTargetDomainHooker securityTargetDomain,
+         final TransportViewSecurityTargetDomainHooker securityTargetDomain,
+         final TransportManagementViewSecurityTargetDomainHooker securityManagementTargetDomain,
          final MainPanelViewProviderHooker mainPanelViewProvider, 
-         final Provider<TransportAdminModule> adminModuleProvider,
-         final Provider<TransportManagerAdminModule> importedTransportsAdminModule,
+         final Provider<TransportAdminModule> transportAdminModuleProvider,
+         final Provider<TransportManagementAdminModule> transportManagentAdminModuleProvider,
          final SecurityUIService securityService,
          final TransportManagerTreeConfigurationHooker treeConfigurator,
          final TransportObjectInfo transportObjectInfo,
@@ -61,6 +64,9 @@ public class TransportUIStartup {
       hookHandler.attachHooker(GenericTargetProviderHook.class,
             new GenericTargetProviderHook(securityTargetDomain.genericSecurityViewDomainHook_getTargetId()));
       hookHandler.attachHooker(GenericSecurityViewDomainHook.class, securityTargetDomain);
+      hookHandler.attachHooker(GenericTargetProviderHook.class,
+            new GenericTargetProviderHook(securityManagementTargetDomain.genericSecurityViewDomainHook_getTargetId()));
+      hookHandler.attachHooker(GenericSecurityViewDomainHook.class, securityManagementTargetDomain);
 
       /* attach views */
       hookHandler.attachHooker(MainPanelViewProviderHook.class, mainPanelViewProvider);
@@ -76,12 +82,15 @@ public class TransportUIStartup {
             
       /* test if user has rights to see transport manager admin view */
       waitOnEventService.callbackOnEvent(AdministrationUIService.REPORTSERVER_EVENT_HAS_ADMIN_RIGHTS, ticket -> {
-         if (securityService.hasRight(TransportManagerGenericTargetIdentifier.class, ReadDto.class)) {
+         if (securityService.hasRight(TransportGenericTargetIdentifier.class, ReadDto.class)) {
             /* attach admin hooker */
-            hookHandler.attachHooker(AdminModuleProviderHook.class, new AdminModuleProviderHook(adminModuleProvider),
+            hookHandler.attachHooker(AdminModuleProviderHook.class, new AdminModuleProviderHook(transportAdminModuleProvider),
                   HookHandlerService.PRIORITY_HIGH + 58);
-            /* attach admin hooker */
-            hookHandler.attachHooker(AdminModuleProviderHook.class, new AdminModuleProviderHook(importedTransportsAdminModule),
+         }
+         
+         if (securityService.hasRight(TransportManagementGenericTargetIdentifier.class, ReadDto.class)) {
+            /* attach admin management hooker */
+            hookHandler.attachHooker(AdminModuleProviderHook.class, new AdminModuleProviderHook(transportManagentAdminModuleProvider),
                   HookHandlerService.PRIORITY_HIGH + 59);            
          }
 

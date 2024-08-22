@@ -422,6 +422,7 @@ abstract public class DatabaseHelper {
       case Types.TIME:
          return Time.class;
       case Types.TIMESTAMP:
+      case SqlTypes.TIMESTAMPTZ: // Oracle: Timestamp with Timezone
       case SqlTypes.TIMESTAMPLTZ: // Oracle: Timestamp with Local Timezone
       case SqlTypes.DATE_TIME_OFFSET: // MSSQL: DateTimeOffset
          return Timestamp.class;

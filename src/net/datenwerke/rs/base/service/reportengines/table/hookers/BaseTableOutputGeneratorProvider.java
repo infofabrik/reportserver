@@ -17,6 +17,7 @@ import net.datenwerke.rs.base.service.reportengines.table.output.generator.MetaD
 import net.datenwerke.rs.base.service.reportengines.table.output.generator.PdfTableOutputGenerator;
 import net.datenwerke.rs.base.service.reportengines.table.output.generator.RSTableOutputGenerator;
 import net.datenwerke.rs.base.service.reportengines.table.output.generator.RSTableSimpleBeanOutputGenerator;
+import net.datenwerke.rs.base.service.reportengines.table.output.generator.TableReportInformationOutputGenerator;
 import net.datenwerke.rs.base.service.reportengines.table.output.generator.SimpleJxlsTemplateOutputGenerator;
 import net.datenwerke.rs.base.service.reportengines.table.output.generator.StreamTableOutputGenerator;
 import net.datenwerke.rs.base.service.reportengines.table.output.generator.TableOutputGenerator;
@@ -39,6 +40,7 @@ public class BaseTableOutputGeneratorProvider implements TableOutputGeneratorPro
    private final Provider<DataCountOutputGenerator> datacount;
    private final Provider<PdfTableOutputGenerator> pdf;
    private final Provider<StreamTableOutputGenerator> streamTable;
+   private final Provider<TableReportInformationOutputGenerator> reportInformation;
 
    private final ConfigService configService;
 
@@ -57,6 +59,7 @@ public class BaseTableOutputGeneratorProvider implements TableOutputGeneratorPro
          Provider<DataCountOutputGenerator> datacount, 
          Provider<PdfTableOutputGenerator> pdf,
          Provider<StreamTableOutputGenerator> streamTable, 
+         Provider<TableReportInformationOutputGenerator> reportInformation,
          ConfigService configService
          ) {
       super();
@@ -73,6 +76,7 @@ public class BaseTableOutputGeneratorProvider implements TableOutputGeneratorPro
       this.datacount = datacount;
       this.pdf = pdf;
       this.streamTable = streamTable;
+      this.reportInformation = reportInformation;
       this.configService = configService;
    }
 
@@ -91,6 +95,7 @@ public class BaseTableOutputGeneratorProvider implements TableOutputGeneratorPro
       generators.add(pdf.get());
       generators.add(jxls.get());
       generators.add(streamTable.get());
+      generators.add(reportInformation.get());
 
       if (configService.getConfigFailsafe("exportfilemd/excelexport.cf").getBoolean("xls.stream", true))
          generators.add(xlsStream.get());

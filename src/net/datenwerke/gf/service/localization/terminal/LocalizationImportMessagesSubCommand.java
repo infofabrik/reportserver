@@ -25,6 +25,7 @@ import net.datenwerke.rs.terminal.service.terminal.helpmessenger.annotations.Non
 import net.datenwerke.rs.terminal.service.terminal.obj.CommandResult;
 import net.datenwerke.rs.terminal.service.terminal.objresolver.exceptions.ObjectResolverException;
 import net.datenwerke.rs.terminal.service.terminal.vfs.locale.VfsMessages;
+import net.datenwerke.rs.utils.string.Emoji;
 
 public class LocalizationImportMessagesSubCommand implements LocalizationSubCommandHook {
 
@@ -54,7 +55,7 @@ public class LocalizationImportMessagesSubCommand implements LocalizationSubComm
    public CommandResult execute(CommandParser parser, TerminalSession session) throws ObjectResolverException {
       List<String> arguments = parser.getNonOptionArguments();
       if (arguments.size() > 1)
-         throw new IllegalArgumentException();
+         throw new IllegalArgumentException(Emoji.exceptionEmoji().getEmoji());
 
       try {
          if (arguments.size() == 1)
@@ -86,12 +87,12 @@ public class LocalizationImportMessagesSubCommand implements LocalizationSubComm
       }
 
       if (!wbFile.exists())
-         return new CommandResult("Could not find translation template");
+         return new CommandResult(Emoji.SMILING_FACE_TEAR.getEmoji(" ") + "Could not find translation template");
 
       Workbook workbook = WorkbookFactory.create(wbFile);
       loadFrom(workbook);
 
-      return new CommandResult("messages imported");
+      return new CommandResult(Emoji.CLINKING_BEER_MUGS.getEmoji(" ") + "messages imported");
    }
 
    private CommandResult loadFromFileServer(String path, TerminalSession session)
@@ -99,15 +100,15 @@ public class LocalizationImportMessagesSubCommand implements LocalizationSubComm
       Object node = session.getObjectResolver().getObjects(path).iterator().next();
 
       if (null == node)
-         return new CommandResult(VfsMessages.INSTANCE.fileNotFound());
+         return new CommandResult(Emoji.SMILING_FACE_TEAR.getEmoji(" ") + VfsMessages.INSTANCE.fileNotFound());
 
       if (!(node instanceof FileServerFile))
-         return new CommandResult(VfsMessages.INSTANCE.notSupported());
+         return new CommandResult(Emoji.SMILING_FACE_TEAR.getEmoji(" ") + VfsMessages.INSTANCE.notSupported());
 
       Workbook workbook = WorkbookFactory.create(new ByteArrayInputStream(((FileServerFile) node).getData()));
       loadFrom(workbook);
 
-      return new CommandResult("messages imported");
+      return new CommandResult(Emoji.BEER_MUG.getEmoji(" ") + "messages imported");
    }
 
    private void loadFrom(Workbook workbook) {

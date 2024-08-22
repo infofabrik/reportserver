@@ -44,6 +44,8 @@ public interface UsermanagerMessages extends Messages {
    String importMainPropertiesHeadline();
 
    String importWhereTo();
+   
+   String invalidUsername();
 
    String lastname();
 

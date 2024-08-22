@@ -20,6 +20,7 @@ public abstract class SecuredTreeDBManagerImpl<A extends SecuredAbstractNode<A>>
 
    @Inject
    protected SecurityService securityService;
+   
    @Inject
    protected KeyNameGeneratorService keyNameGeneratorService;
 

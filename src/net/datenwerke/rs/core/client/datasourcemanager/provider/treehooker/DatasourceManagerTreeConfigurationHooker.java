@@ -14,18 +14,23 @@ import net.datenwerke.gf.client.treedb.helper.menu.DeleteMenuItem;
 import net.datenwerke.gf.client.treedb.helper.menu.DuplicateMenuItem;
 import net.datenwerke.gf.client.treedb.helper.menu.InfoMenuItem;
 import net.datenwerke.gf.client.treedb.helper.menu.InsertMenuItem;
+import net.datenwerke.gf.client.treedb.helper.menu.MoveToFolderMenuItem;
 import net.datenwerke.gf.client.treedb.helper.menu.ReloadMenuItem;
+import net.datenwerke.gf.client.treedb.helper.menu.TerminalNewWindowMenuItem;
 import net.datenwerke.gf.client.treedb.helper.menu.TreeDBUIMenuProvider;
 import net.datenwerke.gf.client.treedb.icon.IconMapping;
 import net.datenwerke.gf.client.treedb.icon.TreeDBUIIconProvider;
 import net.datenwerke.gxtdto.client.baseex.widget.menu.DwMenu;
 import net.datenwerke.gxtdto.client.baseex.widget.menu.DwMenuItem;
+import net.datenwerke.gxtdto.client.utilityservices.UtilsUIService;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.core.client.datasourcemanager.DatasourceTreeManagerDao;
 import net.datenwerke.rs.core.client.datasourcemanager.DatasourceUIModule;
 import net.datenwerke.rs.core.client.datasourcemanager.dto.DatasourceFolderDto;
 import net.datenwerke.rs.core.client.datasourcemanager.hooks.DatasourceDefinitionConfigProviderHook;
 import net.datenwerke.rs.core.client.datasourcemanager.locale.DatasourcesMessages;
+import net.datenwerke.rs.core.client.datasourcemanager.provider.annotations.DatasourceTreeFolders;
+import net.datenwerke.rs.terminal.client.terminal.TerminalDao;
 import net.datenwerke.rs.terminal.client.terminal.TerminalUIService;
 import net.datenwerke.rs.terminal.client.terminal.helper.menu.TerminalMenuItem;
 import net.datenwerke.rs.terminal.client.terminal.security.TerminalGenericTargetIdentifier;
@@ -45,6 +50,9 @@ public class DatasourceManagerTreeConfigurationHooker implements TreeConfigurato
    private final Provider<SecurityUIService> securityServiceProvider;
    private final Provider<UITree> transportTreeProvider;
    private final TransportDao transportDao;
+   private Provider<UITree> datasourceManagerTreeProvider;
+   private final Provider<UtilsUIService> utilsUIServiceProvider;
+   private final TerminalDao terminalDao;
 
    @Inject
    public DatasourceManagerTreeConfigurationHooker(
@@ -53,7 +61,10 @@ public class DatasourceManagerTreeConfigurationHooker implements TreeConfigurato
          Provider<TerminalUIService> terminalUIServiceProvider,
          Provider<SecurityUIService> securityServiceProvider,
          @TransportTreeBasic Provider<UITree> transportTreeProvider,
-         TransportDao transportDao
+         TransportDao transportDao,
+         @DatasourceTreeFolders Provider<UITree> datasourceManagerTreeProvider,
+         Provider<UtilsUIService> utilsUIServiceProvider, 
+         TerminalDao terminalDao
          ) {
 
       /* store objects */
@@ -63,6 +74,9 @@ public class DatasourceManagerTreeConfigurationHooker implements TreeConfigurato
       this.securityServiceProvider = securityServiceProvider;
       this.transportTreeProvider = transportTreeProvider;
       this.transportDao = transportDao;
+      this.datasourceManagerTreeProvider = datasourceManagerTreeProvider;
+      this.utilsUIServiceProvider = utilsUIServiceProvider;
+      this.terminalDao = terminalDao;
    }
 
    @Override
@@ -85,8 +99,10 @@ public class DatasourceManagerTreeConfigurationHooker implements TreeConfigurato
       folderMenu.add(insertItem);
       folderMenu.add(new DeleteMenuItem(treeHandler));
       folderMenu.add(new AddToTransportMenuItem(transportTreeProvider.get(), transportDao));
-      if (securityServiceProvider.get().hasRight(TerminalGenericTargetIdentifier.class, ExecuteDto.class))
+      if (securityServiceProvider.get().hasRight(TerminalGenericTargetIdentifier.class, ExecuteDto.class)) {
          folderMenu.add(new TerminalMenuItem(terminalUIServiceProvider));
+         folderMenu.add(new TerminalNewWindowMenuItem(utilsUIServiceProvider, terminalDao));         
+      }
       folderMenu.add(new SeparatorMenuItem());
       folderMenu.add(new InfoMenuItem());
       folderMenu.add(new ReloadMenuItem());
@@ -99,10 +115,13 @@ public class DatasourceManagerTreeConfigurationHooker implements TreeConfigurato
          insertItem.disable();
          dsMenu.add(insertItem);
          dsMenu.add(new DuplicateMenuItem(treeHandler));
+         dsMenu.add(new MoveToFolderMenuItem(treeHandler, datasourceManagerTreeProvider));
          dsMenu.add(new DeleteMenuItem(treeHandler));
          dsMenu.add(new AddToTransportMenuItem(transportTreeProvider.get(), transportDao));
-         if (securityServiceProvider.get().hasRight(TerminalGenericTargetIdentifier.class, ExecuteDto.class))
+         if (securityServiceProvider.get().hasRight(TerminalGenericTargetIdentifier.class, ExecuteDto.class)) {
             dsMenu.add(new TerminalMenuItem(terminalUIServiceProvider));
+            dsMenu.add(new TerminalNewWindowMenuItem(utilsUIServiceProvider, terminalDao));            
+         }
          dsMenu.add(new SeparatorMenuItem());
          dsMenu.add(new InfoMenuItem());
       }

@@ -12,7 +12,7 @@ public class DatasourceManagerImportConfigDto extends TreeImportConfigDto<Abstra
    private static final long serialVersionUID = 1879599255965355795L;
 
    private DatasourceDefinitionDto defaultDatasource;
-   private boolean removeKey;
+   private boolean generateRandomKey;
 
    public void setDefaultDatasource(DatasourceDefinitionDto defaultDatasource) {
       this.defaultDatasource = defaultDatasource;
@@ -22,12 +22,12 @@ public class DatasourceManagerImportConfigDto extends TreeImportConfigDto<Abstra
       return defaultDatasource;
    }
    
-   public boolean isRemoveKey() {
-      return removeKey;
+   public boolean isGenerateRandomKey() {
+      return generateRandomKey;
    }
 
-   public void setRemoveKey(boolean removekey) {
-      this.removeKey = removekey;
+   public void setGenerateRandomKey(boolean generateRandomKey) {
+      this.generateRandomKey = generateRandomKey;
    }
 
 

@@ -140,7 +140,7 @@
 
 .sortDesc span:after{
   content: "\f15e";
-font-family: FontAwesome;
+font-family: 'NerdFontsSymbols Nerd Font';
   font-size: inherit;
   text-rendering: auto;
   -webkit-font-smoothing: antialiased;
@@ -151,7 +151,7 @@ font-family: FontAwesome;
 
 .sortAsc span:after{
   content: "\f15d";
-  font-family: FontAwesome;
+  font-family: 'NerdFontsSymbols Nerd Font';
   font-size: inherit;
   text-rendering: auto;
   -webkit-font-smoothing: antialiased;

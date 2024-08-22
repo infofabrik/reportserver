@@ -32,7 +32,7 @@ public class RSTableModel extends CompiledTableReport implements Iterable<RSTabl
 
    @ExposeToClient
    @EnclosedEntity
-   private List<RSTableRow> data = new ArrayList<RSTableRow>();
+   protected List<RSTableRow> data = new ArrayList<RSTableRow>();
 
    public RSTableModel() {
    }

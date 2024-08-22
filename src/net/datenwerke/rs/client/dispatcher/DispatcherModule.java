@@ -64,6 +64,7 @@ import net.datenwerke.rs.incubator.client.jasperutils.JasperUIModule;
 import net.datenwerke.rs.incubator.client.outputformatauth.OutputFormatAuthUiModule;
 import net.datenwerke.rs.incubator.client.reportmetadata.ReportMetadataUIModule;
 import net.datenwerke.rs.jxlsreport.client.jxlsreport.JxlsReportUiModule;
+import net.datenwerke.rs.ldapserver.client.ldapserver.LdapServerUIModule;
 import net.datenwerke.rs.license.client.LicenseUiModule;
 import net.datenwerke.rs.localfsdatasink.client.localfsdatasink.LocalFileSystemUiModule;
 import net.datenwerke.rs.markdown.client.markdown.MarkdownUiModule;
@@ -128,6 +129,7 @@ public class DispatcherModule extends AbstractGinModule {
       install(new SystemConsoleUiModule());
       install(new RemoteServerUIModule());
       install(new TransportUIModule());
+      install(new LdapServerUIModule());
       install(new RemoteRsRestServerUIModule());
       install(new DatasinkUIModule());
       install(new FtpUiModule());

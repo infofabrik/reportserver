@@ -1,5 +1,6 @@
 package net.datenwerke.rs.terminal.client.terminal;
 
+import com.google.gwt.http.client.URL;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.inject.Inject;
@@ -7,6 +8,7 @@ import com.google.inject.Provider;
 import com.sencha.gxt.core.client.dom.ScrollSupport.ScrollMode;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
 
+import net.datenwerke.gf.client.history.HistoryLocation;
 import net.datenwerke.gxtdto.client.baseex.widget.DwWindow;
 import net.datenwerke.gxtdto.client.dtomanager.Dto2PosoMapper;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
@@ -112,10 +114,20 @@ public class TerminalUIServiceImpl implements TerminalUIService {
 
    @Override
    public void displayTerminalMaximizedWindow() {
-       final TerminalWindow terminal = terminalWindowProvider.get(); 
-       terminal.show();
-       terminal.maximize();
-       terminal.getHeader().hide();
+      final TerminalWindow terminal = terminalWindowProvider.get();
+      terminal.show();
+      terminal.maximize();
+      terminal.getHeader().hide();
+   }
+
+   @Override
+   public void displayTerminalMaximizedWindowWithCommand(HistoryLocation location) {
+      String path = URL.decodePathSegment(location.getParameterValue("terminalpath"));
+      final TerminalWindow terminal = terminalWindowProvider.get();
+      terminal.initSessionWithPath(path);
+      terminal.show();
+      terminal.maximize();
+      terminal.getHeader().hide();
    }
 
 }

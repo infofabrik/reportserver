@@ -9,7 +9,6 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import com.google.inject.Inject;
-import com.google.inject.Provider;
 
 import net.datenwerke.rs.core.service.datasinkmanager.DatasinkService;
 import net.datenwerke.rs.core.service.datasinkmanager.configs.DatasinkConfiguration;
@@ -17,7 +16,6 @@ import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
 import net.datenwerke.rs.scheduler.service.scheduler.jobs.report.ReportExecuteJob;
 import net.datenwerke.rs.tabledatasink.service.tabledatasink.definitions.TableDatasink;
 import net.datenwerke.rs.utils.entitycloner.annotation.EnclosedEntity;
-import net.datenwerke.rs.utils.juel.SimpleJuel;
 import net.datenwerke.scheduler.service.scheduler.entities.AbstractAction;
 import net.datenwerke.scheduler.service.scheduler.entities.AbstractJob;
 import net.datenwerke.scheduler.service.scheduler.exceptions.ActionExecutionException;
@@ -26,10 +24,6 @@ import net.datenwerke.scheduler.service.scheduler.exceptions.ActionExecutionExce
 @Table(name = "SCHED_ACTION_AS_TABLE_DATASINK_FILE")
 @Inheritance(strategy = InheritanceType.JOINED)
 public class ScheduleAsTableDatasinkFileAction extends AbstractAction {
-
-   @Transient
-   @Inject
-   private Provider<SimpleJuel> simpleJuelProvider;
 
    @Transient
    @Inject

@@ -24,6 +24,7 @@ import net.datenwerke.rs.terminal.service.terminal.helpmessenger.annotations.Cli
 import net.datenwerke.rs.terminal.service.terminal.obj.CommandResult;
 import net.datenwerke.rs.terminal.service.terminal.obj.CommandResultHyperlink;
 import net.datenwerke.rs.terminal.service.terminal.obj.CommandResultLine;
+import net.datenwerke.rs.utils.string.Emoji;
 import net.datenwerke.security.service.security.SecurityService;
 import net.datenwerke.security.service.security.SecurityTarget;
 import net.datenwerke.security.service.security.rights.Read;
@@ -67,7 +68,7 @@ public class DiffconfigfilesCreatemissingCommand extends DiffconfigfilesSubComma
                .map(fileLink -> findFileInActualConfig(fileLink))
                .collect(toList());
       } catch (Exception e) {
-         throw new TerminalException("the config files could not be calculated: " + e.getMessage(), e);
+         throw new TerminalException(Emoji.exceptionEmoji().getEmoji(" ") + "the config files could not be calculated: " + e.getMessage(), e);
       } finally {
          removeTmpConfigFolder();
       }
@@ -96,7 +97,7 @@ public class DiffconfigfilesCreatemissingCommand extends DiffconfigfilesSubComma
 
    private CommandResult generateCommandResult(List<FileServerFile> copiedFiles) {
       if (copiedFiles.isEmpty())
-         return new CommandResult("No missing files detected - no files were copied");
+         return new CommandResult(Emoji.CLINKING_BEER_MUGS.getEmoji(" ") + "No missing files detected - no files were copied");
       CommandResult commandResult = new CommandResult();
       List<CommandResultHyperlink> hyperLinkEntries = copiedFiles.stream()
             .map(file -> historyService.buildLinksFor(file))
@@ -106,7 +107,7 @@ public class DiffconfigfilesCreatemissingCommand extends DiffconfigfilesSubComma
                   historyLink.getLink()))
             .collect(toList());
 
-      commandResult.addEntry(new CommandResultLine(
+      commandResult.addEntry(new CommandResultLine(Emoji.BEER_MUG.getEmoji(" ") + 
             "The following files were detected as missing and copied to their expected location:"));
       hyperLinkEntries.forEach(entry -> commandResult.addEntry(entry));
       return commandResult;
@@ -126,7 +127,7 @@ public class DiffconfigfilesCreatemissingCommand extends DiffconfigfilesSubComma
             .filter(file -> file.getName().equals(expectedFileName))
             .findAny();
       if (!findAny.isPresent())
-         throw new IllegalArgumentException("Not found: " + expectedFileName);
+         throw new IllegalArgumentException(Emoji.exceptionEmoji().getEmoji(" ") + "Not found: " + expectedFileName);
       return findAny.get();
    }
 }

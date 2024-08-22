@@ -114,4 +114,6 @@ public interface ReportexecutorMessages extends Messages {
    String jxlsDateColumnWidth();
 
    String jxlsCurrencyColumnWidth();
+
+   String previewDisabledLabel();
 }

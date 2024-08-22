@@ -2,10 +2,7 @@ package net.datenwerke.rs.dashboard.client.dashboard.hookers;
 
 import java.util.List;
 
-import com.google.gwt.event.logical.shared.SelectionEvent;
-import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.inject.Inject;
-import com.sencha.gxt.widget.core.client.menu.Item;
 import com.sencha.gxt.widget.core.client.menu.Menu;
 import com.sencha.gxt.widget.core.client.menu.MenuItem;
 
@@ -40,12 +37,7 @@ public class MarkNodeAsFavoriteHooker implements TsFavoriteMenuHook {
 
       MenuItem addItem = new DwMenuItem(DashboardMessages.INSTANCE.addToFavorites(), BaseIcon.STAR_O);
       menu.add(addItem);
-      addItem.addSelectionHandler(new SelectionHandler<Item>() {
-         @Override
-         public void onSelection(SelectionEvent<Item> event) {
-            dashboardDao.addToFavorites(items.get(0), new RsAsyncCallback<Void>());
-         }
-      });
+      addItem.addSelectionHandler(event -> dashboardDao.addToFavorites(items.get(0), new RsAsyncCallback<Void>()));
 
       return true;
    }

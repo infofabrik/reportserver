@@ -27,7 +27,7 @@ public abstract class VirtualFileSystemManagerHookImpl implements VirtualFileSys
    protected boolean readOnly;
 
    @Inject
-   private KeyNameGeneratorService keyGeneratorService;
+   protected KeyNameGeneratorService keyGeneratorService;
   
    @Override
    public void init(TerminalSession terminalSession) {

@@ -20,9 +20,9 @@ import com.google.common.base.MoreObjects;
 import com.google.inject.Inject;
 
 import net.datenwerke.eximport.im.ImportItemConfig;
-import net.datenwerke.eximport.im.ImporterImpl;
 import net.datenwerke.eximport.im.ImportResult.ImportResultExtraData;
 import net.datenwerke.eximport.im.ImportResult.ImportResultExtraData.ImportStrategy;
+import net.datenwerke.eximport.im.ImporterImpl;
 import net.datenwerke.eximport.im.objectimporters.BasicObjectImporter;
 import net.datenwerke.eximport.im.objectimporters.BasicObjectImporterFactory;
 import net.datenwerke.eximport.obj.ExportedItem;
@@ -150,8 +150,12 @@ public abstract class TreeNodeImporter extends ImporterImpl<TreeNodeImportItemCo
       int i = 1;
       String name = fileName;
       while (existingItem.isPresent()) {
-         name = fileName.substring(0, fileName.lastIndexOf(".")) + "_" + (i++)
-               + fileName.substring(fileName.lastIndexOf("."));
+         boolean hasFileending = fileName.lastIndexOf(".") != -1;
+         name = hasFileending
+               ? fileName.substring(0, fileName.lastIndexOf(".")) 
+                     + "_" + (i++)
+                     + fileName.substring(fileName.lastIndexOf("."))
+               : fileName + "_" + (i++);
          final String newName = name;
          existingItem = parent.getChildren().stream().filter(c -> c.getNodeName().contentEquals(newName)).findAny();
       }
@@ -169,7 +173,7 @@ public abstract class TreeNodeImporter extends ImporterImpl<TreeNodeImportItemCo
          BasicObjectImporter importer = objectImporterFactory.create(importSupervisor, exportedItem);
          AbstractFileServerNode node = (AbstractFileServerNode) exportedItem.getType().newInstance();
          importer.importProperties(node, exportedItem.getProperties());
-   
+         node.setName(name);
          // we set parent to null because child.equals checks only for equal id (because our nodes
          // are not yet imported to RS their IDs are all null)
          node.setParent(null);

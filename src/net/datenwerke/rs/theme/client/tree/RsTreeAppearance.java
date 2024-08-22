@@ -204,7 +204,7 @@ public class RsTreeAppearance extends Css3TreeAppearance {
    private Element getImage(ImageResource ir) {
       if (ir instanceof CssIconContainer) {
          Element e = ((CssIconContainer) ir).getCssElement();
-         e.addClassName("fa-fw"); // fixed width
+         e.addClassName("nf-fa-fw"); // fixed width
          return e;
       }
       return AbstractImagePrototype.create(ir).createElement();

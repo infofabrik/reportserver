@@ -13,6 +13,7 @@ import net.datenwerke.rs.terminal.service.terminal.helpers.AutocompleteHelper;
 import net.datenwerke.rs.terminal.service.terminal.helpers.CommandParser;
 import net.datenwerke.rs.terminal.service.terminal.helpmessenger.annotations.CliHelpMessage;
 import net.datenwerke.rs.terminal.service.terminal.obj.CommandResult;
+import net.datenwerke.rs.utils.string.Emoji;
 
 public class PropertiesClearSubCommand implements PropertiesSubCommandHook {
 
@@ -50,7 +51,7 @@ public class PropertiesClearSubCommand implements PropertiesSubCommandHook {
             .filter(Property::isExternal)
             .map(Property::getKey)
             .forEach(propertiesService::removeByKey);
-      return new CommandResult("Properties cleared successfully");
+      return new CommandResult(Emoji.CLINKING_BEER_MUGS.getEmoji(" ") + "Properties cleared successfully");
    }
 
    @Override

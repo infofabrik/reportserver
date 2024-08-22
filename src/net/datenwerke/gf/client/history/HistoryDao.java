@@ -27,4 +27,8 @@ public class HistoryDao extends Dao {
       rpcService.getFormattedObjectPaths(dto, transformAndKeepCallback(callback));
    }
 
+   public void getRealObjectPaths(Dto dto, AsyncCallback<List<String>> callback) {
+      rpcService.getRealObjectPaths(dto, transformAndKeepCallback(callback));
+   }
+
 }

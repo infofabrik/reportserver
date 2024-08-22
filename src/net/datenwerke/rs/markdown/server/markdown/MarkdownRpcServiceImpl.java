@@ -1,11 +1,10 @@
 package net.datenwerke.rs.markdown.server.markdown;
 
-import java.io.IOException;
-
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.google.inject.name.Named;
 
+import net.datenwerke.gxtdto.client.servercommunication.exceptions.ServerCallFailedException;
 import net.datenwerke.gxtdto.server.dtomanager.DtoService;
 import net.datenwerke.rs.fileserver.client.fileserver.dto.FileServerFileDto;
 import net.datenwerke.rs.fileserver.service.fileserver.entities.FileServerFile;
@@ -38,7 +37,7 @@ public class MarkdownRpcServiceImpl extends SecuredRemoteServiceServlet implemen
    @SecurityChecked(argumentVerification = {
          @ArgumentVerification(name = "node", isDto = true, verify = @RightsVerification(rights = Read.class)) })  
    @Override
-   public String loadMarkdownAsHtml(@Named("node") FileServerFileDto fileDto) {
+   public String loadMarkdownAsHtml(@Named("node") FileServerFileDto fileDto) throws ServerCallFailedException {
       FileServerFile file = (FileServerFile) dtoService.loadPoso(fileDto);
       if (null == file.getData())
          throw new IllegalArgumentException("No data contained in file");
@@ -48,8 +47,8 @@ public class MarkdownRpcServiceImpl extends SecuredRemoteServiceServlet implemen
       String dataString = new String(file.getData());
       try {
          return mdService.renderHtml(dataString);
-      } catch (IOException e) {
-         return e.toString();
+      } catch (Exception e) {
+         throw new ServerCallFailedException(e);
       }
    }   
 }

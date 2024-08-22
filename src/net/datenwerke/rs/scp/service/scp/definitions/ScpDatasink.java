@@ -107,6 +107,7 @@ public class ScpDatasink extends DatasinkDefinition implements HostDatasink, Fol
 
    @ExposeToClient(exposeValueToClient = false, mergeDtoValueBack = true)
    @EntityMergeField
+   @ExportableField(exportField = false)
    private String privateKeyPassphrase;
 
    @ExposeToClient

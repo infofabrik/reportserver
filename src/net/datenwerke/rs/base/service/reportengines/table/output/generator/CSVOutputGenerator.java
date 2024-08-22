@@ -53,6 +53,7 @@ public class CSVOutputGenerator extends TableOutputGeneratorImpl {
    private final ReportServerService reportServerService;
    
    private final Provider<ExporterHelper> exporterHelperProvider;
+   private boolean foundData = false;
 
    @Inject
    public CSVOutputGenerator(
@@ -104,7 +105,9 @@ public class CSVOutputGenerator extends TableOutputGeneratorImpl {
 
    @Override
    public void close() throws IOException {
-      builder.append(newline);
+      if (foundData) {
+         builder.append(newline);
+      }
       if (null != writer) {
          writer.write(builder.toString());
          builder.delete(0, builder.length());
@@ -190,6 +193,7 @@ public class CSVOutputGenerator extends TableOutputGeneratorImpl {
    @Override
    public void nextRow() throws IOException {
       builder.append(newline);
+      foundData  = true;
 
       if (null != writer) {
          writer.write(builder.toString());

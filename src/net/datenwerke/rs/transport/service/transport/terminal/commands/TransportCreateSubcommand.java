@@ -19,6 +19,7 @@ import net.datenwerke.rs.terminal.service.terminal.vfs.exceptions.VFSException;
 import net.datenwerke.rs.transport.service.transport.TransportService;
 import net.datenwerke.rs.transport.service.transport.entities.TransportFolder;
 import net.datenwerke.rs.transport.service.transport.locale.TransportManagerMessages;
+import net.datenwerke.rs.utils.string.Emoji;
 import net.datenwerke.treedb.service.treedb.AbstractNode;
 
 public class TransportCreateSubcommand implements TransportSubCommandHook {
@@ -65,29 +66,29 @@ public class TransportCreateSubcommand implements TransportSubCommandHook {
    public CommandResult execute(CommandParser parser, TerminalSession session) throws TerminalException {
       List<String> arguments = parser.getNonOptionArguments();
       if (2 != arguments.size())
-         throw new IllegalArgumentException("Exactly two arguments expected");
+         throw new IllegalArgumentException(Emoji.exceptionEmoji().getEmoji(" ") + "Exactly two arguments expected");
       
       final VirtualFileSystemDeamon vfs = session.getFileSystem();
       
       try {
          Collection<VFSLocation> resolvedTarget = vfs.getLocation(arguments.get(0)).resolveWildcards(vfs);
          if (resolvedTarget.size()!=1)
-            throw new IllegalArgumentException("Exactly one target folder expected.");
+            throw new IllegalArgumentException(Emoji.exceptionEmoji().getEmoji(" ") + "Exactly one target folder expected.");
          VFSLocation target = resolvedTarget.iterator().next();
          
          if (null == target.getFilesystemManager())
-            throw new IllegalArgumentException("cannot create transport in root");
+            throw new IllegalArgumentException(Emoji.exceptionEmoji().getEmoji(" ") + "cannot create transport in root");
          if (!target.exists())
-            throw new IllegalArgumentException("Target folder does not exist.");
+            throw new IllegalArgumentException(Emoji.exceptionEmoji().getEmoji(" ") + "Target folder does not exist.");
          if (!target.isFolder())
-            throw new IllegalArgumentException("Target is not a folder.");
+            throw new IllegalArgumentException(Emoji.exceptionEmoji().getEmoji(" ") + "Target is not a folder.");
          AbstractNode<?> parent = target.getFilesystemManager().getNodeByLocation(target);
          if (! (parent instanceof TransportFolder))
-            throw new IllegalArgumentException("Target is not a transport folder.");
+            throw new IllegalArgumentException(Emoji.exceptionEmoji().getEmoji(" ") + "Target is not a transport folder.");
          
          final String transport = transportServiceProvider.get().createTransport(arguments.get(1), (TransportFolder) parent);
          
-         return new CommandResult("Transport successfully created: '" + transport + "'");
+         return new CommandResult(Emoji.BEER_MUG.getEmoji(" ") + "Transport successfully created: '" + transport + "'");
       } catch (VFSException e) {
          throw new IllegalArgumentException(e);
       }

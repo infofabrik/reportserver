@@ -9,7 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import net.datenwerke.gf.client.theme.dto.ThemeUiConfig;
-import net.datenwerke.rs.license.service.LicenseServiceImpl;
+import net.datenwerke.rs.enterprise.client.EnterpriseCheckUiModule;
 
 public class ThemeServiceImpl implements ThemeService {
 
@@ -43,7 +43,7 @@ public class ThemeServiceImpl implements ThemeService {
       ThemeUiConfig uiConfig = new ThemeUiConfig();
 
       String loginHtml = "<span class='rs-login-logo'><i class=\"icon-rs-logo\"></i></span><span class='rs-login-edition'>"
-            + LicenseServiceImpl.COMMUNITY_LICENSE
+            + EnterpriseCheckUiModule.COMMUNITY_LICENSE
             + "</span><span class=\"rs-login-bg\"><i class=\"icon-rs-logo-square\"></i></span>";
       String loginWidth = "200px";
 

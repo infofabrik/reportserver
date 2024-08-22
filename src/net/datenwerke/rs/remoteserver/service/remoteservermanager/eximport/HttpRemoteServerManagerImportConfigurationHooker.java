@@ -42,8 +42,8 @@ public class HttpRemoteServerManagerImportConfigurationHooker extends
          TreeImportConfigDto<AbstractRemoteServerManagerNodeDto> treeConfig) {
       RemoteServerManagerImportConfigDto rmConfig = (RemoteServerManagerImportConfigDto) treeConfig;
 
-      if (rmConfig.isRemoveKey())
-         ((ImportItemWithKeyConfig) realConfigNode).setCleanKeys(true);
+      if (rmConfig.isGenerateRandomKey())
+         ((ImportItemWithKeyConfig) realConfigNode).setCreateRandomKeys(true);
 
    }
 

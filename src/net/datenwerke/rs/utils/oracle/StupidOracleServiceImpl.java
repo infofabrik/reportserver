@@ -35,7 +35,7 @@ public class StupidOracleServiceImpl implements StupidOracleService {
          Class<?> oraconClass = Class.forName("oracle.jdbc.OracleConnection");
          Class<?> tsClass = Class.forName("oracle.sql.TIMESTAMP");
          Class<?> ltzClass = Class.forName("oracle.sql.TIMESTAMPLTZ");
-         Class<?> tzClass = Class.forName("oracle.sql.TIMESTAMPLTZ");
+         Class<?> tzClass =  Class.forName("oracle.sql.TIMESTAMPTZ");
 
          Object tsValue = null;
          if (ltzClass.isAssignableFrom(obj.getClass())) {

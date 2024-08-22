@@ -24,7 +24,14 @@ public class DatasinkModule extends AbstractReportServerModule {
    public static final String PROPERTY_DEFAULT_DATASINK_KEY = "defaultDatasinkKey";
    public static final String PROPERTY_DEFAULT_DISABLED = "[@disabled]";
    public static final String PROPERTY_DEFAULT_SCHEDULING_ENABLED = "[@supportsScheduling]";
-
+   
+   public static final String PROPERTY_SUBJECT = "subject";
+   public static final String PROPERTY_TEXT = "text";
+   public static final String PROPERTY_DISABLED = "disabled";
+   public static final String PROPERTY_HTML = "html";
+   public static final String PROPERTY_TRANSLATIONS_SUBJECT = "translations.subject";
+   public static final String PROPERTY_TRANSLATIONS_TEXT = "translations.text";
+   
    @Override
    protected void configure() {
       bind(DatasinkTreeService.class).to(DatasinkTreeServiceImpl.class).in(Scopes.SINGLETON);

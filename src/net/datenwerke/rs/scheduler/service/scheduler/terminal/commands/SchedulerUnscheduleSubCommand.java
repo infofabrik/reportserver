@@ -13,6 +13,7 @@ import net.datenwerke.rs.terminal.service.terminal.helpmessenger.annotations.Cli
 import net.datenwerke.rs.terminal.service.terminal.helpmessenger.annotations.NonOptArgument;
 import net.datenwerke.rs.terminal.service.terminal.obj.CommandResult;
 import net.datenwerke.rs.terminal.service.terminal.objresolver.exceptions.ObjectResolverException;
+import net.datenwerke.rs.utils.string.Emoji;
 import net.datenwerke.scheduler.service.scheduler.SchedulerService;
 import net.datenwerke.scheduler.service.scheduler.entities.AbstractJob;
 
@@ -45,19 +46,19 @@ public class SchedulerUnscheduleSubCommand implements SchedulerSubCommandHook {
    public CommandResult execute(CommandParser parser, TerminalSession session) throws ObjectResolverException {
       List<String> args = parser.getNonOptionArguments();
       if (args.size() != 1)
-         throw new IllegalArgumentException("Expected exactly one argument");
+         throw new IllegalArgumentException(Emoji.exceptionEmoji().getEmoji(" ") + "Expected exactly one argument");
 
       Long id = Long.valueOf(args.get(0));
       AbstractJob job = schedulerService.getJobById(id);
       if (null == job)
-         return new CommandResult("Could not find job with id: " + id);
+         return new CommandResult(Emoji.SMILING_FACE_TEAR.getEmoji(" ") + "Could not find job with id: " + id);
 
       if (!job.isActive())
-         return new CommandResult("Job is already inactive");
+         return new CommandResult(Emoji.SMILING_FACE_TEAR.getEmoji(" ") + "Job is already inactive");
 
       schedulerService.unschedule(job);
 
-      return new CommandResult("unscheduled job: " + id);
+      return new CommandResult(Emoji.CLINKING_GLASSES.getEmoji(" ") + "unscheduled job: " + id);
    }
 
    @Override

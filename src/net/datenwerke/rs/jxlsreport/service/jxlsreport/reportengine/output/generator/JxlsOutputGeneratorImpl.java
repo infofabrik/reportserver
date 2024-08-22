@@ -20,6 +20,7 @@ import org.jxls.builder.AreaBuilder;
 import org.jxls.builder.xls.XlsCommentAreaBuilder;
 import org.jxls.common.Context;
 import org.jxls.common.PoiExceptionThrower;
+import org.jxls.expression.JexlExpressionEvaluator;
 import org.jxls.transform.poi.PoiTransformer;
 import org.jxls.util.JxlsHelper;
 
@@ -110,6 +111,7 @@ public class JxlsOutputGeneratorImpl implements JxlsOutputGenerator {
 
          PoiTransformer transformer = PoiTransformer.createTransformer(templateInputStream, bos);
          transformer.setExceptionHandler(new PoiExceptionThrower());
+         transformer.getTransformationConfig().setExpressionEvaluator(new JexlExpressionEvaluator(false, true));
          JxlsHelper.getInstance().processTemplate(context, transformer);
 
          return transformer.getWorkbook();
@@ -183,6 +185,7 @@ public class JxlsOutputGeneratorImpl implements JxlsOutputGenerator {
          final JxlsStreamingTransformer transformer = new JxlsStreamingTransformer(workbookTemplate,
                rowAccessWindowSize, compressTmpFiles, useSharedStringsTable);
          transformer.setExceptionHandler(new PoiExceptionThrower());
+         transformer.getTransformationConfig().setExpressionEvaluator(new JexlExpressionEvaluator(false, true));
          AreaBuilder areaBuilder = new XlsCommentAreaBuilder(transformer);
 
          areaBuilder.build().forEach(xlsArea -> xlsArea.applyAt(xlsArea.getStartCellRef(), context));

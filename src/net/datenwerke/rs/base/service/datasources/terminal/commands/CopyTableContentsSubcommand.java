@@ -24,6 +24,7 @@ import net.datenwerke.rs.terminal.service.terminal.helpers.CommandParser;
 import net.datenwerke.rs.terminal.service.terminal.helpmessenger.annotations.CliHelpMessage;
 import net.datenwerke.rs.terminal.service.terminal.helpmessenger.annotations.NonOptArgument;
 import net.datenwerke.rs.terminal.service.terminal.obj.CommandResult;
+import net.datenwerke.rs.utils.string.Emoji;
 import net.datenwerke.security.service.security.rights.Read;
 
 public class CopyTableContentsSubcommand implements CopySubCommandHook {
@@ -98,7 +99,7 @@ public class CopyTableContentsSubcommand implements CopySubCommandHook {
    public CommandResult execute(CommandParser parser, TerminalSession session) throws TerminalException {
       List<?> nonOptionArguments = parser.getNonOptionArguments();
       if (nonOptionArguments.size() < 6)
-         throw new IllegalArgumentException("at least 6 arguments required");
+         throw new IllegalArgumentException(Emoji.exceptionEmoji().getEmoji(" ") + "at least 6 arguments required");
          
       String sourceDatasourceQuery = (String) nonOptionArguments.get(0);
       String sourceTable = (String) nonOptionArguments.get(1);

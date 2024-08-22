@@ -1,7 +1,7 @@
 package net.datenwerke.rs.dot.service.dot.rest.resources;
 
-import java.io.IOException;
 import java.util.Date;
+import java.util.Optional;
 
 import javax.inject.Inject;
 import javax.inject.Provider;
@@ -20,8 +20,8 @@ import org.glassfish.jersey.media.multipart.ContentDisposition;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import net.datenwerke.rs.base.service.renderer.TextFormat;
 import net.datenwerke.rs.dot.service.dot.DotService;
-import net.datenwerke.rs.dot.service.dot.TextFormat;
 import net.datenwerke.rs.fileserver.service.fileserver.entities.FileServerFile;
 import net.datenwerke.rs.rest.resources.RsRestResource;
 import net.datenwerke.rs.rest.service.rest.annotations.RestAuthentication;
@@ -81,17 +81,17 @@ public class DotRendererResource extends RsRestResource {
    public Response renderExternal(String dot, @DefaultValue("1200") @QueryParam("width") int width, @DefaultValue("false") @QueryParam("wrap_html") Boolean wrapHtml) {
       try {
          return generateResponse(width, dot, wrapHtml);
-      } catch (IOException e) {
+      } catch (Exception e) {
          logger.error(ExceptionUtils.getRootCauseMessage(e), e);
          return Response.status(Status.INTERNAL_SERVER_ERROR.getStatusCode(), ExceptionUtils.getRootCauseMessage(e))
                .build();
       }
    }
    
-   private Response generateResponse(int width, String dot, Boolean wrapHtml) throws IOException {
+   private Response generateResponse(int width, String dot, Boolean wrapHtml) throws Exception {
       String contentTypeHeader = "image/svg+xml";
       String fileName = "graph.svg";
-      String imageStr = dotServiceProvider.get().render(TextFormat.SVG, dot, width);
+      String imageStr = dotServiceProvider.get().render(TextFormat.SVG, dot, Optional.of(width), Optional.empty());
       if (wrapHtml) {
          contentTypeHeader = "text/html";
          fileName = "graph.html";

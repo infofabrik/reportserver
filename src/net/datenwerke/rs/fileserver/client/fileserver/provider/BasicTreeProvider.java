@@ -31,7 +31,7 @@ public class BasicTreeProvider implements Provider<ManagerHelperTree> {
 
    public ManagerHelperTree get() {
       /* store */
-      EnhancedTreeStore store = treeDBUIService.getUITreeStore(AbstractFileServerNodeDto.class, treeLoader, false);
+      EnhancedTreeStore store = treeDBUIService.getUITreeStore(AbstractFileServerNodeDto.class, treeLoader, true);
 
       /* build tree */
       final ManagerHelperTree tree = treeFactory.create(FileServerUiModule.class, store, treeLoader, treeManager);

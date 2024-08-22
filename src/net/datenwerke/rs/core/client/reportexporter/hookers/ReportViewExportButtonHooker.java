@@ -105,7 +105,7 @@ public class ReportViewExportButtonHooker implements ReportExecutorViewToolbarHo
                   if (!validateViews(views))
                      return;
 
-                  if (report instanceof TableReportDto) {
+                  if (report instanceof TableReportDto && !((TableReportDto)report).isCubeFlag()) {
                      showCountingMsg();
                      tableReportUtilityDao.getReportInformation((TableReportDto) report, info.getExecuteReportToken(),
                            new RsAsyncCallback<TableReportInformation>() {
@@ -184,7 +184,7 @@ public class ReportViewExportButtonHooker implements ReportExecutorViewToolbarHo
                         if (!validateViews(views))
                            return;
 
-                        if (report instanceof TableReportDto) {
+                        if (report instanceof TableReportDto && !((TableReportDto)report).isCubeFlag()) {
                            showCountingMsg();
                            tableReportUtilityDao.getReportInformation((TableReportDto) report,
                                  info.getExecuteReportToken(), new RsAsyncCallback<TableReportInformation>() {

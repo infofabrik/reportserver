@@ -99,6 +99,8 @@ public class XLSStreamOutputGenerator extends TableOutputGeneratorImpl {
    private final LicenseService licenseService;
 
    private int configRowOffset = 0;
+   private int sheetNumber = 0;
+   private int recordNumber = 0;
 
    private CellStyle configHeaderCellStyle;
 
@@ -119,6 +121,7 @@ public class XLSStreamOutputGenerator extends TableOutputGeneratorImpl {
 
    private final String dataSheetName;
    private final String configurationSheetName;
+   private final int maxRecordsPerTab;
 
    private final Provider<FilterService> filterServiceProvider;
    private final Provider<ExporterHelper> exporterHelperProvider;
@@ -142,6 +145,7 @@ public class XLSStreamOutputGenerator extends TableOutputGeneratorImpl {
       Configuration config = configService.getConfigFailsafe(XLSOutputGenerator.CONFIG_FILE);
       dataSheetName = config.getString("xls.datasheet", messages.outputNameDynamicList());
       configurationSheetName = config.getString("xls.configsheet", messages.configuration());
+      maxRecordsPerTab = config.getInt("xls.maxrecordspertab", 1048574);
    }
 
    @Override
@@ -172,7 +176,21 @@ public class XLSStreamOutputGenerator extends TableOutputGeneratorImpl {
       workbook = new SXSSFWorkbook(1000); // keep 1000 rows in memory, exceeding rows will be flushed to disk
       workbook.setCompressTempFiles(true);
       dataSheet = workbook.createSheet(dataSheetName);
+      createFirstRow(table, report, cellFormatters, columnCount);
+      
+   }
+   
+   public void createNewTab(final TableDefinition table, final TableReport report,
+         final CellFormatter[] cellFormatters) throws IOException {
+      rowOffset = 0;
+      sheetNumber++;
+      int columnCount = td.getColumns().size();
+      dataSheet = workbook.createSheet(dataSheetName + "_" + sheetNumber);
+      createFirstRow(table, report, cellFormatters, columnCount);
+   }
 
+   private void createFirstRow(final TableDefinition table, final TableReport report,
+         final CellFormatter[] cellFormatters, int columnCount) {
       final ExporterHelper exporterHelper = exporterHelperProvider.get();
       final List<Column> columns = exporterHelper.getExportedColumns(report, td);
       
@@ -613,6 +631,15 @@ public class XLSStreamOutputGenerator extends TableOutputGeneratorImpl {
 
    @Override
    public void nextRow() throws IOException {
+      // create new tab if necessary
+      if (recordNumber == maxRecordsPerTab - 1) {         
+         createNewTab(td, report, cellFormatters);
+         rowOffset = -1;
+         recordNumber = 0;
+      } else {
+         recordNumber++;
+      }
+      
       if (withSubtotals) {
          basicXlsGenerator.nextRow();
          return;

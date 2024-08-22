@@ -5,7 +5,6 @@ import com.google.inject.Singleton;
 import com.google.inject.name.Named;
 import com.google.inject.persist.Transactional;
 
-import net.datenwerke.gxtdto.client.servercommunication.exceptions.ExpectedException;
 import net.datenwerke.gxtdto.client.servercommunication.exceptions.ServerCallFailedException;
 import net.datenwerke.gxtdto.server.dtomanager.DtoService;
 import net.datenwerke.rs.base.client.reportengines.table.dto.TableReportDto;
@@ -84,7 +83,7 @@ public class ComputedColumnsRpcServiceImpl extends SecuredRemoteServiceServlet i
          TableDefinition definition = dataSupplyer.getInfo(referenceReport, null, reference);
          return definition.getSqlColumnTypes().get(definition.size() - 1);
       } catch (Exception e) {
-         throw new ExpectedException(e);
+         throw new ServerCallFailedException(e);
       }
    }
 

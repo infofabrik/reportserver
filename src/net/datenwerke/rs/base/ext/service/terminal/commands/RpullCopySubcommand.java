@@ -32,6 +32,7 @@ import net.datenwerke.rs.terminal.service.terminal.helpmessenger.annotations.Cli
 import net.datenwerke.rs.terminal.service.terminal.helpmessenger.annotations.NonOptArgument;
 import net.datenwerke.rs.terminal.service.terminal.obj.CommandResult;
 import net.datenwerke.rs.utils.misc.DateUtils;
+import net.datenwerke.rs.utils.string.Emoji;
 import net.datenwerke.security.service.security.rights.Read;
 
 public class RpullCopySubcommand implements RpullSubCommandHook {
@@ -102,7 +103,7 @@ public class RpullCopySubcommand implements RpullSubCommandHook {
    public CommandResult execute(CommandParser parser, TerminalSession session) throws TerminalException {
       List<String> arguments = parser.getNonOptionArguments();
       if (3 != arguments.size())
-         throw new IllegalArgumentException("Exactly three arguments expected");
+         throw new IllegalArgumentException(Emoji.exceptionEmoji().getEmoji(" ") + "Exactly three arguments expected");
       
       final String argStr = "cv";
       final boolean check = parser.hasOption("c", argStr);
@@ -111,10 +112,10 @@ public class RpullCopySubcommand implements RpullSubCommandHook {
             .getSingleObjectOfTypeByQuery(RemoteRsRestServer.class, arguments.get(0), session, Read.class);
 
       if (null == remoteRsServer.getUrl())
-         throw new TerminalException("Remote RS REST server has no REST URL");
+         throw new TerminalException(Emoji.SMILING_FACE_TEAR.getEmoji(" ") + "Remote RS REST server has no REST URL");
       
       if (! remoteRsServer.getUrl().trim().startsWith("http://") && ! remoteRsServer.getUrl().trim().startsWith("https://"))
-         throw new TerminalException("URL contains no protocol: '" + remoteRsServer.getUrl() + "'");
+         throw new TerminalException(Emoji.SMILING_FACE_TEAR.getEmoji(" ") + "URL contains no protocol: '" + remoteRsServer.getUrl() + "'");
       
       final Map<String, Object> errors = new LinkedHashMap<>();
       if (check) {
@@ -125,13 +126,13 @@ public class RpullCopySubcommand implements RpullSubCommandHook {
                   ExceptionUtils.getRootCauseMessage(e), errors,
                   ExceptionUtils.getRootCause(e).getClass());
             return terminalServiceProvider.get().convertSimpleMapToCommandResult(Arrays.asList("Test results"),
-                  "No errors found", errors);
+                  Emoji.BEER_MUG.getEmoji(" ") + "No errors found", errors);
          }
       } else {
          try {
             return importEntities(remoteRsServer, arguments.get(1), arguments.get(2), includeVariants);
          } catch (Exception e) {
-            throw new TerminalException(ExceptionUtils.getRootCauseMessage(e), e);
+            throw new TerminalException(Emoji.exceptionEmoji().getEmoji(" ") + ExceptionUtils.getRootCauseMessage(e), e);
          }
       }
    }
@@ -140,7 +141,7 @@ public class RpullCopySubcommand implements RpullSubCommandHook {
          String localTarget, boolean includeVariants, Map<String, Object> errors) {
       Map<String, Object> results = remoteEntityImporterServiceProvider.get().checkImportRemoteEntities(remoteRsServer,
             remoteEntityPath, localTarget, includeVariants, false, errors);
-      return terminalServiceProvider.get().convertSimpleMapToCommandResult(Arrays.asList("Test results"), "No errors found", results);
+      return terminalServiceProvider.get().convertSimpleMapToCommandResult(Arrays.asList("Test results"), Emoji.BEER_MUG.getEmoji(" ") + "No errors found", results);
    }
    
    @CommitFlushMode
@@ -152,7 +153,7 @@ public class RpullCopySubcommand implements RpullSubCommandHook {
       ImportResult result = remoteEntityImporterServiceProvider.get().importRemoteEntities(remoteRsServer,
             remoteEntityPath, localTarget, includeVariants, false);
       Instant end = Instant.now();
-      CommandResult commandResult = new CommandResult();
+      CommandResult commandResult = new CommandResult(Emoji.FLYING_SAUCER.getEmoji());
       
       Map<String,Object> resultsMap = new LinkedHashMap<>();
       resultsMap.put(RemoteEntityImporterServiceImpl.STATUS, RemoteEntityImporterServiceImpl.STATUS_OK);

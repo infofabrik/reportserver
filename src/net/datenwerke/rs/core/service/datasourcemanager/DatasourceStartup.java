@@ -24,6 +24,7 @@ import net.datenwerke.rs.core.service.datasourcemanager.annotations.ReportServer
 import net.datenwerke.rs.core.service.datasourcemanager.entities.DatasourceDefinition;
 import net.datenwerke.rs.core.service.datasourcemanager.entities.DatasourceFolder;
 import net.datenwerke.rs.core.service.datasourcemanager.eventhandlers.HandleDatasourceForceRemoveEventHandler;
+import net.datenwerke.rs.core.service.datasourcemanager.genrights.DatasourceManagerAdminViewSecurityTarget;
 import net.datenwerke.rs.core.service.datasourcemanager.history.DatasourceManagerHistoryUrlBuilderHooker;
 import net.datenwerke.rs.core.service.datasourcemanager.hookers.DatasourceCategoryProviderHooker;
 import net.datenwerke.rs.core.service.datasourcemanager.hookers.UsageStatisticsDatasourceFoldersProviderHooker;
@@ -92,6 +93,8 @@ public class DatasourceStartup {
          /* secure datasource definition entities */
          installedDataSourceDefinitions.get()
             .forEach(securityServiceProvider.get()::registerSecurityTarget);
+         
+         securityServiceProvider.get().registerSecurityTarget(DatasourceManagerAdminViewSecurityTarget.class);
       });
       
       hookHandler.attachHooker(UsageStatisticsDatasourceEntryProviderHook.class, usageStatsTotalProvider,

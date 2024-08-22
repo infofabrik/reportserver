@@ -17,6 +17,7 @@ import net.datenwerke.rs.terminal.service.terminal.helpers.CommandParser;
 import net.datenwerke.rs.terminal.service.terminal.helpmessenger.annotations.CliHelpMessage;
 import net.datenwerke.rs.terminal.service.terminal.helpmessenger.annotations.NonOptArgument;
 import net.datenwerke.rs.terminal.service.terminal.obj.CommandResult;
+import net.datenwerke.rs.utils.string.Emoji;
 
 public class PropertiesRemoveSubCommand implements PropertiesSubCommandHook {
 
@@ -57,15 +58,15 @@ public class PropertiesRemoveSubCommand implements PropertiesSubCommandHook {
    public CommandResult execute(CommandParser parser, TerminalSession session) throws TerminalException {
       List<String> arguments = parser.getNonOptionArguments();
       if (1 != arguments.size())
-         throw new IllegalArgumentException("Exactly one argument expected");
+         throw new IllegalArgumentException(Emoji.exceptionEmoji().getEmoji(" ") + "Exactly one argument expected");
       
       String key = arguments.get(0);
       final PropertiesService propertiesService = propertiesServiceProvider.get();
       if (isInternalKey(key) || !propertiesService.containsKey(key))
-         throw new TerminalException("Key '" + key + "' does not exist");
+         throw new TerminalException(Emoji.exceptionEmoji().getEmoji(" ") + "Key '" + key + "' does not exist");
          
       propertiesService.removeByKey(key);
-      return new CommandResult("Key '" + key + "' removed successfully");
+      return new CommandResult(Emoji.BEER_MUG.getEmoji(" ") + "Key '" + key + "' removed successfully");
    }
 
    @Override

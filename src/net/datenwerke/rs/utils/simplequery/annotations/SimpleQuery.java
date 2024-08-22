@@ -28,4 +28,6 @@ public @interface SimpleQuery {
    Join[] join() default {};
 
    boolean throwNoResultException() default false;
+   
+   Class<?> wherePermissions() default Void.class;
 }

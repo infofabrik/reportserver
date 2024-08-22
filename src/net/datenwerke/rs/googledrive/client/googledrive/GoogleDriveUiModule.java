@@ -13,7 +13,7 @@ import net.datenwerke.rs.theme.client.icon.BaseIcon;
 public class GoogleDriveUiModule extends AbstractGinModule {
 
    public final static String NAME = "Google Drive";
-   public final static BaseIcon ICON = BaseIcon.GOOGLE;
+   public final static BaseIcon ICON = BaseIcon.GOOGLE_DRIVE;
    public final static Class<? extends DatasinkDefinitionDto> TYPE = GoogleDriveDatasinkDto.class;
 
    @Override

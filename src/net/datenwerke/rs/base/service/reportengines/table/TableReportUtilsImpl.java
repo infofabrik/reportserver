@@ -33,18 +33,18 @@ import net.datenwerke.rs.base.service.reportengines.table.entities.filters.Colum
 import net.datenwerke.rs.base.service.reportengines.table.entities.filters.FilterBlock;
 import net.datenwerke.rs.base.service.reportengines.table.entities.filters.FilterBlock__;
 import net.datenwerke.rs.base.service.reportengines.table.entities.filters.PreFilter;
-import net.datenwerke.rs.base.service.reportengines.table.output.object.CompiledDataCountTableReport;
 import net.datenwerke.rs.base.service.reportengines.table.output.object.RSTableModel;
 import net.datenwerke.rs.base.service.reportengines.table.output.object.TableDefinition;
+import net.datenwerke.rs.base.service.reportengines.table.output.object.TableReportInformationReport;
 import net.datenwerke.rs.base.service.reportengines.table.utils.ColumnMetadata;
 import net.datenwerke.rs.base.service.reportengines.table.utils.TableReportColumnMetadataService;
 import net.datenwerke.rs.configservice.service.configservice.ConfigService;
 import net.datenwerke.rs.core.service.datasourcemanager.entities.DatasourceContainer__;
 import net.datenwerke.rs.core.service.datasourcemanager.entities.DatasourceDefinition;
 import net.datenwerke.rs.core.service.reportmanager.ReportExecutorService;
-import net.datenwerke.rs.core.service.reportmanager.engine.config.RECCountData;
 import net.datenwerke.rs.core.service.reportmanager.engine.config.RECMetadata;
 import net.datenwerke.rs.core.service.reportmanager.engine.config.RECReportExecutorToken;
+import net.datenwerke.rs.core.service.reportmanager.engine.config.RECReportInformation;
 import net.datenwerke.rs.core.service.reportmanager.exceptions.ReportExecutorException;
 import net.datenwerke.rs.utils.reflection.ProxyUtils;
 import net.datenwerke.rs.utils.simplequery.annotations.Join;
@@ -97,18 +97,14 @@ public class TableReportUtilsImpl implements TableReportUtils {
 
       information.setVisibleCount((int) visCols);
 
-      /* column count */
-      RSTableModel res = (RSTableModel) reportExecutor.execute(report, ReportExecutorService.OUTPUT_FORMAT_METADATA,
-            new RECMetadata(), new RECReportExecutorToken(executeToken));
-      TableDefinition tableDefinition = res.getTableDefinition();
-      information.setColumnCount(tableDefinition.getColumnNames().size());
-
-      /* row count */
-      CompiledDataCountTableReport dataCount = (CompiledDataCountTableReport) reportExecutor.execute(report,
-            ReportExecutorService.OUTPUT_FORMAT_DATACOUNT, new RECCountData(),
+      /* column count & meta data */
+      TableReportInformationReport res = (TableReportInformationReport) reportExecutor.execute(report,
+            ReportExecutorService.OUTPUT_FORMAT_REPORTINFORMATION, new RECReportInformation(),
             new RECReportExecutorToken(executeToken));
-      information.setDataCount(dataCount.getDataCount());
-      information.setExecuteDuration(dataCount.getExecuteDuration());
+      TableDefinition tableDefinition = res.getTableModel().getTableDefinition();
+      information.setColumnCount(tableDefinition.getColumnNames().size());
+      information.setDataCount(res.getDataCount());
+      information.setExecuteDuration(res.getExecuteDuration());
 
       return information;
    }

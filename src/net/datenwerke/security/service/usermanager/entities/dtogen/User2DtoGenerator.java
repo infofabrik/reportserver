@@ -102,6 +102,9 @@ public class User2DtoGenerator implements Poso2DtoGenerator<User,UserDtoDec> {
 			/*  set lastUpdated */
 			dto.setLastUpdated(poso.getLastUpdated() );
 
+			/*  set username */
+			dto.setUsername(StringEscapeUtils.escapeXml(StringUtils.left(poso.getUsername(),8192)));
+
 		}
 		if(here.compareTo(DtoView.NORMAL) >= 0){
 			/*  set email */
@@ -153,9 +156,6 @@ public class User2DtoGenerator implements Poso2DtoGenerator<User,UserDtoDec> {
 
 			/*  set title */
 			dto.setTitle(StringEscapeUtils.escapeXml(StringUtils.left(poso.getTitle(),8192)));
-
-			/*  set username */
-			dto.setUsername(StringEscapeUtils.escapeXml(StringUtils.left(poso.getUsername(),8192)));
 
 		}
 

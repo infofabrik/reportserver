@@ -19,6 +19,7 @@ import net.datenwerke.rs.terminal.service.terminal.helpmessenger.annotations.Cli
 import net.datenwerke.rs.terminal.service.terminal.helpmessenger.annotations.NonOptArgument;
 import net.datenwerke.rs.terminal.service.terminal.obj.CommandResult;
 import net.datenwerke.rs.terminal.service.terminal.objresolver.exceptions.ObjectResolverException;
+import net.datenwerke.rs.utils.string.Emoji;
 import net.datenwerke.security.service.security.rights.Read;
 
 public class WebAccessSubCommand implements DirModCommandHook {
@@ -48,26 +49,26 @@ public class WebAccessSubCommand implements DirModCommandHook {
       final CommandResult cr = new CommandResult();
       List<String> arguments = parser.getNonOptionArguments();
       if (arguments.isEmpty() || arguments.size() != 2)
-         throw new IllegalArgumentException("Please enter valid number of arguments");
+         throw new IllegalArgumentException(Emoji.exceptionEmoji().getEmoji(" ") + "Please enter valid number of arguments");
 
       String path = arguments.get(0);
       final String webAccess = arguments.get(1);
 
       if (!"true".equals(webAccess) && !"false".equals(webAccess))
-         throw new IllegalArgumentException("Please add valid webaccess value (true / false)");
+         throw new IllegalArgumentException(Emoji.exceptionEmoji().getEmoji(" ") + "Please add valid webaccess value (true / false)");
 
       final Collection<?> resolvedObjects = session.getObjectResolver().getObjects(path, Read.class);
       final List<?> searchResults = (List<?>) resolvedObjects;
 
       if (0 == resolvedObjects.size()) {
-         cr.addResultLine("No FileServerFolder objects found");
+         cr.addResultLine(Emoji.SMILING_FACE_TEAR.getEmoji(" ") + "No FileServerFolder objects found");
          return cr;
       }
 
       if (searchResults.stream().anyMatch(item -> !(item instanceof FileServerFolder)))
-         throw new IllegalArgumentException("Only FileServerFolder objects can be modified");
+         throw new IllegalArgumentException(Emoji.exceptionEmoji().getEmoji(" ") + "Only FileServerFolder objects can be modified");
 
-      cr.addResultLine("Web access permission changed for the following directories:");
+      cr.addResultLine(Emoji.BEER_MUG.getEmoji(" ") + "Web access permission changed for the following directories:");
       searchResults.forEach(item -> {
          FileServerFolder folder = (FileServerFolder) item;
          folder.setPubliclyAccessible(Boolean.parseBoolean(webAccess));

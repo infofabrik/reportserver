@@ -19,6 +19,7 @@ import net.datenwerke.gxtdto.client.dialog.error.DetailErrorDialog;
 import net.datenwerke.gxtdto.client.dtomanager.callback.RsAsyncCallback;
 import net.datenwerke.gxtdto.client.servercommunication.callback.ModalAsyncCallback;
 import net.datenwerke.gxtdto.client.utilityservices.toolbar.ToolbarService;
+import net.datenwerke.rs.enterprise.client.EnterpriseUiService;
 import net.datenwerke.rs.theme.client.icon.BaseIcon;
 import net.datenwerke.rs.transport.client.transport.TransportDao;
 import net.datenwerke.rs.transport.client.transport.TransportUiService;
@@ -36,16 +37,19 @@ public class TransportApplyToolbarConfigurator implements MainPanelViewToolbarCo
    private final ToolbarService toolbarUtils;
    private final TransportDao dao;
    private final Provider<TransportUiService> transportUiServiceProvider;
+   private final Provider<EnterpriseUiService> enterpriseServiceProvider;
 
    @Inject
    public TransportApplyToolbarConfigurator(
          ToolbarService toolbarUtils, 
          TransportDao dao,
-         Provider<TransportUiService> transportUiServiceProvider
+         Provider<TransportUiService> transportUiServiceProvider,
+         Provider<EnterpriseUiService> enterpriseServiceProvider
          ) {
       this.toolbarUtils = toolbarUtils;
       this.dao = dao;
       this.transportUiServiceProvider = transportUiServiceProvider;
+      this.enterpriseServiceProvider = enterpriseServiceProvider;
    }
 
    @Override
@@ -64,16 +68,22 @@ public class TransportApplyToolbarConfigurator implements MainPanelViewToolbarCo
          return;
       
       DwTextButton applyBtn = toolbarUtils.createSmallButtonLeft(messages.applyTransport(),
-            BaseIcon.LINK);
+            BaseIcon.ADJUST);
+      
       applyBtn.addSelectHandler(event -> {
          ModalAsyncCallback<Void> callback = new ModalAsyncCallback<Void>(null,
                null, messages.success(), messages.applySuccess(), messages.pleaseWait(),
                messages.applyingTitle(), messages.applyingProgressMessage()) {
+            @Override
+            public void doOnSuccess(Void result) {
+               view.reloadNodeAndView();
+            }
          };
          Request request = dao.apply((TransportDto) selectedNode, callback);
          callback.setRequest(request);
       });
-      toolbar.add(applyBtn);
+      if (enterpriseServiceProvider.get().isEnterprise())
+         toolbar.add(applyBtn);
       
       DwTextButton checkBtn = toolbarUtils.createSmallButtonLeft(messages.checkApplyPreconditions(),
             BaseIcon.BOOKMARK);

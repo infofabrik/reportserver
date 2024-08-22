@@ -10,14 +10,14 @@ public class ReportManagerImportConfigDto extends TreeImportConfigDto<AbstractRe
     */
    private static final long serialVersionUID = 6274681789536912522L;
 
-   private boolean removeKey;
+   private boolean generateRandomKey;
 
-   public boolean isRemoveKey() {
-      return removeKey;
+   public boolean isGenerateRandomKey() {
+      return generateRandomKey;
    }
 
-   public void setRemoveKey(boolean removekey) {
-      this.removeKey = removekey;
+   public void setGenerateRandomKey(boolean generateRandomKey) {
+      this.generateRandomKey = generateRandomKey;
    }
 
 }

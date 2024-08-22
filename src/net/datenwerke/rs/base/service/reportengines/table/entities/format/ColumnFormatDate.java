@@ -2,6 +2,8 @@ package net.datenwerke.rs.base.service.reportengines.table.entities.format;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 import javax.persistence.Entity;
@@ -20,6 +22,7 @@ import net.datenwerke.dtoservices.dtogenerator.annotations.GenerateDto;
 import net.datenwerke.rs.core.service.i18ntools.I18nToolsService;
 import net.datenwerke.rs.utils.juel.SimpleJuel;
 import net.datenwerke.rs.utils.localization.LocalizationServiceImpl;
+import net.datenwerke.rs.utils.misc.DateUtils;
 
 @Entity
 @Table(name = "COLUMN_FORMAT_DATE")
@@ -122,6 +125,12 @@ public class ColumnFormatDate extends ColumnFormat {
 
          if (value instanceof Date) {
             Date date = (Date) value;
+            return targetFormatter.format(date);
+         } else if (value instanceof LocalDateTime) {
+            Date date = DateUtils.toDate((LocalDateTime) value);
+            return targetFormatter.format(date);
+         } else if (value instanceof LocalDate) {
+            Date date = DateUtils.toDate((LocalDate)value);
             return targetFormatter.format(date);
          } else {
             String strValue = String.valueOf(value);

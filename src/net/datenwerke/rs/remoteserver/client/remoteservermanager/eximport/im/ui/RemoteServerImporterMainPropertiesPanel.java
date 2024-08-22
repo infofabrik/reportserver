@@ -5,6 +5,7 @@ import com.google.inject.Provider;
 
 import net.datenwerke.gf.client.treedb.UITree;
 import net.datenwerke.gf.client.treedb.simpleform.SFFCGenericTreeNode;
+import net.datenwerke.gxtdto.client.locale.BaseMessages;
 import net.datenwerke.rs.eximport.client.eximport.im.exceptions.NotProperlyConfiguredException;
 import net.datenwerke.rs.remoteserver.client.remoteservermanager.dto.RemoteServerFolderDto;
 import net.datenwerke.rs.remoteserver.client.remoteservermanager.eximport.im.dto.RemoteServerManagerImportConfigDto;
@@ -17,7 +18,7 @@ public class RemoteServerImporterMainPropertiesPanel extends ImporterMainPropert
    private final Provider<UITree> treeProvider;
 
    protected String parentKey;
-   private String removeKeyFieldsKey;
+   private String createRandomKeyFieldKey;
 
    @Inject
    public RemoteServerImporterMainPropertiesPanel(@RemoteServerTreeFolders Provider<UITree> treeProvider) {
@@ -36,8 +37,8 @@ public class RemoteServerImporterMainPropertiesPanel extends ImporterMainPropert
       RemoteServerFolderDto parent = (RemoteServerFolderDto) form.getValue(parentKey);
       config.setParent(parent);
 
-      boolean removeKeys = (Boolean) form.getValue(removeKeyFieldsKey);
-      config.setRemoveKey(removeKeys);
+      boolean createRandomKey = (Boolean) form.getValue(createRandomKeyFieldKey);
+      config.setGenerateRandomKey(createRandomKey);
    }
 
    @Override
@@ -58,7 +59,7 @@ public class RemoteServerImporterMainPropertiesPanel extends ImporterMainPropert
                }
             });
       
-      removeKeyFieldsKey = form.addField(Boolean.class, RemoteServerMessages.INSTANCE.importRemoveKeyFieldLabel());
+      createRandomKeyFieldKey = form.addField(Boolean.class, BaseMessages.INSTANCE.createRandomKey());
    }
 
    @Override

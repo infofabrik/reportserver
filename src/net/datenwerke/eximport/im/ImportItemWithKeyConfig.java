@@ -4,17 +4,17 @@ import net.datenwerke.treedb.ext.service.eximport.TreeNodeImportItemConfig;
 
 public class ImportItemWithKeyConfig extends TreeNodeImportItemConfig {
 
-   private boolean cleanKeys = false;
+   private boolean randomKeys = false;
 
    public ImportItemWithKeyConfig(String id) {
       super(id);
    }
 
-   public void setCleanKeys(boolean cleanKeys) {
-      this.cleanKeys = cleanKeys;
+   public void setCreateRandomKeys(boolean randomKeys) {
+      this.randomKeys = randomKeys;
    }
 
-   public boolean isCleanKeys() {
-      return cleanKeys;
+   public boolean isCreateRandomKeys() {
+      return randomKeys;
    }
 }

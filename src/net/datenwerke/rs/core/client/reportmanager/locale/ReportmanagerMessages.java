@@ -45,8 +45,6 @@ public interface ReportmanagerMessages extends Messages {
 
    String importMainPropertiesHeadline();
 
-   String importRemoveKeyFieldLabel();
-
    String importWhereTo();
 
    String insert();

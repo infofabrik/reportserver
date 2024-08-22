@@ -40,7 +40,7 @@ public class SambaTreeProvider implements Provider<ManagerHelperTree> {
       List<Dto2PosoMapper> filters = Arrays.asList(new DatasinkFolderDto2PosoMap(), new SambaDatasinkDto2PosoMap());
 
       EnhancedTreeStore store = treeDBUIService.getUITreeStore(AbstractDatasinkManagerNodeDto.class, datasinkTreeLoader,
-            false, filters);
+            true, filters);
 
       /* build tree */
       final ManagerHelperTree tree = treeFactory.create(DatasinkUIModule.class, store, datasinkTreeLoader,

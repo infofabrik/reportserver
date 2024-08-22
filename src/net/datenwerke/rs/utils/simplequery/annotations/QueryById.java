@@ -35,5 +35,7 @@ import java.lang.annotation.Target;
 public @interface QueryById {
 
    Class<?> from() default Void.class;
+   
+   Class<?> wherePermissions() default Void.class;
 
 }

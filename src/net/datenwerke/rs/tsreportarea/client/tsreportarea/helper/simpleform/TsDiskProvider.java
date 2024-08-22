@@ -90,7 +90,7 @@ public class TsDiskProvider extends TreeNodeDtoProvider {
                   Set<Dto2PosoMapper> filters = new HashSet<Dto2PosoMapper>();
                   filters.add(new AbstractTsDiskNodeDto2PosoMap());
                   EnhancedTreeStore treeStore = treeDBUIService.getUITreeStore(AbstractTsDiskNodeDto.class,
-                        treeLoaderDao, false, filters);
+                        treeLoaderDao, true, filters);
 
                   ssf.setSelectionFilter(filter);
 

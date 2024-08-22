@@ -16,6 +16,7 @@ import net.datenwerke.rs.terminal.service.terminal.helpmessenger.annotations.Cli
 import net.datenwerke.rs.terminal.service.terminal.helpmessenger.annotations.NonOptArgument;
 import net.datenwerke.rs.terminal.service.terminal.obj.CommandResult;
 import net.datenwerke.rs.terminal.service.terminal.objresolver.exceptions.ObjectResolverException;
+import net.datenwerke.rs.utils.string.Emoji;
 import net.datenwerke.security.service.security.rights.Read;
 
 public class RemovePropertyCommand implements ReportModSubCommandHook {
@@ -48,7 +49,7 @@ public class RemovePropertyCommand implements ReportModSubCommandHook {
    public CommandResult execute(CommandParser parser, TerminalSession session) throws ObjectResolverException {
       List<String> arguments = parser.getNonOptionArguments();
       if (2 > arguments.size())
-         throw new IllegalArgumentException();
+         throw new IllegalArgumentException(Emoji.exceptionEmoji().getEmoji());
 
       String reportRef = arguments.get(0);
       String propertyName = arguments.get(1);
@@ -56,15 +57,15 @@ public class RemovePropertyCommand implements ReportModSubCommandHook {
       try {
          Report report = (Report) session.getObjectResolver().getObject(reportRef, Read.class);
          if (null == report)
-            return new CommandResult("Coud not find report for " + reportRef);
+            return new CommandResult(Emoji.SMILING_FACE_TEAR.getEmoji(" ") + "Coud not find report for " + reportRef);
 
          ReportProperty property = report.getReportProperty(propertyName);
          if (null != property)
             reportService.remove(report, property);
 
-         return new CommandResult("Property removed");
+         return new CommandResult(Emoji.CLINKING_BEER_MUGS.getEmoji(" ") + "Property removed");
       } catch (Exception e) {
-         return new CommandResult("Coud not find report for " + reportRef);
+         return new CommandResult(Emoji.SMILING_FACE_TEAR.getEmoji(" ") + "Coud not find report for " + reportRef);
       }
    }
 

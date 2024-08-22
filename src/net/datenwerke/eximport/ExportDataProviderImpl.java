@@ -18,8 +18,10 @@ import nu.xom.Attribute.Type;
 import nu.xom.Builder;
 import nu.xom.Document;
 import nu.xom.Element;
+import nu.xom.Node;
 import nu.xom.NodeFactory;
 import nu.xom.Nodes;
+import nu.xom.Text;
 
 public class ExportDataProviderImpl implements ExportDataProvider {
 
@@ -71,6 +73,14 @@ public class ExportDataProviderImpl implements ExportDataProvider {
 
          @Override
          public Nodes finishMakingElement(Element element) {
+            if (element.getChildCount() == 1) {
+               Node child = element.getChild(0);
+               if (child instanceof Text) {
+                  String orignalText = child.getValue();
+                  element.removeChildren();
+                  element.appendChild(new Text(orignalText.trim()));
+               }
+            }
             if (element.getQualifiedName().equals(ExImportHelperService.EXPORTED_PROPERTY_ELEMENT_NAME)
                   || element.getQualifiedName().equals(ExImportHelperService.COLLECTION_VALUE_ELEMENT)) {
                String innerExporter = element.getAttributeValue(ExImportHelperService.EXPORTER_TYPE);

@@ -21,6 +21,7 @@ import net.datenwerke.rs.terminal.service.terminal.exceptions.TerminalException;
 import net.datenwerke.rs.terminal.service.terminal.helpers.CommandParser;
 import net.datenwerke.rs.terminal.service.terminal.helpmessenger.annotations.CliHelpMessage;
 import net.datenwerke.rs.terminal.service.terminal.obj.CommandResult;
+import net.datenwerke.rs.utils.string.Emoji;
 import net.datenwerke.security.service.security.SecurityService;
 import net.datenwerke.security.service.security.SecurityTarget;
 import net.datenwerke.security.service.security.rights.Read;
@@ -51,7 +52,7 @@ public class DiffconfigfilesShowmissingCommand extends DiffconfigfilesSubCommand
          configService.extractBasicConfigFilesTo(tmpDirName);
          missingConfigFiles = findMissingConfigFiles(tmpConfigFolder);
       } catch (Exception e) {
-         throw new TerminalException("the config files could not be calculated.", e);
+         throw new TerminalException(Emoji.exceptionEmoji().getEmoji(" ") + "the config files could not be calculated.", e);
       } finally {
          if (null != tmpConfigFolder)
             fileServerService.remove(tmpConfigFolder);
@@ -61,7 +62,7 @@ public class DiffconfigfilesShowmissingCommand extends DiffconfigfilesSubCommand
 
    private CommandResult generateCommandResult(List<HistoryLink> missingConfigFiles) {
       if (missingConfigFiles.isEmpty())
-         return new CommandResult("No missing files detected");
+         return new CommandResult(Emoji.BEER_MUG.getEmoji(" ") + "No missing files detected");
 
       RSTableModel rsTableModel = new RSTableModel();
       TableDefinition td = new TableDefinition(Arrays.asList("File Path", "Status"),

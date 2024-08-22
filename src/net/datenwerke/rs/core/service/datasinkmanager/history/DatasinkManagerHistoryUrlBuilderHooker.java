@@ -4,8 +4,8 @@ import com.google.inject.Inject;
 
 import net.datenwerke.rs.core.client.datasinkmanager.DatasinkUIModule;
 import net.datenwerke.rs.core.service.datasinkmanager.entities.AbstractDatasinkManagerNode;
+import net.datenwerke.rs.core.service.datasinkmanager.genrights.DatasinkManagerAdminViewSecurityTarget;
 import net.datenwerke.rs.core.service.datasinkmanager.locale.DatasinkManagerMessages;
-import net.datenwerke.rs.core.service.genrights.datasinks.DatasinkManagerAdminViewSecurityTarget;
 import net.datenwerke.rs.core.service.history.helper.TreePanelHistoryUrlBuilderHooker;
 import net.datenwerke.rs.utils.localization.LocalizationServiceImpl;
 import net.datenwerke.security.service.security.SecurityService;

@@ -3,7 +3,7 @@
  */
 package net.datenwerke.rs.core.client.datasourcemanager.security;
 
-import net.datenwerke.rs.core.service.genrights.datasources.DatasourceManagerAdminViewSecurityTarget;
+import net.datenwerke.rs.core.service.datasourcemanager.genrights.DatasourceManagerAdminViewSecurityTarget;
 import net.datenwerke.security.client.security.GenericTargetIdentifier;
 import net.datenwerke.security.service.security.annotation.GenericTargetIdentifierMapper;
 

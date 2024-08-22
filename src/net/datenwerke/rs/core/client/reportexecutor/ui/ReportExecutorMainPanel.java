@@ -10,17 +10,14 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.gwt.core.client.Scheduler;
-import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.shared.HandlerRegistration;
-import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.sencha.gxt.core.client.Style.SelectionMode;
 import com.sencha.gxt.core.client.ValueProvider;
 import com.sencha.gxt.core.client.util.Margins;
-import com.sencha.gxt.data.shared.IconProvider;
 import com.sencha.gxt.data.shared.TreeStore;
 import com.sencha.gxt.dnd.core.client.DndDragMoveEvent;
 import com.sencha.gxt.dnd.core.client.DndDropEvent;
@@ -32,8 +29,6 @@ import com.sencha.gxt.widget.core.client.container.BorderLayoutContainer.BorderL
 import com.sencha.gxt.widget.core.client.container.CardLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer.VerticalLayoutData;
-import com.sencha.gxt.widget.core.client.event.SelectEvent;
-import com.sencha.gxt.widget.core.client.event.SelectEvent.SelectHandler;
 import com.sencha.gxt.widget.core.client.selection.SelectionChangedEvent;
 import com.sencha.gxt.widget.core.client.selection.SelectionChangedEvent.SelectionChangedHandler;
 import com.sencha.gxt.widget.core.client.toolbar.FillToolItem;
@@ -44,14 +39,12 @@ import com.sencha.gxt.widget.core.client.tree.TreeSelectionModel;
 
 import net.datenwerke.gxtdto.client.baseex.widget.DwContentPanel;
 import net.datenwerke.gxtdto.client.baseex.widget.mb.DwAlertMessageBox;
-import net.datenwerke.gxtdto.client.dtomanager.Dto;
-import net.datenwerke.gxtdto.client.eventbus.events.ObjectChangedEvent;
-import net.datenwerke.gxtdto.client.eventbus.handlers.ObjectChangedEventHandler;
 import net.datenwerke.gxtdto.client.locale.BaseMessages;
 import net.datenwerke.gxtdto.client.ui.helper.nav.NavigationModelData;
 import net.datenwerke.gxtdto.client.utilityservices.toolbar.DwHookableToolbar;
 import net.datenwerke.gxtdto.client.utils.modelkeyprovider.BasicObjectModelKeyProvider;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
+import net.datenwerke.rs.base.client.AvailableReportProperties;
 import net.datenwerke.rs.core.client.reportexecutor.ExecuteReportConfiguration;
 import net.datenwerke.rs.core.client.reportexecutor.ReportExecutorUIService;
 import net.datenwerke.rs.core.client.reportexecutor.events.ExecutorEventHandler;
@@ -105,6 +98,9 @@ public class ReportExecutorMainPanel extends DwContentPanel implements Closeable
 
    private List<ReportExecutorViewToolbarHook> toolbarHookers;
 
+   /* Counts number of visible views. If only one view is visible (e.g. preview), reportViewCount = 1.
+    * If four views (parameters, pre-filter, configure-list, preview) are visible, reportViewCount = 4.
+    */
    private int reportViewCount = 0;
 
    private DwContentPanel mainWrapper;
@@ -114,7 +110,7 @@ public class ReportExecutorMainPanel extends DwContentPanel implements Closeable
 
    private HandlerRegistration markChangeHandler;
 
-   private List<ReportExecutorMainPanelView> views = new ArrayList<ReportExecutorMainPanelView>();
+   private List<ReportExecutorMainPanelView> views = new ArrayList<>();
 
    public ReportExecutorMainPanel(ReportDto report, ExecutorEventHandler eventHandler, String executeReportToken,
          ExecuteReportConfiguration config, ReportViewConfiguration... viewConfigs) {
@@ -170,24 +166,15 @@ public class ReportExecutorMainPanel extends DwContentPanel implements Closeable
       /* add close tool */
       ToolButton closeBtn = new ToolButton(ToolButton.CLOSE);
       addTool(closeBtn);
-      closeBtn.addSelectHandler(new SelectHandler() {
-         @Override
-         public void onSelect(SelectEvent event) {
-            reportExecutorUIService.get().getActiveReportExecuteAreaModule().closeCurrent();
-         }
-      });
+      closeBtn.addSelectHandler(event -> reportExecutorUIService.get().getActiveReportExecuteAreaModule().closeCurrent());
 
-      markChangeHandler = report.addInstanceChangedHandler(new ObjectChangedEventHandler<Dto>() {
-
-         @Override
-         public void onObjectChangedEvent(ObjectChangedEvent<Dto> event) {
-            if (!markedChange) {
-               setHeading("*" + getReportName() + " (" + report.getId() + ")");
-               ReportExecuteAreaModule module = reportExecutorUIService.get().getActiveReportExecuteAreaModule();
-               if (null != module)
-                  module.markCurrentChanged();
-               markedChange = true;
-            }
+      markChangeHandler = report.addInstanceChangedHandler(event -> {
+         if (!markedChange) {
+            setHeading("*" + getReportName() + " (" + report.getId() + ")");
+            ReportExecuteAreaModule module = reportExecutorUIService.get().getActiveReportExecuteAreaModule();
+            if (null != module)
+               module.markCurrentChanged();
+            markedChange = true;
          }
       });
 
@@ -274,14 +261,7 @@ public class ReportExecutorMainPanel extends DwContentPanel implements Closeable
    }
 
    protected ReportExecutorInformation createInfo() {
-      return new ReportExecutorInformation() {
-
-         @Override
-         public String getExecuteReportToken() {
-            return executeReportToken;
-         }
-
-      };
+      return () -> executeReportToken;
    }
 
    protected void makeViewAware(ReportExecutorMainPanelView view) {
@@ -347,11 +327,11 @@ public class ReportExecutorMainPanel extends DwContentPanel implements Closeable
             });
 
       /* selection model */
-      final TreeSelectionModel<NavigationModelData<ReportExecutorMainPanelView>> sModel = new TreeSelectionModel<NavigationModelData<ReportExecutorMainPanelView>>();
+      final TreeSelectionModel<NavigationModelData<ReportExecutorMainPanelView>> sModel = new TreeSelectionModel<>();
       sModel.setSelectionMode(SelectionMode.SINGLE);
       sModel.addSelectionChangedHandler(
             new SelectionChangedHandler<NavigationModelData<ReportExecutorMainPanelView>>() {
-               private Map<ReportExecutorMainPanelView, Widget> componentMap = new HashMap<ReportExecutorMainPanelView, Widget>();
+               private Map<ReportExecutorMainPanelView, Widget> componentMap = new HashMap<>();
                private NavigationModelData<ReportExecutorMainPanelView> selectedModelData;
                private boolean inDeselect;
 
@@ -410,10 +390,18 @@ public class ReportExecutorMainPanel extends DwContentPanel implements Closeable
                      cardLayout.add(componentMap.get(selectedView));
                   }
                   cardLayout.setActiveWidget(componentMap.get(selectedView));
+                  
+                  boolean suppressAutomaticPreview = isSuppressAutomaticPreview();
 
-                  /* tell new view about selection */
-                  if (selectedView instanceof SelectionAwareView)
+                  /* Tell new view about selection. 
+                   * Don't show preview if property AvailableReportProperties.PROPERTY_SUPPRESS_AUTOMATIC_PREVIEW is true. 
+                   * If the report has parameters or the preview can be called explicitly by button click, then display it.
+                   * */
+                  if (selectedView instanceof SelectionAwareView && (reportViewCount > 1 || !suppressAutomaticPreview))
                      ((SelectionAwareView) selectedView).makeAwareOfSelection();
+                  
+                  if (suppressAutomaticPreview && reportViewCount == 1 )
+                     ((SelectionAwareView) selectedView).makeAwareOfSelectionNoPreview();
 
                   forceLayout();
                }
@@ -422,41 +410,33 @@ public class ReportExecutorMainPanel extends DwContentPanel implements Closeable
 
       tree.setAllowTextSelection(false);
 
-      /* icons for naviagtion */
-      tree.setIconProvider(new IconProvider<NavigationModelData<ReportExecutorMainPanelView>>() {
-         @Override
-         public ImageResource getIcon(NavigationModelData<ReportExecutorMainPanelView> model) {
-            return model.getIcon();
-         }
-      });
+      /* icons for navigation */
+      tree.setIconProvider(NavigationModelData::getIcon);
 
       /* add tree to navigation panel */
       navigationPanel.setWidget(tree);
 
       /* on render ask config which to select */
-      Scheduler.get().scheduleDeferred(new ScheduledCommand() {
-         @Override
-         public void execute() {
-            String id = config.getViewId();
-            NavigationModelData<ReportExecutorMainPanelView> defaultView = null;
+      Scheduler.get().scheduleDeferred(() -> {
+         String id = config.getViewId();
+         NavigationModelData<ReportExecutorMainPanelView> defaultView = null;
 
-            for (NavigationModelData<ReportExecutorMainPanelView> item : store.getRootItems()) {
-               if (item.getModel().getViewId().equals(id)) {
-                  tree.getSelectionModel().select(item, false);
-                  return;
-               }
-
-               if (null == defaultView && item.getModel().wantsToBeDefault())
-                  defaultView = item;
+         for (NavigationModelData<ReportExecutorMainPanelView> item : store.getRootItems()) {
+            if (item.getModel().getViewId().equals(id)) {
+               tree.getSelectionModel().select(item, false);
+               return;
             }
 
-            /* default : select first */
-            tree.getSelectionModel().deselectAll();
-            if (null != defaultView)
-               tree.getSelectionModel().select(defaultView, false);
-            else
-               tree.getSelectionModel().select(store.getRootItems().get(0), false);
+            if (null == defaultView && item.getModel().wantsToBeDefault())
+               defaultView = item;
          }
+
+         /* default : select first */
+         tree.getSelectionModel().deselectAll();
+         if (null != defaultView)
+            tree.getSelectionModel().select(defaultView, false);
+         else
+            tree.getSelectionModel().select(store.getRootItems().get(0), false);
       });
 
       /* allow drop */
@@ -530,6 +510,11 @@ public class ReportExecutorMainPanel extends DwContentPanel implements Closeable
       dropTarget.setAutoExpand(false);
 
       return navigationPanel;
+   }
+   
+   private boolean isSuppressAutomaticPreview() {
+      return reportExecutorUIService.get().getEffectiveReportPropertyAsBoolean(report,
+            AvailableReportProperties.PROPERTY_SUPPRESS_AUTOMATIC_PREVIEW.getValue());
    }
 
    public ReportDto getReport() {

@@ -194,6 +194,12 @@ public abstract class AbstractReportPreviewView extends ReportExecutorMainPanelV
       container.enable();
       executeAndDisplayReport(true);
    }
+   
+   public void makeAwareOfSelectionNoPreview() {
+      container.enable();
+      container.getElement().addClassName("mask-no-loading-bar");
+      container.mask(ReportexecutorMessages.INSTANCE.previewDisabledLabel());
+   }
 
    public void reload() {
       if (isCreateStatusBar()) {

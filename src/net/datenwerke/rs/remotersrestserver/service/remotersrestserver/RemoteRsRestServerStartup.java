@@ -5,6 +5,7 @@ import com.google.inject.Provider;
 
 import net.datenwerke.gf.service.lifecycle.hooks.ConfigDoneHook;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
+import net.datenwerke.rs.ldapserver.service.ldapserver.entities.LdapServer;
 import net.datenwerke.rs.remotersrestserver.service.remotersrestserver.entities.RemoteRsRestServer;
 import net.datenwerke.rs.remotersrestserver.service.remotersrestserver.hookers.UsageStatisticsRemoteRsServersProviderHooker;
 import net.datenwerke.rs.remoteserver.service.remoteservermanager.hooks.RemoteServerEntryProviderHook;
@@ -25,5 +26,7 @@ public class RemoteRsRestServerStartup {
       /* register security targets */
       hookHandler
             .attachHooker(ConfigDoneHook.class, () -> securityServiceProvider.get().registerSecurityTarget(RemoteRsRestServer.class));
+      hookHandler
+            .attachHooker(ConfigDoneHook.class, () -> securityServiceProvider.get().registerSecurityTarget(LdapServer.class));
    }
 }

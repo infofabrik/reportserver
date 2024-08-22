@@ -31,6 +31,7 @@ import net.datenwerke.rs.terminal.service.terminal.obj.CommandResult;
 import net.datenwerke.rs.transport.service.transport.TransportService;
 import net.datenwerke.rs.transport.service.transport.locale.TransportManagerMessages;
 import net.datenwerke.rs.utils.misc.DateUtils;
+import net.datenwerke.rs.utils.string.Emoji;
 import net.datenwerke.security.service.security.rights.Read;
 
 public class TransportRpullSubcommand implements TransportSubCommandHook {
@@ -86,7 +87,7 @@ public class TransportRpullSubcommand implements TransportSubCommandHook {
    public CommandResult execute(CommandParser parser, TerminalSession session) throws TerminalException {
       List<String> arguments = parser.getNonOptionArguments();
       if (0 != arguments.size() && 2 != arguments.size())
-         throw new IllegalArgumentException("Exactly zero or two arguments expected");
+         throw new IllegalArgumentException(Emoji.exceptionEmoji().getEmoji(" ") + "Exactly zero or two arguments expected");
       
       Configuration config = configServiceProvider.get().getConfigFailsafe(TransportService.CONFIG_FILE);
       String target = "";
@@ -98,7 +99,7 @@ public class TransportRpullSubcommand implements TransportSubCommandHook {
          RemoteServerDefinition remoteServerDef = remoteServerTreeServiceProvider.get()
                .getRemoteServerByKey(remoteServerKey);
          if (!(remoteServerDef instanceof RemoteRsRestServer))
-            throw new IllegalArgumentException("Remote server is not a REST server");
+            throw new IllegalArgumentException(Emoji.exceptionEmoji().getEmoji(" ") + "Remote server is not a REST server");
          remoteRsServer = (RemoteRsRestServer) remoteServerDef;
       } else {
          String remoteServerPath = arguments.get(0);
@@ -110,7 +111,7 @@ public class TransportRpullSubcommand implements TransportSubCommandHook {
       Instant start = Instant.now();
       ImportResult result = transportServiceProvider.get().rpull(remoteRsServer, target);
       Instant end = Instant.now();
-      CommandResult commandResult = new CommandResult();
+      CommandResult commandResult = new CommandResult(Emoji.FLYING_SAUCER.getEmoji());
       
       Map<String,Object> resultsMap = new LinkedHashMap<>();
       resultsMap.put(RemoteEntityImporterServiceImpl.STATUS, RemoteEntityImporterServiceImpl.STATUS_OK);

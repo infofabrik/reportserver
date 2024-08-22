@@ -1,16 +1,17 @@
 package net.datenwerke.rs.dot.server.dot;
 
-import java.io.IOException;
+import java.util.Optional;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.google.inject.name.Named;
 
+import net.datenwerke.gxtdto.client.servercommunication.exceptions.ServerCallFailedException;
 import net.datenwerke.gxtdto.server.dtomanager.DtoService;
+import net.datenwerke.rs.base.service.renderer.TextFormat;
 import net.datenwerke.rs.dot.client.dot.DotUiModule;
 import net.datenwerke.rs.dot.client.dot.rpc.DotRpcService;
 import net.datenwerke.rs.dot.service.dot.DotService;
-import net.datenwerke.rs.dot.service.dot.TextFormat;
 import net.datenwerke.rs.fileserver.client.fileserver.dto.FileServerFileDto;
 import net.datenwerke.rs.fileserver.service.fileserver.entities.FileServerFile;
 import net.datenwerke.security.server.SecuredRemoteServiceServlet;
@@ -40,7 +41,7 @@ public class DotRpcServiceImpl extends SecuredRemoteServiceServlet implements Do
    @SecurityChecked(argumentVerification = {
          @ArgumentVerification(name = "node", isDto = true, verify = @RightsVerification(rights = Read.class)) })  
    @Override
-   public String loadDotAsSVG(@Named("node") FileServerFileDto fileDto) {
+   public String loadDotAsSVG(@Named("node") FileServerFileDto fileDto) throws ServerCallFailedException {
       FileServerFile file = (FileServerFile) dtoService.loadPoso(fileDto);
       if (null == file.getData())
          throw new IllegalArgumentException("No data contained in file");
@@ -49,9 +50,9 @@ public class DotRpcServiceImpl extends SecuredRemoteServiceServlet implements Do
       }
       String dataString = new String(file.getData());
       try {
-         return dotService.render(TextFormat.SVG, dataString, 1400);
-      } catch (IOException e) {
-         return e.toString();
+         return dotService.render(TextFormat.SVG, dataString, Optional.of(1400), Optional.empty());
+      } catch (Exception e) {
+         throw new ServerCallFailedException(e);
       }
    }
    

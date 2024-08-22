@@ -20,6 +20,7 @@ import net.datenwerke.rs.terminal.service.terminal.vfs.exceptions.VFSException;
 import net.datenwerke.rs.transport.service.transport.TransportService;
 import net.datenwerke.rs.transport.service.transport.entities.Transport;
 import net.datenwerke.rs.transport.service.transport.locale.TransportManagerMessages;
+import net.datenwerke.rs.utils.string.Emoji;
 import net.datenwerke.security.service.security.rights.Read;
 import net.datenwerke.security.service.security.rights.Write;
 import net.datenwerke.treedb.service.treedb.AbstractNode;
@@ -71,30 +72,30 @@ public class TransportAddSubcommand implements TransportSubCommandHook {
    public CommandResult execute(CommandParser parser, TerminalSession session) throws TerminalException {
       List<String> arguments = parser.getNonOptionArguments();
       if (2 != arguments.size())
-         throw new IllegalArgumentException("Exactly two arguments expected");
+         throw new IllegalArgumentException(Emoji.exceptionEmoji().getEmoji(" ") + "Exactly two arguments expected");
       final VirtualFileSystemDeamon vfs = session.getFileSystem();
       
       try {
          Transport transport = terminalServiceProvider.get().getSingleObjectOfTypeByQuery(Transport.class,
                arguments.get(0), session, Read.class, Write.class);
          if (transport.isClosed())
-            throw new IllegalArgumentException("Cannot add to closed transport");
+            throw new IllegalArgumentException(Emoji.exceptionEmoji().getEmoji(" ") + "Cannot add to closed transport");
          
          Collection<VFSLocation> resolvedElement = vfs.getLocation(arguments.get(1)).resolveWildcards(vfs);
          if (resolvedElement.size()!=1)
-            throw new IllegalArgumentException("Exactly one element expected.");
+            throw new IllegalArgumentException(Emoji.exceptionEmoji().getEmoji(" ") + "Exactly one element expected.");
             
          VFSLocation elementLoc = resolvedElement.iterator().next();
          
          AbstractNode<?> element = elementLoc.getFilesystemManager().getNodeByLocation(elementLoc);
          if (null == element)
-            throw new IllegalArgumentException("Element not found: '" + arguments.get(1) + "'");
+            throw new IllegalArgumentException(Emoji.exceptionEmoji().getEmoji(" ") + "Element not found: '" + arguments.get(1) + "'");
          if (element.isFolder())
-            throw new IllegalArgumentException("Cannot add a folder to transport.");
+            throw new IllegalArgumentException(Emoji.exceptionEmoji().getEmoji(" ") + "Cannot add a folder to transport.");
          
          transportServiceProvider.get().addElement(transport, element, false);
          
-         return new CommandResult("Added to transport '" + transport + "': '" + element + "'");
+         return new CommandResult(Emoji.BEER_MUG.getEmoji(" ") + "Added to transport '" + transport + "': '" + element + "'");
       } catch (VFSException e) {
          throw new IllegalArgumentException(e);
       }

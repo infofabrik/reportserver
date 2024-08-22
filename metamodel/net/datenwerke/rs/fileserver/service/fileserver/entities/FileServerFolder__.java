@@ -9,6 +9,7 @@ import net.datenwerke.dtoservices.dtogenerator.annotations.GeneratedType;
 public class FileServerFolder__ extends net.datenwerke.rs.fileserver.service.fileserver.entities.AbstractFileServerNode__ implements net.datenwerke.entityservices.metadatagenerator.interfaces.EntityMetadataProvider {
 
 	public static final String description = "description";
+	public static final String fileServerServiceProvider = "fileServerServiceProvider";
 	public static final String name = "name";
 	public static final String publiclyAccessible = "publiclyAccessible";
 	public static final String serialVersionUID = "serialVersionUID";

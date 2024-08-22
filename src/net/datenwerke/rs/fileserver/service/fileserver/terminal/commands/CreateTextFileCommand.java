@@ -7,6 +7,7 @@ import net.datenwerke.rs.fileserver.service.fileserver.entities.AbstractFileServ
 import net.datenwerke.rs.fileserver.service.fileserver.entities.FileServerFile;
 import net.datenwerke.rs.fileserver.service.fileserver.locale.FileserverMessages;
 import net.datenwerke.rs.fileserver.service.fileserver.vfs.FileServerVfs;
+import net.datenwerke.rs.keyutils.service.keyutils.KeyNameGeneratorService;
 import net.datenwerke.rs.terminal.service.terminal.TerminalSession;
 import net.datenwerke.rs.terminal.service.terminal.exceptions.TerminalException;
 import net.datenwerke.rs.terminal.service.terminal.helpers.AutocompleteHelper;
@@ -27,12 +28,17 @@ public class CreateTextFileCommand implements TerminalCommandHook {
    private static final String BASE_COMMAND = "createTextFile";
 
    private final FileServerService fileService;
+   private final KeyNameGeneratorService keyNameGeneratorService;
 
    @Inject
-   public CreateTextFileCommand(FileServerService fileService) {
+   public CreateTextFileCommand(
+         FileServerService fileService,
+         KeyNameGeneratorService keyNameGeneratorService
+         ) {
 
       /* store objects */
       this.fileService = fileService;
+      this.keyNameGeneratorService = keyNameGeneratorService;
    }
 
    @Override
@@ -97,6 +103,8 @@ public class CreateTextFileCommand implements TerminalCommandHook {
 
       FileServerFile textFile = new FileServerFile();
       textFile.setName(fileName);
+      textFile.setKey(keyNameGeneratorService.generateDefaultKey());
+      
       if (null != parent)
          parent.addChild(textFile);
 

@@ -5,6 +5,7 @@ import net.datenwerke.rs.fileserver.service.fileserver.entities.AbstractFileServ
 import net.datenwerke.rs.fileserver.service.fileserver.entities.FileServerFile;
 import net.datenwerke.rs.fileserver.service.fileserver.entities.FileServerFolder;
 import net.datenwerke.rs.terminal.service.terminal.vfs.VFSLocation;
+import net.datenwerke.treedb.service.treedb.AbstractNode;
 import net.datenwerke.treedb.service.treedb.TreeDBManager;
 
 public interface FileServerService extends TreeDBManager<AbstractFileServerNode> {
@@ -55,4 +56,7 @@ public interface FileServerService extends TreeDBManager<AbstractFileServerNode>
    
    FileServerFile getFileByKey(String key);
    
+   boolean checkNewName(String name, AbstractFileServerNode node);
+   
+   boolean checkNewParent(AbstractNode<AbstractFileServerNode> parent, AbstractFileServerNode node);
 }

@@ -843,8 +843,10 @@ public class ExcelWorksheetBuilder {
         }
 
         if (topLeftCornerHeight > 0 && topLeftCornerWidth > 0) {
-            workbookSheet.addMergedRegion(
-                    new CellRangeAddress(startRow, startRow + topLeftCornerHeight - 1, 0, topLeftCornerWidth - 1));
+           CellRangeAddress regionToMerge = new CellRangeAddress(startRow, startRow + topLeftCornerHeight - 1, 0,
+                 topLeftCornerWidth - 1);
+           if (regionToMerge.getNumberOfCells() > 1)
+              workbookSheet.addMergedRegion(regionToMerge);
         }
 
         if (mergedItemsConfig.size() > 0) {

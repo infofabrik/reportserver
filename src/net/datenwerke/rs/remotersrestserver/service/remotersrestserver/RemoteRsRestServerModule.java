@@ -3,6 +3,7 @@ package net.datenwerke.rs.remotersrestserver.service.remotersrestserver;
 import com.google.inject.AbstractModule;
 
 import net.datenwerke.rs.remotersrestserver.service.remotersrestserver.entities.RemoteRsRestServer;
+import net.datenwerke.rs.ldapserver.service.ldapserver.entities.LdapServer;
 
 public class RemoteRsRestServerModule extends AbstractModule {
 
@@ -15,6 +16,7 @@ public class RemoteRsRestServerModule extends AbstractModule {
    protected void configure() {
       
       requestStaticInjection(RemoteRsRestServer.class);
+      requestStaticInjection(LdapServer.class);
       
       bind(RemoteRsRestServerStartup.class).asEagerSingleton();
    }

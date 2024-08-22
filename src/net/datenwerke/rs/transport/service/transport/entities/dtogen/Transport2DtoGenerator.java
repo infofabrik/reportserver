@@ -105,7 +105,7 @@ public class Transport2DtoGenerator implements Poso2DtoGenerator<Transport,Trans
 			dto.setCreatorUsername(StringEscapeUtils.escapeXml(StringUtils.left(poso.getCreatorUsername(),8192)));
 
 			/*  set description */
-			dto.setDescription(StringEscapeUtils.escapeXml(poso.getDescription() ));
+			dto.setDescription(StringEscapeUtils.escapeXml(StringUtils.left(poso.getDescription(),8192)));
 
 			/*  set flags */
 			dto.setFlags(poso.getFlags() );

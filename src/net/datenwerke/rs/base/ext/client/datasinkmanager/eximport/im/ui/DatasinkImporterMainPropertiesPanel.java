@@ -5,6 +5,7 @@ import com.google.inject.Provider;
 
 import net.datenwerke.gf.client.treedb.UITree;
 import net.datenwerke.gf.client.treedb.simpleform.SFFCGenericTreeNode;
+import net.datenwerke.gxtdto.client.locale.BaseMessages;
 import net.datenwerke.rs.base.ext.client.datasinkmanager.eximport.im.dto.DatasinkManagerImportConfigDto;
 import net.datenwerke.rs.core.client.datasinkmanager.dto.DatasinkFolderDto;
 import net.datenwerke.rs.core.client.datasinkmanager.locale.DatasinksMessages;
@@ -17,7 +18,7 @@ public class DatasinkImporterMainPropertiesPanel extends ImporterMainPropertiesP
    private final Provider<UITree> treeProvider;
 
    protected String parentKey;
-   private String removeKeyFieldsKey;
+   private String createRandomKeyFieldKey;
 
    @Inject
    public DatasinkImporterMainPropertiesPanel(@DatasinkTreeFolders Provider<UITree> treeProvider) {
@@ -36,8 +37,8 @@ public class DatasinkImporterMainPropertiesPanel extends ImporterMainPropertiesP
       DatasinkFolderDto parent = (DatasinkFolderDto) form.getValue(parentKey);
       config.setParent(parent);
       
-      boolean removeKeys = (Boolean) form.getValue(removeKeyFieldsKey);
-      config.setRemoveKey(removeKeys);
+      boolean createRandomKey = (Boolean) form.getValue(createRandomKeyFieldKey);
+      config.setGenerateRandomKey(createRandomKey);
    }
 
    @Override
@@ -58,7 +59,7 @@ public class DatasinkImporterMainPropertiesPanel extends ImporterMainPropertiesP
                }
             });
       
-      removeKeyFieldsKey = form.addField(Boolean.class, DatasinksMessages.INSTANCE.importRemoveKeyFieldLabel());
+      createRandomKeyFieldKey = form.addField(Boolean.class, BaseMessages.INSTANCE.createRandomKey());
    }
 
    @Override

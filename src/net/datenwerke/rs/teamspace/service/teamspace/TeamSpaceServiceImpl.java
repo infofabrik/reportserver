@@ -40,6 +40,7 @@ import net.datenwerke.security.service.eventlogger.annotations.FireMergeEntityEv
 import net.datenwerke.security.service.eventlogger.annotations.FirePersistEntityEvents;
 import net.datenwerke.security.service.eventlogger.annotations.FireRemoveEntityEvents;
 import net.datenwerke.security.service.security.SecurityService;
+import net.datenwerke.security.service.security.SecurityServiceSecuree;
 import net.datenwerke.security.service.security.exceptions.ViolatedSecurityException;
 import net.datenwerke.security.service.security.rights.Read;
 import net.datenwerke.security.service.usermanager.UserManagerService;
@@ -520,14 +521,20 @@ public class TeamSpaceServiceImpl implements TeamSpaceService {
 
    @Override
    public boolean mayAccess(TeamSpace teamSpace) {
-      securityService.assertRights(TeamSpaceSecurityTarget.class, Read.class);
+      if (!securityService.checkRights(TeamSpaceSecurityTarget.class, Read.class))
+         return false;
 
-      return isGlobalTsAdmin() || isGuest(teamSpace) || isOwner(teamSpace);
+      return isGlobalTsAdmin() || isGuest(teamSpace) || isUser(teamSpace) || isManager(teamSpace) || isAdmin(teamSpace)
+            || isOwner(teamSpace);
    }
 
    @Override
    public boolean mayAccess(User user, TeamSpace teamSpace) {
-      return isGlobalTsAdmin(user) || isOwner(user, teamSpace) || isGuest(user, teamSpace);
+      if (!securityService.checkRights(user, TeamSpaceSecurityTarget.class, SecurityServiceSecuree.class, Read.class))
+         return false;
+      
+      return isGlobalTsAdmin(user) || isGuest(user, teamSpace) || isUser(user, teamSpace) || isManager(user, teamSpace)
+            || isAdmin(user, teamSpace) || isOwner(user, teamSpace);
    }
 
    @Override
@@ -541,9 +548,10 @@ public class TeamSpaceServiceImpl implements TeamSpaceService {
       }
 
       /* uninstall all other apps */
-      for (TeamSpaceApp app : teamSpace.getApps())
-         if (!appIds.contains(app.getType()))
-            app.setInstalled(false);
+      teamSpace.getApps()
+         .stream()
+         .filter(app -> !appIds.contains(app.getType()))
+         .forEach(app -> app.setInstalled(false));
    }
 
    @Override

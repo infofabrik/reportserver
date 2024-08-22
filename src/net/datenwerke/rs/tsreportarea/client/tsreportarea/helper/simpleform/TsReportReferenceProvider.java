@@ -91,7 +91,7 @@ public class TsReportReferenceProvider extends TreeNodeDtoProvider {
                   filters.add(new TsDiskRootDto2PosoMap());
                   filters.add(new TsDiskFolderDto2PosoMap());
                   EnhancedTreeStore treeStore = treeDBUIService.getUITreeStore(AbstractTsDiskNodeDto.class,
-                        treeLoaderDao, false, filters);
+                        treeLoaderDao, true, filters);
 
                   ssf.setTreePanel(uiTreeFactory.create(treeStore));
                   ssf.getTreePanel().getSelectionModel().setSelectionMode(SelectionMode.SINGLE);

@@ -3,9 +3,9 @@ package net.datenwerke.rs.core.service.reportmanager.hookers;
 import com.google.inject.Inject;
 
 import net.datenwerke.rs.core.client.reportmanager.ReportManagerUIModule;
-import net.datenwerke.rs.core.service.genrights.reportmanager.ReportManagerAdminViewSecurityTarget;
 import net.datenwerke.rs.core.service.history.helper.TreePanelHistoryUrlBuilderHooker;
 import net.datenwerke.rs.core.service.reportmanager.entities.AbstractReportManagerNode;
+import net.datenwerke.rs.core.service.reportmanager.genrights.ReportManagerAdminViewSecurityTarget;
 import net.datenwerke.rs.core.service.reportmanager.locale.ReportManagerMessages;
 import net.datenwerke.rs.utils.localization.LocalizationServiceImpl;
 import net.datenwerke.security.service.security.SecurityService;

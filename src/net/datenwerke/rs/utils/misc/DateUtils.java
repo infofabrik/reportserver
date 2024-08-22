@@ -1,6 +1,8 @@
 package net.datenwerke.rs.utils.misc;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
@@ -148,6 +150,14 @@ public class DateUtils {
    
    public static String formatLocal(Date date) {
       return formatLocal(toZonedDateTime(date));
+   }
+   
+   public static Date toDate(LocalDateTime localDateTime) {
+      return Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
+   }
+   
+   public static Date toDate(LocalDate localDate) {
+      return Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
    }
    
 }

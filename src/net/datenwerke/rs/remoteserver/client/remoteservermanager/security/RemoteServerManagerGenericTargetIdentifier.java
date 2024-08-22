@@ -3,7 +3,7 @@
  */
 package net.datenwerke.rs.remoteserver.client.remoteservermanager.security;
 
-import net.datenwerke.rs.core.service.genrights.remoteservers.RemoteServerManagerAdminViewSecurityTarget;
+import net.datenwerke.rs.remoteserver.service.remoteservermanager.genrights.RemoteServerManagerAdminViewSecurityTarget;
 import net.datenwerke.security.client.security.GenericTargetIdentifier;
 import net.datenwerke.security.service.security.annotation.GenericTargetIdentifierMapper;
 

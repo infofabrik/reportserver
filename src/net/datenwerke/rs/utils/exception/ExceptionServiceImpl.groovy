@@ -4,6 +4,7 @@ import static net.datenwerke.rs.adminutils.client.systemconsole.generalinfo.Memo
 import static net.datenwerke.rs.adminutils.client.systemconsole.generalinfo.Memory.MAX_FORMATTED
 import static net.datenwerke.rs.adminutils.client.systemconsole.generalinfo.Memory.TOTAL_FORMATTED
 import static net.datenwerke.rs.adminutils.client.systemconsole.generalinfo.Memory.USED_FORMATTED
+import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.ACTIVE_PAMS
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.APPLICATION_SERVER
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.BASE_REPORT_ID
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.BASE_REPORT_KEY
@@ -12,12 +13,12 @@ import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.BAS
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.CATALINA_BASE
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.CATALINA_HOME
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.CONFIG_DIRECTORY
+import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.IO_TMP_DIRECTORY
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.DATASOURCE_DATABASE_INFORMATION
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.DATASOURCE_DATABASE_JDBC_PROPERTIES
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.DATASOURCE_DATABASE_QUERY
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.DATASOURCE_ID
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.DATASOURCE_NAME
-import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.KNOWN_HOSTS_FILE
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.DATASOURCE_PATH
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.DATASOURCE_TYPE
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.DEFAULT_SSL_PROTOCOLS
@@ -27,16 +28,21 @@ import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.EXE
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.EXECUTING_USER_ID
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.EXECUTING_USER_LASTNAME
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.EXECUTING_USER_USERNAME
+import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.EXTERNAL_LIBS
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.GROOVY_VERSION
+import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.HEADLESS
+import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.INSTALLATION_PATH
+import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.INTERNAL_LIBS
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.JAVA_HOME
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.JAVA_VERSION
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.JAVA_VM_ARGUMENTS
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.JVM_FILE_ENCODING
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.JVM_LOCALE
+import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.JVM_SERVER_TIME
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.JVM_USER_COUNTRY
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.JVM_USER_LANGUAGE
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.JVM_USER_TIMEZONE
-import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.JVM_SERVER_TIME
+import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.KNOWN_HOSTS_FILE
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.LOCALE
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.LOG_FILES_DIRECTORY
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.MEMORY_FREE
@@ -56,10 +62,10 @@ import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.REQ
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.REQUEST_SCHEME
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.REQUEST_SERVER_NAME
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.REQUEST_SERVER_PORT
-import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.REST_URL
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.REQUEST_URL
-import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.STATIC_PAMS
+import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.REST_URL
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.SUPPORTED_SSL_PROTOCOLS
+import static net.datenwerke.rs.utils.exception.ExceptionService.LogPropertyType.TYPE_AUTHENTICATION
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogPropertyType.TYPE_DATASOURCE
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogPropertyType.TYPE_DATASOURCE_DATABASE
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogPropertyType.TYPE_ERROR
@@ -67,6 +73,7 @@ import static net.datenwerke.rs.utils.exception.ExceptionService.LogPropertyType
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogPropertyType.TYPE_GENERAL
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogPropertyType.TYPE_MEMORY
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogPropertyType.TYPE_REPORT
+import static net.datenwerke.rs.utils.exception.ExceptionService.LogPropertyType.TYPE_SECURITY
 
 import javax.inject.Inject
 
@@ -78,7 +85,6 @@ import com.google.inject.Provider
 
 import groovy.json.JsonBuilder
 import net.datenwerke.gf.service.history.HistoryService
-import net.datenwerke.rs.adminutils.service.logs.LogFilesService
 import net.datenwerke.rs.adminutils.service.systemconsole.generalinfo.GeneralInfoService
 import net.datenwerke.rs.base.service.datasources.DatasourceHelperService
 import net.datenwerke.rs.base.service.datasources.definitions.DatabaseDatasource
@@ -88,6 +94,8 @@ import net.datenwerke.rs.core.service.reportmanager.exceptions.ReportExecutorExc
 import net.datenwerke.rs.core.service.reportmanager.interfaces.ReportVariant
 import net.datenwerke.rs.utils.properties.PropertiesUtilService
 import net.datenwerke.scheduler.service.scheduler.exceptions.JobExecutionException
+import net.datenwerke.security.service.authenticator.AuthenticatorService
+import net.datenwerke.security.service.security.SecurityService
 import net.datenwerke.security.service.usermanager.entities.User
 
 public class ExceptionServiceImpl implements ExceptionService {
@@ -96,6 +104,8 @@ public class ExceptionServiceImpl implements ExceptionService {
    private final Provider<GeneralInfoService> generalInfoServiceProvider
    private final Provider<DatasourceHelperService> datasourceHelperServiceProvider
    private final Provider<HistoryService> historyServiceProvider
+   private final Provider<AuthenticatorService> authenticatorServiceProvider
+   private final Provider<SecurityService> securityServiceProvider
    
    private final Logger logger = LoggerFactory.getLogger(getClass().name)
     
@@ -104,12 +114,16 @@ public class ExceptionServiceImpl implements ExceptionService {
       Provider<ConfigService> configServiceProvider,
       Provider<GeneralInfoService> generalInfoServiceProvider,
       Provider<DatasourceHelperService> datasourceHelperServiceProvider,
-      Provider<HistoryService> historyServiceProvider
+      Provider<HistoryService> historyServiceProvider,
+      Provider<AuthenticatorService> authenticatorServiceProvider,
+      Provider<SecurityService> securityServiceProvider
       ) {
          this.configServiceProvider = configServiceProvider
          this.generalInfoServiceProvider = generalInfoServiceProvider
          this.datasourceHelperServiceProvider = datasourceHelperServiceProvider
          this.historyServiceProvider = historyServiceProvider
+         this.authenticatorServiceProvider = authenticatorServiceProvider
+         this.securityServiceProvider = securityServiceProvider
       }
    
    @Override
@@ -184,6 +198,12 @@ public class ExceptionServiceImpl implements ExceptionService {
          case TYPE_GENERAL:
             setGeneralProperty(property, propertyValues)
             break
+         case TYPE_AUTHENTICATION:
+            setAuthenticationProperty(property, propertyValues)
+            break
+         case TYPE_SECURITY:
+            setSecurityProperty(property, propertyValues)
+            break;
          case TYPE_MEMORY:
             setMemoryProperty(property, propertyValues)
             break
@@ -346,7 +366,7 @@ public class ExceptionServiceImpl implements ExceptionService {
             propertyValues[property] = generalInfoService.javaVersion
             break
          case JAVA_HOME:
-            propertyValues[property] = generalInfoService.javaHome
+            propertyValues[property] = generalInfoService.getJavaHome(true)
             break
          case JAVA_VM_ARGUMENTS:
             propertyValues[property] = generalInfoService.vmArguments
@@ -355,13 +375,19 @@ public class ExceptionServiceImpl implements ExceptionService {
             propertyValues[property] = generalInfoService.applicationServer
             break
          case CATALINA_HOME:
-            propertyValues[property] = generalInfoService.catalinaHome
+            propertyValues[property] = generalInfoService.getCatalinaHome(true)
             break
          case CATALINA_BASE:
-            propertyValues[property] = generalInfoService.catalinaBase
+            propertyValues[property] = generalInfoService.getCatalinaBase(true)
             break
          case LOG_FILES_DIRECTORY:
             propertyValues[property] = generalInfoService.getLogFilesDirectory(true)
+            break
+         case INSTALLATION_PATH:
+            propertyValues[property] = generalInfoService.getInstallationPath(true)
+            break
+         case HEADLESS:
+            propertyValues[property] = generalInfoService.headless
             break
          case REST_URL:
             propertyValues[property] = generalInfoService.restURL
@@ -386,6 +412,9 @@ public class ExceptionServiceImpl implements ExceptionService {
             break
          case CONFIG_DIRECTORY:
             propertyValues[property] = generalInfoService.getConfigDirectory(true)
+            break
+         case IO_TMP_DIRECTORY:
+            propertyValues[property] = generalInfoService.getIOTmpDir(true)
             break
          case OS_VERSION:
             propertyValues[property] = generalInfoService.osVersion
@@ -414,26 +443,46 @@ public class ExceptionServiceImpl implements ExceptionService {
          case JVM_SERVER_TIME:
             propertyValues[property] = generalInfoService.now
             break
-         case KNOWN_HOSTS_FILE:
-            propertyValues[property] = generalInfoService.getKnownHostsFile(true)
-            break
-         case SUPPORTED_SSL_PROTOCOLS:
-            propertyValues[property] = generalInfoService.supportedSslProtocols
-            break
-         case DEFAULT_SSL_PROTOCOLS:
-            propertyValues[property] = generalInfoService.defaultSslProtocols
-            break
-         case ENABLED_SSL_PROTOCOLS:
-            propertyValues[property] = generalInfoService.enabledSslProtocols
-            break
          case GROOVY_VERSION:
             propertyValues[property] = generalInfoService.groovyVersion
             break
-         case STATIC_PAMS:
-            propertyValues[property] = generalInfoService.staticPams
+         case EXTERNAL_LIBS:
+            propertyValues[property] = generalInfoService.externalJars
+            break
+         case INTERNAL_LIBS:
+            propertyValues[property] = generalInfoService.internalJars
             break
          default:
             throw new IllegalArgumentException('not a general property')
+      }
+   }
+   
+   private def setSecurityProperty(LogProperty property,  Map propertyValues) {
+      switch (property) {
+         case KNOWN_HOSTS_FILE:
+            propertyValues[property] = securityServiceProvider.get().getKnownHostsFile(true)
+            break
+         case SUPPORTED_SSL_PROTOCOLS:
+            propertyValues[property] = securityServiceProvider.get().supportedSslProtocols
+            break
+         case DEFAULT_SSL_PROTOCOLS:
+            propertyValues[property] = securityServiceProvider.get().defaultSslProtocols
+            break
+         case ENABLED_SSL_PROTOCOLS:
+            propertyValues[property] = securityServiceProvider.get().enabledSslProtocols
+            break
+         default:
+            throw new IllegalArgumentException('not a security property')
+      }
+   }
+   
+   private def setAuthenticationProperty(LogProperty property,  Map propertyValues) {
+      switch (property) {
+         case ACTIVE_PAMS:
+            propertyValues[property] = authenticatorServiceProvider.get().pams*.clientModuleName
+            break
+         default:
+            throw new IllegalArgumentException('not an authentication property')
       }
    }
 

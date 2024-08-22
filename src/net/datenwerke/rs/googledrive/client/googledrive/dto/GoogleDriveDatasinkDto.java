@@ -560,7 +560,7 @@ public class GoogleDriveDatasinkDto extends DatasinkDefinitionDto {
 
 	@Override
 	public BaseIcon toIcon()  {
-		return BaseIcon.from("google");
+		return BaseIcon.from("google_drive");
 	}
 
 	@Override

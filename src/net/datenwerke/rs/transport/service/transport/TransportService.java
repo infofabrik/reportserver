@@ -2,16 +2,15 @@ package net.datenwerke.rs.transport.service.transport;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
-import org.apache.commons.lang3.tuple.ImmutablePair;
-
+import groovy.lang.Closure;
 import net.datenwerke.eximport.im.ImportResult;
 import net.datenwerke.rs.remotersrestserver.service.remotersrestserver.entities.RemoteRsRestServer;
 import net.datenwerke.rs.transport.client.transport.dto.TransportElementDto;
 import net.datenwerke.rs.transport.service.transport.entities.Transport;
 import net.datenwerke.rs.transport.service.transport.entities.TransportFolder;
 import net.datenwerke.treedb.service.treedb.AbstractNode;
+import net.datenwerke.treedb.service.treedb.TreeDBManager;
 
 public interface TransportService {
     
@@ -31,8 +30,6 @@ public interface TransportService {
    void addElement(Transport transport, AbstractNode<?> element, boolean includeVariants);
    
    void removeElements(Transport transport, List<TransportElementDto> toRemove);
-   
-   Optional<ImmutablePair<ImportResult, Exception>> applyTransport(Transport transport);
    
    boolean isTransportable(AbstractNode<?> node);
    
@@ -61,11 +58,13 @@ public interface TransportService {
    ImportResult rpull();
    
    Map<String, PreconditionResult> analyzeApplyPreconditions(Transport transport);
-   
-   boolean isAppliable(Map<String, PreconditionResult> analysisResults);
-   
+      
    boolean isAppliable(Transport transport);
    
    List<String> getRemoteReferenceKeys(String transportXml);
+   
+   Closure getReferencesClosure();
+   
+   List<TreeDBManager> getTransportableTreeManagers();
    
 }

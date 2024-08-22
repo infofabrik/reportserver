@@ -80,7 +80,7 @@ public class FolderForm extends SimpleFormView {
                   } else if (null != name && name.endsWith(".rsp")) {
                      MessageBox mb = new DwMessageBox(PkgMessages.INSTANCE.rspUploadedTitle(),
                            PkgMessages.INSTANCE.rspUploadedMsg());
-                     mb.setPredefinedButtons(PredefinedButton.NO, PredefinedButton.YES);
+                     mb.setPredefinedButtons(PredefinedButton.YES, PredefinedButton.NO);
                      mb.addDialogHideHandler(event -> {
                         switch (event.getHideButton()) {
                         case YES:

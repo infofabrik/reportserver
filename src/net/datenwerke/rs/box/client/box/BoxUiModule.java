@@ -13,7 +13,7 @@ import net.datenwerke.rs.theme.client.icon.BaseIcon;
 public class BoxUiModule extends AbstractGinModule {
 
    public final static String NAME = "Box";
-   public final static BaseIcon ICON = BaseIcon.CUBE;
+   public final static BaseIcon ICON = BaseIcon.BOX;
    public final static Class<? extends DatasinkDefinitionDto> TYPE = BoxDatasinkDto.class;
 
    @Override

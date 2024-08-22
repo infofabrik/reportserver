@@ -26,6 +26,7 @@ import com.google.inject.Inject;
 
 import net.datenwerke.dtoservices.dtogenerator.annotations.ExposeToClient;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
+import net.datenwerke.rs.scheduler.service.scheduler.locale.SchedulerMessages;
 import net.datenwerke.rs.utils.entitycloner.annotation.EnclosedEntity;
 import net.datenwerke.scheduler.service.scheduler.entities.history.ExecutionLogEntry;
 import net.datenwerke.scheduler.service.scheduler.entities.history.JobEntry;
@@ -264,7 +265,7 @@ public abstract class AbstractJob {
       ExecutionLogEntry entry = new ExecutionLogEntry();
       entry.setOutcome(Outcome.FAILURE);
       entry.setScheduledStart(startTime);
-      entry.setBadErrorDescription("Missed fire time.");
+      entry.setBadErrorDescription(SchedulerMessages.INSTANCE.missedFireTime());
 
       return entry;
    }

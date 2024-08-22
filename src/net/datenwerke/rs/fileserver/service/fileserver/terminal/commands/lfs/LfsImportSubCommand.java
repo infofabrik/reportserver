@@ -17,6 +17,7 @@ import net.datenwerke.rs.terminal.service.terminal.helpers.AutocompleteHelper;
 import net.datenwerke.rs.terminal.service.terminal.helpers.CommandParser;
 import net.datenwerke.rs.terminal.service.terminal.obj.CommandResult;
 import net.datenwerke.rs.utils.misc.MimeUtils;
+import net.datenwerke.rs.utils.string.Emoji;
 
 public class LfsImportSubCommand implements LfsSubCommandHook {
 
@@ -46,7 +47,7 @@ public class LfsImportSubCommand implements LfsSubCommandHook {
          String path = noa.get(0);
          File object = new File(path);
          if (!object.exists())
-            return new CommandResult(object.getAbsolutePath() + " does not exist");
+            return new CommandResult(Emoji.SMILING_FACE_TEAR.getEmoji(" ") + object.getAbsolutePath() + " does not exist");
 
          Object baseFolder = session.getObjectResolver().getObject(noa.get(1));
          try {
@@ -56,9 +57,9 @@ public class LfsImportSubCommand implements LfsSubCommandHook {
             return new CommandResult(e);
          }
 
-         return new CommandResult("ok");
+         return new CommandResult(Emoji.CLINKING_GLASSES.getEmoji(" ") + "ok");
       }
-      return new CommandResult("Missing argument");
+      return new CommandResult(Emoji.SMILING_FACE_TEAR.getEmoji(" ") + "Missing argument");
    }
 
    private FileServerFile getOrCreateFile(String name, FileServerFolder parent) {

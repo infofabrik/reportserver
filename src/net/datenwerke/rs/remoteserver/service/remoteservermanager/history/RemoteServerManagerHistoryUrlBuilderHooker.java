@@ -3,9 +3,9 @@ package net.datenwerke.rs.remoteserver.service.remoteservermanager.history;
 import com.google.inject.Inject;
 
 import net.datenwerke.rs.remoteserver.client.remoteservermanager.RemoteServerUIModule;
-import net.datenwerke.rs.core.service.genrights.remoteservers.RemoteServerManagerAdminViewSecurityTarget;
 import net.datenwerke.rs.core.service.history.helper.TreePanelHistoryUrlBuilderHooker;
 import net.datenwerke.rs.remoteserver.service.remoteservermanager.entities.AbstractRemoteServerManagerNode;
+import net.datenwerke.rs.remoteserver.service.remoteservermanager.genrights.RemoteServerManagerAdminViewSecurityTarget;
 import net.datenwerke.rs.remoteserver.service.remoteservermanager.locale.RemoteServerManagerMessages;
 import net.datenwerke.rs.utils.localization.LocalizationServiceImpl;
 import net.datenwerke.security.service.security.SecurityService;

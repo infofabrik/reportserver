@@ -1,6 +1,7 @@
 package net.datenwerke.rs.core.client.reportexecutor;
 
 import java.util.Date;
+import java.util.Optional;
 import java.util.Random;
 
 import javax.inject.Provider;
@@ -38,7 +39,10 @@ import net.datenwerke.rs.core.client.reportexecutor.ui.preview.NativeReportPrevi
 import net.datenwerke.rs.core.client.reportexecutor.ui.preview.PreviewViewFactory;
 import net.datenwerke.rs.core.client.reportexecutor.variantstorer.VariantStorerConfig;
 import net.datenwerke.rs.core.client.reportexecutor.variantstorer.VariantStorerConfigImpl;
+import net.datenwerke.rs.core.client.reportmanager.dto.interfaces.ReportVariantDto;
 import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
+import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportPropertyDto;
+import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportStringPropertyDto;
 import net.datenwerke.rs.teamspace.client.teamspace.dto.TeamSpaceDto;
 import net.datenwerke.rs.tsreportarea.client.tsreportarea.TsDiskDao;
 import net.datenwerke.rs.tsreportarea.client.tsreportarea.dto.TsDiskFolderDto;
@@ -374,6 +378,32 @@ public class ReportExecutorUIServiceImpl implements ReportExecutorUIService {
    @Override
    public Integer getMaxColumnWidth() {
       return maxColumnWidth;
+   }
+
+   @Override
+   public boolean getEffectiveReportPropertyAsBoolean(ReportDto report, String property) {
+      Optional<ReportPropertyDto> prop = getProperty(report, property);
+
+      if (prop.isPresent()) 
+         return Boolean.parseBoolean(((ReportStringPropertyDto) prop.get()).getStrValue());
+         
+      if (report instanceof ReportVariantDto) {
+         // try with parent
+         ReportDto parent = ((ReportVariantDto) report).getBaseReport();
+         prop = getProperty(parent, property);
+         
+         if (prop.isPresent()) 
+            return Boolean.parseBoolean(((ReportStringPropertyDto) prop.get()).getStrValue());
+      }
+      
+      return false;
+   }
+   
+   private Optional<ReportPropertyDto> getProperty(ReportDto report, String property) {
+      return report.getReportProperties().stream()
+         .filter((p -> p instanceof ReportStringPropertyDto
+               && p.getName().equals(property)))
+         .findAny();
    }
 
 }

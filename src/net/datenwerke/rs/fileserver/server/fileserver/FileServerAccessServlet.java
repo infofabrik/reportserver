@@ -2,9 +2,14 @@ package net.datenwerke.rs.fileserver.server.fileserver;
 
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.Locale;
+import java.util.Optional;
 
 import javax.imageio.ImageIO;
 import javax.inject.Singleton;
@@ -18,11 +23,17 @@ import org.slf4j.LoggerFactory;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
+import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
+import net.datenwerke.rs.base.service.renderer.BinaryFormat;
+import net.datenwerke.rs.base.service.renderer.RendererException;
+import net.datenwerke.rs.base.service.renderer.TextFormat;
+import net.datenwerke.rs.base.service.renderer.hooks.RendererHook;
 import net.datenwerke.rs.fileserver.client.fileserver.FileServerUiModule;
 import net.datenwerke.rs.fileserver.service.fileserver.FileServerService;
 import net.datenwerke.rs.fileserver.service.fileserver.entities.AbstractFileServerNode;
 import net.datenwerke.rs.fileserver.service.fileserver.entities.FileServerFile;
 import net.datenwerke.rs.fileserver.service.fileserver.entities.FileServerFolder;
+import net.datenwerke.rs.utils.file.RsFileUtils;
 import net.datenwerke.rs.utils.misc.HttpUtils;
 import net.datenwerke.rs.utils.zip.ZipUtilsService;
 import net.datenwerke.rs.utils.zip.ZipUtilsService.FileFilter;
@@ -39,13 +50,21 @@ public class FileServerAccessServlet extends SecuredHttpServlet {
    private final Logger logger = LoggerFactory.getLogger(getClass().getName());
 
    public static final String KEY_PATH = "path";
+   
    public static final String KEY_TWIDTH = "twidth";
    public static final String KEY_THUMBNAIL = "thumbnail";
+   
+   public static final String KEY_WIDTH = "width";
+   public static final String KEY_HEIGHT = "height";
 
    public static final String KEY_FOLDER = "folder";
    public static final String KEY_DOWNLOAD = "download";
    public static final String KEY_ID = "id";
+   public static final String KEY_KEY = "key";
    public static final String KEY_NOREDIRECT = "noredirect";
+   
+   public static final String KEY_RENDER = "render";
+   public static final String KEY_FORMAT = "format";
 
    /**
     * 
@@ -57,11 +76,17 @@ public class FileServerAccessServlet extends SecuredHttpServlet {
    private final Provider<AuthenticatorService> authenticatorServiceProvider;
    private final Provider<ZipUtilsService> zipServiceProvider;
    private final Provider<HttpUtils> httpUtilsProvider;
+   private final Provider<HookHandlerService> hookHandlerProvider;
 
    @Inject
-   public FileServerAccessServlet(Provider<SecurityService> securityServiceProvider,
-         Provider<FileServerService> fileServerService, Provider<AuthenticatorService> authenticatorServiceProvider,
-         Provider<ZipUtilsService> zipServiceProvider, Provider<HttpUtils> httpUtilsProvider) {
+   public FileServerAccessServlet(
+         Provider<SecurityService> securityServiceProvider,
+         Provider<FileServerService> fileServerService, 
+         Provider<AuthenticatorService> authenticatorServiceProvider,
+         Provider<ZipUtilsService> zipServiceProvider, 
+         Provider<HttpUtils> httpUtilsProvider,
+         Provider<HookHandlerService> hookHandlerProvider
+         ) {
 
       /* store objects */
       this.securityServiceProvider = securityServiceProvider;
@@ -69,6 +94,7 @@ public class FileServerAccessServlet extends SecuredHttpServlet {
       this.authenticatorServiceProvider = authenticatorServiceProvider;
       this.zipServiceProvider = zipServiceProvider;
       this.httpUtilsProvider = httpUtilsProvider;
+      this.hookHandlerProvider = hookHandlerProvider;
    }
 
    @Override
@@ -95,6 +121,8 @@ public class FileServerAccessServlet extends SecuredHttpServlet {
             getFileById(request, response);
          else if (null != request.getParameter(KEY_PATH))
             getFileByPath(request, response);
+         else if (null != request.getParameter(KEY_KEY))
+            getFileByKey(request, response);
          else {
             String requestURI = request.getRequestURI();
             int indexOf = requestURI.indexOf(FileServerUiModule.FILE_ACCESS_SERVLET);
@@ -127,6 +155,8 @@ public class FileServerAccessServlet extends SecuredHttpServlet {
          downloadFolder((FileServerFolder) folder, request, response);
 
    }
+   
+   
 
    @SecurityChecked(bypass = true)
    protected void downloadFolder(FileServerFolder folder, final HttpServletRequest request,
@@ -174,6 +204,17 @@ public class FileServerAccessServlet extends SecuredHttpServlet {
 
       returnFile(file, request, response);
    }
+   
+   @SecurityChecked(bypass = true)
+   protected void getFileByKey(HttpServletRequest request, HttpServletResponse response) throws IOException {
+      FileServerService service = fileServerService.get();
+
+      String fileKey = request.getParameter(KEY_KEY); // $NON-NLS-1$
+
+      FileServerFile file = (FileServerFile) service.getNodeByKey(fileKey);
+
+      returnFile(file, request, response);
+   }
 
    @SecurityChecked(bypass = true)
    protected void returnFile(FileServerFile file, HttpServletRequest request, HttpServletResponse response)
@@ -192,6 +233,15 @@ public class FileServerAccessServlet extends SecuredHttpServlet {
 
          response.setHeader(HttpUtils.CONTENT_DISPOSITION,
                httpUtilsProvider.get().makeContentDispositionHeader(download, file.getName()));
+      }
+      
+      if (null != request.getParameter(KEY_RENDER) && "true".contentEquals(request.getParameter(KEY_RENDER))) {
+         try {
+            render(file, content, request, response);
+            return;
+         } catch (RendererException e) {
+            throw new RuntimeException(e);
+         }
       }
 
       if ("image/png".equals(content) || "image/jpeg".equals(content))
@@ -235,6 +285,71 @@ public class FileServerAccessServlet extends SecuredHttpServlet {
          logger.warn("filserver error", e);
       }
    }
+   
+   private void render(FileServerFile file, String contentType, HttpServletRequest request,
+         HttpServletResponse response) throws RendererException {
+      if (contentType.isEmpty())
+         throw new RendererException("Content type is empty");
+      
+      Optional<RendererHook> renderer = hookHandlerProvider.get()
+         .getHookers(RendererHook.class)
+         .stream()
+         .filter(r -> r.consumes(contentType))
+         .findAny();
+      
+      if (!renderer.isPresent())
+         throw new RendererException("No renderer found for content type '" + contentType + "'");
+      
+      String src = new String(file.getData(), StandardCharsets.UTF_8);
+      Optional<Integer> width = null != request.getParameter(KEY_WIDTH)
+            ? Optional.of(Integer.parseInt(request.getParameter(KEY_WIDTH)))
+            : Optional.empty();
+      Optional<Integer> height = null != request.getParameter(KEY_HEIGHT)
+            ? Optional.of(Integer.parseInt(request.getParameter(KEY_HEIGHT)))
+            : Optional.empty();
+      
+      if (null == request.getParameter(KEY_FORMAT))
+         throw new RendererException("No render format specified");
+      
+      String format = request.getParameter(KEY_FORMAT).toUpperCase(Locale.ROOT);
+      
+      TextFormat textFormat = null;
+      BinaryFormat binaryFormat = null;
+      try {
+         textFormat = TextFormat.valueOf(format);
+      } catch (IllegalArgumentException e) {
+         // we ignore this as it is maybe a binary format
+      }
+      try {
+         binaryFormat = BinaryFormat.valueOf(format);
+      } catch (IllegalArgumentException e) {
+         // we ignore this as it is maybe a text format
+      }
+      if (null == textFormat && null == binaryFormat)
+         throw new IllegalArgumentException("Format not supported: '" + format + "'");
+      
+      if (null != textFormat) {
+         String rendered = renderer.get().render(textFormat, src, width, height);
+         String renderContentType = RsFileUtils.getContentType(textFormat);
+         response.setContentType(renderContentType);
+         try (PrintWriter writer = response.getWriter()) {
+            if (null != rendered)
+               writer.write(rendered);
+         } catch (IOException e) {
+            throw new RendererException(e);
+         }
+      } else {
+         ByteArrayOutputStream rendered = renderer.get().render(binaryFormat, src, width, height);
+         String renderContentType = RsFileUtils.getContentType(binaryFormat);
+         response.setContentType(renderContentType);
+         try (OutputStream os = response.getOutputStream()) {
+            if (null != rendered)
+               os.write(rendered.toByteArray());
+         } catch (IOException e) {
+            throw new RendererException(e);
+         }
+      }
+   }
 
    private boolean isAuthenticated() {
       return authenticatorServiceProvider.get().isAuthenticated();
@@ -251,15 +366,15 @@ public class FileServerAccessServlet extends SecuredHttpServlet {
          reqUrl += "?" + queryString;
       }
 
-//		long reportId = getReportId(req);
-//		String format = getOutputFormatFromRequest(req);
-//		Report report = getReportFromRequest(req);
-//		
-//		session.setAttribute(SESSION_KEY_OUTPUT_FORMAT, format);
-//		session.setAttribute(SESSION_KEY_REPORT_ID, reportId);
-//		session.setAttribute(SESSION_KEY_ADJUSTED_REPORT, report);
-//		session.setAttribute(SESSION_KEY_EXECUTOR_CONFIGS, getConfigsFromRequest(report, req));
-//		session.setAttribute(SESSION_KEY_DOWNLOAD, req.getParameter("download"));
+//      long reportId = getReportId(req);
+//      String format = getOutputFormatFromRequest(req);
+//      Report report = getReportFromRequest(req);
+//      
+//      session.setAttribute(SESSION_KEY_OUTPUT_FORMAT, format);
+//      session.setAttribute(SESSION_KEY_REPORT_ID, reportId);
+//      session.setAttribute(SESSION_KEY_ADJUSTED_REPORT, report);
+//      session.setAttribute(SESSION_KEY_EXECUTOR_CONFIGS, getConfigsFromRequest(report, req));
+//      session.setAttribute(SESSION_KEY_DOWNLOAD, req.getParameter("download"));
 
       String url = req.getContextPath() + "/ReportServer.html?redir=" + URLEncoder.encode(reqUrl, "UTF-8");
       resp.sendRedirect(url);

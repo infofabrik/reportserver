@@ -21,8 +21,7 @@ import net.datenwerke.rs.teamspace.client.teamspace.locale.TeamSpaceMessages;
 import net.datenwerke.rs.theme.client.icon.BaseIcon;
 import net.datenwerke.security.client.usermanager.dto.UserDto;
 import net.datenwerke.security.client.usermanager.dto.decorator.UserDtoDec;
-import net.datenwerke.security.client.usermanager.dto.ie.StrippedDownUser;
-import net.datenwerke.security.ext.client.usermanager.helper.simpleform.SFFCUser;
+import net.datenwerke.security.ext.client.usermanager.helper.simpleform.SFFCUserSelector;
 
 /**
  * 
@@ -89,14 +88,14 @@ public class EditTeamSpaceBasicSettingsHooker extends TeamSpaceEditDialogHookImp
             }, readOnly);
 
       if (teamSpaceUIService.isGlobalTsAdmin()) {
-         ownerField = form.addField(StrippedDownUser.class, TeamSpaceMessages.INSTANCE.owner(), new SFFCUser() {
+         ownerField = form.addField(UserDto.class, TeamSpaceMessages.INSTANCE.owner(), new SFFCUserSelector() {
             @Override
-            public boolean isMultiSelect() {
-               return false;
+            public UserDto getUser() {
+               return (UserDto) form.getValue(ownerField);
             }
          });
          if (null != teamSpace.getOwner())
-            form.setValue(ownerField, StrippedDownUser.fromUser(teamSpace.getOwner()));
+            form.setValue(ownerField, teamSpace.getOwner());
       }
 
       /* copy values to data */
@@ -118,9 +117,9 @@ public class EditTeamSpaceBasicSettingsHooker extends TeamSpaceEditDialogHookImp
 
    @Override
    public void submitPressed(final SubmitTrackerToken token) {
-      StrippedDownUser newOwner = null;
+      UserDto newOwner = null;
       if (null != ownerField)
-         newOwner = (StrippedDownUser) form.getValue(ownerField);
+         newOwner = (UserDto) form.getValue(ownerField);
 
       boolean dataChanged = teamSpaceUIService.isAdmin(teamSpace)
             && (!(teamSpaceData.getName().equals(teamSpace.getName())

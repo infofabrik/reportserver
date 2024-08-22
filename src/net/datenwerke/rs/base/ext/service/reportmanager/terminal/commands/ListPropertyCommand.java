@@ -18,6 +18,7 @@ import net.datenwerke.rs.terminal.service.terminal.helpmessenger.annotations.Cli
 import net.datenwerke.rs.terminal.service.terminal.helpmessenger.annotations.NonOptArgument;
 import net.datenwerke.rs.terminal.service.terminal.obj.CommandResult;
 import net.datenwerke.rs.terminal.service.terminal.objresolver.exceptions.ObjectResolverException;
+import net.datenwerke.rs.utils.string.Emoji;
 import net.datenwerke.security.service.security.rights.Read;
 
 public class ListPropertyCommand implements ReportModSubCommandHook {
@@ -41,7 +42,7 @@ public class ListPropertyCommand implements ReportModSubCommandHook {
    public CommandResult execute(CommandParser parser, TerminalSession session) throws ObjectResolverException {
       List<String> arguments = parser.getNonOptionArguments();
       if (1 > arguments.size())
-         throw new IllegalArgumentException();
+         throw new IllegalArgumentException(Emoji.exceptionEmoji().getEmoji());
 
       String reportRef = arguments.get(0);
       String propertyName = null;
@@ -51,7 +52,7 @@ public class ListPropertyCommand implements ReportModSubCommandHook {
       try {
          Report report = (Report) session.getObjectResolver().getObject(reportRef, Read.class);
          if (null == report)
-            return new CommandResult("Coud not find report for " + reportRef);
+            return new CommandResult(Emoji.SMILING_FACE_TEAR.getEmoji(" ") + "Coud not find report for " + reportRef);
 
          RSTableModel model = new RSTableModel();
          model.setTableDefinition(new TableDefinition(Arrays.asList(new String[] { "property", "value" })));
@@ -64,7 +65,7 @@ public class ListPropertyCommand implements ReportModSubCommandHook {
             } else if (null != property) {
                model.addDataRow(new RSStringTableRow(property.getName(), ""));
             } else {
-               return new CommandResult("Specified property does not exist");
+               return new CommandResult(Emoji.SMILING_FACE_TEAR.getEmoji(" ") + "Specified property does not exist");
             }
             return new CommandResult(model);
          } else {
@@ -79,7 +80,7 @@ public class ListPropertyCommand implements ReportModSubCommandHook {
             return new CommandResult(model);
          }
       } catch (Exception e) {
-         return new CommandResult("Coud not find report for " + reportRef);
+         return new CommandResult(Emoji.SMILING_FACE_TEAR.getEmoji(" ") + "Coud not find report for " + reportRef);
       }
    }
 

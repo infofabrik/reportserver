@@ -16,6 +16,7 @@ import net.datenwerke.rs.terminal.service.terminal.helpmessenger.annotations.Non
 import net.datenwerke.rs.terminal.service.terminal.obj.CommandResult;
 import net.datenwerke.rs.terminal.service.terminal.objresolver.ObjectResolverDeamon;
 import net.datenwerke.rs.terminal.service.terminal.objresolver.exceptions.ObjectResolverException;
+import net.datenwerke.rs.utils.string.Emoji;
 import net.datenwerke.security.service.security.SecurityService;
 import net.datenwerke.security.service.security.rights.Read;
 import net.datenwerke.security.service.security.rights.Write;
@@ -59,7 +60,7 @@ public class AddMembersSubCommand implements GroupModSubCommandHook {
    public CommandResult execute(CommandParser parser, TerminalSession session) throws ObjectResolverException {
       List<String> arguments = parser.getNonOptionArguments();
       if (1 > arguments.size())
-         throw new IllegalArgumentException();
+         throw new IllegalArgumentException(Emoji.exceptionEmoji().getEmoji());
 
       ObjectResolverDeamon objectResolver = session.getObjectResolver();
 
@@ -67,9 +68,9 @@ public class AddMembersSubCommand implements GroupModSubCommandHook {
       String groupLocator = arguments.remove(0);
       Collection<Object> groupCandidates = objectResolver.getObjects(groupLocator, Read.class);
       if (groupCandidates.size() != 1)
-         throw new IllegalArgumentException("Could not find group single group: " + groupLocator);
+         throw new IllegalArgumentException(Emoji.exceptionEmoji().getEmoji(" ") + "Could not find group single group: " + groupLocator);
       if (!(groupCandidates.iterator().next() instanceof Group))
-         throw new IllegalArgumentException("Could not find group single group: " + groupLocator);
+         throw new IllegalArgumentException(Emoji.exceptionEmoji().getEmoji(" ") + "Could not find group single group: " + groupLocator);
       Group group = (Group) groupCandidates.iterator().next();
 
       /* check rights */
@@ -80,11 +81,11 @@ public class AddMembersSubCommand implements GroupModSubCommandHook {
       for (String locationStr : arguments) {
          Collection<Object> objectList = objectResolver.getObjects(locationStr, Read.class);
          if (objectList.isEmpty())
-            throw new IllegalArgumentException("No users, groups or OUs selected: " + locationStr);
+            throw new IllegalArgumentException(Emoji.exceptionEmoji().getEmoji(" ") + "No users, groups or OUs selected: " + locationStr);
 
          for (Object obj : objectList) {
             if (!(obj instanceof AbstractUserManagerNode))
-               throw new IllegalArgumentException("Found unknown objects in object selection: " + obj.getClass());
+               throw new IllegalArgumentException(Emoji.exceptionEmoji().getEmoji(" ") + "Found unknown objects in object selection: " + obj.getClass());
             AbstractUserManagerNode node = (AbstractUserManagerNode) obj;
             node.getName();
             memberList.add((AbstractUserManagerNode) obj);

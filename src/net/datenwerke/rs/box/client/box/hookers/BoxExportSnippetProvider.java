@@ -26,6 +26,7 @@ import net.datenwerke.rs.box.client.box.dto.BoxDatasinkDto;
 import net.datenwerke.rs.box.client.box.dto.ScheduleAsBoxFileInformation;
 import net.datenwerke.rs.box.client.box.provider.annotations.DatasinkTreeBox;
 import net.datenwerke.rs.core.client.datasinkmanager.DatasinkTreeManagerDao;
+import net.datenwerke.rs.core.client.datasinkmanager.DatasinkUIModule;
 import net.datenwerke.rs.core.client.datasinkmanager.HasDefaultDatasink;
 import net.datenwerke.rs.core.client.datasinkmanager.helper.forms.DatasinkSelectionField;
 import net.datenwerke.rs.core.client.reportexecutor.ui.ReportViewConfiguration;
@@ -156,7 +157,7 @@ public class BoxExportSnippetProvider implements ScheduleExportSnippetProviderHo
       final SingleTreeSelectionField boxField = extractSingleTreeSelectionField(form.getField(boxKey));
 
       if (null != definition) {
-         form.setValue(nameKey, "${now} - " + definition.getTitle());
+         form.setValue(nameKey, DatasinkUIModule.DEFAULT_FILE_NAME);
          ScheduleAsBoxFileInformation info = definition.getAdditionalInfo(ScheduleAsBoxFileInformation.class);
          if (null != info) {
             form.setValue(isExportAsFileKey, true);
@@ -193,10 +194,7 @@ public class BoxExportSnippetProvider implements ScheduleExportSnippetProviderHo
       if (!(page instanceof JobMetadataConfigurationForm))
          return;
 
-      JobMetadataConfigurationForm metadataForm = (JobMetadataConfigurationForm) page;
-
-      String jobTitle = metadataForm.getTitleValue();
-      form.setValue(nameKey, "${now} - " + jobTitle);
+      form.setValue(nameKey, DatasinkUIModule.DEFAULT_FILE_NAME);
       if (null != definition) {
          ScheduleAsBoxFileInformation info = definition.getAdditionalInfo(ScheduleAsBoxFileInformation.class);
          if (null != info)

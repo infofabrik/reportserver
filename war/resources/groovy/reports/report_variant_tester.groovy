@@ -8,7 +8,7 @@ import groovy.text.*
 import net.datenwerke.gf.service.genrights.AdministrationViewSecurityTarget
 import net.datenwerke.gf.service.localization.RemoteMessageService
 import net.datenwerke.rs.core.service.datasourcemanager.DatasourceService
-import net.datenwerke.rs.core.service.genrights.reportmanager.ReportManagerAdminViewSecurityTarget
+import net.datenwerke.rs.core.service.reportmanager.genrights.ReportManagerAdminViewSecurityTarget
 import net.datenwerke.rs.core.service.reportmanager.ReportExecutorServiceImpl
 import net.datenwerke.rs.core.service.reportmanager.ReportService
 import net.datenwerke.rs.core.service.reportmanager.engine.basereports.CompiledHtmlReportImpl

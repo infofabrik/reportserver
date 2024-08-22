@@ -19,6 +19,7 @@ import net.datenwerke.rs.terminal.service.terminal.vfs.VirtualFileSystemDeamon;
 import net.datenwerke.rs.terminal.service.terminal.vfs.exceptions.VFSException;
 import net.datenwerke.rs.utils.entitycloner.EntityClonerService;
 import net.datenwerke.rs.utils.jpa.EntityUtils;
+import net.datenwerke.rs.utils.string.Emoji;
 import net.datenwerke.security.service.security.SecurityService;
 import net.datenwerke.security.service.security.rights.Read;
 import net.datenwerke.security.service.security.rights.Write;
@@ -63,7 +64,7 @@ public class RestoreSubCommand implements RevSubCommandHook {
    public CommandResult execute(CommandParser parser, TerminalSession session) throws TerminalException {
       List<String> arguments = parser.getNonOptionArguments();
       if (arguments.size() != 3)
-         throw new IllegalArgumentException();
+         throw new IllegalArgumentException(Emoji.exceptionEmoji().getEmoji());
 
       String locationStr = arguments.get(0);
       String[] parts = locationStr.split(":");
@@ -78,7 +79,7 @@ public class RestoreSubCommand implements RevSubCommandHook {
          VirtualFileSystemDeamon vfs = session.getFileSystem();
          VFSLocation target = vfs.getLocation(targetStr);
          if (!target.isFolder())
-            throw new IllegalArgumentException("target is not a folder");
+            throw new IllegalArgumentException(Emoji.exceptionEmoji().getEmoji(" ") + "target is not a folder");
 
          Object targetFolder = target.getObject();
          if (targetFolder instanceof SecurityService)

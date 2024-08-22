@@ -17,6 +17,7 @@ import net.datenwerke.rs.terminal.service.terminal.helpmessenger.annotations.Cli
 import net.datenwerke.rs.terminal.service.terminal.helpmessenger.annotations.NonOptArgument;
 import net.datenwerke.rs.terminal.service.terminal.obj.CommandResult;
 import net.datenwerke.rs.terminal.service.terminal.objresolver.exceptions.ObjectResolverException;
+import net.datenwerke.rs.utils.string.Emoji;
 import net.datenwerke.security.service.security.rights.Read;
 
 public class SetPropertyCommand implements ReportModSubCommandHook {
@@ -50,7 +51,7 @@ public class SetPropertyCommand implements ReportModSubCommandHook {
    public CommandResult execute(CommandParser parser, TerminalSession session) throws ObjectResolverException {
       List<String> arguments = parser.getNonOptionArguments();
       if (3 > arguments.size())
-         throw new IllegalArgumentException();
+         throw new IllegalArgumentException(Emoji.exceptionEmoji().getEmoji());
 
       String reportRef = arguments.get(0);
       String propertyName = arguments.get(1);
@@ -59,7 +60,7 @@ public class SetPropertyCommand implements ReportModSubCommandHook {
       try {
          Report report = (Report) session.getObjectResolver().getObject(reportRef, Read.class);
          if (null == report)
-            return new CommandResult("Coud not find report for " + reportRef);
+            return new CommandResult(Emoji.SMILING_FACE_TEAR.getEmoji(" ") + "Coud not find report for " + reportRef);
 
          ReportProperty property = report.getReportProperty(propertyName);
          if (property instanceof ReportStringProperty)
@@ -71,14 +72,14 @@ public class SetPropertyCommand implements ReportModSubCommandHook {
 
             report.addReportProperty(property);
          } else {
-            return new CommandResult("Specified property is not a simple property");
+            return new CommandResult(Emoji.SMILING_FACE_TEAR.getEmoji(" ") + "Specified property is not a simple property");
          }
 
          reportService.merge(report);
 
-         return new CommandResult("Property changed");
+         return new CommandResult(Emoji.CLINKING_GLASSES.getEmoji(" ") + "Property changed");
       } catch (Exception e) {
-         return new CommandResult("Coud not find report for " + reportRef);
+         return new CommandResult(Emoji.SMILING_FACE_TEAR.getEmoji(" ") + "Coud not find report for " + reportRef);
       }
    }
 

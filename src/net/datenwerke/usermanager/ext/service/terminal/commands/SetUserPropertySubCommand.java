@@ -15,6 +15,7 @@ import net.datenwerke.rs.terminal.service.terminal.helpmessenger.annotations.Non
 import net.datenwerke.rs.terminal.service.terminal.obj.CommandResult;
 import net.datenwerke.rs.terminal.service.terminal.objresolver.ObjectResolverDeamon;
 import net.datenwerke.rs.terminal.service.terminal.objresolver.exceptions.ObjectResolverException;
+import net.datenwerke.rs.utils.string.Emoji;
 import net.datenwerke.security.service.security.rights.Read;
 import net.datenwerke.security.service.security.rights.Write;
 import net.datenwerke.security.service.usermanager.UserManagerService;
@@ -58,7 +59,7 @@ public class SetUserPropertySubCommand implements UserModSubCommandHook {
    public CommandResult execute(CommandParser parser, TerminalSession session) throws ObjectResolverException {
       List<String> arguments = parser.getNonOptionArguments();
       if (3 > arguments.size())
-         throw new IllegalArgumentException();
+         throw new IllegalArgumentException(Emoji.exceptionEmoji().getEmoji());
 
       String property = arguments.remove(0);
       String value = arguments.remove(0);
@@ -69,11 +70,11 @@ public class SetUserPropertySubCommand implements UserModSubCommandHook {
       for (String locationStr : arguments) {
          Collection<Object> objectList = objectResolver.getObjects(locationStr, Read.class, Write.class);
          if (objectList.isEmpty())
-            throw new IllegalArgumentException("No users selected");
+            throw new IllegalArgumentException(Emoji.exceptionEmoji().getEmoji(" ") + "No users selected");
 
          for (Object obj : objectList) {
             if (!(obj instanceof AbstractUserManagerNode))
-               throw new IllegalArgumentException("Found unknown objects in object selection: " + obj.getClass());
+               throw new IllegalArgumentException(Emoji.exceptionEmoji().getEmoji(" ") + "Found unknown objects in object selection: " + obj.getClass());
             if (obj instanceof User)
                userList.add((User) obj);
          }
@@ -84,7 +85,7 @@ public class SetUserPropertySubCommand implements UserModSubCommandHook {
          userService.merge(user);
       }
 
-      return new CommandResult();
+      return new CommandResult(Emoji.BEER_MUG.getEmoji());
    }
 
    @Override

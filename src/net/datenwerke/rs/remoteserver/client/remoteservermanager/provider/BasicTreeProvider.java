@@ -32,7 +32,7 @@ public class BasicTreeProvider implements Provider<ManagerHelperTree> {
    public ManagerHelperTree get() {
       /* store */
       EnhancedTreeStore store = treeDBUIService.getUITreeStore(AbstractRemoteServerManagerNodeDto.class, remoteserverTreeLoader,
-            false);
+            true);
 
       /* build tree */
       final ManagerHelperTree tree = treeFactory.create(RemoteServerUIModule.class, store, remoteserverTreeLoader,

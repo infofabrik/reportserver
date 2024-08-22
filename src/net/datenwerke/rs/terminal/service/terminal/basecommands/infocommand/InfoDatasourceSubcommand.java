@@ -34,6 +34,7 @@ import net.datenwerke.rs.terminal.service.terminal.helpmessenger.annotations.Non
 import net.datenwerke.rs.terminal.service.terminal.locale.TerminalMessages;
 import net.datenwerke.rs.terminal.service.terminal.obj.CommandResult;
 import net.datenwerke.rs.utils.properties.PropertiesUtilService;
+import net.datenwerke.rs.utils.string.Emoji;
 import net.datenwerke.security.service.security.rights.Read;
 
 public class InfoDatasourceSubcommand implements InfoSubcommandHook{
@@ -88,7 +89,7 @@ public static final String BASE_COMMAND = "datasource";
    public CommandResult execute(CommandParser parser, TerminalSession session) throws TerminalException {
       List<String> nonOptionArguments = parser.getNonOptionArguments();
       if (nonOptionArguments.size() != 1)
-         throw new IllegalArgumentException("exactly 1 argument required");
+         throw new IllegalArgumentException(Emoji.exceptionEmoji().getEmoji(" ") + "exactly 1 argument required");
       String datasourceQuery = (String) nonOptionArguments.get(0);
       try {
          DatasourceDefinition datasource = terminalServiceProvider.get()
@@ -100,7 +101,7 @@ public static final String BASE_COMMAND = "datasource";
                   true);
          return generateCommandResult(Optional.ofNullable(metadata), datasource, generalInformation);
       } catch (Exception e) {
-         throw new TerminalException(ExceptionUtils.getRootCauseMessage(e), e);
+         throw new TerminalException(Emoji.exceptionEmoji().getEmoji(" ") + ExceptionUtils.getRootCauseMessage(e), e);
       }
    }
 
@@ -128,7 +129,7 @@ public static final String BASE_COMMAND = "datasource";
                .add(generateTableModel(supportsSection, "Database supports section", metadata.get(), Optional.empty()));
       }
 
-      CommandResult commandResult = new CommandResult();
+      CommandResult commandResult = new CommandResult(Emoji.BEER_MUG.getEmoji());
       resultTables.forEach(table -> commandResult.addResultTable(table));
       return commandResult;
    }

@@ -97,7 +97,6 @@ public abstract class DwGwtFrameworkBase extends GuiceServletContextListener imp
    }
 
    protected void injectorInitialized() {
-      for (ConfigDoneHook hook : hookHandler.getHookers(ConfigDoneHook.class))
-         hook.configDone();
+      hookHandler.getHookers(ConfigDoneHook.class).forEach(ConfigDoneHook::configDone);
    }
 }

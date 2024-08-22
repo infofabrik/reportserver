@@ -4,6 +4,8 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Singleton;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
 
+import net.datenwerke.rs.fileserver.service.fileserver.entities.FileServerFile;
+import net.datenwerke.rs.fileserver.service.fileserver.entities.FileServerFolder;
 import net.datenwerke.rs.fileserver.service.fileserver.genrights.GenRightsFileServerManagerModule;
 import net.datenwerke.rs.fileserver.service.fileserver.hookers.factory.FileDefaultMergeHookerFactory;
 import net.datenwerke.rs.fileserver.service.fileserver.terminal.commands.unzip.BasepathZipExtractConfig;
@@ -24,6 +26,8 @@ public class FileServerModule extends AbstractModule {
 
       install(new FileServerVfsModule());
       install(new GenRightsFileServerManagerModule());
+      
+      requestStaticInjection(FileServerFile.class);
+      requestStaticInjection(FileServerFolder.class);
    }
-
 }

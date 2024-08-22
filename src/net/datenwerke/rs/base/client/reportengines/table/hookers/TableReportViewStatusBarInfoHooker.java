@@ -269,7 +269,7 @@ public class TableReportViewStatusBarInfoHooker implements ReportPreviewViewStat
             countPages.clearStatus(ReportexecutorMessages.INSTANCE.pages() + numberOfPages);
 
             countColumns.clearStatus(ReportexecutorMessages.INSTANCE.columns() + information.getVisibleCount() + "/"
-                  + tReport.getColumns().size() + "/" + information.getColumnCount());
+                  + tReport.getColumns().size() );
 
             toolbar.forceLayout();
          }

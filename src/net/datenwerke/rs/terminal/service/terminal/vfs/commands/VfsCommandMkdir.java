@@ -16,6 +16,7 @@ import net.datenwerke.rs.terminal.service.terminal.vfs.VirtualFileSystemDeamon;
 import net.datenwerke.rs.terminal.service.terminal.vfs.exceptions.VFSException;
 import net.datenwerke.rs.terminal.service.terminal.vfs.helper.PathHelper;
 import net.datenwerke.rs.terminal.service.terminal.vfs.locale.VfsMessages;
+import net.datenwerke.rs.utils.string.Emoji;
 import net.datenwerke.security.service.security.SecurityService;
 import net.datenwerke.security.service.security.SecurityTarget;
 import net.datenwerke.security.service.security.rights.Read;
@@ -47,7 +48,7 @@ public class VfsCommandMkdir implements TerminalCommandHook {
 
       List<String> arguments = parser.getNonOptionArguments();
       if (arguments.isEmpty())
-         throw new IllegalArgumentException();
+         throw new IllegalArgumentException(Emoji.exceptionEmoji().getEmoji());
       String pathStr = arguments.get(0);
       PathHelper path = new PathHelper(pathStr);
 
@@ -55,10 +56,10 @@ public class VfsCommandMkdir implements TerminalCommandHook {
          VFSLocation location = vfs.getLocation(path.getPath());
 
          if (location.isVirtualLocation())
-            throw new IllegalArgumentException("location is virtual");
+            throw new IllegalArgumentException(Emoji.exceptionEmoji().getEmoji(" ") + "location is virtual");
 
          if (null == location.getFilesystemManager())
-            throw new IllegalArgumentException("cannot create dir in root");
+            throw new IllegalArgumentException(Emoji.exceptionEmoji().getEmoji(" ") + "cannot create dir in root");
 
          Object object = location.getObject();
          if (object instanceof SecurityTarget)

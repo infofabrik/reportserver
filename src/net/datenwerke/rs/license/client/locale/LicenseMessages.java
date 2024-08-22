@@ -40,5 +40,23 @@ public interface LicenseMessages extends Messages {
    String versionLabel();
 
    String permissionModuleDescription();
+   
+   String license1();
+   
+   String license2();
+   
+   String license3();
+   
+   String license4();
+   
+   String license5();
+   
+   String license6();
+   
+   String license7();
+   
+   String license8();
+   
+   String license9();
 
 }

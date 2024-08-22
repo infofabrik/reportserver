@@ -5,8 +5,6 @@ import java.util.List;
 import javax.inject.Singleton;
 
 import com.google.gwt.event.dom.client.KeyCodes;
-import com.google.gwt.event.dom.client.KeyDownEvent;
-import com.google.gwt.event.dom.client.KeyDownHandler;
 import com.google.gwt.user.client.ui.HTML;
 import com.sencha.gxt.widget.core.client.container.FlowLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.HBoxLayoutContainer;
@@ -50,15 +48,15 @@ public class UserPasswordClientPAM implements ClientPAM {
    @Override
    public void addFields(FlowLayoutContainer container, final ProceeedCallback callback) {
       username = new TextField();
-      username.setWidth(220);
+      username.setWidth(420);
       username.setHeight(30);
-      username.getCell().setWidth(200);
+      username.getCell().setWidth(400);
       username.addStyleName("rs-login-username");
       username.setEmptyText(LoginMessages.INSTANCE.username());
       if (null != lastUsername)
          username.setValue(lastUsername);
       HBoxLayoutContainer uContainer = new HBoxLayoutContainer();
-      uContainer.setWidth(250);
+      uContainer.setWidth(450);
       uContainer.setHeight(30);
       HTML userIcon = new HTML(BaseIcon.USER.toSafeHtml());
       userIcon.setWidth("20px");
@@ -68,14 +66,14 @@ public class UserPasswordClientPAM implements ClientPAM {
       container.add(uContainer, new MarginData(10, 0, 10, 100));
 
       password = new PasswordField();
-      password.setWidth(220);
+      password.setWidth(420);
       password.setHeight(30);
-      password.getCell().setWidth(200);
+      password.getCell().setWidth(400);
       password.addStyleName("rs-login-password");
       password.setEmptyText(LoginMessages.INSTANCE.password());
 
       HBoxLayoutContainer pContainer = new HBoxLayoutContainer();
-      pContainer.setWidth(250);
+      pContainer.setWidth(450);
       pContainer.setHeight(30);
       HTML keyIcon = new HTML(BaseIcon.KEY.toSafeHtml());
       keyIcon.setWidth("20px");
@@ -84,12 +82,9 @@ public class UserPasswordClientPAM implements ClientPAM {
       pContainer.add(password);
       container.add(pContainer, new MarginData(0, 0, 10, 100));
 
-      password.addKeyDownHandler(new KeyDownHandler() {
-         @Override
-         public void onKeyDown(KeyDownEvent event) {
-            if (KeyCodes.KEY_ENTER == event.getNativeKeyCode())
-               callback.submit();
-         }
+      password.addKeyDownHandler(event -> {
+         if (KeyCodes.KEY_ENTER == event.getNativeKeyCode())
+            callback.submit();
       });
    }
 

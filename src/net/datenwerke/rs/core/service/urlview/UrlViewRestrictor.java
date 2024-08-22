@@ -39,7 +39,7 @@ public class UrlViewRestrictor {
       /* check users */
       String[] userList = conf.getString(USER_RESTRICTION).split(",");
       if (null != userList) {
-         String userName = user.getName().trim();
+         String userName = user.getUsername().trim();
          boolean found = false;
          for (String entry : userList) {
             String trimmedEntry = entry.trim();

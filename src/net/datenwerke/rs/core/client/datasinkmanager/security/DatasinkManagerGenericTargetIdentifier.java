@@ -3,7 +3,7 @@
  */
 package net.datenwerke.rs.core.client.datasinkmanager.security;
 
-import net.datenwerke.rs.core.service.genrights.datasinks.DatasinkManagerAdminViewSecurityTarget;
+import net.datenwerke.rs.core.service.datasinkmanager.genrights.DatasinkManagerAdminViewSecurityTarget;
 import net.datenwerke.security.client.security.GenericTargetIdentifier;
 import net.datenwerke.security.service.security.annotation.GenericTargetIdentifierMapper;
 

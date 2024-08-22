@@ -30,7 +30,7 @@ public class SchedulerModule extends AbstractModule {
    protected static final String PROPERTY_NR_WORKING_THREADS = "scheduler.properties.workingthreads";
    protected static final String PROPERTY_WAIT_BEFORE_FORCED_SHUTDOWN = "scheduler.properties.shutdownwait";
    protected static final String PROPERTY_STANDARD_VETO_DELAY = "scheduler.properties.stdvetodelay";
-   protected static final String PROPERTY_VETO_RANDOM_DELAY = "scheduler.properties.rndvetodealy";
+   protected static final String PROPERTY_VETO_RANDOM_DELAY = "scheduler.properties.rndvetodelay";
    protected static final String PROPERTY_SCHEDULER_DISABLED = "scheduler.properties.disabled";
 
    protected static final String PROPERTY_KEY_SCHEDULER_DISABLE = "rs.scheduler.disable";

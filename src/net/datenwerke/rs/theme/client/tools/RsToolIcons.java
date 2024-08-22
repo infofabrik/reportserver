@@ -26,7 +26,7 @@ public class RsToolIcons extends Tools {
 
          @Override
          public String close() {
-            return "rs-tool-i fa fa-times";
+            return "rs-tool-i nf nf-fa-times";
          }
 
          @Override
@@ -36,7 +36,7 @@ public class RsToolIcons extends Tools {
 
          @Override
          public String collapse() {
-            return "rs-tool-i fa fa-minus";
+            return "rs-tool-i nf nf-fa-minus";
          }
 
          @Override
@@ -46,7 +46,7 @@ public class RsToolIcons extends Tools {
 
          @Override
          public String doubleDown() {
-            return "rs-tool-i fa fa-chevron-down";
+            return "rs-tool-i nf nf-fa-chevron_down";
          }
 
          @Override
@@ -56,7 +56,7 @@ public class RsToolIcons extends Tools {
 
          @Override
          public String doubleLeft() {
-            return "rs-tool-i fa fa-angle-double-left";
+            return "rs-tool-i nf nf-fa-angle_double_left";
          }
 
          @Override
@@ -66,7 +66,7 @@ public class RsToolIcons extends Tools {
 
          @Override
          public String doubleRight() {
-            return "rs-tool-i fa fa-angle-double-right";
+            return "rs-tool-i nf nf-fa-angle_double_right";
          }
 
          @Override
@@ -76,7 +76,7 @@ public class RsToolIcons extends Tools {
 
          @Override
          public String doubleUp() {
-            return "rs-tool-i fa fa-angle-double-up";
+            return "rs-tool-i nf nf-fa-angle_double_up";
          }
 
          @Override
@@ -86,7 +86,7 @@ public class RsToolIcons extends Tools {
 
          @Override
          public String down() {
-            return "rs-tool-i fa fa-angle-double-down";
+            return "rs-tool-i nf nf-fa-angle_double_down";
          }
 
          @Override
@@ -96,7 +96,7 @@ public class RsToolIcons extends Tools {
 
          @Override
          public String expand() {
-            return "rs-tool-i fa fa-plus";
+            return "rs-tool-i nf nf-fa-plus";
          }
 
          @Override
@@ -106,7 +106,7 @@ public class RsToolIcons extends Tools {
 
          @Override
          public String gear() {
-            return "rs-tool-i fa fa-cog";
+            return "rs-tool-i nf nf-fa-cog";
          }
 
          @Override
@@ -116,7 +116,7 @@ public class RsToolIcons extends Tools {
 
          @Override
          public String left() {
-            return "rs-tool-i fa fa-chevron-left";
+            return "rs-tool-i nf nf-fa-chevron_left";
          }
 
          @Override
@@ -126,7 +126,7 @@ public class RsToolIcons extends Tools {
 
          @Override
          public String maximize() {
-            return "rs-tool-i fa fa-expand";
+            return "rs-tool-i nf nf-fa-expand";
          }
 
          @Override
@@ -136,7 +136,7 @@ public class RsToolIcons extends Tools {
 
          @Override
          public String minimize() {
-            return "rs-tool-i fa fa-compress";
+            return "rs-tool-i nf nf-fa-compress";
          }
 
          @Override
@@ -146,7 +146,7 @@ public class RsToolIcons extends Tools {
 
          @Override
          public String minus() {
-            return "rs-tool-i fa fa-minus";
+            return "rs-tool-i nf nf-fa-minus";
          }
 
          @Override
@@ -156,7 +156,7 @@ public class RsToolIcons extends Tools {
 
          @Override
          public String pin() {
-            return "rs-tool-i fa fa-thumb-tack";
+            return "rs-tool-i nf nf-fa-thumb_tack";
          }
 
          @Override
@@ -166,7 +166,7 @@ public class RsToolIcons extends Tools {
 
          @Override
          public String unpin() {
-            return "rs-tool-i fa fa-plus";
+            return "rs-tool-i nf nf-fa-plus";
          }
 
          @Override
@@ -176,7 +176,7 @@ public class RsToolIcons extends Tools {
 
          @Override
          public String plus() {
-            return "rs-tool-i fa fa-plus";
+            return "rs-tool-i nf nf-fa-plus";
          }
 
          @Override
@@ -186,7 +186,7 @@ public class RsToolIcons extends Tools {
 
          @Override
          public String print() {
-            return "rs-tool-i fa fa-print";
+            return "rs-tool-i nf nf-fa-print";
          }
 
          @Override
@@ -196,7 +196,7 @@ public class RsToolIcons extends Tools {
 
          @Override
          public String question() {
-            return "rs-tool-i fa fa-question";
+            return "rs-tool-i nf nf-fa-question";
          }
 
          @Override
@@ -206,7 +206,7 @@ public class RsToolIcons extends Tools {
 
          @Override
          public String refresh() {
-            return "rs-tool-i fa fa-refresh";
+            return "rs-tool-i nf nf-fa-refresh";
          }
 
          @Override
@@ -216,7 +216,7 @@ public class RsToolIcons extends Tools {
 
          @Override
          public String restore() {
-            return "rs-tool-i fa fa-compress";
+            return "rs-tool-i nf nf-fa-compress";
          }
 
          @Override
@@ -226,7 +226,7 @@ public class RsToolIcons extends Tools {
 
          @Override
          public String right() {
-            return "rs-tool-i fa fa-chevron-right";
+            return "rs-tool-i nf nf-fa-chevron_right";
          }
 
          @Override
@@ -236,7 +236,7 @@ public class RsToolIcons extends Tools {
 
          @Override
          public String save() {
-            return "rs-tool-i fa fa-floppy-o";
+            return "rs-tool-i nf nf-fa-floppy_o";
          }
 
          @Override
@@ -246,7 +246,7 @@ public class RsToolIcons extends Tools {
 
          @Override
          public String search() {
-            return "rs-tool-i fa fa-search";
+            return "rs-tool-i nf nf-fa-search";
          }
 
          @Override
@@ -256,7 +256,7 @@ public class RsToolIcons extends Tools {
 
          @Override
          public String up() {
-            return "rs-tool-i fa fa-chevron-up";
+            return "rs-tool-i nf nf-fa-chevron_up";
          }
 
          @Override

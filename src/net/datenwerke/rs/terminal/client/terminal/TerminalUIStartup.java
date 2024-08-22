@@ -59,5 +59,6 @@ public class TerminalUIStartup {
       
       /* configureHistory */
       historyService.addHistoryCallback(TerminalUIModule.TERMINAL_ID, location -> terminalService.displayTerminalMaximizedWindow());
+      historyService.addHistoryCallback(TerminalUIModule.TERMINAL_ID, location -> terminalService.displayTerminalMaximizedWindowWithCommand(location));
    }
 }

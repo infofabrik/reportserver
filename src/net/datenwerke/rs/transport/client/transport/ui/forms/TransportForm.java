@@ -1,8 +1,17 @@
 package net.datenwerke.rs.transport.client.transport.ui.forms;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.google.gwt.editor.client.Editor;
+import com.google.gwt.editor.client.EditorError;
+import com.sencha.gxt.widget.core.client.form.Validator;
+import com.sencha.gxt.widget.core.client.form.error.DefaultEditorError;
+
 import net.datenwerke.gf.client.managerhelper.mainpanel.SimpleFormView;
 import net.datenwerke.gxtdto.client.forms.simpleform.SimpleForm;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCReadOnly;
+import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCStringValidator;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.impl.SFFCTextAreaImpl;
 import net.datenwerke.gxtdto.client.locale.BaseMessages;
 import net.datenwerke.rs.transport.client.transport.dto.pa.TransportDtoPA;
@@ -28,11 +37,33 @@ public class TransportForm extends SimpleFormView {
       form.addField(Boolean.class, TransportDtoPA.INSTANCE.closed(), TransportMessages.INSTANCE.closed());
       form.endRow();
 
-      form.setFieldWidth(1);
-
       /* description */
+      form.beginFloatRow();
+      form.setFieldWidth(1110);
       form.addField(String.class, TransportDtoPA.INSTANCE.description(), BaseMessages.INSTANCE.description(),
-            new SFFCTextAreaImpl());
+            new SFFCStringValidator() {
+               @Override
+               public Validator<String> getValidator() {
+                  return new Validator<String>() {
+                     @Override
+                     public List<EditorError> validate(Editor<String> editor, String value) {
+                        if (value.length() > 200) {
+                           List<EditorError> list = new ArrayList<EditorError>();
+                           list.add(new DefaultEditorError(editor,
+                                 BaseMessages.INSTANCE.stringLengthValidationError(200), value));
+                           return list;
+                        }
+                        return null;
+                     }
+                  };
+               }
+
+               @Override
+               public void setAllowBlank(boolean allowBlank) {
+                  throw new RuntimeException("method not implemented: setAllowBlank");
+               }
+            }, new SFFCTextAreaImpl(0));
+      form.endRow();
 
       form.beginFloatRow();
       form.setFieldWidth(600);
@@ -97,14 +128,13 @@ public class TransportForm extends SimpleFormView {
             SFFCReadOnly.TRUE);
       form.endRow();
       
-      form.setFieldWidth(1);
-
-      /* description */
-      form.addField(String.class, TransportDtoPA.INSTANCE.appliedProtocol(), TransportMessages.INSTANCE.appliedLog(),
-            new SFFCTextAreaImpl(), SFFCReadOnly.TRUE);
-
+      /* protocol */
       form.beginFloatRow();
-      form.setFieldWidth(600);
+      form.setFieldWidth(1110);
+      form.addField(String.class, TransportDtoPA.INSTANCE.appliedProtocol(), TransportMessages.INSTANCE.appliedLog(),
+            new SFFCTextAreaImpl(25), SFFCReadOnly.TRUE);
+      form.endRow();
+      
    }
 
 }

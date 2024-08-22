@@ -11,7 +11,9 @@ import net.datenwerke.gf.client.managerhelper.mainpanel.SimpleFormView;
 import net.datenwerke.gxtdto.client.forms.simpleform.SimpleForm;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCAllowBlank;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCPasswordField;
+import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCStringValidatorRegex;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.impl.SFFCStaticDropdownList;
+import net.datenwerke.rs.utils.validator.shared.SharedRegex;
 import net.datenwerke.security.client.usermanager.dto.SexDto;
 import net.datenwerke.security.client.usermanager.dto.UserDto;
 import net.datenwerke.security.client.usermanager.dto.pa.UserDtoPA;
@@ -75,6 +77,7 @@ public class UserForm extends SimpleFormView {
 
       /* user name */
       form.addField(String.class, UserDtoPA.INSTANCE.username(), UsermanagerMessages.INSTANCE.username(),
+            new SFFCStringValidatorRegex(SharedRegex.USERNAME_REGEX, UsermanagerMessages.INSTANCE.invalidUsername()),
             new SFFCAllowBlank() {
 
                @Override

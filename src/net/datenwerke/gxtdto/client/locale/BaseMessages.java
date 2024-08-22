@@ -206,4 +206,8 @@ public interface BaseMessages extends Messages {
    String tools();
    
    String duplicateKey();
+
+   String createRandomKey();
+
+   String stringLengthValidationError(int length);
 }

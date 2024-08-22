@@ -22,6 +22,7 @@ import net.datenwerke.rs.terminal.service.terminal.helpmessenger.annotations.Non
 import net.datenwerke.rs.terminal.service.terminal.obj.CommandResult;
 import net.datenwerke.rs.terminal.service.terminal.objresolver.ObjectResolverDeamon;
 import net.datenwerke.rs.terminal.service.terminal.objresolver.exceptions.ObjectResolverException;
+import net.datenwerke.rs.utils.string.Emoji;
 import net.datenwerke.security.service.security.exceptions.ViolatedSecurityException;
 import net.datenwerke.security.service.security.rights.Read;
 import net.datenwerke.security.service.usermanager.entities.AbstractUserManagerNode;
@@ -58,7 +59,7 @@ public class AddMembersSubCommand implements TeamspaceModSubCommandHook {
    public CommandResult execute(CommandParser parser, TerminalSession session) throws ObjectResolverException {
       List<String> arguments = parser.getNonOptionArguments();
       if (1 > arguments.size())
-         throw new IllegalArgumentException();
+         throw new IllegalArgumentException(Emoji.exceptionEmoji().getEmoji());
 
       ObjectResolverDeamon objectResolver = session.getObjectResolver();
 
@@ -66,9 +67,9 @@ public class AddMembersSubCommand implements TeamspaceModSubCommandHook {
       String teamspaceLocator = arguments.remove(0);
       Collection<Object> teamspaceCandidates = objectResolver.getObjects(teamspaceLocator, Read.class);
       if (teamspaceCandidates.size() != 1)
-         throw new IllegalArgumentException("Could not find teamspace single teamspace: " + teamspaceLocator);
+         throw new IllegalArgumentException(Emoji.exceptionEmoji().getEmoji(" ") + "Could not find teamspace single teamspace: " + teamspaceLocator);
       if (!(teamspaceCandidates.iterator().next() instanceof TeamSpace))
-         throw new IllegalArgumentException("Could not find teamspace single teamspace: " + teamspaceLocator);
+         throw new IllegalArgumentException(Emoji.exceptionEmoji().getEmoji(" ") + "Could not find teamspace single teamspace: " + teamspaceLocator);
       TeamSpace teamspace = (TeamSpace) teamspaceCandidates.iterator().next();
 
       /* check rights */
@@ -80,14 +81,14 @@ public class AddMembersSubCommand implements TeamspaceModSubCommandHook {
       for (String locationStr : arguments) {
          Collection<Object> objectList = objectResolver.getObjects(locationStr, Read.class);
          if (objectList.isEmpty())
-            throw new IllegalArgumentException("No users or groups selected: " + locationStr);
+            throw new IllegalArgumentException(Emoji.exceptionEmoji().getEmoji(" ") + "No users or groups selected: " + locationStr);
 
          for (Object obj : objectList) {
             if (!(obj instanceof AbstractUserManagerNode))
-               throw new IllegalArgumentException("Found unknown objects in object selection: " + obj.getClass());
+               throw new IllegalArgumentException(Emoji.exceptionEmoji().getEmoji(" ") + "Found unknown objects in object selection: " + obj.getClass());
 
             if (obj instanceof OrganisationalUnit)
-               throw new IllegalArgumentException("Cannot add an OU to a TeamSpace");
+               throw new IllegalArgumentException(Emoji.exceptionEmoji().getEmoji(" ") + "Cannot add an OU to a TeamSpace");
 
             memberList.add((AbstractUserManagerNode) obj);
          }

@@ -14,18 +14,23 @@ import net.datenwerke.gf.client.treedb.helper.menu.DeleteMenuItem;
 import net.datenwerke.gf.client.treedb.helper.menu.DuplicateMenuItem;
 import net.datenwerke.gf.client.treedb.helper.menu.InfoMenuItem;
 import net.datenwerke.gf.client.treedb.helper.menu.InsertMenuItem;
+import net.datenwerke.gf.client.treedb.helper.menu.MoveToFolderMenuItem;
 import net.datenwerke.gf.client.treedb.helper.menu.ReloadMenuItem;
+import net.datenwerke.gf.client.treedb.helper.menu.TerminalNewWindowMenuItem;
 import net.datenwerke.gf.client.treedb.helper.menu.TreeDBUIMenuProvider;
 import net.datenwerke.gf.client.treedb.icon.IconMapping;
 import net.datenwerke.gf.client.treedb.icon.TreeDBUIIconProvider;
 import net.datenwerke.gxtdto.client.baseex.widget.menu.DwMenu;
 import net.datenwerke.gxtdto.client.baseex.widget.menu.DwMenuItem;
 import net.datenwerke.gxtdto.client.locale.BaseMessages;
+import net.datenwerke.gxtdto.client.utilityservices.UtilsUIService;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.core.client.datasinkmanager.DatasinkTreeManagerDao;
 import net.datenwerke.rs.core.client.datasinkmanager.DatasinkUIModule;
 import net.datenwerke.rs.core.client.datasinkmanager.dto.DatasinkFolderDto;
 import net.datenwerke.rs.core.client.datasinkmanager.hooks.DatasinkDefinitionConfigProviderHook;
+import net.datenwerke.rs.core.client.datasinkmanager.provider.annotations.DatasinkTreeFolders;
+import net.datenwerke.rs.terminal.client.terminal.TerminalDao;
 import net.datenwerke.rs.terminal.client.terminal.TerminalUIService;
 import net.datenwerke.rs.terminal.client.terminal.helper.menu.TerminalMenuItem;
 import net.datenwerke.rs.terminal.client.terminal.security.TerminalGenericTargetIdentifier;
@@ -43,8 +48,11 @@ public class DatasinkManagerTreeConfigurationHooker implements TreeConfiguratorH
    private final DatasinkTreeManagerDao treeHandler;
    private final Provider<TerminalUIService> terminalUIServiceProvider;  
    private final Provider<SecurityUIService> securityServiceProvider;
+   private final Provider<UtilsUIService> utilsUIServiceProvider;
    private final Provider<UITree> transportTreeProvider;
    private final TransportDao transportDao;
+   private final Provider<UITree> datasinkManagerTreeProvider;
+   private final TerminalDao terminalDao;
 
    @Inject
    public DatasinkManagerTreeConfigurationHooker(
@@ -53,7 +61,10 @@ public class DatasinkManagerTreeConfigurationHooker implements TreeConfiguratorH
          Provider<TerminalUIService> terminalUIServiceProvider,
          Provider<SecurityUIService> securityServiceProvider,
          @TransportTreeBasic Provider<UITree> transportTreeProvider,
-         TransportDao transportDao
+         Provider<UtilsUIService> utilsUIServiceProvider,
+         TransportDao transportDao,
+         @DatasinkTreeFolders Provider<UITree> datasinkManagerTreeProvider,
+         TerminalDao terminalDao
          ) {
 
       /* store objects */
@@ -61,8 +72,11 @@ public class DatasinkManagerTreeConfigurationHooker implements TreeConfiguratorH
       this.treeHandler = treeHandler;
       this.terminalUIServiceProvider = terminalUIServiceProvider;
       this.securityServiceProvider = securityServiceProvider;
+      this.utilsUIServiceProvider = utilsUIServiceProvider;
       this.transportTreeProvider = transportTreeProvider;
       this.transportDao = transportDao;
+      this.datasinkManagerTreeProvider = datasinkManagerTreeProvider;
+      this.terminalDao = terminalDao;
    }
 
    @Override
@@ -86,8 +100,10 @@ public class DatasinkManagerTreeConfigurationHooker implements TreeConfiguratorH
       folderMenu.add(insertItem);
       folderMenu.add(new DeleteMenuItem(treeHandler));
       folderMenu.add(new AddToTransportMenuItem(transportTreeProvider.get(), transportDao));
-      if (securityServiceProvider.get().hasRight(TerminalGenericTargetIdentifier.class, ExecuteDto.class))
+      if (securityServiceProvider.get().hasRight(TerminalGenericTargetIdentifier.class, ExecuteDto.class)) {
          folderMenu.add(new TerminalMenuItem(terminalUIServiceProvider));
+         folderMenu.add(new TerminalNewWindowMenuItem(utilsUIServiceProvider, terminalDao));         
+      }
       folderMenu.add(new SeparatorMenuItem());
       folderMenu.add(new InfoMenuItem());
       folderMenu.add(new ReloadMenuItem());
@@ -100,10 +116,13 @@ public class DatasinkManagerTreeConfigurationHooker implements TreeConfiguratorH
          insertItem.disable();
          dsMenu.add(insertItem);
          dsMenu.add(new DuplicateMenuItem(treeHandler));
+         dsMenu.add(new MoveToFolderMenuItem(treeHandler, datasinkManagerTreeProvider));
          dsMenu.add(new DeleteMenuItem(treeHandler));
          dsMenu.add(new AddToTransportMenuItem(transportTreeProvider.get(), transportDao));
-         if (securityServiceProvider.get().hasRight(TerminalGenericTargetIdentifier.class, ExecuteDto.class))
+         if (securityServiceProvider.get().hasRight(TerminalGenericTargetIdentifier.class, ExecuteDto.class)) {
             dsMenu.add(new TerminalMenuItem(terminalUIServiceProvider));
+            dsMenu.add(new TerminalNewWindowMenuItem(utilsUIServiceProvider, terminalDao));            
+         }
          dsMenu.add(new SeparatorMenuItem());
          dsMenu.add(new InfoMenuItem());
       }

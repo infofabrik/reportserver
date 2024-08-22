@@ -19,6 +19,7 @@ import net.datenwerke.rs.terminal.service.terminal.vfs.VFSLocation;
 import net.datenwerke.rs.terminal.service.terminal.vfs.VirtualFileSystemDeamon;
 import net.datenwerke.rs.terminal.service.terminal.vfs.exceptions.VFSException;
 import net.datenwerke.rs.terminal.service.terminal.vfs.locale.VfsMessages;
+import net.datenwerke.rs.utils.string.Emoji;
 import net.datenwerke.security.service.security.SecurityService;
 import net.datenwerke.security.service.security.SecurityTarget;
 import net.datenwerke.security.service.security.rights.Read;
@@ -51,7 +52,7 @@ public class VfsCommandMv implements TerminalCommandHook {
 
       List<String> arguments = parser.getNonOptionArguments();
       if (arguments.size() != 2)
-         throw new IllegalArgumentException();
+         throw new IllegalArgumentException(Emoji.exceptionEmoji().getEmoji());
 
       String sourceStr = arguments.get(0);
       String targetStr = arguments.get(1);
@@ -60,9 +61,9 @@ public class VfsCommandMv implements TerminalCommandHook {
          /* load source */
          VFSLocation source = vfs.getLocation(sourceStr);
          if (source.isVirtualLocation())
-            throw new IllegalArgumentException("Source is virtual location");
+            throw new IllegalArgumentException(Emoji.exceptionEmoji().getEmoji(" ") + "Source is virtual location");
          if (!source.exists() && !source.isWildcardLocation())
-            throw new IllegalArgumentException("Could not find " + sourceStr);
+            throw new IllegalArgumentException(Emoji.exceptionEmoji().getEmoji(" ") + "Could not find " + sourceStr);
 
          String targetFileName = null;
 
@@ -70,7 +71,7 @@ public class VfsCommandMv implements TerminalCommandHook {
 
          Collection<VFSLocation> targetLocations = target.resolveWildcards(vfs);
          if (targetLocations.size() != 1)
-            throw new IllegalArgumentException("Target must be resolved to exactly one element.");
+            throw new IllegalArgumentException(Emoji.exceptionEmoji().getEmoji(" ") + "Target must be resolved to exactly one element.");
 
          target = targetLocations.iterator().next();
 
@@ -86,7 +87,7 @@ public class VfsCommandMv implements TerminalCommandHook {
             if (target.exists() && !target.isFolder()) {
                if (!(sourceObject instanceof ReportVariant && targetObject instanceof Report
                      && !(targetObject instanceof ReportVariant)))
-                  throw new IllegalArgumentException("Target file already exists.");
+                  throw new IllegalArgumentException(Emoji.exceptionEmoji().getEmoji(" ") + "Target file already exists.");
             }
 
             if (!target.exists()) {
@@ -95,9 +96,9 @@ public class VfsCommandMv implements TerminalCommandHook {
             }
 
             if (target.isFolder() && !target.exists())
-               throw new IllegalArgumentException("Target folder does not exist.");
+               throw new IllegalArgumentException(Emoji.exceptionEmoji().getEmoji(" ") + "Target folder does not exist.");
             if (target.isVirtualLocation())
-               throw new IllegalArgumentException("Target is virtual location");
+               throw new IllegalArgumentException(Emoji.exceptionEmoji().getEmoji(" ") + "Target is virtual location");
 
             if (sourceObject instanceof SecurityService)
                securityService.assertRights((SecurityTarget) sourceObject, Read.class, Write.class);
@@ -108,7 +109,7 @@ public class VfsCommandMv implements TerminalCommandHook {
             List<VFSLocation> movedFileLocations = target.getFilesystemManager().moveFilesTo(sourceLocation, target);
 
             if (null != targetFileName && movedFileLocations.size() != 1)
-               throw new IllegalArgumentException("Cannot rename multiple files.");
+               throw new IllegalArgumentException(Emoji.exceptionEmoji().getEmoji(" ") + "Cannot rename multiple files.");
 
             if (null != targetFileName) {
                VFSLocation copiedFile = movedFileLocations.get(0);
@@ -117,7 +118,7 @@ public class VfsCommandMv implements TerminalCommandHook {
 
          }
 
-         return new CommandResult();
+         return new CommandResult(Emoji.BEER_MUG.getEmoji());
       } catch (VFSException e) {
          throw new IllegalArgumentException(e);
       }

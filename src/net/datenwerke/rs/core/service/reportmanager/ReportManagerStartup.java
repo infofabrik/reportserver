@@ -13,6 +13,7 @@ import net.datenwerke.rs.core.service.reportmanager.annotations.ReportServerRepo
 import net.datenwerke.rs.core.service.reportmanager.entities.ReportFolder;
 import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
 import net.datenwerke.rs.core.service.reportmanager.eventhandler.HandleDatasourceRemoveEventHandler;
+import net.datenwerke.rs.core.service.reportmanager.genrights.ReportManagerAdminViewSecurityTarget;
 import net.datenwerke.rs.core.service.reportmanager.hookers.ConfigureBaseReportViaRequestHooker;
 import net.datenwerke.rs.core.service.reportmanager.hookers.ReportManagerHistoryUrlBuilderHooker;
 import net.datenwerke.rs.core.service.reportmanager.hooks.ConfigureReportViaHistoryLocationHook;
@@ -59,6 +60,8 @@ public class ReportManagerStartup {
          /* secure report entities */
          installedReportTypes.get()
             .forEach(rClass -> securityServiceProvider.get().registerSecurityTarget(rClass));
+         
+         securityServiceProvider.get().registerSecurityTarget(ReportManagerAdminViewSecurityTarget.class);
       });
    }
 

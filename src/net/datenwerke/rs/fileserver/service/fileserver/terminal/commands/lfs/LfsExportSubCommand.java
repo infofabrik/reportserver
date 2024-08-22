@@ -14,6 +14,7 @@ import net.datenwerke.rs.terminal.service.terminal.exceptions.TerminalException;
 import net.datenwerke.rs.terminal.service.terminal.helpers.AutocompleteHelper;
 import net.datenwerke.rs.terminal.service.terminal.helpers.CommandParser;
 import net.datenwerke.rs.terminal.service.terminal.obj.CommandResult;
+import net.datenwerke.rs.utils.string.Emoji;
 
 public class LfsExportSubCommand implements LfsSubCommandHook {
 
@@ -36,7 +37,7 @@ public class LfsExportSubCommand implements LfsSubCommandHook {
          String path = noa.get(1);
          File baseDir = new File(path);
          if (!baseDir.exists() || !baseDir.isDirectory())
-            return new CommandResult(baseDir.getAbsolutePath() + " is not a directory");
+            return new CommandResult(Emoji.SMILING_FACE_TEAR.getEmoji(" ") + baseDir.getAbsolutePath() + " is not a directory");
 
          Object object = session.getObjectResolver().getObject(noa.get(0));
          try {
@@ -46,9 +47,9 @@ public class LfsExportSubCommand implements LfsSubCommandHook {
             return new CommandResult(e);
          }
 
-         return new CommandResult("ok");
+         return new CommandResult(Emoji.BEER_MUG.getEmoji(" ") + "ok");
       }
-      return new CommandResult("Missing argument");
+      return new CommandResult(Emoji.SMILING_FACE_TEAR.getEmoji(" ") + "Missing argument");
    }
 
    private void copy(AbstractFileServerNode node, File folder) throws IOException {

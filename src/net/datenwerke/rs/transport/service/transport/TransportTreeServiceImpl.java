@@ -14,6 +14,7 @@ import net.datenwerke.rs.utils.simplequery.PredicateType;
 import net.datenwerke.rs.utils.simplequery.annotations.QueryByAttribute;
 import net.datenwerke.rs.utils.simplequery.annotations.QueryById;
 import net.datenwerke.rs.utils.simplequery.annotations.SimpleQuery;
+import net.datenwerke.security.service.security.rights.Read;
 import net.datenwerke.security.service.treedb.SecuredTreeDBManagerImpl;
 
 public class TransportTreeServiceImpl extends SecuredTreeDBManagerImpl<AbstractTransportManagerNode>
@@ -35,13 +36,13 @@ public class TransportTreeServiceImpl extends SecuredTreeDBManagerImpl<AbstractT
    }
 
    @Override
-   @SimpleQuery
+   @SimpleQuery(wherePermissions = Read.class)
    public List<AbstractTransportManagerNode> getAllNodes() {
       return null;
    }
 
    @Override
-   @QueryById
+   @QueryById(wherePermissions = Read.class)
    public AbstractTransportManagerNode getNodeById(long id) {
       return null; // magic
    }
@@ -59,7 +60,8 @@ public class TransportTreeServiceImpl extends SecuredTreeDBManagerImpl<AbstractT
 
    @Override
    @QueryByAttribute(
-         where = Transport__.key
+         where = Transport__.key,
+         wherePermissions = Read.class
    )
    public Transport getTransportByKey(String key) {
       return null; // by magic
@@ -77,6 +79,7 @@ public class TransportTreeServiceImpl extends SecuredTreeDBManagerImpl<AbstractT
    @QueryByAttribute(
          from = Transport.class, 
          where = Transport__.status, 
+         wherePermissions = Read.class,
          throwNoResultException = false
    )
    public List<Transport> getTransportsByStatus(String status) {

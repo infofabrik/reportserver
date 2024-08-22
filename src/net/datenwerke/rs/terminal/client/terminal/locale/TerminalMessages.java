@@ -18,4 +18,6 @@ public interface TerminalMessages extends Messages {
    String permissionModuleDescription();
    
    String openTerminalSessionHere();
+
+   String openTerminalSessionHereInNewWindow();
 }

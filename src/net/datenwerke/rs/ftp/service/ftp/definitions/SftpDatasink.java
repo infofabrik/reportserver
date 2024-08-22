@@ -107,6 +107,7 @@ public class SftpDatasink extends DatasinkDefinition implements HostDatasink, Fo
 
    @ExposeToClient(exposeValueToClient = false, mergeDtoValueBack = true)
    @EntityMergeField
+   @ExportableField(exportField = false)
    private String privateKeyPassphrase;
 
    @ExposeToClient

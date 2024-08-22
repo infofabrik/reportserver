@@ -36,6 +36,7 @@ public class LostPasswordUIStartup {
          @Override
          public MenuItem get() {
             MenuItem menuItem = new DwMenuItem(SecurityMessages.INSTANCE.lostPassword().replaceAll("'", "''"));
+            menuItem.setWidth(348);
 
             menuItem.addSelectionHandler(new SelectionHandler<Item>() {
                @Override

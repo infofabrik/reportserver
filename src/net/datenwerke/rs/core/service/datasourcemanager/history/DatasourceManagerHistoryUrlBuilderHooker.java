@@ -4,8 +4,8 @@ import com.google.inject.Inject;
 
 import net.datenwerke.rs.core.client.datasourcemanager.DatasourceUIModule;
 import net.datenwerke.rs.core.service.datasourcemanager.entities.AbstractDatasourceManagerNode;
+import net.datenwerke.rs.core.service.datasourcemanager.genrights.DatasourceManagerAdminViewSecurityTarget;
 import net.datenwerke.rs.core.service.datasourcemanager.locale.DatasourceManagerMessages;
-import net.datenwerke.rs.core.service.genrights.datasources.DatasourceManagerAdminViewSecurityTarget;
 import net.datenwerke.rs.core.service.history.helper.TreePanelHistoryUrlBuilderHooker;
 import net.datenwerke.rs.utils.localization.LocalizationServiceImpl;
 import net.datenwerke.security.service.security.SecurityService;

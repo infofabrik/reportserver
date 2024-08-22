@@ -46,7 +46,7 @@ public class GroupTreeProvider implements Provider<ManagerHelperTree> {
       filters.add(new OrganisationalUnitDto2PosoMap());
       filters.add(new GroupDto2PosoMap());
       EnhancedTreeStore store = treeDBUIService.getUITreeStore(AbstractUserManagerNodeDto.class, userManagerTreeLoader,
-            false, filters);
+            true, filters);
 
       /* build tree */
       final ManagerHelperTree tree = treeFactory.create(UserManagerUIModule.class, store, userManagerTreeLoader,

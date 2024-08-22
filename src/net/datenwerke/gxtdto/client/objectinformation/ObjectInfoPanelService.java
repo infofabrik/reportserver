@@ -144,7 +144,7 @@ public class ObjectInfoPanelService {
             : DateTimeFormat.getFormat(PredefinedFormat.DATE_SHORT).format(keyProvider.getLastUpdatedOn(object)));
       final DwFlowContainer fieldWrapper = window.addDelayedSimpleDataInfoPanel(ObjectInfoMessages.INSTANCE.general());
       
-      historyDao.get().getFormattedObjectPaths((Dto)object, new RsAsyncCallback<List<String>>() {
+      historyDao.get().getRealObjectPaths((Dto)object, new RsAsyncCallback<List<String>>() {
          @Override
          public void onSuccess(List<String> result) {
             data.put(BaseMessages.INSTANCE.path(), result.get(0));

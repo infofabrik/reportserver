@@ -31,17 +31,17 @@ public class RsDatePickerAppearance extends Css3DatePickerAppearance {
       sb.appendHtmlConstant("<div class=\"" + style.datePicker() + " rs-datepicker\">");
 
       sb.appendHtmlConstant("<table width=100% cellpadding=0 cellspacing=0 class=" + style.header() + "><tr>");
-      sb.appendHtmlConstant("<td class=" + style.monthLeft() + "><i class=\"fa fa-chevron-left rs-date-month-btn "
+      sb.appendHtmlConstant("<td class=" + style.monthLeft() + "><i class=\"nf nf-fa-chevron_left rs-date-month-btn "
             + style.monthLeftButton() + "\"></i></td>");
       sb.appendHtmlConstant("<td class=" + style.middle() + " align=center>");
 
       sb.appendHtmlConstant("<table cellpadding=0 cellspacing=0 class=" + style.monthButton() + "><tr>");
       sb.appendHtmlConstant("<td class=\"" + style.monthButtonText()
-            + " rs-datepicker-month\"></td><td><i class=\"fa fa-angle-down rs-date-month-btn " + style.downIcon()
+            + " rs-datepicker-month\"></td><td><i class=\"nf nf-fa-angle_down rs-date-month-btn " + style.downIcon()
             + "\"></i></td></tr></table>");
 
       sb.appendHtmlConstant("</td>");
-      sb.appendHtmlConstant("<td class=" + style.monthRight() + "><i class=\"fa fa-chevron-right rs-date-month-btn "
+      sb.appendHtmlConstant("<td class=" + style.monthRight() + "><i class=\"nf nf-fa-chevron_right rs-date-month-btn "
             + style.monthRightButton() + "\"></i></td></tr></table>");
 
       sb.appendHtmlConstant(
@@ -86,10 +86,10 @@ public class RsDatePickerAppearance extends Css3DatePickerAppearance {
          if (i == 0) {
             sb.appendHtmlConstant("<td class=" + style.yearButton() + " align=center>");
             sb.appendHtmlConstant(
-                  "<i class=\"fa fa-chevron-left rs-date-month-btn " + style.leftYearIcon() + "\"></i>");
+                  "<i class=\"nf nf-fa-chevron_left rs-date-month-btn " + style.leftYearIcon() + "\"></i>");
             sb.appendHtmlConstant("</td><td class='" + style.yearButton() + "' align=center>");
             sb.appendHtmlConstant(
-                  "<i class=\"fa fa-chevron-right rs-date-month-btn " + style.rightYearIcon() + "\"></i>");
+                  "<i class=\"nf nf-fa-chevron_right rs-date-month-btn " + style.rightYearIcon() + "\"></i>");
             sb.appendHtmlConstant("</td></tr>");
          } else {
             sb.appendHtmlConstant("<td class='" + style.monthPickerItem() + " " + style.year() + "'><a class='"

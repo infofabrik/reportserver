@@ -25,6 +25,7 @@ import net.datenwerke.rs.terminal.service.terminal.helpmessenger.annotations.Cli
 import net.datenwerke.rs.terminal.service.terminal.helpmessenger.annotations.NonOptArgument;
 import net.datenwerke.rs.terminal.service.terminal.locale.TerminalMessages;
 import net.datenwerke.rs.terminal.service.terminal.obj.CommandResult;
+import net.datenwerke.rs.utils.string.Emoji;
 import net.datenwerke.security.service.security.rights.Read;
 import net.datenwerke.security.service.security.rights.Write;
 
@@ -80,7 +81,7 @@ public class CopyParameterDefinitionsSubcommand implements CopySubCommandHook {
    public CommandResult execute(CommandParser parser, TerminalSession session) throws TerminalException {
       List<String> arguments = parser.getNonOptionArguments();
       if (3 != arguments.size())
-         throw new IllegalArgumentException("Exactly three arguments expected");
+         throw new IllegalArgumentException(Emoji.exceptionEmoji().getEmoji(" ") + "Exactly three arguments expected");
       
       final TerminalService terminalService = terminalServiceProvider.get();
       final Report from = terminalService.getSingleObjectOfTypeByQuery(Report.class, arguments.get(0), session,
@@ -91,7 +92,7 @@ public class CopyParameterDefinitionsSubcommand implements CopySubCommandHook {
          final boolean replaceExistingParameters = Boolean.parseBoolean(arguments.get(2));
          Map<CopyResultType, List<ParameterDefinition>> result = parameterHelperServiceProvider.get().copyParameterDefinitions(from,
                to, replaceExistingParameters);
-         RSTableModel copied = terminalService.convertSimpleListToTableModel("Copied parameter definitions",
+         RSTableModel copied = terminalService.convertSimpleListToTableModel(Emoji.BEER_MUG.getEmoji(" ") + "Copied parameter definitions",
                result.get(CopyResultType.COPYIED)
                   .stream()
                   .map(ParameterDefinition::toString)

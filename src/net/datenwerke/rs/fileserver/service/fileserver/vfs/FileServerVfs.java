@@ -146,12 +146,14 @@ public class FileServerVfs extends TreeBasedVirtualFileSystem<AbstractFileServer
 
       checkWrite(parent);
 
+      final TreeDBManager<AbstractFileServerNode> treeDBManager = treeDBManagerProvider.get();
+      
       /* new node */
       FileServerFile target = new FileServerFile();
+      target.setKey(keyGeneratorService.generateDefaultKey(treeDBManager));
       target.setName(vfsLocation.getPathHelper().getLastPathway());
       parent.addChild(target);
 
-      final TreeDBManager<AbstractFileServerNode> treeDBManager = treeDBManagerProvider.get();
 
       treeDBManager.persist(target);
       treeDBManager.merge(parent);

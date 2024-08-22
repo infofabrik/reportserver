@@ -10,6 +10,7 @@ import com.sencha.gxt.widget.core.client.menu.SeparatorMenuItem;
 import net.datenwerke.gf.client.managerhelper.hooks.TreeConfiguratorHook;
 import net.datenwerke.gf.client.managerhelper.tree.ManagerHelperTree;
 import net.datenwerke.gf.client.treedb.UITree;
+import net.datenwerke.gf.client.treedb.UiTreeFactory;
 import net.datenwerke.gf.client.treedb.helper.menu.AvailabilityCallback;
 import net.datenwerke.gf.client.treedb.helper.menu.DeleteMenuItem;
 import net.datenwerke.gf.client.treedb.helper.menu.DuplicateMenuItem;
@@ -17,6 +18,7 @@ import net.datenwerke.gf.client.treedb.helper.menu.InfoMenuItem;
 import net.datenwerke.gf.client.treedb.helper.menu.InsertMenuItem;
 import net.datenwerke.gf.client.treedb.helper.menu.MoveToFolderMenuItem;
 import net.datenwerke.gf.client.treedb.helper.menu.ReloadMenuItem;
+import net.datenwerke.gf.client.treedb.helper.menu.TerminalNewWindowMenuItem;
 import net.datenwerke.gf.client.treedb.helper.menu.TreeDBUIMenuProvider;
 import net.datenwerke.gf.client.treedb.helper.menu.TreeMenuItem;
 import net.datenwerke.gf.client.treedb.helper.menu.TreeMenuSelectionEvent;
@@ -24,8 +26,10 @@ import net.datenwerke.gf.client.treedb.icon.IconMapping;
 import net.datenwerke.gf.client.treedb.icon.TreeDBUIIconProvider;
 import net.datenwerke.gxtdto.client.baseex.widget.menu.DwMenu;
 import net.datenwerke.gxtdto.client.baseex.widget.menu.DwMenuItem;
+import net.datenwerke.gxtdto.client.utilityservices.UtilsUIService;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.core.client.reportexecutor.ReportExecutorUIService;
+import net.datenwerke.rs.core.client.reportmanager.ReportManagerTreeLoaderDao;
 import net.datenwerke.rs.core.client.reportmanager.ReportManagerTreeManagerDao;
 import net.datenwerke.rs.core.client.reportmanager.ReportManagerUIModule;
 import net.datenwerke.rs.core.client.reportmanager.dto.ReportFolderDto;
@@ -33,6 +37,7 @@ import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
 import net.datenwerke.rs.core.client.reportmanager.hooks.ReportTypeConfigHook;
 import net.datenwerke.rs.core.client.reportmanager.locale.ReportmanagerMessages;
 import net.datenwerke.rs.core.client.reportmanager.provider.annotations.ReportManagerTreeFolders;
+import net.datenwerke.rs.terminal.client.terminal.TerminalDao;
 import net.datenwerke.rs.terminal.client.terminal.TerminalUIService;
 import net.datenwerke.rs.terminal.client.terminal.helper.menu.TerminalMenuItem;
 import net.datenwerke.rs.terminal.client.terminal.security.TerminalGenericTargetIdentifier;
@@ -48,12 +53,16 @@ public class ReportManagerTreeConfigurationHooker implements TreeConfiguratorHoo
 
    private final HookHandlerService hookHandler;
    private final ReportManagerTreeManagerDao treeHandler;
+   private final ReportManagerTreeLoaderDao treeLoader;
    private final ReportExecutorUIService reportExecutorService;
-   private final Provider<TerminalUIService> terminalUIServiceProvider; 
+   private final Provider<TerminalUIService> terminalUIServiceProvider;
    private final Provider<SecurityUIService> securityServiceProvider;
    private final Provider<UITree> transportTreeProvider;
    private final TransportDao transportDao;
    private final Provider<UITree> reportManagerTreeProvider;
+   private final UiTreeFactory uiTreeFactory;
+   private final Provider<UtilsUIService> utilsUIServiceProvider;
+   private final TerminalDao terminalDao;
 
    @Inject
    public ReportManagerTreeConfigurationHooker(
@@ -64,7 +73,11 @@ public class ReportManagerTreeConfigurationHooker implements TreeConfiguratorHoo
          Provider<SecurityUIService> securityServiceProvider,
          TransportDao transportDao,
          @TransportTreeBasic Provider<UITree> transportTreeProvider,
-         @ReportManagerTreeFolders Provider<UITree> reportManagerTreeProvider
+         @ReportManagerTreeFolders Provider<UITree> reportManagerTreeProvider,
+         ReportManagerTreeLoaderDao treeLoader,
+         UiTreeFactory uiTreeFactory,
+         Provider<UtilsUIService> utilsUIServiceProvider, 
+         TerminalDao terminalDao
          ) {
 
       /* store objects */
@@ -76,6 +89,10 @@ public class ReportManagerTreeConfigurationHooker implements TreeConfiguratorHoo
       this.transportTreeProvider = transportTreeProvider;
       this.transportDao = transportDao;
       this.reportManagerTreeProvider = reportManagerTreeProvider;
+      this.treeLoader = treeLoader;
+      this.uiTreeFactory = uiTreeFactory;
+      this.utilsUIServiceProvider = utilsUIServiceProvider;
+      this.terminalDao = terminalDao;
    }
 
    @Override
@@ -99,8 +116,10 @@ public class ReportManagerTreeConfigurationHooker implements TreeConfiguratorHoo
       folderMenu.add(insertItem);
       folderMenu.add(new DeleteMenuItem(treeHandler));
       folderMenu.add(new AddToTransportMenuItem(transportTreeProvider.get(), transportDao));
-      if (securityServiceProvider.get().hasRight(TerminalGenericTargetIdentifier.class, ExecuteDto.class))
+      if (securityServiceProvider.get().hasRight(TerminalGenericTargetIdentifier.class, ExecuteDto.class)) {
          folderMenu.add(new TerminalMenuItem(terminalUIServiceProvider));
+         folderMenu.add(new TerminalNewWindowMenuItem(utilsUIServiceProvider, terminalDao));
+      }
       folderMenu.add(new SeparatorMenuItem());
       folderMenu.add(new InfoMenuItem());
       folderMenu.add(new ReloadMenuItem());
@@ -114,12 +133,14 @@ public class ReportManagerTreeConfigurationHooker implements TreeConfiguratorHoo
          reportMenu.add(generateExecuteReportItem());
          reportMenu.add(new SeparatorMenuItem());
          reportMenu.add(insertItem);
-         reportMenu.add(new DuplicateMenuItem(treeHandler));
+         reportMenu.add(new DuplicateMenuItem(treeHandler, treeLoader, uiTreeFactory));
          reportMenu.add(new MoveToFolderMenuItem(treeHandler, reportManagerTreeProvider));
          reportMenu.add(new DeleteMenuItem(treeHandler));
          reportMenu.add(new AddToTransportMenuItem(transportTreeProvider.get(), transportDao));
-         if (securityServiceProvider.get().hasRight(TerminalGenericTargetIdentifier.class, ExecuteDto.class))
+         if (securityServiceProvider.get().hasRight(TerminalGenericTargetIdentifier.class, ExecuteDto.class)) {
             reportMenu.add(new TerminalMenuItem(terminalUIServiceProvider));
+            reportMenu.add(new TerminalNewWindowMenuItem(utilsUIServiceProvider, terminalDao));
+         }
          reportMenu.add(new SeparatorMenuItem());
          reportMenu.add(new InfoMenuItem());
       }

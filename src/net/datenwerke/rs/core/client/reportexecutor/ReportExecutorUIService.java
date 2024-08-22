@@ -14,17 +14,17 @@ import net.datenwerke.rs.tsreportarea.client.tsreportarea.dto.TsDiskFolderDto;
 
 public interface ReportExecutorUIService {
 
-   public void executeReport(ReportDto report, ExecutorEventHandler eventHandler, ExecuteReportConfiguration config,
+   void executeReport(ReportDto report, ExecutorEventHandler eventHandler, ExecuteReportConfiguration config,
          ReportViewConfiguration... viewConfigs);
 
-   public Component getExecuteReportComponent(ReportDto report, ExecutorEventHandler eventHandler,
+   Component getExecuteReportComponent(ReportDto report, ExecutorEventHandler eventHandler,
          ExecuteReportConfiguration config, ReportViewConfiguration... viewConfigs);
 
-   public PreviewViewFactory getPreviewReportComponent(ReportDto report);
+   PreviewViewFactory getPreviewReportComponent(ReportDto report);
 
-   public String createExecuteReportToken(ReportDto report);
+   String createExecuteReportToken(ReportDto report);
 
-   public void executeReport(ReportDto node);
+   void executeReport(ReportDto node);
 
    void executeReportDirectly(ReportDto report);
 
@@ -35,15 +35,19 @@ public interface ReportExecutorUIService {
 
    Component getExecuteReportComponent(ReportDto report, boolean showVariantStorer);
 
-   public ReportExecuteAreaModule getActiveReportExecuteAreaModule();
+   ReportExecuteAreaModule getActiveReportExecuteAreaModule();
 
-   public AbstractReportPreviewView getPdfPreviewView();
+   AbstractReportPreviewView getPdfPreviewView();
 
-   public void createNewVariant(ReportDto report, TeamSpaceDto teamSpace, TsDiskFolderDto folder, String executeToken,
+   void createNewVariant(ReportDto report, TeamSpaceDto teamSpace, TsDiskFolderDto folder, String executeToken,
          String name, String description, AsyncCallback<ReportDto> callback);
 
-   public Integer getDefaultColumnWidth();
+   Integer getDefaultColumnWidth();
 
-   public Integer getMaxColumnWidth();
+   Integer getMaxColumnWidth();
+   
+   boolean getEffectiveReportPropertyAsBoolean(ReportDto report, String property);
+   
+   
 
 }

@@ -686,8 +686,12 @@ public class SimpleForm extends DwContentPanel {
    }
 
    public void beginFieldset(double width, double height, String label, MarginData marginData) {
-      beginLayout.add(LAYOUT_MARKER.BEGIN_FS);
-      this.beginFsLabel.add(label);
+      
+      if (null != label) {
+         beginLayout.add(LAYOUT_MARKER.BEGIN_FS);
+         this.beginFsLabel.add(label);
+      }
+
       this.beginMarginData.add(marginData);
       this.beginContainerWidth.add(width);
       this.beginContainerHeight.add(height);

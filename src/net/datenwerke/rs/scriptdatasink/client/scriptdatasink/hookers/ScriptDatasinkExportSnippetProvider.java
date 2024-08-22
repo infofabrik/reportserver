@@ -19,7 +19,7 @@ import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCAllow
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCBoolean;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCDatasinkDao;
 import net.datenwerke.gxtdto.client.locale.BaseMessages;
-import net.datenwerke.rs.core.client.datasinkmanager.DatasinkTreeManagerDao;
+import net.datenwerke.rs.core.client.datasinkmanager.DatasinkUIModule;
 import net.datenwerke.rs.core.client.datasinkmanager.HasDefaultDatasink;
 import net.datenwerke.rs.core.client.datasinkmanager.helper.forms.DatasinkSelectionField;
 import net.datenwerke.rs.core.client.reportexecutor.ui.ReportViewConfiguration;
@@ -44,16 +44,13 @@ public class ScriptDatasinkExportSnippetProvider implements ScheduleExportSnippe
 
    private final Provider<UITree> treeProvider;
    private final Provider<ScriptDatasinkDao> datasinkDaoProvider;
-   private final DatasinkTreeManagerDao datasinkTreeManager;
 
    @Inject
    public ScriptDatasinkExportSnippetProvider(
          @DatasinkTreeScriptDatasink Provider<UITree> treeProvider,
-         DatasinkTreeManagerDao datasinkTreeManager, 
          Provider<ScriptDatasinkDao> datasinkDaoProvider
          ) {
       this.treeProvider = treeProvider;
-      this.datasinkTreeManager = datasinkTreeManager;
       this.datasinkDaoProvider = datasinkDaoProvider;
    }
 
@@ -152,7 +149,7 @@ public class ScriptDatasinkExportSnippetProvider implements ScheduleExportSnippe
             form.getField(scriptDatasinkKey));
 
       if (null != definition) {
-         form.setValue(nameKey, "${now} - " + definition.getTitle());
+         form.setValue(nameKey, DatasinkUIModule.DEFAULT_FILE_NAME);
          ScheduleAsScriptDatasinkInformation info = definition
                .getAdditionalInfo(ScheduleAsScriptDatasinkInformation.class);
          if (null != info) {
@@ -171,11 +168,7 @@ public class ScriptDatasinkExportSnippetProvider implements ScheduleExportSnippe
       if (!(page instanceof JobMetadataConfigurationForm))
          return;
 
-      JobMetadataConfigurationForm metadataForm = (JobMetadataConfigurationForm) page;
-
-      String jobTitle = metadataForm.getTitleValue();
-
-      form.setValue(nameKey, "${now} - " + jobTitle);
+      form.setValue(nameKey, DatasinkUIModule.DEFAULT_FILE_NAME);
       if (null != definition) {
          ScheduleAsScriptDatasinkInformation info = definition
                .getAdditionalInfo(ScheduleAsScriptDatasinkInformation.class);

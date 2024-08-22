@@ -139,6 +139,8 @@ public class ReportPropertiesRpcServiceImpl extends SecuredRemoteServiceServlet 
       for (AvailableReportProperties prop : props)
          propertyKeys.add(prop.getValue());
 
+      Collections.sort(propertyKeys); 
+      
       return propertyKeys;
    }
 

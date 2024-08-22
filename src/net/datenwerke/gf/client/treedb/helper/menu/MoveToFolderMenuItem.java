@@ -7,7 +7,6 @@ import com.google.inject.Provider;
 import net.datenwerke.gf.client.treedb.UITree;
 import net.datenwerke.gf.client.treedb.selection.TreeSelectionPopup;
 import net.datenwerke.gxtdto.client.servercommunication.callback.NotamCallback;
-import net.datenwerke.rs.core.client.reportmanager.dto.ReportFolderDto;
 import net.datenwerke.rs.theme.client.icon.BaseIcon;
 import net.datenwerke.security.client.security.dto.WriteDto;
 import net.datenwerke.security.client.treedb.dto.decorator.SecuredAbstractNodeDtoDec;
@@ -17,11 +16,11 @@ import net.datenwerke.treedb.client.treedb.locale.TreedbMessages;
 
 public class MoveToFolderMenuItem extends TreeMenuItem {
 
-   public MoveToFolderMenuItem(final TreeDbManagerDao treeManager, final Provider<UITree> reportManagerTreeProvider) {
+   public MoveToFolderMenuItem(final TreeDbManagerDao treeManager, final Provider<UITree> managerTreeProvider) {
       super();
       setIcon(BaseIcon.FOLDER_OPEN_O);
       setText(TreedbMessages.INSTANCE.moveTo());
-      addMenuSelectionListener((tree, node) -> moveToAnotherFolder(treeManager, reportManagerTreeProvider, node));
+      addMenuSelectionListener((tree, node) -> moveToAnotherFolder(treeManager, managerTreeProvider, node));
    }
 
    @Override
@@ -38,16 +37,14 @@ public class MoveToFolderMenuItem extends TreeMenuItem {
       }
    }
    
-   private void moveToAnotherFolder(TreeDbManagerDao treeManager, Provider<UITree> reportManagerTreeProvider,
+   private void moveToAnotherFolder(TreeDbManagerDao treeManager, Provider<UITree> managerTreeProvider,
          AbstractNodeDto node) {
-      TreeSelectionPopup popup = new TreeSelectionPopup(reportManagerTreeProvider.get(), ReportFolderDto.class) {
+      TreeSelectionPopup popup = new TreeSelectionPopup(managerTreeProvider.get(), SecuredAbstractNodeDtoDec.class) {
          @Override
          protected void itemsSelected(List<AbstractNodeDto> selectedItems) {
             for (AbstractNodeDto targetFolder : selectedItems) {
-               if (targetFolder instanceof ReportFolderDto) {
                   treeManager.moveNodeAppend(node, targetFolder,
                         new NotamCallback<AbstractNodeDto>(TreedbMessages.INSTANCE.moved()));
-               }
             }
          }
       };

@@ -29,6 +29,7 @@ import net.datenwerke.security.service.security.SecurityService;
 import net.datenwerke.security.service.security.exceptions.ViolatedSecurityException;
 import net.datenwerke.security.service.treedb.SecuredTreeDBManagerImpl;
 import net.datenwerke.security.service.treedb.actions.InsertAction;
+import net.datenwerke.treedb.service.treedb.AbstractNode;
 
 public class FileServerServiceImpl extends SecuredTreeDBManagerImpl<AbstractFileServerNode>
       implements FileServerService {
@@ -203,6 +204,7 @@ public class FileServerServiceImpl extends SecuredTreeDBManagerImpl<AbstractFile
             } else {
                FileServerFile file = new FileServerFile();
                file.setName(path);
+               file.setKey(keyNameGeneratorService.generateDefaultKey());
                node = file;
             }
             parent.addChild(node);
@@ -236,7 +238,7 @@ public class FileServerServiceImpl extends SecuredTreeDBManagerImpl<AbstractFile
       file.setName(uFile.getName());
       file.setContentType(mimeType);
       file.setData(data);
-
+      file.setKey(keyNameGeneratorService.generateDefaultKey(this));
       return file;
    }
 
@@ -279,5 +281,29 @@ public class FileServerServiceImpl extends SecuredTreeDBManagerImpl<AbstractFile
    @Override
    public AbstractFileServerNode getNodeByKey(String key) {
       return getFileByKey(key);
+   }
+   
+   @Override
+   public boolean checkNewName(String name, AbstractFileServerNode node) {
+      return checkForNameConflict(name, node.getParent(), node);
+   }
+   
+   @Override
+   public boolean checkNewParent(AbstractNode<AbstractFileServerNode> parent, AbstractFileServerNode node) {
+      return checkForNameConflict(node.getName(), parent, node);
+   }
+   
+   private boolean checkForNameConflict(String name, AbstractNode<AbstractFileServerNode> parent, AbstractFileServerNode node) {
+      if (parent == null) return true;
+      for (AbstractFileServerNode child : parent.getChildren()) {
+         if (child.getId() == null) continue;
+         if (child.getId() == node.getId()) continue;
+         if (child.isFolder() != node.isFolder()) continue;
+         if (child.getName() == null && name == null) return false;
+         if (child.getName() == null || name == null) continue;
+         if (child.getName().contentEquals(name)) return false;
+      }
+      
+      return true;
    }
 }

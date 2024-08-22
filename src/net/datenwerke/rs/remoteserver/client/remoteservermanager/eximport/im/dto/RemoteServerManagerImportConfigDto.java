@@ -10,14 +10,14 @@ public class RemoteServerManagerImportConfigDto extends TreeImportConfigDto<Abst
     */
    private static final long serialVersionUID = 1L;
    
-   private boolean removeKey;
+   private boolean generateRandomKey;
 
-   public boolean isRemoveKey() {
-      return removeKey;
+   public boolean isGenerateRandomKey() {
+      return generateRandomKey;
    }
 
-   public void setRemoveKey(boolean removekey) {
-      this.removeKey = removekey;
+   public void setGenerateRandomKey(boolean generateRandomKey) {
+      this.generateRandomKey = generateRandomKey;
    }
 
 }

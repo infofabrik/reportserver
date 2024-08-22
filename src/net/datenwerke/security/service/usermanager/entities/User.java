@@ -21,6 +21,8 @@ import com.google.common.base.MoreObjects;
 import net.datenwerke.dtoservices.dtogenerator.annotations.AdditionalField;
 import net.datenwerke.dtoservices.dtogenerator.annotations.ExposeToClient;
 import net.datenwerke.dtoservices.dtogenerator.annotations.GenerateDto;
+import net.datenwerke.dtoservices.dtogenerator.annotations.PropertyValidator;
+import net.datenwerke.dtoservices.dtogenerator.annotations.StringValidator;
 import net.datenwerke.gf.base.service.annotations.Field;
 import net.datenwerke.gf.base.service.annotations.Indexed;
 import net.datenwerke.gxtdto.client.dtomanager.DtoView;
@@ -28,6 +30,7 @@ import net.datenwerke.rs.utils.crypto.PasswordHasher;
 import net.datenwerke.rs.utils.entitycloner.annotation.EnclosedEntity;
 import net.datenwerke.rs.utils.entitycloner.annotation.EntityClonerIgnore;
 import net.datenwerke.rs.utils.instancedescription.annotations.InstanceDescription;
+import net.datenwerke.rs.utils.validator.shared.SharedRegex;
 import net.datenwerke.security.service.usermanager.UserManagerService;
 import net.datenwerke.security.service.usermanager.UserPropertiesService;
 import net.datenwerke.security.service.usermanager.entities.post.User2DtoPostProcessor;
@@ -105,7 +108,14 @@ public class User extends AbstractUserManagerNode {
    @Field
    private String email;
 
-   @ExposeToClient
+   @ExposeToClient(
+         view = DtoView.LIST, 
+         validateDtoProperty = @PropertyValidator(
+               string = @StringValidator(
+                     regex = SharedRegex.USERNAME_REGEX
+               )
+         )
+   )
    @Column(
          length = 128, 
          unique = true, 

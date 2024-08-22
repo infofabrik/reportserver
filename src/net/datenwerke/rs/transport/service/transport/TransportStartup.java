@@ -22,6 +22,8 @@ import net.datenwerke.rs.transport.service.transport.eximport.TransportManagerEx
 import net.datenwerke.rs.transport.service.transport.eximport.TransportManagerImporter;
 import net.datenwerke.rs.transport.service.transport.eximport.hookers.RemoteTransportImporterHooker;
 import net.datenwerke.rs.transport.service.transport.eximport.hookers.TransportExportConfigHooker;
+import net.datenwerke.rs.transport.service.transport.genrights.TransportAdminViewSecurityTarget;
+import net.datenwerke.rs.transport.service.transport.genrights.TransportManagementAdminViewSecurityTarget;
 import net.datenwerke.rs.transport.service.transport.history.TransportManagerHistoryUrlBuilderHooker;
 import net.datenwerke.rs.transport.service.transport.hookers.ConfigMappingsExistPreconditionHooker;
 import net.datenwerke.rs.transport.service.transport.hookers.ConfigTransportExistPreconditionHooker;
@@ -61,7 +63,7 @@ public class TransportStartup {
          final Provider<TransportCloseSubcommand> transportCloseCommand,
          final Provider<TransportDescribeSubcommand> transportDescribeCommand,
          final Provider<TransportRpullSubcommand> transportRpullCommand,
-         final Provider<TransportApplySubcommand> transportImportCommand,
+         final Provider<TransportApplySubcommand> transportApplyCommand,
          final Provider<TransportManagerHistoryUrlBuilderHooker> managerUrlBuilder,
          final Provider<TransportExportConfigHooker> exportConfigHookerProvider,
          final Provider<TransportManagerExporter> transportManagerExporter,
@@ -91,7 +93,7 @@ public class TransportStartup {
       hookHandler.attachHooker(TransportSubCommandHook.class, transportCloseCommand);
       hookHandler.attachHooker(TransportSubCommandHook.class, transportDescribeCommand);
       hookHandler.attachHooker(TransportSubCommandHook.class, transportRpullCommand);
-      hookHandler.attachHooker(TransportSubCommandHook.class, transportImportCommand);
+      //hookHandler.attachHooker(TransportSubCommandHook.class, transportApplyCommand); apply command is broken because of a already started transaction RS-8273
       hookHandler.attachHooker(OpenTerminalHandlerHook.class, transportOpenTerminalHooker);
       
       hookHandler.attachHooker(TransportEntryProviderHook.class, usageStatsTransportFolderProvider,
@@ -128,6 +130,10 @@ public class TransportStartup {
          /* secure folder */
          securityServiceProvider.get().registerSecurityTarget(TransportFolder.class);
          securityServiceProvider.get().registerSecurityTarget(Transport.class);
+         
+         securityServiceProvider.get().registerSecurityTarget(TransportAdminViewSecurityTarget.class);
+         securityServiceProvider.get().registerSecurityTarget(TransportManagementAdminViewSecurityTarget.class);
       });
+      
    }
 }

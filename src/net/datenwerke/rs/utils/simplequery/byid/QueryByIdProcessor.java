@@ -1,6 +1,8 @@
 package net.datenwerke.rs.utils.simplequery.byid;
 
 import java.lang.reflect.Field;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.persistence.Entity;
 import javax.persistence.EntityManager;
@@ -18,6 +20,8 @@ import com.google.inject.Provider;
 
 import net.datenwerke.rs.utils.jpa.EntityUtils;
 import net.datenwerke.rs.utils.simplequery.annotations.QueryById;
+import net.datenwerke.security.service.security.SecurityService;
+import net.datenwerke.security.service.security.rights.Right;
 
 /**
  * 
@@ -26,13 +30,15 @@ import net.datenwerke.rs.utils.simplequery.annotations.QueryById;
 public class QueryByIdProcessor {
 
    private final Provider<EntityManager> entityManagerProvider;
+   private final Provider<SecurityService> securityServiceProvider;
    private final EntityUtils entityUtils;
 
    @Inject
-   public QueryByIdProcessor(Provider<EntityManager> entityManagerProvider, EntityUtils entityUtils) {
+   public QueryByIdProcessor(Provider<EntityManager> entityManagerProvider, Provider<SecurityService> securityServiceProvider, EntityUtils entityUtils) {
 
       /* store objects */
       this.entityManagerProvider = entityManagerProvider;
+      this.securityServiceProvider = securityServiceProvider;
       this.entityUtils = entityUtils;
    }
 
@@ -64,6 +70,14 @@ public class QueryByIdProcessor {
 //			q.setFlushMode(FlushModeType.COMMIT);
 
          Object result = q.getSingleResult();
+
+         if (Right.class.isAssignableFrom(metadata.wherePermissions())) {
+            Class<? extends Right> permissionClass = (Class<? extends Right>) metadata.wherePermissions();
+            
+           if (!securityServiceProvider.get().checkRights(result, permissionClass))
+              throw new NoResultException("Missing permissions on Entity");
+         }
+         
          return result;
       } catch (NoResultException e) {
          return null;

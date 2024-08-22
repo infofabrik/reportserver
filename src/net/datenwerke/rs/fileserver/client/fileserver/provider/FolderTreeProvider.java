@@ -38,7 +38,7 @@ public class FolderTreeProvider implements Provider<ManagerHelperTree> {
       /* store */
       List<Dto2PosoMapper> filters = new ArrayList<Dto2PosoMapper>();
       filters.add(new FileServerFolderDto2PosoMap());
-      EnhancedTreeStore store = treeDBUIService.getUITreeStore(AbstractFileServerNodeDto.class, treeLoader, false,
+      EnhancedTreeStore store = treeDBUIService.getUITreeStore(AbstractFileServerNodeDto.class, treeLoader, true,
             filters);
 
       /* build tree */

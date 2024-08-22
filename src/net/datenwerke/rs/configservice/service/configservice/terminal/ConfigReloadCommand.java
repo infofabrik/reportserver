@@ -10,6 +10,7 @@ import net.datenwerke.rs.terminal.service.terminal.helpers.CommandParser;
 import net.datenwerke.rs.terminal.service.terminal.helpmessenger.annotations.CliHelpMessage;
 import net.datenwerke.rs.terminal.service.terminal.obj.CommandResult;
 import net.datenwerke.rs.terminal.service.terminal.objresolver.exceptions.ObjectResolverException;
+import net.datenwerke.rs.utils.string.Emoji;
 
 public class ConfigReloadCommand implements ConfigSubCommandHook {
 
@@ -36,8 +37,10 @@ public class ConfigReloadCommand implements ConfigSubCommandHook {
    @CliHelpMessage(messageClass = ConfigMessages.class, name = BASE_COMMAND, description = "commandConfig_sub_reload_description")
    public CommandResult execute(CommandParser parser, TerminalSession session) throws ObjectResolverException {
       configService.clearCache();
-
-      return new CommandResult(ConfigMessages.INSTANCE.configReloaded());
+      
+      Emoji[] emojis = new Emoji[] {Emoji.CLINKING_BEER_MUGS, Emoji.BEER_MUG, Emoji.ALIEN, Emoji.BOMB, Emoji.ALEMBIC};
+      
+      return new CommandResult(emojis[(int) (Math.random() * emojis.length)].getEmoji(" ") + ConfigMessages.INSTANCE.configReloaded());
    }
 
    @Override

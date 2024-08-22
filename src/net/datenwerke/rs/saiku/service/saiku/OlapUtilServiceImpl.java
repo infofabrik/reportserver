@@ -5,6 +5,7 @@ import static java.util.stream.Collectors.toList;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -337,10 +338,16 @@ public class OlapUtilServiceImpl implements OlapUtilService {
 
          ocph.adaptProperties(props);
       }
-
+      
       /* load driver and get connection */
       MondrianOlap4jDriver mondrianOlap4jDriver = new MondrianOlap4jDriver();
       OlapConnection connection = (OlapConnection) mondrianOlap4jDriver.connect(url, props);
+      
+      if (null == connection) {
+         // maybe it is an XMLA external server, Analysis Services? in this case load the driver like this:
+         Class.forName(driver);
+         connection = (OlapConnection) DriverManager.getConnection(url, props);
+      }
 
       /* allow hook to adapt connection */
       Optional<OlapConnectionHook> olapConnHook = hookHandlerService.getHookers(OlapConnectionHook.class).stream()

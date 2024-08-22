@@ -27,7 +27,6 @@ import net.datenwerke.gxtdto.server.dtomanager.DtoService;
 import net.datenwerke.rs.core.client.transport.TransportApplyFailedException;
 import net.datenwerke.rs.core.service.datasinkmanager.entities.DatasinkFolder;
 import net.datenwerke.rs.core.service.datasourcemanager.entities.DatasourceFolder;
-import net.datenwerke.rs.core.service.genrights.transport.TransportManagerAdminViewSecurityTarget;
 import net.datenwerke.rs.core.service.reportmanager.entities.ReportFolder;
 import net.datenwerke.rs.core.service.reportmanager.interfaces.ReportVariant;
 import net.datenwerke.rs.eximport.service.eximport.im.http.HttpImportConfiguration;
@@ -39,18 +38,20 @@ import net.datenwerke.rs.transport.client.transport.dto.TransportDto;
 import net.datenwerke.rs.transport.client.transport.dto.TransportElementDto;
 import net.datenwerke.rs.transport.client.transport.rpc.TransportRpcService;
 import net.datenwerke.rs.transport.service.transport.PreconditionResult;
+import net.datenwerke.rs.transport.service.transport.TransportApplyService;
 import net.datenwerke.rs.transport.service.transport.TransportService;
 import net.datenwerke.rs.transport.service.transport.TransportTreeService;
 import net.datenwerke.rs.transport.service.transport.entities.Transport;
+import net.datenwerke.rs.transport.service.transport.genrights.TransportAdminViewSecurityTarget;
+import net.datenwerke.rs.transport.service.transport.genrights.TransportManagementAdminViewSecurityTarget;
 import net.datenwerke.rs.utils.instancedescription.annotations.InstanceDescription;
 import net.datenwerke.security.server.SecuredRemoteServiceServlet;
 import net.datenwerke.security.service.security.SecurityService;
 import net.datenwerke.security.service.security.annotation.GenericTargetVerification;
 import net.datenwerke.security.service.security.annotation.RightsVerification;
 import net.datenwerke.security.service.security.annotation.SecurityChecked;
-import net.datenwerke.security.service.security.rights.Execute;
+import net.datenwerke.security.service.security.exceptions.ViolatedSecurityException;
 import net.datenwerke.security.service.security.rights.Read;
-import net.datenwerke.security.service.security.rights.Write;
 import net.datenwerke.treedb.client.treedb.dto.AbstractNodeDto;
 import net.datenwerke.treedb.ext.client.eximport.im.dto.ImportTreeModel;
 import net.datenwerke.treedb.service.treedb.AbstractNode;
@@ -66,6 +67,7 @@ public class TransportRpcServiceImpl extends SecuredRemoteServiceServlet
     */
     private static final long serialVersionUID = 38635573532715367L;
     private final Provider<TransportService> transportServiceProvider;
+    private final Provider<TransportApplyService> transportApplyServiceProvider;
     private final Provider<TransportTreeService> transportTreeServiceProvider;
     private final Provider<DtoService> dtoServiceProvider;
     private final Provider<SecurityService> securityServiceProvider;
@@ -75,6 +77,7 @@ public class TransportRpcServiceImpl extends SecuredRemoteServiceServlet
     @Inject
     public TransportRpcServiceImpl(
 	    Provider<TransportService> transportServiceProvider, 
+	    Provider<TransportApplyService> transportApplyServiceProvider,
 	    Provider<DtoService> dtoServiceProvider,
 	    Provider<TransportTreeService> transportTreeServiceProvider,
 	    Provider<SecurityService> securityServiceProvider,
@@ -84,6 +87,7 @@ public class TransportRpcServiceImpl extends SecuredRemoteServiceServlet
 
 	/* store objects */
 	this.transportServiceProvider = transportServiceProvider;
+	this.transportApplyServiceProvider = transportApplyServiceProvider;
 	this.dtoServiceProvider = dtoServiceProvider;
 	this.transportTreeServiceProvider = transportTreeServiceProvider;
 	this.securityServiceProvider = securityServiceProvider;
@@ -93,12 +97,20 @@ public class TransportRpcServiceImpl extends SecuredRemoteServiceServlet
 
     @Override
     @Transactional(rollbackOn = { Exception.class })
+    @SecurityChecked(
+          genericTargetVerification = {
+                @GenericTargetVerification(
+                      target = TransportAdminViewSecurityTarget.class, 
+                      verify = @RightsVerification(
+                            rights = Read.class
+                      )
+                )
+          }
+    )
     public void addAllDescendants(TransportDto transportDto, AbstractNodeDto elementDto, boolean includeVariants) 
           throws ServerCallFailedException {
        Transport transport = (Transport) dtoServiceProvider.get().loadPoso(transportDto);
-       
-       securityServiceProvider.get().assertRights(transport, Write.class);
-       
+              
        AbstractNode<?> element = (AbstractNode<?>) dtoServiceProvider.get().loadPoso(elementDto);
        List<AbstractNode> descendants = (List<AbstractNode>) element.getDescendants();
        for (AbstractNode descendant : descendants) {
@@ -114,17 +126,24 @@ public class TransportRpcServiceImpl extends SecuredRemoteServiceServlet
             }
          }
        }
-       
     }
-    
+
     @Override
     @Transactional(rollbackOn = { Exception.class })
+    @SecurityChecked(
+          genericTargetVerification = {
+                @GenericTargetVerification(
+                      target = TransportAdminViewSecurityTarget.class, 
+                      verify = @RightsVerification(
+                            rights = Read.class
+                      )
+                )
+          }
+    )
     public void addElement(TransportDto transportDto, AbstractNodeDto elementDto, boolean includeVariants) 
           throws ServerCallFailedException {
        Transport transport = (Transport) dtoServiceProvider.get().loadPoso(transportDto);
-       
-       securityServiceProvider.get().assertRights(transport, Write.class);
-       
+              
        AbstractNode<?> element = (AbstractNode<?>) dtoServiceProvider.get().loadPoso(elementDto);
        
        try {
@@ -138,7 +157,7 @@ public class TransportRpcServiceImpl extends SecuredRemoteServiceServlet
     @SecurityChecked(
           genericTargetVerification = {
                 @GenericTargetVerification(
-                      target = TransportManagerAdminViewSecurityTarget.class, 
+                      target = TransportManagementAdminViewSecurityTarget.class, 
                       verify = @RightsVerification(
                             rights = Read.class
                       )
@@ -149,16 +168,15 @@ public class TransportRpcServiceImpl extends SecuredRemoteServiceServlet
     public List<TransportDto> loadImportedTransports() throws ServerCallFailedException {
        return transportTreeServiceProvider.get().getTransportsByStatus(TransportService.Status.IMPORTED.name())
              .stream()
-             .filter(transport -> securityServiceProvider.get().checkRights(transport, Read.class))
              .map(transport -> (TransportDto) dtoServiceProvider.get().createDto(transport))
              .collect(toList());
     }
-    
+
     @Override
     @SecurityChecked(
           genericTargetVerification = {
                 @GenericTargetVerification(
-                      target = TransportManagerAdminViewSecurityTarget.class, 
+                      target = TransportManagementAdminViewSecurityTarget.class, 
                       verify = @RightsVerification(
                             rights = Read.class
                       )
@@ -174,35 +192,29 @@ public class TransportRpcServiceImpl extends SecuredRemoteServiceServlet
        }
     }
 
-   @Override
-   @SecurityChecked(
-         genericTargetVerification = {
-               @GenericTargetVerification(
-                     target = TransportManagerAdminViewSecurityTarget.class, 
-                     verify = @RightsVerification(
-                           rights = Read.class
-                     )
-               )
-         }
-   )
-   public void apply(TransportDto transportDto) throws ServerCallFailedException {
-      Transport transport = (Transport) dtoServiceProvider.get().loadPoso(transportDto);
-            
-      Optional<ImmutablePair<ImportResult, Exception>> result = transportServiceProvider.get().applyTransport(transport);
-      
-      if (!result.isPresent()) 
-         throw new TransportApplyFailedException("Preconditions are not met. Details can be found in the apply log.");
-      
-      if (result.get().getRight() != null) {
-         throw new TransportApplyFailedException(ExceptionUtils.getRootCauseMessage(result.get().getRight()), result.get().getRight());
-      }
-   }
+    @Override
+    public void apply(TransportDto transportDto) throws ServerCallFailedException {
+       checkTransportAdminOrManagementPermission();
+
+       Transport transport = (Transport) dtoServiceProvider.get().loadPoso(transportDto);
+
+       Optional<ImmutablePair<ImportResult, Exception>> result = transportApplyServiceProvider.get()
+             .applyTransport(transport);
+
+       if (!result.isPresent())
+          throw new TransportApplyFailedException("Preconditions are not met. Details can be found in the apply log.");
+
+       if (result.get().getRight() != null) {
+          throw new TransportApplyFailedException(ExceptionUtils.getRootCauseMessage(result.get().getRight()),
+                result.get().getRight());
+       }
+    }
 
    @Override
    @SecurityChecked(
          genericTargetVerification = {
                @GenericTargetVerification(
-                     target = TransportManagerAdminViewSecurityTarget.class, 
+                     target = TransportAdminViewSecurityTarget.class, 
                      verify = @RightsVerification(
                            rights = Read.class
                      )
@@ -210,11 +222,10 @@ public class TransportRpcServiceImpl extends SecuredRemoteServiceServlet
          }
    )
    @Transactional(rollbackOn = { Exception.class })
-   public void removeElements(TransportDto transportDto, List<ImportTreeModel> elementsToRemove) throws ServerCallFailedException {
+   public void removeElements(TransportDto transportDto, List<ImportTreeModel> elementsToRemove)
+         throws ServerCallFailedException {
       Transport transport = (Transport) dtoServiceProvider.get().loadPoso(transportDto);
-      
-      securityServiceProvider.get().assertRights(transport, Write.class);
-      
+
       List<TransportElementDto> toRemove = new ArrayList<>();
       elementsToRemove.stream().forEach(e -> {
          String[] splitArray = e.getName().split("\\(|\\)");
@@ -224,23 +235,13 @@ public class TransportRpcServiceImpl extends SecuredRemoteServiceServlet
       });
       transportServiceProvider.get().removeElements(transport, toRemove);
    }
-   
+
    @Override
-   @SecurityChecked(
-         genericTargetVerification = {
-               @GenericTargetVerification(
-                     target = TransportManagerAdminViewSecurityTarget.class, 
-                     verify = @RightsVerification(
-                           rights = Read.class
-                     )
-               )
-         }
-   )
    public List<TransportCheckEntryDto> checkPreconditions(TransportDto transportDto) throws ServerCallFailedException {
+      checkTransportAdminOrManagementPermission();
+      
       Transport transport = (Transport) dtoServiceProvider.get().loadPoso(transportDto);
       
-      securityServiceProvider.get().assertRights(transport, Execute.class);
-
       Map<String, PreconditionResult> analysisResults = transportServiceProvider.get()
             .analyzeApplyPreconditions(transport);
       
@@ -255,12 +256,12 @@ public class TransportRpcServiceImpl extends SecuredRemoteServiceServlet
          .collect(toList());
       
    }
-   
+
    @Override
    @SecurityChecked(
          genericTargetVerification = {
                @GenericTargetVerification(
-                     target = TransportManagerAdminViewSecurityTarget.class, 
+                     target = TransportAdminViewSecurityTarget.class, 
                      verify = @RightsVerification(
                            rights = Read.class
                      )
@@ -270,9 +271,7 @@ public class TransportRpcServiceImpl extends SecuredRemoteServiceServlet
    @Transactional(rollbackOn = { Exception.class })
    public List<ImportTreeModel> extractTreeModel(TransportDto transportDto) throws ServerCallFailedException {
       Transport transport = (Transport) dtoServiceProvider.get().loadPoso(transportDto);
-      
-      securityServiceProvider.get().assertRights(transport, Read.class);
-      
+            
       HttpImportService httpImportService = httpImportServiceProvider.get();
       HttpImportConfiguration currentConfiguration = httpImportService.createNewConfig();
       List<ImportTreeModel> importTreeParentList = new ArrayList<>();
@@ -302,6 +301,16 @@ public class TransportRpcServiceImpl extends SecuredRemoteServiceServlet
       }
 
       return importTreeParentList;
+   }
+
+   @SuppressWarnings("unchecked")
+   private void checkTransportAdminOrManagementPermission() {
+      if (!securityServiceProvider.get().checkRights(TransportAdminViewSecurityTarget.class, Read.class)
+            && !securityServiceProvider.get().checkRights(TransportAdminViewSecurityTarget.class, Read.class)) {
+         throw new ViolatedSecurityException("Missing " + TransportAdminViewSecurityTarget.class.getSimpleName()
+               + " or " + TransportAdminViewSecurityTarget.class.getSimpleName() + " " + Read.class.getSimpleName()
+               + " permission");
+      }
    }
 
    private void buildChildTreeModel(List<ImportTreeModel> importTreeChildrenList, List<ExportedItem> children)

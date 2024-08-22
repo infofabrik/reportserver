@@ -10,6 +10,7 @@ import net.datenwerke.rs.terminal.service.terminal.exceptions.TerminalException;
 import net.datenwerke.rs.terminal.service.terminal.helpers.AutocompleteHelper;
 import net.datenwerke.rs.terminal.service.terminal.helpers.CommandParser;
 import net.datenwerke.rs.terminal.service.terminal.obj.CommandResult;
+import net.datenwerke.rs.utils.string.Emoji;
 import net.datenwerke.scheduler.service.scheduler.SchedulerService;
 import net.datenwerke.scheduler.service.scheduler.exceptions.SchedulerStartupException;
 
@@ -85,17 +86,17 @@ public class SchedulerDaemonSubCommand implements SchedulerSubCommandHook {
       } catch (IllegalArgumentException e) {
       }
 
-      return new CommandResult("Invalid operation '" + parser.getArgumentNr(1)
+      return new CommandResult(Emoji.SMILING_FACE_TEAR.getEmoji(" ") + "Invalid operation '" + parser.getArgumentNr(1)
             + "'. Valid operations for scheduler daemon are: " + Arrays.toString(Actions.values()));
    }
 
    private CommandResult watchdogStatus() {
-      String msg = "The scheduler watchdog is " + (schedulerService.isWatchdogActive() ? "RUNNING" : "TERMINATED");
+      String msg = Emoji.BEER_MUG.getEmoji(" ") + "The scheduler watchdog is " + (schedulerService.isWatchdogActive() ? "RUNNING" : "TERMINATED");
       return new CommandResult(msg);
    }
 
    private CommandResult returnStatus() {
-      String msg = "The scheduler daemon is " + (schedulerService.isActive() ? "RUNNING" : "TERMINATED") + " and will "
+      String msg = Emoji.CLINKING_GLASSES.getEmoji(" ") + "The scheduler daemon is " + (schedulerService.isActive() ? "RUNNING" : "TERMINATED") + " and will "
             + (schedulerService.isEnabled() ? "" : "NOT ")
             + "be started automatically the next time ReportServer is restarted. ";
       return new CommandResult(msg);

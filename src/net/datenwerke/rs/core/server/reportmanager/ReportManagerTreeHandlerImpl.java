@@ -2,6 +2,7 @@ package net.datenwerke.rs.core.server.reportmanager;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.persistence.NoResultException;
 
@@ -34,6 +35,7 @@ import net.datenwerke.security.service.security.annotation.RightsVerification;
 import net.datenwerke.security.service.security.annotation.SecurityChecked;
 import net.datenwerke.security.service.security.rights.Read;
 import net.datenwerke.security.service.security.rights.Write;
+import net.datenwerke.security.service.treedb.actions.InsertAction;
 import net.datenwerke.treedb.client.treedb.dto.AbstractNodeDto;
 
 /**
@@ -91,6 +93,29 @@ public class ReportManagerTreeHandlerImpl extends TreeDBManagerTreeHandler<Abstr
             ? keyGeneratorService.getNextCopyName("", getAllNodes)
             : keyGeneratorService.getNextCopyName(clone.getName(), getAllNodes));
       clone.setKey(keyGeneratorService.getNextCopyKey(real.getKey(), reportManager));
+   }
+   
+   private void nodeClonedWithVariants(AbstractReportManagerNode clonedNode, AbstractReportManagerNode realNode,
+         List<AbstractNodeDto> variants) {
+      nodeCloned(clonedNode, realNode);
+      
+      Report clone = (Report) clonedNode;
+      Report real = (Report) realNode;
+      
+      List<Long> variantIds = variants.stream()
+            .map(AbstractNodeDto::getId).collect(Collectors.toList()); 
+
+      List<AbstractReportManagerNode> children = new ArrayList<AbstractReportManagerNode>();
+      real.getChildren().stream().forEach(variant -> {
+         if (variantIds.contains(variant.getId())) {
+            Report clonedChild = (Report) entityClonerService.cloneEntity(variant);
+            clonedChild.setKey(keyGeneratorService.generateDefaultKey());
+            clonedChild.setParent(clone);
+            children.add(clonedChild);
+            treeDBManager.persist(clonedNode);
+         }
+      });
+      clone.setChildren(children);
    }
 
    @SecurityChecked(argumentVerification = {
@@ -162,4 +187,37 @@ public class ReportManagerTreeHandlerImpl extends TreeDBManagerTreeHandler<Abstr
          ((Report)inserted).setKey(keyGeneratorService.generateDefaultKey(reportManager));
       }
    }
+   
+   @SecurityChecked(
+         argumentVerification = {
+               @ArgumentVerification(
+                  name = "toDuplicate", 
+                  isDto = true, 
+                  verify = @RightsVerification(
+                        rights = Read.class
+                  ), 
+                  parentChecks = @RightsVerification(
+                        actions = InsertAction.class
+                  )
+            )
+         }
+   )
+   @Override
+   @Transactional(rollbackOn = { Exception.class })
+   public AbstractNodeDto duplicateReportWithVariants(@Named("toDuplicate") AbstractNodeDto toDuplicate,
+         List<AbstractNodeDto> variants, Dto state) throws ServerCallFailedException {
+
+      AbstractReportManagerNode realNode = treeDBManager.getNodeById(toDuplicate.getId());
+      if (!allowDuplicateNode(realNode))
+         throw new ServerCallFailedException("node is not to be duplicated");
+       AbstractReportManagerNode parent = realNode.getParent();
+      
+      AbstractReportManagerNode clonedNode = entityClonerService.cloneEntity(realNode);      
+      nodeClonedWithVariants(clonedNode, realNode, variants);
+      parent.addChild(clonedNode);
+      treeDBManager.persist(clonedNode);
+      
+      return (AbstractNodeDto) dtoService.createDtoFullAccess(clonedNode);
+   }
+   
 }

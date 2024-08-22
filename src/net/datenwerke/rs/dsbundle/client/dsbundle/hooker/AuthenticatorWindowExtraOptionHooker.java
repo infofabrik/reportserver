@@ -89,7 +89,7 @@ public class AuthenticatorWindowExtraOptionHooker implements AuthenticatorWindow
       cb.setEditable(false);
       cb.setAllowBlank(false);
       cb.setTriggerAction(TriggerAction.ALL);
-      cb.setWidth(220);
+      cb.setWidth(420);
       cb.addStyleName("rs-login-db");
 
       cb.setStore(store);
@@ -99,7 +99,7 @@ public class AuthenticatorWindowExtraOptionHooker implements AuthenticatorWindow
       dbIcon.setWidth("20px");
       HBoxLayoutContainer uContainer = new HBoxLayoutContainer();
       uContainer.setHeight(30);
-      uContainer.setWidth(250);
+      uContainer.setWidth(450);
       uContainer.add(dbIcon);
       uContainer.add(cb);
       ((FlowLayoutContainer) panel).add(uContainer, new MarginData(0, 0, 10, 100));

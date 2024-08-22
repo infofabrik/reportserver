@@ -18,6 +18,7 @@ import net.datenwerke.rs.terminal.service.terminal.obj.CommandResult;
 import net.datenwerke.rs.terminal.service.terminal.vfs.VFSLocation;
 import net.datenwerke.rs.terminal.service.terminal.vfs.VirtualFileSystemDeamon;
 import net.datenwerke.rs.terminal.service.terminal.vfs.exceptions.VFSException;
+import net.datenwerke.rs.utils.string.Emoji;
 import net.datenwerke.security.service.security.SecurityService;
 import net.datenwerke.security.service.security.SecurityTarget;
 import net.datenwerke.security.service.security.rights.Read;
@@ -62,7 +63,7 @@ public class DiffconfigfilesCreatallCommand extends DiffconfigfilesSubCommand {
          fileServerService.copy(etcFolder, dstFolder, true);
          linkToDstFolder = historyService.buildLinksFor(dstFolder).get(0);
       } catch (Exception e) {
-         throw new TerminalException("the config files could not be copied to " + dstAbsolutPath + ".", e);
+         throw new TerminalException(Emoji.exceptionEmoji().getEmoji(" ") + "the config files could not be copied to " + dstAbsolutPath + ".", e);
       } finally {
          removeTmpConfigFolder();
       }
@@ -75,26 +76,26 @@ public class DiffconfigfilesCreatallCommand extends DiffconfigfilesSubCommand {
       if (dstAbsolutPath.startsWith("/fileserver/")) {
          dstAbsolutPath = dstAbsolutPath.replace("/fileserver/", "");
       } else {
-         throw new IllegalArgumentException(
+         throw new IllegalArgumentException(Emoji.exceptionEmoji().getEmoji(" ") +
                dstAbsolutPath + " is not within the fileserver filesystem. Choose a folder present in the fileserver");
       }
       AbstractFileServerNode dstFolder = fileServerService.getNodeByPath(dstAbsolutPath, false);
       if (null == dstFolder)
-         throw new IllegalArgumentException("No folder with path: " + dstAbsolutPath
+         throw new IllegalArgumentException(Emoji.exceptionEmoji().getEmoji(" ") + "No folder with path: " + dstAbsolutPath
                + " exists. Please ensure your folder is already present in the file server system.");
       return dstFolder;
    }
 
    private String getDstAbsolutPath(CommandParser parser, VirtualFileSystemDeamon vfs) {
       if (parser.getNonOptionArguments().size() != 1)
-         throw new IllegalArgumentException("Please enter a folder path");
+         throw new IllegalArgumentException(Emoji.exceptionEmoji().getEmoji(" ") + "Please enter a folder path");
       String dstString = parser.getNonOptionArguments().get(0);
       String dstAbsolutPath;
       try {
          VFSLocation source = vfs.getLocation(dstString);
          dstAbsolutPath = source.prettyPrint();
       } catch (VFSException e1) {
-         throw new IllegalArgumentException("The following location does not exist: " + dstString, e1);
+         throw new IllegalArgumentException(Emoji.exceptionEmoji().getEmoji(" ") + "The following location does not exist: " + dstString, e1);
       }
       return dstAbsolutPath;
    }

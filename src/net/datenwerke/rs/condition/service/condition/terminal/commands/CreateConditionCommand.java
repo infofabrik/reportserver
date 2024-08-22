@@ -20,6 +20,7 @@ import net.datenwerke.rs.terminal.service.terminal.helpmessenger.annotations.Cli
 import net.datenwerke.rs.terminal.service.terminal.helpmessenger.annotations.NonOptArgument;
 import net.datenwerke.rs.terminal.service.terminal.obj.CommandResult;
 import net.datenwerke.rs.terminal.service.terminal.objresolver.exceptions.ObjectResolverException;
+import net.datenwerke.rs.utils.string.Emoji;
 import net.datenwerke.security.service.security.SecurityService;
 import net.datenwerke.security.service.security.exceptions.ViolatedSecurityException;
 import net.datenwerke.security.service.security.rights.Read;
@@ -61,7 +62,7 @@ public class CreateConditionCommand implements ConditionSubCommandHook {
    public CommandResult execute(CommandParser parser, TerminalSession session) throws ObjectResolverException {
       List<String> args = parser.getNonOptionArguments();
       if (args.size() < 2)
-         throw new IllegalArgumentException("Expect at least two arguments");
+         throw new IllegalArgumentException(Emoji.exceptionEmoji().getEmoji(" ") + "Expect at least two arguments");
 
       String reportRef = args.get(0);
       String name = args.get(1);
@@ -77,27 +78,27 @@ public class CreateConditionCommand implements ConditionSubCommandHook {
                Long id = Long.parseLong(reportRef);
                result = reportService.getReportById(id);
                if (!securityService.checkRights((Report) result, Read.class))
-                  throw new ViolatedSecurityException("insufficient rights");
+                  throw new ViolatedSecurityException(Emoji.securityEmoji().getEmoji(" ") + "insufficient rights");
 
             } catch (Exception e) {
             }
 
             if (null == result)
-               return new CommandResult("Could not find table report with object resolver query: " + reportRef);
+               return new CommandResult(Emoji.SMILING_FACE_TEAR.getEmoji(" ") + "Could not find table report with object resolver query: " + reportRef);
          } else {
             result = results.iterator().next();
          }
 
          if (results.size() > 1)
-            return new CommandResult("The object resolver query returned more than one result: " + reportRef);
+            return new CommandResult(Emoji.SMILING_FACE_TEAR.getEmoji(" ") + "The object resolver query returned more than one result: " + reportRef);
 
          if (null == result || !(result instanceof TableReport))
-            return new CommandResult("Could not find table report with object resolver query: " + reportRef);
+            return new CommandResult(Emoji.SMILING_FACE_TEAR.getEmoji(" ") + "Could not find table report with object resolver query: " + reportRef);
 
          TableReport report = (TableReport) result;
 
          if (!(report instanceof ReportVariant))
-            return new CommandResult("Expected a report variant.");
+            return new CommandResult(Emoji.SMILING_FACE_TEAR.getEmoji(" ") + "Expected a report variant.");
 
          ReportCondition cond = new ReportCondition();
          cond.setName(name);
@@ -107,9 +108,9 @@ public class CreateConditionCommand implements ConditionSubCommandHook {
 
          conditionService.persist(cond);
 
-         return new CommandResult("Condition created");
+         return new CommandResult(Emoji.BEER_MUG.getEmoji(" ") + "Condition created");
       } catch (ClassCastException e) {
-         return new CommandResult("Could not find report");
+         return new CommandResult(Emoji.SMILING_FACE_TEAR.getEmoji(" ") + "Could not find report");
       }
    }
 

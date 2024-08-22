@@ -53,4 +53,13 @@ public interface GeneralInfoMessages extends Messages {
 
    String reportServerVersion();
 
+   String libraries();
+   
+   String externalLibraries();
+
+   String internalLibraries();
+
+   String installationPath();
+
+   String ioTempDirectory();
 }

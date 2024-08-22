@@ -184,6 +184,7 @@ import net.datenwerke.rs.incubator.client.jaspertotable.dto.JasperToTableConfigD
 import net.datenwerke.rs.jxlsreport.client.jxlsreport.dto.JxlsReportDto;
 import net.datenwerke.rs.jxlsreport.client.jxlsreport.dto.JxlsReportFileDto;
 import net.datenwerke.rs.jxlsreport.client.jxlsreport.dto.JxlsReportVariantDto;
+import net.datenwerke.rs.ldapserver.client.ldapserver.dto.LdapServerDto;
 import net.datenwerke.rs.localfsdatasink.client.localfsdatasink.dto.LocalFileSystemDatasinkDto;
 import net.datenwerke.rs.onedrive.client.onedrive.dto.OneDriveDatasinkDto;
 import net.datenwerke.rs.printer.client.printer.dto.PrinterDatasinkDto;
@@ -556,6 +557,8 @@ public class ClientDtoInfoServiceImpl implements DtoInformationService, DtoMainI
 			return ((net.datenwerke.rs.jxlsreport.client.jxlsreport.dto.JxlsReportFileDto) dto).getId();
 		if(dto instanceof net.datenwerke.rs.jxlsreport.client.jxlsreport.dto.JxlsReportVariantDto)
 			return ((net.datenwerke.rs.jxlsreport.client.jxlsreport.dto.JxlsReportVariantDto) dto).getId();
+		if(dto instanceof net.datenwerke.rs.ldapserver.client.ldapserver.dto.LdapServerDto)
+			return ((net.datenwerke.rs.ldapserver.client.ldapserver.dto.LdapServerDto) dto).getId();
 		if(dto instanceof net.datenwerke.rs.localfsdatasink.client.localfsdatasink.dto.LocalFileSystemDatasinkDto)
 			return ((net.datenwerke.rs.localfsdatasink.client.localfsdatasink.dto.LocalFileSystemDatasinkDto) dto).getId();
 		if(dto instanceof net.datenwerke.rs.onedrive.client.onedrive.dto.OneDriveDatasinkDto)
@@ -1022,6 +1025,8 @@ public class ClientDtoInfoServiceImpl implements DtoInformationService, DtoMainI
 			return (X) new net.datenwerke.rs.jxlsreport.client.jxlsreport.dto.JxlsReportFileDto();
 		if(net.datenwerke.rs.jxlsreport.client.jxlsreport.dto.decorator.JxlsReportVariantDtoDec.class.equals(dtoClass))
 			return (X) new net.datenwerke.rs.jxlsreport.client.jxlsreport.dto.decorator.JxlsReportVariantDtoDec();
+		if(net.datenwerke.rs.ldapserver.client.ldapserver.dto.LdapServerDto.class.equals(dtoClass))
+			return (X) new net.datenwerke.rs.ldapserver.client.ldapserver.dto.LdapServerDto();
 		if(net.datenwerke.rs.localfsdatasink.client.localfsdatasink.dto.LocalFileSystemDatasinkDto.class.equals(dtoClass))
 			return (X) new net.datenwerke.rs.localfsdatasink.client.localfsdatasink.dto.LocalFileSystemDatasinkDto();
 		if(net.datenwerke.rs.onedrive.client.onedrive.dto.OneDriveDatasinkDto.class.equals(dtoClass))
@@ -1544,6 +1549,8 @@ public class ClientDtoInfoServiceImpl implements DtoInformationService, DtoMainI
 			return (X) new net.datenwerke.rs.jxlsreport.client.jxlsreport.dto.JxlsReportFileDto();
 		if("net.datenwerke.rs.jxlsreport.client.jxlsreport.dto.decorator.JxlsReportVariantDtoDec".equals(dtoClassName))
 			return (X) new net.datenwerke.rs.jxlsreport.client.jxlsreport.dto.decorator.JxlsReportVariantDtoDec();
+		if("net.datenwerke.rs.ldapserver.client.ldapserver.dto.LdapServerDto".equals(dtoClassName))
+			return (X) new net.datenwerke.rs.ldapserver.client.ldapserver.dto.LdapServerDto();
 		if("net.datenwerke.rs.localfsdatasink.client.localfsdatasink.dto.LocalFileSystemDatasinkDto".equals(dtoClassName))
 			return (X) new net.datenwerke.rs.localfsdatasink.client.localfsdatasink.dto.LocalFileSystemDatasinkDto();
 		if("net.datenwerke.rs.onedrive.client.onedrive.dto.OneDriveDatasinkDto".equals(dtoClassName))
@@ -2316,6 +2323,8 @@ public class ClientDtoInfoServiceImpl implements DtoInformationService, DtoMainI
 			return net.datenwerke.rs.jxlsreport.client.jxlsreport.dto.posomap.JxlsReportVariantDto2PosoMap.class;
 		if(net.datenwerke.rs.jxlsreport.client.jxlsreport.dto.decorator.JxlsReportVariantDtoDec.class.equals(dtoClass))
 			return net.datenwerke.rs.jxlsreport.client.jxlsreport.dto.posomap.JxlsReportVariantDto2PosoMap.class;
+		if(net.datenwerke.rs.ldapserver.client.ldapserver.dto.LdapServerDto.class.equals(dtoClass))
+			return net.datenwerke.rs.ldapserver.client.ldapserver.dto.posomap.LdapServerDto2PosoMap.class;
 		if(net.datenwerke.rs.localfsdatasink.client.localfsdatasink.dto.LocalFileSystemDatasinkDto.class.equals(dtoClass))
 			return net.datenwerke.rs.localfsdatasink.client.localfsdatasink.dto.posomap.LocalFileSystemDatasinkDto2PosoMap.class;
 		if(net.datenwerke.rs.onedrive.client.onedrive.dto.OneDriveDatasinkDto.class.equals(dtoClass))
@@ -2891,6 +2900,8 @@ public class ClientDtoInfoServiceImpl implements DtoInformationService, DtoMainI
 		if(dto instanceof net.datenwerke.rs.jxlsreport.client.jxlsreport.dto.JxlsReportFileDto)
 			return true;
 		if(dto instanceof net.datenwerke.rs.jxlsreport.client.jxlsreport.dto.JxlsReportVariantDto)
+			return true;
+		if(dto instanceof net.datenwerke.rs.ldapserver.client.ldapserver.dto.LdapServerDto)
 			return true;
 		if(dto instanceof net.datenwerke.rs.localfsdatasink.client.localfsdatasink.dto.LocalFileSystemDatasinkDto)
 			return true;
@@ -3605,6 +3616,8 @@ public class ClientDtoInfoServiceImpl implements DtoInformationService, DtoMainI
 		if(net.datenwerke.rs.jxlsreport.client.jxlsreport.dto.JxlsReportVariantDto.class.equals(dtoType))
 			return true;
 		if(net.datenwerke.rs.jxlsreport.client.jxlsreport.dto.decorator.JxlsReportVariantDtoDec.class.equals(dtoType))
+			return true;
+		if(net.datenwerke.rs.ldapserver.client.ldapserver.dto.LdapServerDto.class.equals(dtoType))
 			return true;
 		if(net.datenwerke.rs.localfsdatasink.client.localfsdatasink.dto.LocalFileSystemDatasinkDto.class.equals(dtoType))
 			return true;
@@ -4525,6 +4538,8 @@ public class ClientDtoInfoServiceImpl implements DtoInformationService, DtoMainI
 		if("net.datenwerke.rs.jxlsreport.client.jxlsreport.dto.JxlsReportVariantDto".equals(dtoClassName))
 			return true;
 		if("net.datenwerke.rs.jxlsreport.client.jxlsreport.dto.decorator.JxlsReportVariantDtoDec".equals(dtoClassName))
+			return true;
+		if("net.datenwerke.rs.ldapserver.client.ldapserver.dto.LdapServerDto".equals(dtoClassName))
 			return true;
 		if("net.datenwerke.rs.localfsdatasink.client.localfsdatasink.dto.LocalFileSystemDatasinkDto".equals(dtoClassName))
 			return true;

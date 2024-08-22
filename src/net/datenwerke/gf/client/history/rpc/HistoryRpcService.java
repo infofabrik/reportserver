@@ -15,4 +15,6 @@ public interface HistoryRpcService extends RemoteService {
    
    List<String> getFormattedObjectPaths(Dto dto);
 
+   List<String> getRealObjectPaths(Dto dto);
+
 }

@@ -100,7 +100,7 @@ public class TerminalRpcServiceImpl extends SecuredRemoteServiceServlet implemen
             if (null != vfs && null != node) {
                TerminalSession session = terminalService.getTerminalSession(sessionId);
                vfs.init(session);
-               if (node.isFolder())
+               if (node.isFolder() && !node.isRoot())
                   pathWay = vfs.getLocationFor(node).getAbsolutePath();
                else
                   pathWay = vfs.getLocationFor(node).getParentLocation().getAbsolutePath();
@@ -114,7 +114,7 @@ public class TerminalRpcServiceImpl extends SecuredRemoteServiceServlet implemen
       properties.put("pathWay", pathWay);
       return properties;
    }
-
+   
    @Override
    @Transactional(rollbackOn = { Exception.class })
    @SecurityChecked(genericTargetVerification = @GenericTargetVerification(target = TerminalSecurityTarget.class, verify = @RightsVerification(rights = Execute.class)))

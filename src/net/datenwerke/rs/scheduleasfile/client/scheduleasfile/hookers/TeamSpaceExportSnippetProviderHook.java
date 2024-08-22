@@ -15,6 +15,7 @@ import net.datenwerke.gxtdto.client.forms.simpleform.hooks.FormFieldProviderHook
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCBoolean;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.impl.SFFCTextAreaImpl;
 import net.datenwerke.gxtdto.client.locale.BaseMessages;
+import net.datenwerke.rs.core.client.datasinkmanager.DatasinkUIModule;
 import net.datenwerke.rs.core.client.reportexecutor.ui.ReportViewConfiguration;
 import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.dto.ScheduleAsFileInformation;
@@ -156,7 +157,7 @@ public class TeamSpaceExportSnippetProviderHook implements ScheduleExportSnippet
    @Override
    public void loadFields(SimpleForm form, ReportScheduleDefinition definition, ReportDto report) {
       if (null != definition) {
-         form.setValue(nameKey, "${now} - " + definition.getTitle());
+         form.setValue(nameKey, DatasinkUIModule.DEFAULT_FILE_NAME);
          ScheduleAsFileInformation info = definition.getAdditionalInfo(ScheduleAsFileInformation.class);
          if (null != info) {
             form.setValue(teamSpaceKey, info.getTeamSpace());
@@ -176,11 +177,7 @@ public class TeamSpaceExportSnippetProviderHook implements ScheduleExportSnippet
       if (!(page instanceof JobMetadataConfigurationForm))
          return;
 
-      JobMetadataConfigurationForm metadataForm = (JobMetadataConfigurationForm) page;
-
-      String jobTitle = metadataForm.getTitleValue();
-
-      form.setValue(nameKey, "${now} - " + jobTitle);
+      form.setValue(nameKey, DatasinkUIModule.DEFAULT_FILE_NAME);
       if (null != definition) {
          ScheduleAsFileInformation info = definition.getAdditionalInfo(ScheduleAsFileInformation.class);
          if (null != info)

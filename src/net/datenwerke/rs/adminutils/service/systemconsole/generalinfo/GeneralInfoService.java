@@ -48,10 +48,12 @@ public interface GeneralInfoService {
    Map<Memory, Object> getMemoryValues();
 
    String getConfigDirectory(boolean appendFileCheck);
+   
+   String getIOTmpDir(boolean appendFileCheck);
 
-   String getCatalinaHome();
+   String getCatalinaHome(boolean appendFileCheck);
 
-   String getCatalinaBase();
+   String getCatalinaBase(boolean appendFileCheck);
 
    String getJvmUserTimezone();
 
@@ -59,16 +61,22 @@ public interface GeneralInfoService {
 
    String getJvmUserLanguage();
 
-   String getJavaHome();
+   String getJavaHome(boolean appendFileCheck);
 
    String getJvmFileEncoding();
 
    String getLogFilesDirectory(boolean appendFileCheck);
+   
+   String getInstallationPath(boolean appendFileCheck);
 
    String getNow();
    
    boolean isHeadless();
 
    List<String> getAvailableFonts();
+   
+   List<String> getExternalJars();
+   
+   List<String> getInternalJars();
 
 }

@@ -21,6 +21,7 @@ import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCBoole
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCDatasinkDao;
 import net.datenwerke.gxtdto.client.locale.BaseMessages;
 import net.datenwerke.rs.core.client.datasinkmanager.DatasinkTreeManagerDao;
+import net.datenwerke.rs.core.client.datasinkmanager.DatasinkUIModule;
 import net.datenwerke.rs.core.client.datasinkmanager.HasDefaultDatasink;
 import net.datenwerke.rs.core.client.datasinkmanager.helper.forms.DatasinkSelectionField;
 import net.datenwerke.rs.core.client.reportexecutor.ui.ReportViewConfiguration;
@@ -161,7 +162,7 @@ public class LocalFileSystemExportSnippetProvider implements ScheduleExportSnipp
             form.getField(localFileSystemKey));
 
       if (null != definition) {
-         form.setValue(nameKey, "${now} - " + definition.getTitle());
+         form.setValue(nameKey, DatasinkUIModule.DEFAULT_FILE_NAME);
          ScheduleAsLocalFileSystemInformation info = definition
                .getAdditionalInfo(ScheduleAsLocalFileSystemInformation.class);
          if (null != info) {
@@ -200,11 +201,7 @@ public class LocalFileSystemExportSnippetProvider implements ScheduleExportSnipp
       if (!(page instanceof JobMetadataConfigurationForm))
          return;
 
-      JobMetadataConfigurationForm metadataForm = (JobMetadataConfigurationForm) page;
-
-      String jobTitle = metadataForm.getTitleValue();
-
-      form.setValue(nameKey, "${now} - " + jobTitle);
+      form.setValue(nameKey, DatasinkUIModule.DEFAULT_FILE_NAME);
       if (null != definition) {
          ScheduleAsLocalFileSystemInformation info = definition
                .getAdditionalInfo(ScheduleAsLocalFileSystemInformation.class);

@@ -55,7 +55,7 @@ public class RsTabPanelBottomAppearance extends Css3TabPanelBottomAppearance {
          item.addClassName(style.tabStripClosable());
          item.addClassName("rs-tp-closable");
          XElement a = item.selectNode("." + style.tabStripClose());
-         a.addClassName("fa fa-times");
+         a.addClassName("nf nf-fa-times");
       }
    }
 
@@ -63,13 +63,13 @@ public class RsTabPanelBottomAppearance extends Css3TabPanelBottomAppearance {
    public void createScrollers(XElement parent) {
       int h = getStripWrap(parent).getOffsetHeight();
       SafeHtml html = SafeHtmlUtils.fromTrustedString(
-            "<div class='" + style.tabScrollerLeft() + " rs-tp-scroll-bl fa fa-chevron-left'></div>");
+            "<div class='" + style.tabScrollerLeft() + " rs-tp-scroll-bl nf nf-fa-chevron_left'></div>");
       XElement scrollLeft = getBar(parent).insertFirst(html);
       scrollLeft.setId(XDOM.getUniqueId());
       scrollLeft.setHeight(h);
 
       html = SafeHtmlUtils.fromTrustedString(
-            "<div class='" + style.tabScrollerRight() + " rs-tp-scroll-br fa fa-chevron-right'></div>");
+            "<div class='" + style.tabScrollerRight() + " rs-tp-scroll-br nf nf-fa-chevron_right'></div>");
       XElement scrollRight = getBar(parent).insertFirst(html);
       scrollRight.setId(XDOM.getUniqueId());
       scrollRight.setHeight(h);

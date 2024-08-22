@@ -16,6 +16,7 @@ import net.datenwerke.rs.terminal.service.terminal.obj.CommandResult;
 import net.datenwerke.rs.transport.service.transport.TransportService;
 import net.datenwerke.rs.transport.service.transport.entities.Transport;
 import net.datenwerke.rs.transport.service.transport.locale.TransportManagerMessages;
+import net.datenwerke.rs.utils.string.Emoji;
 import net.datenwerke.security.service.security.rights.Read;
 import net.datenwerke.security.service.security.rights.Write;
 
@@ -61,17 +62,17 @@ public class TransportCloseSubcommand implements TransportSubCommandHook {
    public CommandResult execute(CommandParser parser, TerminalSession session) throws TerminalException {
       List<String> arguments = parser.getNonOptionArguments();
       if (1 != arguments.size()) {
-	  throw new IllegalArgumentException("Exactly one argument expected");
+	  throw new IllegalArgumentException(Emoji.exceptionEmoji().getEmoji(" ") + "Exactly one argument expected");
       }
       
       Transport transport = terminalServiceProvider.get().getSingleObjectOfTypeByQuery(Transport.class,
             arguments.get(0), session, Read.class, Write.class);
       if (transport.isClosed()) {
-          throw new IllegalArgumentException("Cannot close a closed transport");
+          throw new IllegalArgumentException(Emoji.exceptionEmoji().getEmoji(" ") + "Cannot close a closed transport");
       }
       
       transportServiceProvider.get().close(transport);
-      return new CommandResult("Transport '" + transport + "' was successfully closed");
+      return new CommandResult(Emoji.CLINKING_BEER_MUGS.getEmoji(" ") + "Transport '" + transport + "' was successfully closed");
    }
    
    @Override

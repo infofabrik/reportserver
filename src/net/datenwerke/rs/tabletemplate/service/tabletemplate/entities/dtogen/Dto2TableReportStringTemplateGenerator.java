@@ -11,6 +11,7 @@ import net.datenwerke.dtoservices.dtogenerator.annotations.GeneratedType;
 import net.datenwerke.dtoservices.dtogenerator.dto2posogenerator.interfaces.Dto2PosoGenerator;
 import net.datenwerke.dtoservices.dtogenerator.dto2posogenerator.validator.DtoPropertyValidator;
 import net.datenwerke.gxtdto.client.servercommunication.exceptions.ExpectedException;
+import net.datenwerke.gxtdto.client.servercommunication.exceptions.ValidationFailedException;
 import net.datenwerke.gxtdto.server.dtomanager.DtoMainService;
 import net.datenwerke.gxtdto.server.dtomanager.DtoService;
 import net.datenwerke.rs.tabletemplate.client.tabletemplate.dto.TableReportStringTemplateDto;
@@ -113,7 +114,9 @@ public class Dto2TableReportStringTemplateGenerator implements Dto2PosoGenerator
 		poso.setFileExtension(dto.getFileExtension() );
 
 		/*  set key */
-		poso.setKey(dto.getKey() );
+		if(validateKeyProperty(dto, poso)){
+			poso.setKey(dto.getKey() );
+		}
 
 		/*  set name */
 		poso.setName(dto.getName() );
@@ -144,7 +147,9 @@ public class Dto2TableReportStringTemplateGenerator implements Dto2PosoGenerator
 
 		/*  set key */
 		if(dto.isKeyModified()){
-			poso.setKey(dto.getKey() );
+			if(validateKeyProperty(dto, poso)){
+				poso.setKey(dto.getKey() );
+			}
 		}
 
 		/*  set name */
@@ -182,7 +187,9 @@ public class Dto2TableReportStringTemplateGenerator implements Dto2PosoGenerator
 		poso.setFileExtension(dto.getFileExtension() );
 
 		/*  set key */
-		poso.setKey(dto.getKey() );
+		if(validateKeyProperty(dto, poso)){
+			poso.setKey(dto.getKey() );
+		}
 
 		/*  set name */
 		poso.setName(dto.getName() );
@@ -213,7 +220,9 @@ public class Dto2TableReportStringTemplateGenerator implements Dto2PosoGenerator
 
 		/*  set key */
 		if(dto.isKeyModified()){
-			poso.setKey(dto.getKey() );
+			if(validateKeyProperty(dto, poso)){
+				poso.setKey(dto.getKey() );
+			}
 		}
 
 		/*  set name */
@@ -261,6 +270,24 @@ public class Dto2TableReportStringTemplateGenerator implements Dto2PosoGenerator
 	public void postProcessInstantiate(TableReportStringTemplate poso)  {
 	}
 
+
+	public boolean validateKeyProperty(TableReportStringTemplateDto dto, TableReportStringTemplate poso)  throws ExpectedException {
+		Object propertyValue = dto.getKey();
+
+		/* allow null */
+		if(null == propertyValue)
+			return true;
+
+		/* make sure property is string */
+		if(! java.lang.String.class.isAssignableFrom(propertyValue.getClass()))
+			throw new ValidationFailedException("String validation failed for key", "expected a String");
+
+		if(! ((String)propertyValue).matches("^[a-zA-Z0-9_\\-]+$"))
+			throw new ValidationFailedException("String validation failed for key", " Regex test failed.");
+
+		/* all went well */
+		return true;
+	}
 
 
 }

@@ -1,8 +1,8 @@
 package net.datenwerke.rs.theme.client.icon;
 
 public enum BaseIconRotate {
-   NORMAL(null), ROTATE_90("fa-rotate-90"), ROTATE_180("fa-rotate-180"), ROTATE_270("fa-rotate-270"),
-   FLIP_HORIZONTAL("fa-flip-horizontal"), FLIP_VERTICAL("fa-flip-vertical"),;
+   NORMAL(null), ROTATE_90("nf-fa-rotate_90"), ROTATE_180("nf-fa-rotate_180"), ROTATE_270("nf-fa-rotate_270"),
+   FLIP_HORIZONTAL("nf-fa-flip_horizontal"), FLIP_VERTICAL("nf-fa-flip_vertical"),;
 
    private String style;
 

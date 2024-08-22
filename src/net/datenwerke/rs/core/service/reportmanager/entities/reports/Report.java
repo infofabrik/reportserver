@@ -214,9 +214,14 @@ abstract public class Report extends AbstractReportManagerNode
    @EntityMergeField(defaultMerge = false)
    private PreviewImage previewImage;
 
+   /**
+    * Wherever it is used it will soon be replaced with the 
+    * key attribute as a unique identifier
+    */
    @ExposeToClient(view = DtoView.LIST, mergeDtoValueBack = false)
    @Column(unique = true)
    @EntityClonerIgnore
+   @Deprecated
    private String uuid = UUID.randomUUID().toString();
 
    @Transient
@@ -650,10 +655,12 @@ abstract public class Report extends AbstractReportManagerNode
       return entityDiffService.get().isEqual(this, report, ENTITY_DIFF_IDENTITCAL_FOR_EXECUTION);
    }
 
+   @Deprecated
    public void setUuid(String uuid) {
       this.uuid = uuid;
    }
-
+   
+   @Deprecated
    public String getUuid() {
       return uuid;
    }

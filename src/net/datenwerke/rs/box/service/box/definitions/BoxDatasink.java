@@ -58,12 +58,12 @@ import net.datenwerke.security.service.crypto.pbe.encrypt.EncryptionService;
                   type = Boolean.class
                   ) 
             }, 
-            icon = "cube"
+            icon = "box"
             )
 @InstanceDescription(
       msgLocation = BoxDatasinkMessages.class, 
       objNameKey = "boxDatasinkTypeName", 
-      icon = "cube"
+      icon = "box"
       )
 @Indexed
 public class BoxDatasink extends DatasinkDefinition implements OAuthAuthenticatable, FolderedDatasink {

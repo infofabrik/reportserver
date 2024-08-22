@@ -1,8 +1,5 @@
 package net.datenwerke.rs.scriptdatasink.service.scriptdatasink.action;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Inheritance;
@@ -12,7 +9,6 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import com.google.inject.Inject;
-import com.google.inject.Provider;
 
 import net.datenwerke.rs.core.service.datasinkmanager.DatasinkService;
 import net.datenwerke.rs.core.service.datasinkmanager.configs.DatasinkFilenameConfig;
@@ -21,6 +17,7 @@ import net.datenwerke.rs.scheduler.service.scheduler.jobs.report.ReportExecuteJo
 import net.datenwerke.rs.scriptdatasink.service.scriptdatasink.definitions.ScriptDatasink;
 import net.datenwerke.rs.utils.entitycloner.annotation.EnclosedEntity;
 import net.datenwerke.rs.utils.juel.SimpleJuel;
+import net.datenwerke.scheduler.service.scheduler.SchedulerHelperService;
 import net.datenwerke.scheduler.service.scheduler.entities.AbstractAction;
 import net.datenwerke.scheduler.service.scheduler.entities.AbstractJob;
 import net.datenwerke.scheduler.service.scheduler.exceptions.ActionExecutionException;
@@ -32,7 +29,7 @@ public class ScheduleAsScriptDatasinkFileAction extends AbstractAction {
 
    @Transient
    @Inject
-   private Provider<SimpleJuel> simpleJuelProvider;
+   private SchedulerHelperService schedulerHelperService;
    
    @Transient
    @Inject
@@ -77,8 +74,7 @@ public class ScheduleAsScriptDatasinkFileAction extends AbstractAction {
 
       report = rJob.getReport();
 
-      SimpleJuel juel = simpleJuelProvider.get();
-      juel.addReplacement("now", new SimpleDateFormat("yyyyMMddhhmm").format(Calendar.getInstance().getTime()));
+      SimpleJuel juel = schedulerHelperService.getConfiguredJuel(rJob);
       filename = null == name ? "" : juel.parse(name);
 
       sendViaScriptDatasink(rJob, filename);

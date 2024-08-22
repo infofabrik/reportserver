@@ -14,6 +14,7 @@ import net.datenwerke.rs.terminal.service.terminal.helpers.CommandParser;
 import net.datenwerke.rs.terminal.service.terminal.helpmessenger.annotations.CliHelpMessage;
 import net.datenwerke.rs.terminal.service.terminal.obj.CommandResult;
 import net.datenwerke.rs.terminal.service.terminal.objresolver.exceptions.ObjectResolverException;
+import net.datenwerke.rs.utils.string.Emoji;
 
 public class ConfigEchoCommand implements ConfigSubCommandHook {
 
@@ -41,7 +42,7 @@ public class ConfigEchoCommand implements ConfigSubCommandHook {
    public CommandResult execute(CommandParser parser, TerminalSession session) throws ObjectResolverException {
       List<String> args = parser.getNonOptionArguments();
       if (args.size() != 2)
-         throw new IllegalArgumentException(
+         throw new IllegalArgumentException(Emoji.exceptionEmoji().getEmoji(" ") +
                "Expected two arguments: the config file (e.g. main/main.cf) and the property to be read (e.g. default.charset).");
 
       try {

@@ -21,4 +21,6 @@ public interface HistoryService {
    
    List<String> getFormattedObjectPaths(Object o);
 
+   List<String> getRealObjectPaths(Object o);
+
 }

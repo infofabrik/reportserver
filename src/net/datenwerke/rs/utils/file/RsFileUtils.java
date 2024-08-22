@@ -5,12 +5,11 @@ import java.math.BigInteger;
 import java.math.RoundingMode;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 
-import net.datenwerke.treedb.service.treedb.AbstractNode;
+import net.datenwerke.rs.base.service.renderer.BinaryFormat;
+import net.datenwerke.rs.base.service.renderer.TextFormat;
 
 /**
  * Custom Implementation of FileUtils.byteCountToDisplaySize to fix rounding bug
@@ -111,6 +110,40 @@ public class RsFileUtils extends FileUtils {
    }
    public static boolean checkWritable(Path path) {
       return Files.exists(path)  && Files.isWritable(path);
+   }
+   
+   public static String getContentType(BinaryFormat format) {
+      switch (format) {
+      case PNG:
+         return "image/png";
+      case PS:
+         return "application/postscript";
+      default:
+         return "application/octet-stream";
+      }
+   }
+   
+   public static String getContentType(TextFormat format) {
+      switch (format) {
+      case SVG:
+         return "image/svg+xml";
+      case DOT:
+         return "text/vnd.graphviz";
+      case XDOT:
+         return "text/vnd.graphviz";
+      case PLAIN:
+         return "text/plain";
+      case PLAIN_EXT:
+         return "text/plain";
+      case JSON:
+         return "application/json";
+      case JSON0:
+         return "application/json";
+      case HTML:
+         return "text/html";
+      default:
+         return "application/octet-stream";
+      }
    }
 
 }

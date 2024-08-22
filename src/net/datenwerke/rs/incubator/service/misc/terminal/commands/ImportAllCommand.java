@@ -14,6 +14,7 @@ import net.datenwerke.rs.terminal.service.terminal.helpers.AutocompleteHelper;
 import net.datenwerke.rs.terminal.service.terminal.helpers.CommandParser;
 import net.datenwerke.rs.terminal.service.terminal.obj.CommandResult;
 import net.datenwerke.rs.terminal.service.terminal.objresolver.exceptions.ObjectResolverException;
+import net.datenwerke.rs.utils.string.Emoji;
 import net.datenwerke.security.service.security.rights.Read;
 
 public class ImportAllCommand implements ImportSubCommandHook {
@@ -59,7 +60,7 @@ public class ImportAllCommand implements ImportSubCommandHook {
 
       importService.importData(config);
 
-      return new CommandResult();
+      return new CommandResult(Emoji.BEER_MUG.getEmoji());
    }
 
    @Override

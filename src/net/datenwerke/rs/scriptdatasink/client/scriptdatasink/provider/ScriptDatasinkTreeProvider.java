@@ -40,7 +40,7 @@ public class ScriptDatasinkTreeProvider implements Provider<ManagerHelperTree> {
             new ScriptDatasinkDto2PosoMap());
 
       EnhancedTreeStore store = treeDBUIService.getUITreeStore(AbstractDatasinkManagerNodeDto.class, datasinkTreeLoader,
-            false, filters);
+            true, filters);
 
       /* build tree */
       final ManagerHelperTree tree = treeFactory.create(DatasinkUIModule.class, store, datasinkTreeLoader,

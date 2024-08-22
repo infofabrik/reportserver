@@ -13,4 +13,6 @@ public interface HistoryRpcServiceAsync {
 
    void getFormattedObjectPaths(Dto dto, AsyncCallback<List<String>> callback);
 
+   void getRealObjectPaths(Dto dto, AsyncCallback<List<String>> callback);
+
 }

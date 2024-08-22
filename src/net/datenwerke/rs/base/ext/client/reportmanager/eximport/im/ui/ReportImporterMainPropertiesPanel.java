@@ -5,6 +5,7 @@ import com.google.inject.Provider;
 
 import net.datenwerke.gf.client.treedb.UITree;
 import net.datenwerke.gf.client.treedb.simpleform.SFFCGenericTreeNode;
+import net.datenwerke.gxtdto.client.locale.BaseMessages;
 import net.datenwerke.rs.base.ext.client.reportmanager.eximport.im.dto.ReportManagerImportConfigDto;
 import net.datenwerke.rs.core.client.reportmanager.dto.ReportFolderDto;
 import net.datenwerke.rs.core.client.reportmanager.dto.interfaces.ReportVariantDto;
@@ -22,7 +23,7 @@ public class ReportImporterMainPropertiesPanel extends ImporterMainPropertiesPan
    private final Provider<UITree> treeProvider;
 
    protected String parentKey;
-   private String removeKeyFieldsKey;
+   private String createRandomKeyFieldKey;
 
    @Inject
    public ReportImporterMainPropertiesPanel(@ReportManagerTreeFoldersAndReports Provider<UITree> treeProvider) {
@@ -40,8 +41,8 @@ public class ReportImporterMainPropertiesPanel extends ImporterMainPropertiesPan
       AbstractReportManagerNodeDto parent = (AbstractReportManagerNodeDto) form.getValue(parentKey);
       config.setParent(parent);
 
-      boolean removeKeys = (Boolean) form.getValue(removeKeyFieldsKey);
-      config.setRemoveKey(removeKeys);
+      boolean createRandomKey = (Boolean) form.getValue(createRandomKeyFieldKey);
+      config.setGenerateRandomKey(createRandomKey);
    }
 
    @Override
@@ -77,7 +78,7 @@ public class ReportImporterMainPropertiesPanel extends ImporterMainPropertiesPan
                }
             });
 
-      removeKeyFieldsKey = form.addField(Boolean.class, ReportmanagerMessages.INSTANCE.importRemoveKeyFieldLabel());
+      createRandomKeyFieldKey = form.addField(Boolean.class, BaseMessages.INSTANCE.createRandomKey());
    }
 
    @Override

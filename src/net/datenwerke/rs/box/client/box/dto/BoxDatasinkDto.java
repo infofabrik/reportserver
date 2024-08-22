@@ -560,7 +560,7 @@ public class BoxDatasinkDto extends DatasinkDefinitionDto {
 
 	@Override
 	public BaseIcon toIcon()  {
-		return BaseIcon.from("cube");
+		return BaseIcon.from("box");
 	}
 
 	@Override

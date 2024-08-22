@@ -19,6 +19,7 @@ import net.datenwerke.rs.terminal.service.terminal.helpmessenger.annotations.Cli
 import net.datenwerke.rs.terminal.service.terminal.helpmessenger.annotations.NonOptArgument;
 import net.datenwerke.rs.terminal.service.terminal.obj.CommandResult;
 import net.datenwerke.rs.terminal.service.terminal.objresolver.exceptions.ObjectResolverException;
+import net.datenwerke.rs.utils.string.Emoji;
 import net.datenwerke.security.service.security.rights.Read;
 
 public class RemoveConditionCommand implements ConditionSubCommandHook {
@@ -50,7 +51,7 @@ public class RemoveConditionCommand implements ConditionSubCommandHook {
    public CommandResult execute(CommandParser parser, TerminalSession session) throws ObjectResolverException {
       List<String> args = parser.getNonOptionArguments();
       if (args.size() != 1)
-         throw new IllegalArgumentException("Expect one argument");
+         throw new IllegalArgumentException(Emoji.exceptionEmoji().getEmoji(" ") + "Expect one argument");
 
       String query = args.get(0);
 
@@ -64,16 +65,16 @@ public class RemoveConditionCommand implements ConditionSubCommandHook {
 
          if (null != searchResults && searchResults.size() != 0) {
             if (searchResults.size() > 1)
-               return new CommandResult("The object resolver query returned more than one result: " + query);
+               return new CommandResult(Emoji.SMILING_FACE_TEAR.getEmoji(" ") + "The object resolver query returned more than one result: " + query);
 
             Object result = searchResults.get(0);
             if (!(result instanceof ReportCondition))
-               return new CommandResult("Could not find condition with object resolver query: " + query);
+               return new CommandResult(Emoji.SMILING_FACE_TEAR.getEmoji(" ") + "Could not find condition with object resolver query: " + query);
 
             ReportCondition cond = (ReportCondition) searchResults.get(0);
             conditionService.remove(cond);
 
-            return new CommandResult("Condition removed.");
+            return new CommandResult(Emoji.BEER_MUG.getEmoji(" ") + "Condition removed.");
          }
 
       }
@@ -83,15 +84,15 @@ public class RemoveConditionCommand implements ConditionSubCommandHook {
          id = Long.valueOf(args.get(0));
          ReportCondition cond = conditionService.getReportConditionById(id);
          if (null == cond)
-            return new CommandResult("No condition with id " + id + " found.");
+            return new CommandResult(Emoji.SMILING_FACE_TEAR.getEmoji(" ") + "No condition with id " + id + " found.");
          conditionService.remove(cond);
       } catch (NumberFormatException e) {
-         return new CommandResult("No condition found: " + args.get(0));
+         return new CommandResult(Emoji.SMILING_FACE_TEAR.getEmoji(" ") + "No condition found: " + args.get(0));
       } catch (NoResultException e) {
-         return new CommandResult("No condition with id " + id + " found.");
+         return new CommandResult(Emoji.SMILING_FACE_TEAR.getEmoji(" ") + "No condition with id " + id + " found.");
       }
 
-      return new CommandResult("Condition removed.");
+      return new CommandResult(Emoji.BEER_MUG.getEmoji(" ") + "Condition removed.");
    }
 
    @Override
