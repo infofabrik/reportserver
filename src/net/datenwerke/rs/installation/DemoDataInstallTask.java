@@ -111,6 +111,7 @@ public class DemoDataInstallTask implements DbInstallationTask {
       mds.setUsername(username);
       mds.setPassword(password);
       mds.setUrl("rs:mondrian:demodata");
+      mds.setKey("FOODMART_DATASOURCE"); 
 
       try {
          mds.setMondrianSchema(IOUtils.toString(is));
