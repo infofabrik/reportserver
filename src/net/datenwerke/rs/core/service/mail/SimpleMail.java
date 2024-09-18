@@ -126,7 +126,8 @@ public class SimpleMail extends MimeMessage implements SessionProvider {
          for (SimpleAttachment att : attachments) {
             MimeBodyPart mbp = new MimeBodyPart();
             mbp.setContent(att.getAttachment(), att.getMimeType());
-            mbp.setFileName(MimeUtility.encodeText(att.getFileName(), CHARSET_UTF8, null));
+            // encoding: "B" == "BASE64" ||  "Q" == "Quoted-Printable"
+            mbp.setFileName(MimeUtility.encodeText(att.getFileName(), CHARSET_UTF8, "B"));
             multipart.addBodyPart(mbp);
          }
 
@@ -164,7 +165,8 @@ public class SimpleMail extends MimeMessage implements SessionProvider {
    protected MimeBodyPart createAttachmentPart(SimpleAttachment att)
          throws UnsupportedEncodingException, MessagingException {
       MimeBodyPart mbp = new MimeBodyPart();
-      mbp.setFileName(MimeUtility.encodeText(att.getFileName(), CHARSET_UTF8, null));
+      // encoding: "B" == "BASE64" ||  "Q" == "Quoted-Printable"
+      mbp.setFileName(MimeUtility.encodeText(att.getFileName(), CHARSET_UTF8, "B"));
 
       Object data = att.getAttachment();
       if (data instanceof String) {

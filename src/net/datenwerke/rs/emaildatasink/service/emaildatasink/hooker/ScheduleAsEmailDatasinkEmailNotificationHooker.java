@@ -34,7 +34,6 @@ public class ScheduleAsEmailDatasinkEmailNotificationHooker extends SchedulerExe
       {
          put(DatasinkModule.PROPERTY_SUBJECT, "scheduler.fileactionEmailDatasink.subject");
          put(DatasinkModule.PROPERTY_TEXT, "scheduler.fileactionEmailDatasink.text");
-         put(DatasinkModule.PROPERTY_DISABLED, "scheduler.fileactionEmailDatasink[@disabled]");
          put(DatasinkModule.PROPERTY_HTML, "scheduler.fileactionEmailDatasink[@html]");
          put(DatasinkModule.PROPERTY_TRANSLATIONS_SUBJECT, "fileactionEmailDatasinkMsgSubject");
          put(DatasinkModule.PROPERTY_TRANSLATIONS_TEXT, "fileactionEmailDatasinkMsgText");

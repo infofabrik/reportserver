@@ -1,5 +1,10 @@
 package net.datenwerke.rs.emaildatasink.service.emaildatasink.action;
 
+import static net.datenwerke.rs.scheduler.service.scheduler.RsSchedulerModule.PROPERTY_EMAIL_ATTACHEMENT_NAME;
+import static net.datenwerke.rs.scheduler.service.scheduler.RsSchedulerModule.PROPERTY_EMAIL_HTML;
+import static net.datenwerke.rs.scheduler.service.scheduler.RsSchedulerModule.PROPERTY_EMAIL_SUBJECT;
+import static net.datenwerke.rs.scheduler.service.scheduler.RsSchedulerModule.PROPERTY_EMAIL_TEXT;
+
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -11,17 +16,21 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.apache.commons.configuration2.Configuration;
 import org.hibernate.annotations.Type;
 
 import com.google.inject.Inject;
 
+import net.datenwerke.gf.service.localization.RemoteMessageService;
 import net.datenwerke.rs.core.service.datasinkmanager.DatasinkService;
 import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
-import net.datenwerke.rs.emaildatasink.service.emaildatasink.configs.DatasinkEmailConfig;
+import net.datenwerke.rs.emaildatasink.service.emaildatasink.configs.DatasinkEmailConfig2;
 import net.datenwerke.rs.emaildatasink.service.emaildatasink.definitions.EmailDatasink;
+import net.datenwerke.rs.scheduler.service.scheduler.annotations.SchedulerModuleProperties;
 import net.datenwerke.rs.scheduler.service.scheduler.jobs.report.ReportExecuteJob;
 import net.datenwerke.rs.utils.entitycloner.annotation.EnclosedEntity;
 import net.datenwerke.rs.utils.juel.SimpleJuel;
+import net.datenwerke.rs.utils.localization.LocalizationServiceImpl;
 import net.datenwerke.scheduler.service.scheduler.SchedulerHelperService;
 import net.datenwerke.scheduler.service.scheduler.entities.AbstractAction;
 import net.datenwerke.scheduler.service.scheduler.entities.AbstractJob;
@@ -43,6 +52,15 @@ public class ScheduleAsEmailFileAction extends AbstractAction {
    @Transient
    @Inject
    private DatasinkService datasinkService;
+   
+   @Transient
+   @Inject
+   private RemoteMessageService remoteMessageService;
+   
+   @Transient
+   @Inject
+   @SchedulerModuleProperties
+   private Configuration config;
 
    @EnclosedEntity
    @OneToOne(fetch = FetchType.LAZY)
@@ -92,9 +110,11 @@ public class ScheduleAsEmailFileAction extends AbstractAction {
       SimpleJuel juel = schedulerHelperService.getConfiguredJuel(rJob);
       juel.addReplacement(PROPERTY_SUBJECT, getSubject());
       juel.addReplacement(PROPERTY_MESSAGE, getMessage());
+      /* enable msgs replacement */
+      String currentLanguage = LocalizationServiceImpl.getLocale().getLanguage();
+      juel.addReplacement("msgs", remoteMessageService.getMessages(currentLanguage));
 
       filename = null == name ? "" : juel.parse(name);
-
       sendViaEmailDatasink(rJob, juel, filename);
 
       if (null == name || name.trim().isEmpty())
@@ -106,12 +126,34 @@ public class ScheduleAsEmailFileAction extends AbstractAction {
    }
 
    private void sendViaEmailDatasink(final ReportExecuteJob rJob, final SimpleJuel juel, final String filename)
-         throws ActionExecutionException {
-      datasinkService.exportIntoDatasink(rJob, compressed, emailDatasink, new DatasinkEmailConfig() {
-
+         throws ActionExecutionException {      
+      datasinkService.exportIntoDatasink(rJob, compressed, emailDatasink, new DatasinkEmailConfig2() {
+         
+         /* default values */
+         boolean isHtml     = false;    
+         String sSubject    = subject; 
+         String sMessage    = message;  
+         String sFilename   = filename;
+         
+         boolean isInit = false;
+         
+         private void init() {
+            /* only init once */
+            if (isInit)
+               return;
+            /* values from config */
+            isHtml = config.getBoolean(PROPERTY_EMAIL_HTML, isHtml);
+            sSubject = config.getString(PROPERTY_EMAIL_SUBJECT, sSubject);
+            sMessage = config.getString(PROPERTY_EMAIL_TEXT, sMessage);
+            sFilename = config.getString(PROPERTY_EMAIL_ATTACHEMENT_NAME, sFilename);
+            isInit = true;
+         }
+         
+         
          @Override
          public String getFilename() {
-            return datasinkService.getFilenameForDatasink(rJob, compressed, filename);
+            init();
+            return datasinkService.getFilenameForDatasink(rJob, compressed, juel.parse(sFilename));
          }
 
          @Override
@@ -121,7 +163,8 @@ public class ScheduleAsEmailFileAction extends AbstractAction {
 
          @Override
          public String getSubject() {
-            return juel.parse(subject);
+            init();
+            return juel.parse(sSubject);
          }
 
          @Override
@@ -131,7 +174,13 @@ public class ScheduleAsEmailFileAction extends AbstractAction {
 
          @Override
          public String getBody() {
-            return juel.parse(message);
+            init();
+            return juel.parse(sMessage);
+         }
+
+         @Override
+         public boolean isHtml() {
+            return isHtml;
          }
       });
    }

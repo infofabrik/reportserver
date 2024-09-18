@@ -25,6 +25,8 @@ public class RsSchedulerModule extends AbstractReportServerModule {
 
    public static final String CONFIG_FILE = "scheduler/scheduler.cf"; //$NON-NLS-1$
 
+   public static final String PROPERTY_EMAIL_DISABLED = "scheduler.mailaction[@disabled]";
+   public static final String PROPERTY_EMAIL_HTML = "scheduler.mailaction[@html]";
    public static final String PROPERTY_EMAIL_SUBJECT = "scheduler.mailaction.subject";
    public static final String PROPERTY_EMAIL_TEXT = "scheduler.mailaction.text";
    public static final String PROPERTY_EMAIL_ATTACHEMENT_NAME = "scheduler.mailaction.attachment.name";

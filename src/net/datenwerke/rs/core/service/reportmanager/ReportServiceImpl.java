@@ -14,8 +14,6 @@ import java.util.UUID;
 
 import javax.persistence.EntityManager;
 
-import org.apache.commons.lang3.StringUtils;
-
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.Singleton;
@@ -180,26 +178,13 @@ public class ReportServiceImpl extends SecuredTreeDBManagerImpl<AbstractReportMa
    @UpdateOwner(name = "node")
    @FirePersistEntityEvents
    public void persist(@Named("node") AbstractReportManagerNode node) {
-      ensureKeyIsUnique(node);
-
       super.persist(node);
    }
 
    @Override
    @FireMergeEntityEvents
    public AbstractReportManagerNode merge(AbstractReportManagerNode node) {
-      ensureKeyIsUnique(node);
-
       return super.merge(node);
-   }
-
-   protected void ensureKeyIsUnique(AbstractReportManagerNode node) {
-      if (node instanceof Report && !StringUtils.isEmpty(((Report) node).getKey())) {
-         Report report = getReportByKey(((Report) node).getKey());
-         if (null != report && !report.equals(node))
-            throw new IllegalArgumentException(
-                  "Report key must be unique: " + node.getId() + ", " + ((Report) node).getKey());
-      }
    }
 
    @Override

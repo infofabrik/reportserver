@@ -16,6 +16,7 @@ import net.datenwerke.rs.core.service.mail.SimpleAttachment;
 import net.datenwerke.rs.core.service.mail.SimpleMail;
 import net.datenwerke.rs.emaildatasink.service.emaildatasink.annotations.DefaultEmailDatasink;
 import net.datenwerke.rs.emaildatasink.service.emaildatasink.configs.DatasinkEmailConfig;
+import net.datenwerke.rs.emaildatasink.service.emaildatasink.configs.DatasinkEmailConfig2;
 import net.datenwerke.rs.emaildatasink.service.emaildatasink.definitions.EmailDatasink;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 import net.datenwerke.rs.utils.misc.MimeUtils;
@@ -67,7 +68,13 @@ public class EmailDatasinkServiceImpl implements EmailDatasinkService {
                      mimeUtilsProvider.get().getMimeTypeByExtension(emailConfig.getFilename()),
                      emailConfig.getFilename())))
                .build();
-
+         if (config instanceof DatasinkEmailConfig2 && ((DatasinkEmailConfig2) config).isHtml()) {
+            /* override setContent with setHtml */
+            mail.setHtml(emailConfig.getBody(), new SimpleAttachment(data,
+                  mimeUtilsProvider.get().getMimeTypeByExtension(emailConfig.getFilename()),
+                  emailConfig.getFilename()));
+         }
+           
          if (emailConfig.isSendSyncEmail())
             mailServiceProvider.get().sendMailSync(Optional.of(emailDatasink), mail);
          else
